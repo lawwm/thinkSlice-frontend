@@ -41,13 +41,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'knox',
-    'accounts'
+    'accounts',
+    'corsheaders'
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':
     ('knox.auth.TokenAuthentication',)
 }
+
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'appmanager.urls'
@@ -90,7 +98,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.parse('postgres://afxtjocrazvhdb:bfad3cc8f615191955e3386cd4762ad0890db5b4950caf46b6ae689d0489c704@ec2-18-215-111-67.compute-1.amazonaws.com:5432/dddaluj6uo32hr')
+DATABASES['default'] = dj_database_url.parse('postgres://gwqbqamdayowef:152ceb72888f502cf5cca619ba0fef9737c2c420a2d07b6faf1e94894b77e41e@ec2-54-160-96-70.compute-1.amazonaws.com:5432/d8igmkuaae8g4b')
 
 print(DATABASES)
 
