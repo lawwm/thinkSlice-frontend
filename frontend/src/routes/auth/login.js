@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { login } from "../../store/auth/action.js"
-import { setAlert } from "../../store/components/action.js"
+//import { setAlert } from "../../store/components/action.js"
 import LoadingSpinner from "../../components/LoadingSpinner"
 
 

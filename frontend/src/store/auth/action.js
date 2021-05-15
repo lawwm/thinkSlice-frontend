@@ -77,8 +77,8 @@ export const login = ({ username, password }) => async (dispatch) => {
 //Logout & clear profile
 export const logout = () => async (dispatch) => {
     try {
-        const res = await axios.post('/api/auth/logout', config);
-
+        //const res = await axios.post('/api/auth/logout', config);
+        //console.log(res)
         dispatch({ type: LOGOUT });
     } catch (err) {
 
