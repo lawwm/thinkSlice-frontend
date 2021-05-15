@@ -9,6 +9,7 @@ djangorestframework = "*"
 django-rest-knox = "*"
 psycopg2 = "*"
 dj-database-url = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 pylint = "*"
