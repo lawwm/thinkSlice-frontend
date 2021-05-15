@@ -1,6 +1,7 @@
 import React, { Fragment, Suspense } from 'react';
 import { Switch, Route } from "react-router-dom"
 import Alert from "../components/Alert"
+import { PrivateRoute } from "./routeTypes"
 
 export const PATHS = {
     HOMEPAGE: '/',
