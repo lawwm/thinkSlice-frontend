@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react'
-import setAuthToken from "./util/setAuthToken"
-import { loadUser } from "./store/auth/action"
+import React, { useEffect } from "react";
+import setAuthToken from "./util/setAuthToken";
+import { loadUser } from "./store/auth/action";
 
 //React router
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from "react-router-dom";
 import Routes from "./routes/index.js";
 
 //Redux
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 
-import './App.css';
+import "./App.css";
+import NavBar from "./components/NavBar";
 
 const App = () => {
   useEffect(() => {
@@ -19,12 +20,13 @@ const App = () => {
   }, []);
 
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
+    <Provider store={store} className="App">
+        <BrowserRouter>
+          <NavBar />
+          <Routes />
+        </BrowserRouter>
     </Provider>
   );
-}
+};
 
 export default App;

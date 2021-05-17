@@ -1,0 +1,27 @@
+@font-face {
+    font-family: "Inter UI semi-bold";
+    font-weight: 400;
+    src: url(../fonts/Inter-SemiBold.ttf) format('truetype');
+}
+
+.navbar {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.navbar-brand {
+    color: #FF4400 !important;
+    font-size: 36px;
+    font-family: "Inter UI semi-bold" !important;
+}
+
+.nav-link {
+    color: black !important;
+    font-size: 24px;
+    font-family: "Inter UI semi-bold" !important;
+}
+
+nav a:hover {
+    color: #FF4400 !important;
+    text-decoration: underline !important;
+}
