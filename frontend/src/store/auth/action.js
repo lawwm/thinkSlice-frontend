@@ -1,13 +1,5 @@
 import axios from 'axios'
-import {
-    REGISTER_SUCCESS,
-    REGISTER_FAIL,
-    USER_LOADED,
-    AUTH_ERROR,
-    LOGIN_SUCCESS,
-    LOGIN_FAIL,
-    LOGOUT
-} from "./type.js"
+import * as actionTypes from './actionTypes'
 
 import { DOMAINS, ENDPOINTS } from "../endpoints"
 
@@ -26,11 +18,11 @@ export const loadUser = (token) => async (dispatch) => {
         const res = await axios.get(DOMAINS.AUTH + ENDPOINTS.LOAD_USER);
 
         dispatch({
-            type: USER_LOADED
+            type: actionTypes.USER_LOADED
         });
     } catch (err) {
         dispatch({
-            type: AUTH_ERROR
+            type: actionTypes.AUTH_ERROR
         });
     }
 }
@@ -45,12 +37,12 @@ export const register = ({ username, email, password }) => async (dispatch) => {
         const res = await axios.post(DOMAINS.AUTH + ENDPOINTS.REGISTER, body, config);
         setAuthToken(res.token)
         dispatch({
-            type: REGISTER_SUCCESS,
+            type: actionTypes.REGISTER_SUCCESS,
             payload: res.data
         })
     } catch (err) {
         dispatch({
-            type: REGISTER_FAIL
+            type: actionTypes.REGISTER_FAIL
         })
     }
 };
@@ -64,12 +56,12 @@ export const login = ({ username, password }) => async (dispatch) => {
 
         setAuthToken(res.data.token)
         dispatch({
-            type: LOGIN_SUCCESS,
+            type: actionTypes.LOGIN_SUCCESS,
             payload: res.data,
         });
     } catch (err) {
         dispatch({
-            type: LOGIN_FAIL
+            type: actionTypes.LOGIN_FAIL
         })
     }
 };
@@ -79,7 +71,7 @@ export const logout = () => async (dispatch) => {
     try {
         //const res = await axios.post('/api/auth/logout', config);
         //console.log(res)
-        dispatch({ type: LOGOUT });
+        dispatch({ type: actionTypes.LOGOUT });
     } catch (err) {
 
     }
