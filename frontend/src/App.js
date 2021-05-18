@@ -10,7 +10,6 @@ import Routes from "./routes/index.js";
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 
-import "./App.css";
 import NavBar from "./components/NavBar";
 
 const App = () => {
