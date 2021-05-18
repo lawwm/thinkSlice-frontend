@@ -5,12 +5,13 @@
 }
 
 .navbar {
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding: 50px 0px;
+    background-color: #fcfcfc;
 }
 
 .navbar-brand {
     color: #FF4400 !important;
+    padding-left: 10px;
     font-size: 36px;
     font-family: "Inter UI semi-bold" !important;
 }
@@ -19,6 +20,7 @@
     color: black !important;
     font-size: 24px;
     font-family: "Inter UI semi-bold" !important;
+    margin-left: 10px;
 }
 
 nav a:hover {

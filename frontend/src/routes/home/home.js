@@ -19,16 +19,7 @@ const Home = () => {
           <>
             <Container>
               <Col></Col>
-              <h1>Hi you are registered user</h1>
-              <button
-                onClick={() => {
-                  dispatch(logout());
-                  history.push("/login");
-                }}
-                type="button"
-              >
-                Logout
-              </button>
+              <h2>Hi you are registered user</h2>
               <Col></Col>
             </Container>
           </>
@@ -37,12 +28,6 @@ const Home = () => {
             <Container>
               <Col></Col>
               <h2>You are not logged in by keep browsing I guess</h2>
-              <button onClick={() => history.push("/register")} type="button">
-                Register
-              </button>
-              <button onClick={() => history.push("/login")} type="button">
-                Login
-              </button>
               <Col></Col>
             </Container>
           </>
