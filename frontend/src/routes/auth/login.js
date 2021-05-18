@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/auth/action.js";
 //import { setAlert } from "../../store/components/action.js"
 import LoadingSpinner from "../../components/LoadingSpinner";
-import { Col, Container } from "react-bootstrap";
+import { Col, Container, Form } from "react-bootstrap";
+import "../styles.css";
 
 const Login = () => {
   const history = useHistory();
@@ -49,37 +50,44 @@ const Login = () => {
       {!loading && (
         <>
           <Container>
-            <Col></Col>
             <h2>Log in to start learning.</h2>
             <form onSubmit={(e) => onSubmit(e)}>
+              <div class="form-group row">
+                <input
+                  type="text"
+                  name="username"
+                  className="form-control"
+                  placeholder="Username"
+                  onChange={(e) => onChange(e)}
+                  value={username}
+                />
+              </div>
+              <div class="form-group row">
+                <input
+                  type="password"
+                  name="password"
+                  className="form-control"
+                  placeholder="Password"
+                  onChange={(e) => onChange(e)}
+                  value={password}
+                />
+              </div>
               <br />
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                onChange={(e) => onChange(e)}
-                value={username}
-              />
-              <br />
-              <br />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={(e) => onChange(e)}
-                value={password}
-              />
-              <input type="submit" value="Submit" />
+              <a
+                onClick={() => history.push("/register")}
+                type="button"
+                className="offset-login"
+              >
+                Don't have an account?
+              </a>
+              <button
+                type="submit"
+                value="Submit"
+                className="btn btn-danger"
+              >
+                Submit
+              </button>
             </form>
-            <br />
-            <button onClick={() => history.push("/register")} type="button">
-              No account? Register here!
-            </button>
-            <br />
-            <button onClick={() => history.push("/")} type="button">
-              Return to homepage?
-            </button>
-            <Col></Col>
           </Container>
         </>
       )}
