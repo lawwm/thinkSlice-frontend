@@ -15,7 +15,7 @@ import os
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'accounts',
-    'corsheaders'
+    'corsheaders',
+    'userReviews',
+    'userProfiles'
 ]
 
 REST_FRAMEWORK = {
@@ -102,12 +104,15 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.parse('postgres://gwqbqamdayowef:152ceb72888f502cf5cca619ba0fef9737c2c420a2d07b6faf1e94894b77e41e@ec2-54-160-96-70.compute-1.amazonaws.com:5432/d8igmkuaae8g4b')
-
-print(DATABASES)
+DATABASES['default'] = dj_database_url.parse('postgres://leefvoqtcskogt:8bf4c75def920878bc4c3d2e1d2cf6c83d5d9e8d85da9ceb0a0967028b08a4d1@ec2-34-232-191-133.compute-1.amazonaws.com:5432/d31pp5os52lb4l')
+print([DATABASES['default']])
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+
+# MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+print(MEDIA_ROOT)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
