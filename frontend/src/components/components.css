@@ -16,14 +16,17 @@
     font-family: "Inter UI semi-bold" !important;
 }
 
-.nav-link {
+.nav-default {
     color: black !important;
     font-size: 24px;
     font-family: "Inter UI semi-bold" !important;
-    margin-left: 10px;
+    margin-left: 40px;
 }
 
-nav a:hover {
+nav a:hover, .nav-active {
     color: #FF4400 !important;
+    font-size: 24px;
+    margin-left: 40px;
+    font-family: "Inter UI semi-bold" !important;
     text-decoration: underline !important;
 }

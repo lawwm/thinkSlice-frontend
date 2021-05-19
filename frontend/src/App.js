@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import store from "./store/store.js";
 
 import NavBar from "./components/NavBar";
+import "./App.css";
 
 const App = () => {
   useEffect(() => {
