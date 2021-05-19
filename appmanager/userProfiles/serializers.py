@@ -1,14 +1,14 @@
 from rest_framework import serializers
 from .models import Profile
 
-# Create Profile Serializers
-
+# General Profile Serializers
 class ProfileGeneralSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['id', 'profile_pic', 'username', 'user_bio', 'is_tutor', "is_student", 'user']
         extra_kwargs = {'user' : {'read_only': True} }
 
+# Detailed Profile Serializers
 class ProfileDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
