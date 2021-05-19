@@ -85,7 +85,7 @@ const Login = () => {
                   <button
                     type="submit"
                     value="Submit"
-                    className="btn btn-danger"
+                    className="btn btn-danger btn-custom"
                   >
                     Submit
                   </button>

@@ -1,5 +1,6 @@
 h2 {
     margin-bottom: 30px;
+    font-size: 36px;
 }
 
 input[type=text], input[type=password] {
@@ -12,7 +13,7 @@ input[type=text], input[type=password] {
     color: black;
 }
 
-.btn {
+.btn-custom {
     padding: 10px 60px;
     background-color: #FF4400;
     opacity: 0.8;
@@ -23,7 +24,36 @@ input[type=text], input[type=password] {
     margin-right: 40px;
 }
 
-.btn:hover, .btn:active, .btn:active:after {
+.btn-custom:hover, .btn-custom:active, .btn-custom:active:after {
     opacity: 1;
     background-color: #FF4400;
+}
+
+.padding-around {
+    margin-left: 50px;
+    padding: 0px;
+}
+
+p {
+    font-size: 24px;
+    padding: 0px;
+}
+
+.profile-button {
+    background-color: #787878;
+    color: white;
+    border-radius: 10px;
+    margin-right: 20px;
+    font-size: 24px;
+    padding: 5px 40px;
+}
+
+.profile-tag:disabled {
+    background-color: #FF4400;
+    color: white;
+    opacity: 1;
+    border-radius: 10px;
+    margin-right: 20px;
+    font-size: 24px;
+    padding: 5px 40px;
 }

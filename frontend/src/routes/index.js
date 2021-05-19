@@ -2,26 +2,30 @@ import React, { Fragment, Suspense } from 'react';
 import { Switch, Route } from "react-router-dom"
 import Alert from "../components/Alert"
 import { PrivateRoute } from "./routeTypes"
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export const PATHS = {
     HOMEPAGE: '/',
     LOGIN_PAGE: '/login',
-    REGISTER_PAGE: '/register'
+    REGISTER_PAGE: '/register',
+    PROFILE_PAGE: '/profile'
 }
 
 const Home = React.lazy(() => import("./home/home"))
 const Login = React.lazy(() => import("./auth/login"))
 const Register = React.lazy(() => import("./auth/register"))
+const Profile = React.lazy(() => import("./profile/profile"))
 
 const Routes = () => {
     return (
         <Fragment>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingSpinner />}>
                 <Alert />
                 <Switch>
                     <Route exact path={PATHS.HOMEPAGE} component={Home} />
                     <Route exact path={PATHS.LOGIN_PAGE} component={Login} />
                     <Route exact path={PATHS.REGISTER_PAGE} component={Register} />
+                    <Route exact path={PATHS.PROFILE_PAGE} component={Profile} />
                 </Switch>
             </Suspense>
         </Fragment>

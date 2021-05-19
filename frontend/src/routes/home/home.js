@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import { Container, Col, Row } from "react-bootstrap";
+import "../styles.css";
 
 const Home = () => {
   const history = useHistory();
