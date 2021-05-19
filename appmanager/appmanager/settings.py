@@ -102,7 +102,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.parse('postgres://gwqbqamdayowef:152ceb72888f502cf5cca619ba0fef9737c2c420a2d07b6faf1e94894b77e41e@ec2-54-160-96-70.compute-1.amazonaws.com:5432/d8igmkuaae8g4b')
+DATABASES['default'] = dj_database_url.parse('postgres://leefvoqtcskogt:8bf4c75def920878bc4c3d2e1d2cf6c83d5d9e8d85da9ceb0a0967028b08a4d1@ec2-34-232-191-133.compute-1.amazonaws.com:5432/d31pp5os52lb4l')
 
 print(DATABASES)
 
