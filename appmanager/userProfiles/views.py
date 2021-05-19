@@ -98,27 +98,3 @@ class DetailProfileView(viewsets.ViewSet):
         else:
             permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
         return [permission() for permission in permission_classes]
-
-
-
-# PUT/PATCH your own profile (detail)
-# DELETE your own profile (detail)
-
-# class ProfileView(APIView):
-#     #GET one profile(general)
-#     def get(self, request, *args, **kwargs):
-#         profiles = get_object_or_404(Profile, pk=kwargs['pk'])
-#         serializer = ProfileGeneralSerializer(profiles, many=False)
-#         return Response(serializer.data)
-
-# class OwnProfileView(APIView):  
-#     # permissions = [permissions.IsAuthenticated]
-    
-#     # PUT/PATCH your own profile (general)
-#     def patch(self, request, *args, **kwargs):
-#         profiles = get_object_or_404(Profile, pk=kwargs['pk'])
-#         serializer = ProfileGeneralSerializer(profiles, data = request.data, partial=True, many=False)
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response("Wrong parameters", status=400)
