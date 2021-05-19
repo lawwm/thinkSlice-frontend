@@ -101,15 +101,6 @@ class DetailProfileView(viewsets.ViewSet):
 
 
 
-
-
-
-
-
-
-
-
-
 # PUT/PATCH your own profile (detail)
 # DELETE your own profile (detail)
 
