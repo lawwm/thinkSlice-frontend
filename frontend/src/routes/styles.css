@@ -39,21 +39,27 @@ p {
     padding: 0px;
 }
 
-.profile-button {
+.profile-button, .profile-tag {
     background-color: #787878;
     color: white;
     border-radius: 10px;
     margin-right: 20px;
     font-size: 24px;
-    padding: 5px 40px;
+    padding: 5px 45px;
 }
 
 .profile-tag:disabled {
     background-color: #FF4400;
-    color: white;
     opacity: 1;
-    border-radius: 10px;
-    margin-right: 20px;
-    font-size: 24px;
-    padding: 5px 40px;
+    color: white;
 }
+
+.circle {
+    border-radius: 50%;
+    height: 175px;
+    width: 175px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   }

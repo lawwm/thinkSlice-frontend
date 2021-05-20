@@ -1,32 +1,47 @@
 @font-face {
-    font-family: "Inter UI semi-bold";
-    font-weight: 400;
-    src: url(../fonts/Inter-SemiBold.ttf) format('truetype');
+  font-family: "Inter UI semi-bold";
+  font-weight: 400;
+  src: url(../fonts/Inter-SemiBold.ttf) format("truetype");
 }
 
 .navbar {
-    padding: 50px 0px;
-    background-color: #fcfcfc;
+  padding: 50px 0px;
+  background-color: #fcfcfc;
 }
 
 .navbar-brand {
-    color: #FF4400 !important;
-    padding-left: 10px;
-    font-size: 36px;
-    font-family: "Inter UI semi-bold" !important;
+  color: #ff4400 !important;
+  padding-left: 10px;
+  font-size: 36px;
+  font-family: "Inter UI semi-bold" !important;
 }
 
 .nav-default {
-    color: black !important;
-    font-size: 24px;
-    font-family: "Inter UI semi-bold" !important;
-    margin-left: 40px;
+  color: black !important;
+  font-size: 24px;
+  font-family: "Inter UI semi-bold" !important;
+  margin-left: 40px;
 }
 
-nav a:hover, .nav-active {
-    color: #FF4400 !important;
-    font-size: 24px;
-    margin-left: 40px;
-    font-family: "Inter UI semi-bold" !important;
-    text-decoration: underline !important;
+nav a:hover,
+.nav-active {
+  color: #ff4400 !important;
+  font-size: 24px;
+  margin-left: 40px;
+  font-family: "Inter UI semi-bold" !important;
+  text-decoration: underline !important;
+}
+
+.circle-small {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.caption {
+  font-size: 14px;
 }
