@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { logout } from "../../store/auth/action";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
-import { Col, Container } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap";
+import "../styles.css";
 
 const Home = () => {
   const history = useHistory();
@@ -18,32 +18,23 @@ const Home = () => {
         (isAuthenticated ? (
           <>
             <Container>
-              <Col></Col>
-              <h1>Hi you are registered user</h1>
-              <button
-                onClick={() => {
-                  dispatch(logout());
-                  history.push("/login");
-                }}
-                type="button"
-              >
-                Logout
-              </button>
-              <Col></Col>
+              <Row>
+                <Col>
+                  <h2>Welcome back, user.</h2>
+                </Col>
+                <Col></Col>
+              </Row>
             </Container>
           </>
         ) : (
           <>
             <Container>
-              <Col></Col>
-              <h2>You are not logged in by keep browsing I guess</h2>
-              <button onClick={() => history.push("/register")} type="button">
-                Register
-              </button>
-              <button onClick={() => history.push("/login")} type="button">
-                Login
-              </button>
-              <Col></Col>
+              <Row>
+                <Col>
+                  <h2>Log in to get started.</h2>
+                </Col>
+                <Col></Col>
+              </Row>
             </Container>
           </>
         ))}

@@ -3,7 +3,8 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../store/auth/action";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import { Col, Container } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap";
+import "../styles.css";
 
 const Register = () => {
   const history = useHistory();
@@ -49,53 +50,66 @@ const Register = () => {
       {!loading && (
         <>
           <Container>
-            <Col></Col>
-            <h2>Register here.</h2>
-            <form onSubmit={(e) => onSubmit(e)}>
-              <br />
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                onChange={(e) => onChange(e)}
-                value={username}
-              />
-              <br />
-              <br />
-              <input
-                type="text"
-                name="email"
-                placeholder="Email"
-                onChange={(e) => onChange(e)}
-                value={email}
-              />
-              <br />
-              <br />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={(e) => onChange(e)}
-                value={password}
-              />
-              {/* <br />
+            <Row>
+              <Col>
+                <h2>Register here.</h2>
+                <form onSubmit={(e) => onSubmit(e)}>
+                  <div class="form-group row">
+                    <input
+                      type="text"
+                      name="username"
+                      className="form-control"
+                      placeholder="Username"
+                      onChange={(e) => onChange(e)}
+                      value={username}
+                    />
+                  </div>
+                  <div class="form-group row">
+                    <input
+                      type="text"
+                      name="email"
+                      className="form-control"
+                      placeholder="Email"
+                      onChange={(e) => onChange(e)}
+                      value={email}
+                    />
+                  </div>
+                  <div class="form-group row">
+                    <input
+                      type="password"
+                      name="password"
+                      className="form-control"
+                      placeholder="Password"
+                      onChange={(e) => onChange(e)}
+                      value={password}
+                    />
+                  </div>
+                  {/*
               <br />
               <input
                 type="confirmPassword"
                 name="comfirmPassword"
                 placeholder="Confirm Password"
               /> */}
-              <input type="submit" value="Submit" />
-            </form>
-            <br />
-            <button onClick={() => history.push("/login")} type="button">
-              Have an account? Login here!
-            </button>
-            <br />
-            <button onClick={() => history.push("/")} type="button">
-              Return to homepage?
-            </button>
-            <Col></Col>
+                  <br />
+                  <a
+                    onClick={() => history.push("/login")}
+                    type="button"
+                    className="color-black"
+                  >
+                    Already have an account?
+                  </a>
+                  <button
+                    type="submit"
+                    value="Submit"
+                    className="btn btn-danger btn-custom"
+                  >
+                    Register account
+                  </button>
+                </form>
+              </Col>
+              <Col></Col>
+            </Row>
           </Container>
         </>
       )}

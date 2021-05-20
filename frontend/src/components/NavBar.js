@@ -1,23 +1,95 @@
 import React from "react";
+import { useHistory, NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../store/auth/action";
+
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Col, Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import "./components.css";
 
 const NavBar = () => {
-  return (
-    <Container>
-      <Col></Col>
-      <Navbar className="navbar">
-        <Navbar.Brand className="mr-auto brand-custom">ThinkSlice</Navbar.Brand>
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  return isAuthenticated ? (
+    <Navbar className="navbar fixed-top">
+      <Container>
+        <Navbar.Brand className="mr-auto">ThinkSlice</Navbar.Brand>
         <Nav className="ml-auto">
-          <Nav.Link>Home</Nav.Link>
-          <Nav.Link>Categories</Nav.Link>
-          <Nav.Link>Login</Nav.Link>
-          <Nav.Link>Register</Nav.Link>
+          <NavLink
+            className="nav-default"
+            activeClassName="nav-active"
+            to="/"
+            exact={true}
+          >
+            Home
+          </NavLink>
+          <NavLink
+            className="nav-default"
+            activeClassName="nav-active"
+            to="/categories"
+          >
+            Categories
+          </NavLink>
+          <NavLink
+            className="nav-default"
+            activeClassName="nav-active"
+            to="/profile"
+          >
+            Profile
+          </NavLink>
+          <NavLink
+            className="nav-default"
+            activeClassName="nav-active"
+            to="/login"
+            onClick={() => {
+              dispatch(logout());
+            }}
+          >
+            Logout{" "}
+          </NavLink>
         </Nav>
-      </Navbar>
-      <Col></Col>
-    </Container>
+      </Container>
+    </Navbar>
+  ) : (
+    <Navbar className="navbar fixed-top">
+      <Container>
+        <Navbar.Brand className="mr-auto">ThinkSlice</Navbar.Brand>
+        <Nav className="ml-auto">
+          <NavLink
+            className="nav-default"
+            activeClassName="nav-active"
+            to="/"
+            exact={true}
+          >
+            Home
+          </NavLink>
+          <NavLink
+            className="nav-default"
+            activeClassName="nav-active"
+            to="/categories"
+          >
+            Categories
+          </NavLink>
+          <NavLink
+            className="nav-default"
+            activeClassName="nav-active"
+            to="/login"
+          >
+            Login
+          </NavLink>
+          <NavLink
+            className="nav-default"
+            activeClassName="nav-active"
+            to="/register"
+          >
+            Register
+          </NavLink>
+        </Nav>
+      </Container>
+    </Navbar>
   );
 };
 

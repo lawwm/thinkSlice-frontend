@@ -104,8 +104,15 @@ DATABASES = {
     }
 }
 
+<<<<<<< HEAD
 # DATABASES['default'] = dj_database_url.parse('postgres://leefvoqtcskogt:8bf4c75def920878bc4c3d2e1d2cf6c83d5d9e8d85da9ceb0a0967028b08a4d1@ec2-34-232-191-133.compute-1.amazonaws.com:5432/d31pp5os52lb4l')
 # print([DATABASES['default']])
+=======
+DATABASES['default'] = dj_database_url.parse('postgres://leefvoqtcskogt:8bf4c75def920878bc4c3d2e1d2cf6c83d5d9e8d85da9ceb0a0967028b08a4d1@ec2-34-232-191-133.compute-1.amazonaws.com:5432/d31pp5os52lb4l')
+
+print(DATABASES)
+print([DATABASES['default']])
+>>>>>>> main
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
