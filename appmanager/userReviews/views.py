@@ -1,8 +1,6 @@
-from django.http import request
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, permissions, viewsets, mixins
+from rest_framework import generics, viewsets, mixins, status
 from rest_framework.response import Response
-from userProfiles import serializers
 from userProfiles.models import Profile
 from userReviews.models import Review
 from .serializers import CreateReviewSerializer, AccessReviewSerializer
@@ -13,25 +11,36 @@ from accounts.permissions import IsReviewerOrReadOnly
 # Create review/ list all tutor's reviews
 class TutorReviewView(viewsets.ViewSet):
     # serializer_class = CreateReviewSerializer
-    permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
         # Get tutor and student profile
         request.data['tutor_profile'] = get_object_or_404(Profile, user=kwargs['pk']).id
         request.data['student_profile'] = get_object_or_404(Profile, user=request.user.id).id
+
+        # Check that student hasn't already reviewed the teacer
+        check_existing = Review.objects.filter(tutor_profile=request.data['tutor_profile'], 
+            student_profile=request.data['student_profile'])
+        if check_existing.exists():
+            return Response("You've already reviewed this particular user", status=status.HTTP_400_BAD_REQUEST)
+
+        # Use serializer validation
         serializer = CreateReviewSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
-        return Response("Wrong parameters", status=400)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     def list(self, request, *args, **kwargs):
         profile_id = get_object_or_404(Profile, user=kwargs['pk']).id
         reviews = Review.objects.filter(tutor_profile=profile_id)
-        serializer = CreateReviewSerializer(reviews, many=True)
-        # if serializer.is_valid(raise_exception=True):
+        serializer = AccessReviewSerializer(reviews, many=True)
         return Response(serializer.data)
 
+    def get_permissions(self):    
+        if self.request.method == 'GET':
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
 
 # Get all reviews based on student
 class StudentReviewView(generics.ListAPIView):
@@ -40,7 +49,7 @@ class StudentReviewView(generics.ListAPIView):
         student_profile = get_object_or_404(Profile, user=self.kwargs['pk']).id
         return Review.objects.filter(student_profile=student_profile)
 
-# Delete all reviews
+# Delete all reviews(later)
 
 
 # Get/Edit/Delete one review
@@ -53,7 +62,6 @@ class GetEditDeleteReviewView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin
     def patch(self, request, *args, **kwargs):
         # Once patch request accesses endpoint, edited becomes true
         request.data["edited"] = True
-        
         return self.partial_update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
