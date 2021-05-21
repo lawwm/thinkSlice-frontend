@@ -1,7 +1,7 @@
 import React from "react";
 import thumbPic from "../images/Cooking_thumbnail.jpg";
 import profilePic from "../images/Joe_Biden.jpg";
-import { Media, Image } from "react-bootstrap";
+import { Container, Col, Row, Media, Image } from "react-bootstrap";
 
 const Thumbnail = () => {
   return (
@@ -15,15 +15,22 @@ const Thumbnail = () => {
       />
       <Media>
         <div className="circle-small">
-          <Image
-            src={profilePic}
-            alt="profile picture"
-            fluid
-          />
+          <Image src={profilePic} alt="profile picture" fluid />
         </div>
         <Media.Body>
-            <h5>Roast chicken recipe</h5>
-            <p className="caption">Joe Biden 14k views</p>
+          <Container>
+            <Row>
+              <h5 className="video-title">Roast chicken recipe</h5>
+            </Row>
+            <Row>
+              <Col>
+                <div className="caption">Joe Biden </div>
+              </Col>
+              <Col>
+                <div className="vertical-line">14k views</div>
+              </Col>
+            </Row>
+          </Container>
         </Media.Body>
       </Media>
     </>

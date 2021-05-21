@@ -4,6 +4,11 @@
   src: url(../fonts/Inter-SemiBold.ttf) format("truetype");
 }
 
+@font-face {
+  font-family: "Roboto medium";
+  src: url(../fonts//Roboto-Medium.ttf) format("truetype");
+}
+
 .navbar {
   padding: 50px 0px;
   background-color: #fcfcfc;
@@ -40,8 +45,22 @@ nav a:hover,
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 10px 0px;
 }
 
 .caption {
   font-size: 14px;
+  margin-right: 0px;
+  color: #808088;
+}
+
+.vertical-line {
+  font-size: 14px;
+  border-left: solid #808088 thin;
+  padding-left: 40px;
+  color: #808088;
+}
+
+.video-title {
+  font-family:  "Roboto medium";
 }

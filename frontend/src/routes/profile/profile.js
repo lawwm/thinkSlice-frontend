@@ -3,60 +3,51 @@ import { useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import NavBar from "../../components/NavBar";
 import Thumbnail from "../../components/Thumbnail.js";
+import profileModal from "../../components/profileModal.js";
 import { Container, Col, Row, Media, Image } from "react-bootstrap";
-import profilePic from "../../images/Joe_Biden.jpg";
 import "../styles.css";
 
 const Profile = () => {
-  const { loading } = useSelector((state) => state.profile);
+  const { loading, profile } = useSelector((state) => state.profile);
 
   return (
     <>
       {loading && <LoadingSpinner />}
       {!loading && (
         <>
-        <NavBar />
+          <NavBar />
           <Container>
-            <Row className="padding-around">
+            <Row className="margin-left">
               <Media>
                 <Media.Body>
-                  <h2>Joe Biden</h2>
-                  <p>
-                    Hi, I’m here to make some side income when I’m not occupied
-                    with my day job. Hope I can teach you about my signature
-                    cream of mushroom soup.
-                  </p>
+                  <h2>{profile.username}</h2>
+                  <p>{profile.user_bio}</p>
+                  <br />
+                  <button className="btn profile-tag" disabled>
+                    {profile.is_tutor ? "Tutor" : "Student"}
+                  </button>
+                  <button className="btn profile-button" onClick={<profileModal />}>Details</button>
+                  <button className="btn profile-button">Reviews</button>
                 </Media.Body>
                 <div className="circle ml-3">
-                  <Image
-                    src={profilePic}
-                    alt="Joe Biden"
-                    fluid
-                  />
+                  <Image src={profile.profile_pic} alt="profile_pic" fluid />
                 </div>
               </Media>
             </Row>
             <br />
-            <Row className="padding-around">
-              <button className="btn profile-tag" disabled>
-                Tutor
-              </button>
-              <button className="btn profile-button">Details</button>
-              <button className="btn profile-button">Reviews</button>
-            </Row>
             <hr></hr>
-            <Row className="padding-around">
-              <div>
-                <h2>Videos</h2>
-              </div>
-              <Container>
-                <Row>
-                  <Col><Thumbnail /></Col>
-                  <Col></Col>
-                  <Col></Col>
-                </Row>
-              </Container>
-            </Row>
+            <Row className="margin-left">
+                <div>
+                  <h2>Videos</h2>
+                </div>
+              </Row>
+              <Row className="margin-left-less">
+                <Col>
+                  <Thumbnail className="remove-margin"/>
+                </Col>
+                <Col></Col>
+                <Col></Col>
+              </Row>
           </Container>
         </>
       )}
