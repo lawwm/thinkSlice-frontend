@@ -12,6 +12,7 @@ ProfileViewAsView = ProfileView.as_view({
 DetailProfileViewAsView = DetailProfileView.as_view({
     'get': 'retrieve',
     'patch': 'partial_update',
+    'put': 'update'
 })
 
 urlpatterns = [ 
