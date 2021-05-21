@@ -1,12 +1,17 @@
 import axios from 'axios';
 
 import { DOMAINS } from '../endpoints';
-import { auth } from "../auth/reducer.js";
+import { useSelector } from "react-redux";
 import * as actionTypes from './actionTypes';
 
-export const getProfile = () => async (dispatch) => {
+const config = {
+    headers: {
+        "Content-Type": "application/json",
+    },
+};
+
+export const getProfile = (userId) => async (dispatch) => {
     try {
-        const userId = auth.user.id;
         const res = await axios.get(DOMAINS.PROFILE + "/" + userId);
 
         dispatch({
@@ -15,8 +20,25 @@ export const getProfile = () => async (dispatch) => {
         });
     } catch (err) {
         dispatch({
-            type: actionTypes.PROFILE_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            type: actionTypes.PROFILE_ERROR
         });
     }
 };
+
+export const createProfile = ({ username }) => async (dispatch) => {
+
+    const body = JSON.stringify({ username });
+
+    try {
+        const res = await axios.post(DOMAINS.PROFILE, body, config);
+
+        dispatch({
+            type: actionTypes.CREATE_PROFILE_SUCCESS,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch({
+            type: actionTypes.CREATE_PROFILE_FAIL
+        });
+    }
+}

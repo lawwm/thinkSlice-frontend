@@ -1,19 +1,21 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
+import NavBar from "../../components/NavBar";
 import Thumbnail from "../../components/Thumbnail.js";
 import { Container, Col, Row, Media, Image } from "react-bootstrap";
 import profilePic from "../../images/Joe_Biden.jpg";
 import "../styles.css";
 
 const Profile = () => {
-  const { loading } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.profile);
 
   return (
     <>
       {loading && <LoadingSpinner />}
       {!loading && (
         <>
+        <NavBar />
           <Container>
             <Row className="padding-around">
               <Media>

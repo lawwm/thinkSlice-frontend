@@ -2,6 +2,7 @@ import React from "react";
 import { useHistory, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/auth/action";
+import { getProfile } from "../store/profile/action";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Nav, Navbar } from "react-bootstrap";
@@ -11,7 +12,8 @@ const NavBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { loading, isAuthenticated } = useSelector((state) => state.auth);
+  const { loading, isAuthenticated, user } = useSelector((state) => state.auth);
+
 
   return (
     <>
@@ -41,6 +43,9 @@ const NavBar = () => {
                   className="nav-default"
                   activeClassName="nav-active"
                   to="/profile"
+                  onClick={() => {
+                    dispatch(getProfile(user));
+                  }}
                 >
                   Profile
                 </NavLink>

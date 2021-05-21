@@ -1,7 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+
 import LoadingSpinner from "../../components/LoadingSpinner.js";
+import NavBar from "../../components/NavBar.js"
 import { Container, Col, Row } from "react-bootstrap";
 import "../styles.css";
 
@@ -17,6 +19,7 @@ const Home = () => {
       {!loading &&
         (isAuthenticated ? (
           <>
+          <NavBar />
             <Container>
               <Row>
                 <Col>
@@ -28,6 +31,7 @@ const Home = () => {
           </>
         ) : (
           <>
+          <NavBar />
             <Container>
               <Row>
                 <Col>

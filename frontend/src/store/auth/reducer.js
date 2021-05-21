@@ -12,6 +12,7 @@ const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: true,
+    user: null
 }
 
 export const auth = (state = initialState, action) => {
@@ -22,7 +23,7 @@ export const auth = (state = initialState, action) => {
             return {
                 ...state,
                 isAuthenticated: true,
-                loading: false,
+                loading: false
             }
         case REGISTER_SUCCESS:
             return {
@@ -47,7 +48,7 @@ export const auth = (state = initialState, action) => {
                 ...state,
                 token: null,
                 isAuthenticated: false,
-                loading: false,
+                loading: false
             }
         default:
             return state;

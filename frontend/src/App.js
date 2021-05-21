@@ -10,7 +10,6 @@ import Routes from "./routes/index.js";
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 
-import NavBar from "./components/NavBar";
 import "./App.css";
 
 const App = () => {
@@ -22,7 +21,6 @@ const App = () => {
   return (
     <Provider store={store} className="App">
         <BrowserRouter>
-          <NavBar />
           <Routes />
         </BrowserRouter>
     </Provider>

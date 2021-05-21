@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/auth/action.js";
 //import { setAlert } from "../../store/components/action.js"
 import LoadingSpinner from "../../components/LoadingSpinner";
+import NavBar from "../../components/NavBar";
 import { Container, Col, Row } from "react-bootstrap";
 import "../styles.css";
 
@@ -49,6 +50,7 @@ const Login = () => {
       {loading && <LoadingSpinner />}
       {!loading && (
         <>
+        <NavBar />
           <Container>
             <Row>
               <Col>

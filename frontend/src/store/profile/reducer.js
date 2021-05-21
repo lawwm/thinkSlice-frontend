@@ -1,19 +1,25 @@
-import { GET_PROFILE, PROFILE_ERROR } from "./actionTypes";
+import {
+  CREATE_PROFILE_SUCCESS,
+  CREATE_PROFILE_FAIL,
+  GET_PROFILE,
+  PROFILE_ERROR
+} from "./actionTypes";
 
 const initialState = {
-  user: null,
-  loading: true,
-  error: {}
+  profile: null,
+  loading: true
 };
 
 export const profile = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case CREATE_PROFILE_SUCCESS:
     case GET_PROFILE:
-      return { ...state, user: payload, loading: false };
-      case PROFILE_ERROR:
-          return { ...state, error: payload, loading: false, user: null}
+      return { ...state, profile: payload, loading: false };
+    case CREATE_PROFILE_FAIL:
+    case PROFILE_ERROR:
+      return { ...state, profile: null, loading: false };
     default:
       return state;
   }
