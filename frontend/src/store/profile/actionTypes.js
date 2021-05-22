@@ -1,0 +1,4 @@
+export const PROFILE_LOADED = "PROFILE_LOADED";
+export const PROFILE_ERROR = "PROFILE_ERROR";
+export const EDIT_PROFILE = "EDIT_PROFILE";
+export const DELETE_PROFILE = "DELETE_PROFILE";

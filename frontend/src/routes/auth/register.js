@@ -3,7 +3,8 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../store/auth/action";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import { Container, Col, Row } from "react-bootstrap";
+import NavBar from "../../components/NavBar";
+import { Container, Col, Row, Nav } from "react-bootstrap";
 import "../styles.css";
 
 const Register = () => {
@@ -49,6 +50,7 @@ const Register = () => {
       {loading && <LoadingSpinner />}
       {!loading && (
         <>
+        <NavBar />
           <Container>
             <Row>
               <Col>

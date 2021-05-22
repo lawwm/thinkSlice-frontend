@@ -11,5 +11,6 @@ export const ENDPOINTS = {
 }
 
 export const DOMAINS = {
-    AUTH: "/api/auth"
+    AUTH: "/api/auth",
+    PROFILE: "/api/profiles"
 }
