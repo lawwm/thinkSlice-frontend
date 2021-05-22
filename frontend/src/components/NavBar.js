@@ -1,15 +1,14 @@
 import React from "react";
-import { useHistory, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/auth/action";
-import { getProfile } from "../store/profile/action";
+import { getProfile, resetProfile } from "../store/profile/action";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import "./components.css";
 
 const NavBar = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const { loading, isAuthenticated, user } = useSelector((state) => state.auth);
@@ -54,6 +53,7 @@ const NavBar = () => {
                   activeClassName="nav-active"
                   to="/login"
                   onClick={() => {
+                    dispatch(resetProfile());
                     dispatch(logout());
                   }}
                 >

@@ -112,6 +112,7 @@ DATABASES['default'] = dj_database_url.parse('postgres://leefvoqtcskogt:8bf4c75d
 # MEDIA_ROOT = ''
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 print(MEDIA_ROOT)
+print(DATABASES)
 
 AUTH_PASSWORD_VALIDATORS = [
     {

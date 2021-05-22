@@ -45,22 +45,26 @@ nav a:hover,
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 0px;
+  margin: 10px 0px 10px 5px;
 }
 
 .caption {
   font-size: 14px;
-  margin-right: 0px;
+  padding: 0px 10px 0px 0px;
   color: #808088;
 }
 
 .vertical-line {
   font-size: 14px;
   border-left: solid #808088 thin;
-  padding-left: 40px;
+  padding: 0px 10px;
   color: #808088;
 }
 
 .video-title {
   font-family:  "Roboto medium";
+}
+
+.title-caption {
+  margin: 10px 40px;
 }

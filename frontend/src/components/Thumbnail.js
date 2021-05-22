@@ -18,17 +18,13 @@ const Thumbnail = () => {
           <Image src={profilePic} alt="profile picture" fluid />
         </div>
         <Media.Body>
-          <Container>
+          <Container className="title-caption">
             <Row>
               <h5 className="video-title">Roast chicken recipe</h5>
             </Row>
             <Row>
-              <Col>
                 <div className="caption">Joe Biden </div>
-              </Col>
-              <Col>
                 <div className="vertical-line">14k views</div>
-              </Col>
             </Row>
           </Container>
         </Media.Body>
