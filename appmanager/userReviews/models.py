@@ -11,6 +11,6 @@ class Review(models.Model):
     date_review_editted = models.DateField(auto_now=True)
 
     edited = models.BooleanField(default=False)
-    tutor_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="tutor_profile", blank=True, null=True)
-    student_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="student_profile", blank=True, null=True)
+    tutor_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="tutor_profile")
+    student_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="student_profile")
 

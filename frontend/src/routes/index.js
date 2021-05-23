@@ -8,13 +8,17 @@ export const PATHS = {
     HOMEPAGE: '/',
     LOGIN_PAGE: '/login',
     REGISTER_PAGE: '/register',
-    PROFILE_PAGE: '/profile'
+    PROFILE_PAGE: '/profile',
+    UPLOAD_PAGE: '/video/upload',
+    VIDEO_PAGE: '/video/view'
 }
 
 const Home = React.lazy(() => import("./home/home"))
 const Login = React.lazy(() => import("./auth/login"))
 const Register = React.lazy(() => import("./auth/register"))
 const Profile = React.lazy(() => import("./profile/profile"))
+const Upload = React.lazy(() => import("./video/upload"))
+const Video = React.lazy(() => import("./video/video"))
 
 const Routes = () => {
     return (
@@ -26,6 +30,8 @@ const Routes = () => {
                     <Route exact path={PATHS.LOGIN_PAGE} component={Login} />
                     <Route exact path={PATHS.REGISTER_PAGE} component={Register} />
                     <Route exact path={PATHS.PROFILE_PAGE} component={Profile} />
+                    <PrivateRoute exact path={PATHS.UPLOAD_PAGE} component={Upload} />
+                    <Route exact path={PATHS.VIDEO_PAGE} component={Video} />
                 </Switch>
             </Suspense>
         </Fragment>

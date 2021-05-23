@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'accounts',
     'corsheaders',
     'userReviews',
-    'userProfiles'
+    'userProfiles',
+    'userVideos'
 ]
 
 REST_FRAMEWORK = {
@@ -104,22 +105,19 @@ DATABASES = {
     }
 }
 
-<<<<<<< HEAD
-# DATABASES['default'] = dj_database_url.parse('postgres://leefvoqtcskogt:8bf4c75def920878bc4c3d2e1d2cf6c83d5d9e8d85da9ceb0a0967028b08a4d1@ec2-34-232-191-133.compute-1.amazonaws.com:5432/d31pp5os52lb4l')
-# print([DATABASES['default']])
-=======
 DATABASES['default'] = dj_database_url.parse('postgres://leefvoqtcskogt:8bf4c75def920878bc4c3d2e1d2cf6c83d5d9e8d85da9ceb0a0967028b08a4d1@ec2-34-232-191-133.compute-1.amazonaws.com:5432/d31pp5os52lb4l')
 
 print(DATABASES)
 print([DATABASES['default']])
->>>>>>> main
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 # MEDIA_ROOT = ''
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-print(MEDIA_ROOT)
+
+MEDIA_URL = '/media/'
+#print(MEDIA_ROOT)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -153,6 +151,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+# STATIC_ROOT = BASE_DIR.parent.child('staticfiles')
 
 STATIC_URL = '/static/'
 
@@ -160,3 +159,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Google Oauth2
+GOOGLE_OAUTH2_CLIENT_ID = "608614801143-8l5guc9c3pg39hemsgu83qs9s05vpabq.apps.googleusercontent.com"
+GOOGLE_OAUTH2_CLIENT_SECRET = "AxyfYPzla0LJx3-ETZDT9ExQ"

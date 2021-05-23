@@ -54,7 +54,7 @@ const Login = () => {
               <Col>
                 <form onSubmit={(e) => onSubmit(e)}>
                   <h2>Log in to start learning.</h2>
-                  <div class="form-group row">
+                  <div className="form-group row">
                     <input
                       type="text"
                       name="username"
@@ -64,7 +64,7 @@ const Login = () => {
                       value={username}
                     />
                   </div>
-                  <div class="form-group row">
+                  <div className="form-group row">
                     <input
                       type="password"
                       name="password"
