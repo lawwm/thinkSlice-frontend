@@ -9,7 +9,7 @@ export const PATHS = {
     LOGIN_PAGE: '/login',
     REGISTER_PAGE: '/register',
     PROFILE_PAGE: '/profile',
-    UPLOAD_PAGE: '/video/upload',
+    UPLOAD_PAGE: '/video',
     VIDEO_PAGE: '/video/view'
 }
 
@@ -30,7 +30,7 @@ const Routes = () => {
                     <Route exact path={PATHS.LOGIN_PAGE} component={Login} />
                     <Route exact path={PATHS.REGISTER_PAGE} component={Register} />
                     <Route exact path={PATHS.PROFILE_PAGE} component={Profile} />
-                    <PrivateRoute exact path={PATHS.UPLOAD_PAGE} component={Upload} />
+                    <Route exact path={PATHS.UPLOAD_PAGE} component={Upload} />
                     <Route exact path={PATHS.VIDEO_PAGE} component={Video} />
                 </Switch>
             </Suspense>

@@ -68,7 +68,7 @@ const Profile = () => {
             </Row>
             <Row className="margin-left-less">
               <Col>
-                <Thumbnail className="remove-margin" />
+                {/* <Thumbnail className="remove-margin" /> */}
               </Col>
               <Col></Col>
               <Col></Col>
