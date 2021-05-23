@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import { Container, Col, Row } from "react-bootstrap";
 
+import NavBar from "../../components/NavBar.js";
 import * as UpChunk from '@mux/upchunk'
 import axios from 'axios'
 import "../styles.css";
@@ -15,7 +16,7 @@ const Upload = () => {
         let url_id = ''
         const getUploadUrl = async () => {
             try {
-                const res = await axios.post('/api/videos/')
+                const res = await axios.post('/api/videos/assets/')
                 url_id = res.data.id
                 return res.data.url
             } catch (err) {
@@ -46,7 +47,7 @@ const Upload = () => {
                 },
             };
             const body = JSON.stringify(videoData)
-            const res = await axios.post('/api/videos/' + url_id, body, config)
+            const res = await axios.post('/api/videos/assets/' + url_id, body, config)
             console.log(res)
         });
 
@@ -86,16 +87,12 @@ const Upload = () => {
         }
     }
 
-    // <form id="uploadbanner" enctype="multipart/form-data" method="post" action="#">
-    //     <input id="picker" name="picker" type="file" value={selectedFile} onChange={(e) => uploadFile(e.target.files[0])} />
-    // </form>
-
     return (
         <>
             {loading && <LoadingSpinner />}
             {!loading && (
                 <>
-
+                    <NavBar />
                     <Container>
 
                         <div>
