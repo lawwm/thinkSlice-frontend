@@ -57,7 +57,7 @@ export const login = ({ username, password }) => async (dispatch) => {
         setAuthToken(res.data.token)
         dispatch({
             type: actionTypes.LOGIN_SUCCESS,
-            payload: res.data,
+            payload: res.data
         });
     } catch (err) {
         dispatch({

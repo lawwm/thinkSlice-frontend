@@ -36,6 +36,15 @@ p {
   color: black;
 }
 
+.btn-custom,
+.btn-circle,
+.btn-modal {
+  background-color: #ff4400;
+  opacity: 0.8;
+  border: none;
+  transition: 0.3s;
+}
+
 .btn-custom {
   padding: 10px 60px;
   background-color: #ff4400;
@@ -78,12 +87,66 @@ p {
 }
 
 .profile-button {
+  border-radius: 4px;
+  float: right;
+  margin-right: 40px;
+}
+
+.btn-custom:hover,
+.btn-circle:hover,
+.btn-modal:hover {
+  opacity: 1;
+  background-color: #ff4400;
+}
+
+.btn-circle {
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  font-size: 15px;
+  float: right;
+  padding: 0px;
+}
+
+.btn-modal,
+.btn-modal-grey {
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+}
+
+.btn-modal-grey,
+.btn-grey {
+  background-color: #787878;
+  border: none;
+  opacity: 0.8;
+  transition: 0.3s;
+}
+
+.btn-modal-grey:hover {
+  background-color: #787878;
+  opacity: 1;
+}
+
+.margin-left {
+  margin-left: 50px;
+  padding: 0px;
+}
+
+p {
+  font-size: 24px;
+  padding: 0px;
+}
+
+.profile-button,
+.profile-tag {
   background-color: #787878;
   color: white;
   border-radius: 10px;
   margin-right: 20px;
   font-size: 24px;
-  padding: 5px 40px;
+  width: 175px;
+  height: 50px;
 }
 
 .profile-tag:disabled {
@@ -132,4 +195,41 @@ p {
 
 .upload-break {
   margin: 75px 0px 25px;
+  opacity: 1;
+  color: white;
+}
+
+.circle {
+  border-radius: 50%;
+  height: 175px;
+  width: 175px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.margin-left-less {
+  margin-left: 40px;
+}
+
+.modal-style li,
+.modal-style h4 {
+  font-size: 20px;
+  color: #787878;
+  margin-bottom: 15px;
+}
+
+.modal-style ul {
+  padding-left: 0px;
+  list-style-type: none;
+}
+
+.modal-style h4 {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.modal-style div {
+  padding: 10px;
 }
