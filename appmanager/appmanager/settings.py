@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'accounts',
     'corsheaders',
     'userReviews',
-    'userProfiles'
+    'userProfiles',
+    'userVideos'
 ]
 
 REST_FRAMEWORK = {
@@ -146,6 +147,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+# STATIC_ROOT = BASE_DIR.parent.child('staticfiles')
 
 STATIC_URL = '/static/'
 
@@ -153,3 +155,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Google Oauth2
+GOOGLE_OAUTH2_CLIENT_ID = "608614801143-8l5guc9c3pg39hemsgu83qs9s05vpabq.apps.googleusercontent.com"
+GOOGLE_OAUTH2_CLIENT_SECRET = "AxyfYPzla0LJx3-ETZDT9ExQ"

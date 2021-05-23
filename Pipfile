@@ -10,6 +10,7 @@ django-rest-knox = "*"
 psycopg2 = "*"
 dj-database-url = "*"
 django-cors-headers = "*"
+mux-python = {git = "https://github.com/muxinc/mux-python.git"}
 
 [dev-packages]
 pylint = "*"
