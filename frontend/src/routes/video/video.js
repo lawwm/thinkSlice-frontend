@@ -20,7 +20,7 @@ const Video = () => {
         >
           <source src="6uIassLU99NqB01quldCucZNrMTQSRSCJE3tduW24sQI" type="video/mux" />
         </video>
-        <img src="https://image.mux.com/6uIassLU99NqB01quldCucZNrMTQSRSCJE3tduW24sQI/thumbnail.png?width=400&height=200&fit_mode=smartcrop&time=35" alt="Italian Trulli"></img>
+        {/* <img src="https://image.mux.com/6uIassLU99NqB01quldCucZNrMTQSRSCJE3tduW24sQI/thumbnail.png?width=400&height=200&fit_mode=smartcrop&time=35" alt="Italian Trulli"></img> */}
       </Container>
       <Container style={{ marginTop: '200px' }}>
         <Thumbnail

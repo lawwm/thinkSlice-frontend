@@ -11,6 +11,9 @@ psycopg2 = "*"
 dj-database-url = "*"
 django-cors-headers = "*"
 mux-python = {git = "https://github.com/muxinc/mux-python.git"}
+django-environ = "*"
+boto3 = "*"
+django-storages = "*"
 
 [dev-packages]
 pylint = "*"
