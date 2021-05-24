@@ -8,7 +8,7 @@ import { deleteProfile } from "../../store/profile/action.js";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import NavBar from "../../components/NavBar.js";
 import Thumbnail from "../../components/Thumbnail.js";
-import defaultPic from "../../images/default.jpg";
+import pic from "../../images/Joe_Biden.jpg";
 import {
   Container,
   Col,
@@ -17,6 +17,7 @@ import {
   Image,
   Modal,
   Button,
+  CardImg,
 } from "react-bootstrap";
 import "../styles.css";
 
@@ -37,7 +38,6 @@ const Profile = () => {
       {loading && <LoadingSpinner />}
       {!loading && (
         <>
-          <NavBar />
           <Container>
             <Row className="margin-left">
               <Media className="d-flex">
@@ -54,7 +54,7 @@ const Profile = () => {
                   <button className="btn profile-button">Reviews</button>
                 </Media.Body>
                 <div className="circle align-self-center ml-3">
-                  <Image src={defaultPic} alt="profile_pic" fluid />
+                  <Image src={pic} alt="profile_pic" fluid />
                 </div>
               </Media>
             </Row>

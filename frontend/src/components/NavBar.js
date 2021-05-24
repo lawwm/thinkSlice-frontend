@@ -12,13 +12,12 @@ const NavBar = () => {
   const dispatch = useDispatch();
 
   const { loading, isAuthenticated, user } = useSelector((state) => state.auth);
+  const { profile } = useSelector((state) => state.profile);
 
 
   return (
     <>
-      {loading && <></>}
-      {!loading &&
-        (isAuthenticated ? (
+      {isAuthenticated ? (
           <Navbar className="navbar fixed-top">
             <Container>
               <Navbar.Brand className="mr-auto">ThinkSlice</Navbar.Brand>
@@ -42,8 +41,8 @@ const NavBar = () => {
                   className="nav-default"
                   activeClassName="nav-active"
                   to="/profile"
-                  onClick={() => {
-                    dispatch(getProfile(user));
+                  onClick={() => { if (profile == null) {
+                    dispatch(getProfile(user));}
                   }}
                 >
                   Profile
@@ -99,7 +98,7 @@ const NavBar = () => {
               </Nav>
             </Container>
           </Navbar>
-        ))}
+        )}
     </>
   );
 };

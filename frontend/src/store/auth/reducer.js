@@ -12,7 +12,8 @@ const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: true,
-    user: null
+    user: null,
+    username: null
 }
 
 export const auth = (state = initialState, action) => {
@@ -24,7 +25,8 @@ export const auth = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: true,
                 loading: false,
-                user: localStorage.getItem('user')
+                user: localStorage.getItem('user'),
+                username: localStorage.getItem('username')
             }
         case REGISTER_SUCCESS:
             localStorage.setItem('user', payload.user.id);
@@ -33,16 +35,19 @@ export const auth = (state = initialState, action) => {
                 ...payload,
                 isAuthenticated: true,
                 loading: false,
-                user: payload.user.id
+                user: payload.user.id,
+                username: payload.user.username
             }
         case LOGIN_SUCCESS:
             localStorage.setItem('user', payload.user.id);
+            localStorage.setItem('username', payload.user.username);
             return {
                 ...state,
                 ...payload,
                 isAuthenticated: true,
                 loading: false,
-                user: payload.user.id
+                user: payload.user.id,
+                username: payload.user.username
             }
         case AUTH_ERROR:
         case LOGOUT:
@@ -55,7 +60,8 @@ export const auth = (state = initialState, action) => {
                 token: null,
                 isAuthenticated: false,
                 loading: false,
-                user: null
+                user: null,
+                username: null
             }
         default:
             return state;

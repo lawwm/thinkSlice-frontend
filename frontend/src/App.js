@@ -12,19 +12,21 @@ import { Provider } from "react-redux";
 import store from "./store/store.js";
 
 import "./App.css";
+import NavBar from "./components/NavBar";
 
 const App = () => {
   useEffect(() => {
     setAuthToken(localStorage.getItem("token"));
-    store.dispatch(loadUser(localStorage.getItem("token")))
+    store.dispatch(loadUser(localStorage.getItem("token")));
     store.dispatch(getProfile(localStorage.getItem("user")));
   }, []);
 
   return (
     <Provider store={store} className="App">
-        <BrowserRouter>
-          <Routes />
-        </BrowserRouter>
+      <BrowserRouter>
+        <NavBar />
+        <Routes />
+      </BrowserRouter>
     </Provider>
   );
 };

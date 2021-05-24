@@ -1,7 +1,7 @@
 import React from "react";
 import thumbPic from "../images/Cooking_thumbnail.jpg";
 import profilePic from "../images/Joe_Biden.jpg";
-import { Container, Col, Row, Media, Image } from "react-bootstrap";
+import { Container, Row, Media, Image } from "react-bootstrap";
 
 const Thumbnail = () => {
   return (
