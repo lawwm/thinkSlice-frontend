@@ -149,7 +149,7 @@ const Upload = () => {
                                 <button
                                     type="submit"
                                     value="Submit"
-                                    className="btn btn-danger btn-alternative-custom"
+                                    className="btn btn-danger btn-alt-custom"
                                     onSubmit={e => onSubmit(e)}
                                 >
                                     Submit

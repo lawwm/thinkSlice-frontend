@@ -20,6 +20,20 @@ export const getProfile = (userId) => async (dispatch) => {
     }
 };
 
+export const toggleDetailedView = (boolean) => async(dispatch) => {
+    dispatch({
+        type: actionTypes.PROFILE_DETAILED_VIEW,
+        payload: boolean
+    });
+}
+
+export const toggleEditMode = (boolean) => async(dispatch) => {
+    dispatch({
+        type: actionTypes.PROFILE_EDIT_MODE,
+        payload: boolean
+    });
+}
+
 export const updateProfile = (userId) => async(dispatch) => {
 
 }

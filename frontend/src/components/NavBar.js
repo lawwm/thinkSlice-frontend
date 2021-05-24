@@ -16,8 +16,10 @@ const NavBar = () => {
 
 
   return (
-    <>
-      {isAuthenticated ? (
+    <> {loading && (<></>)}
+    {!loading && 
+      (isAuthenticated ? (
+        <>
           <Navbar className="navbar fixed-top">
             <Container>
               <Navbar.Brand className="mr-auto">ThinkSlice</Navbar.Brand>
@@ -61,7 +63,9 @@ const NavBar = () => {
               </Nav>
             </Container>
           </Navbar>
+          </>
         ) : (
+          <>
           <Navbar className="navbar fixed-top">
             <Container>
               <Navbar.Brand className="mr-auto">ThinkSlice</Navbar.Brand>
@@ -98,7 +102,8 @@ const NavBar = () => {
               </Nav>
             </Container>
           </Navbar>
-        )}
+          </>
+        ))}
     </>
   );
 };

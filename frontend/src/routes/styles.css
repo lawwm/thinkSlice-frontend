@@ -63,7 +63,7 @@ p {
   background-color: #ff4400;
 }
 
-.btn-alternative-custom {
+.btn-alt-custom {
   padding: 10px 60px;
   background-color: #777777;
   opacity: 0.8;
@@ -74,9 +74,9 @@ p {
   margin-right: 40px;
 }
 
-.btn-alternative-custom:hover,
-.btn-alternative-custom:active,
-.btn-alternative-custom:active:after {
+.btn-alt-custom:hover,
+.btn-alt-custom:active,
+.btn-alt-custom:active:after {
   opacity: 1;
   background-color: #5a5a5a;
 }
@@ -97,35 +97,6 @@ p {
 .btn-modal:hover {
   opacity: 1;
   background-color: #ff4400;
-}
-
-.btn-circle {
-  border-radius: 50%;
-  height: 30px;
-  width: 30px;
-  font-size: 15px;
-  float: right;
-  padding: 0px;
-}
-
-.btn-modal,
-.btn-modal-grey {
-  width: 200px;
-  height: 50px;
-  font-size: 20px;
-}
-
-.btn-modal-grey,
-.btn-grey {
-  background-color: #787878;
-  border: none;
-  opacity: 0.8;
-  transition: 0.3s;
-}
-
-.btn-modal-grey:hover {
-  background-color: #787878;
-  opacity: 1;
 }
 
 .margin-left {
@@ -215,25 +186,4 @@ p {
 
 .margin-left-less {
   margin-left: 40px;
-}
-
-.modal-style li,
-.modal-style h4 {
-  font-size: 20px;
-  color: #787878;
-  margin-bottom: 15px;
-}
-
-.modal-style ul {
-  padding-left: 0px;
-  list-style-type: none;
-}
-
-.modal-style h4 {
-  font-size: 25px;
-  font-weight: bold;
-}
-
-.modal-style div {
-  padding: 10px;
 }

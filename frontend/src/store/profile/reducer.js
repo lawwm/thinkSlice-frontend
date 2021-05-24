@@ -1,26 +1,26 @@
-import {
-  PROFILE_ERROR,
-  PROFILE_LOADED,
-  PROFILE_UPDATED,
-  PROFILE_DELETED,
-  PROFILE_RESET
-} from "./actionTypes";
+import * as actionTypes from "./actionTypes";
 
 const initialState = {
   profile: null,
-  loading: true
+  loading: true,
+  detailedMode: false,
+  editMode: false
 };
 
 export const profile = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {   
-    case PROFILE_LOADED:
+    case actionTypes.PROFILE_LOADED:
       return { ...state, profile: payload, loading: false };
-    case PROFILE_ERROR:
-    case PROFILE_DELETED:
+    case actionTypes.PROFILE_DETAILED_VIEW:
+      return { ...state, detailedMode: payload }
+    case actionTypes.PROFILE_EDIT_MODE:
+      return { ...state, editMode: payload };
+    case actionTypes.PROFILE_ERROR:
+    case actionTypes.PROFILE_DELETED:
       return { ...state, profile: null, loading: true };
-    case PROFILE_RESET:
+    case actionTypes.PROFILE_RESET:
       return { ...state, profile: null, loading: true };
     default:
       return state;
