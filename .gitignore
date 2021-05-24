@@ -1,3 +1,10 @@
+# ignore vscode
+.vscode
+
+# ignore environment variables
+.env
+
+# ignore node modules
 node_modules/
 
 ### Django ###

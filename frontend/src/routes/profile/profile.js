@@ -19,6 +19,8 @@ import {
   Button,
 } from "react-bootstrap";
 import "../styles.css";
+import axios from 'axios'
+
 
 const Profile = () => {
   const history = useHistory();
@@ -28,9 +30,30 @@ const Profile = () => {
   const { user } = useSelector((state) => state.auth);
   const [smallModalOpen, setSmallModalOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [pictureModal, setPictureModal] = useState(false);
 
   const handleClose = () => setModalIsOpen(false);
   const handleShow = () => setModalIsOpen(true);
+
+
+  const [imageFile, setImageFile] = useState(null)
+  const onUploadChange = (file) => {
+    console.log(file)
+    console.log(file.name)
+    setImageFile(file)
+  }
+
+  const uploadProfilePicture = (e) => {
+    e.preventDefault()
+    let formData = new FormData()
+    formData.append('profile_pic', imageFile, imageFile.name)
+    console.log('/api/profiles/' + localStorage.user)
+    axios.post('/api/profiles/' + localStorage.user, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+  }
 
   return (
     <>
@@ -53,7 +76,7 @@ const Profile = () => {
                   </button>
                   <button className="btn profile-button">Reviews</button>
                 </Media.Body>
-                <div className="circle align-self-center ml-3">
+                <div className="profile-picture circle align-self-center ml-3" onClick={() => setPictureModal(true)}>
                   <Image src={defaultPic} alt="profile_pic" fluid />
                 </div>
               </Media>
@@ -151,6 +174,44 @@ const Profile = () => {
                 Delete my account
               </Button>
             </Modal.Footer>
+          </Modal>
+
+          <Modal show={pictureModal} onHide={() => setPictureModal(false)} className="modal-style" size="lg" centered>
+            <Modal.Header>
+              <Modal.Title>Change your profile picture.</Modal.Title>
+            </Modal.Header>
+            <form id="uploadbanner" encType="multipart/form-data" onSubmit={(e) => { uploadProfilePicture(e) }} >
+              <Modal.Body>
+                Upload your picture here.
+                <div className='upload-layout'>
+                  <label htmlFor="file-upload" className='custom-file-upload btn btn-danger' >
+                    Select File
+                      </label>
+                  <input id="file-upload" name='file-upload' type="file" onChange={(e) => onUploadChange(e.target.files[0])} />
+                </div>
+
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="dark"
+                  className="btn-modal-grey"
+                  onClick={() => setPictureModal(false)}
+                >
+                  Go back
+              </Button>
+                <Button
+                  type="submit"
+                  value="Submit"
+                  variant="danger"
+                  className="btn-modal btn-danger"
+                  onSubmit={(e) => {
+                    uploadProfilePicture(e)
+                  }}
+                >
+                  Upload
+              </Button>
+              </Modal.Footer>
+            </form>
           </Modal>
         </>
       )}

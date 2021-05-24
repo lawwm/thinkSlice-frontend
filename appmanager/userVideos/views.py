@@ -9,9 +9,7 @@ from userProfiles.models import Profile
 from .models import Video
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from accounts.permissions import IsVideoOwnerOrReadOnly
-
-MUX_TOKEN_ID = "aeb58192-9667-4f35-b882-d26a9ab85d02"
-MUX_TOKEN_SECRET = "gEQvIDcuBHEtcOe2RtyBJGUKgISMS9C7Ula2AMS4MZKMD1abogA23aAJCqx84BS4Vxzezyp/AZf"
+from appmanager.settings import MUX_TOKEN_SECRET, MUX_TOKEN_ID
 
 # Create your views here.
 

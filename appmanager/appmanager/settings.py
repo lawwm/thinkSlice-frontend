@@ -10,6 +10,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import environ
+
+# Initialise environment variables
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -19,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rofq1kq=3k-dev(9nw1!6(r%qdh(6==9h@qmjl3c3rcjrrdik8'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,7 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'userReviews',
     'userProfiles',
-    'userVideos'
+    'userVideos',
+    'storages'
 ]
 
 REST_FRAMEWORK = {
@@ -102,18 +109,13 @@ DATABASES = {
     }
 }
 
-# DATABASES['default'] = dj_database_url.parse('postgres://leefvoqtcskogt:8bf4c75def920878bc4c3d2e1d2cf6c83d5d9e8d85da9ceb0a0967028b08a4d1@ec2-34-232-191-133.compute-1.amazonaws.com:5432/d31pp5os52lb4l')
-# print([DATABASES['default']])
 
-DATABASES['default'] = dj_database_url.parse('postgres://leefvoqtcskogt:8bf4c75def920878bc4c3d2e1d2cf6c83d5d9e8d85da9ceb0a0967028b08a4d1@ec2-34-232-191-133.compute-1.amazonaws.com:5432/d31pp5os52lb4l')
+DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
+# print([DATABASES['default']])
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
-# MEDIA_ROOT = ''
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-print(MEDIA_ROOT)
-print(DATABASES)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -145,9 +147,15 @@ USE_L10N = True
 USE_TZ = True
 
 
+# MEDIA_ROOT = ''
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+print(MEDIA_ROOT)
+print(DATABASES)
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-# STATIC_ROOT = BASE_DIR.parent.child('staticfiles')
+#STATIC_ROOT = BASE_DIR.parent.child('staticfiles')
 
 STATIC_URL = '/static/'
 
@@ -156,6 +164,18 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Google Oauth2
-GOOGLE_OAUTH2_CLIENT_ID = "608614801143-8l5guc9c3pg39hemsgu83qs9s05vpabq.apps.googleusercontent.com"
-GOOGLE_OAUTH2_CLIENT_SECRET = "AxyfYPzla0LJx3-ETZDT9ExQ"
+
+#MUX tokens
+MUX_TOKEN_ID = env('MUX_TOKEN_ID')
+MUX_TOKEN_SECRET = env('MUX_TOKEN_SECRET')
+
+
+#AWS S3
+AWS_ACCESS_KEY_ID=env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY=env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME=env('AWS_STORAGE_BUCKET_NAME')
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
