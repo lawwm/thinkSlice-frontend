@@ -3,12 +3,13 @@ from rest_framework import generics, serializers, permissions, viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from .serializers import ProfileGeneralSerializer, ProfileDetailSerializer
+from .serializers import ProfileGeneralSerializer, ProfileDetailSerializer, ProfilePictureSerializer
 from .models import Profile
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from accounts.permissions import IsOwnerOrReadOnly
+from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 
 
 class AllProfileView(APIView):
@@ -21,11 +22,24 @@ class AllProfileView(APIView):
 
 
 class ProfileView(viewsets.ViewSet):
+    parser_classes=[FormParser,MultiPartParser, FileUploadParser]
+
     #GET one profile(general)
     def retrieve(self, request, *args, **kwargs):
         profiles = get_object_or_404(Profile, user=kwargs['pk'])
         serializer = ProfileGeneralSerializer(profiles, many=False)
         return Response(serializer.data)
+
+    # Upload profile picture to S3
+    def create(self, request, *args, **kwargs):
+        print(request.data['profile_pic'])
+        profiles = get_object_or_404(Profile, user=kwargs['pk'])
+        self.check_object_permissions(self.request, profiles)
+        print("hello there")
+        serializers = ProfilePictureSerializer(profiles, data=request.data)
+        if serializers.is_valid(raise_exception=True):
+            serializers.save()
+            return Response(serializers.data)
 
     # PATCH your own profile (general)
     def partial_update(self, request, *args, **kwargs):

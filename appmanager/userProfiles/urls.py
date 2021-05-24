@@ -5,6 +5,7 @@ from rest_framework import routers
 
 ProfileViewAsView = ProfileView.as_view({
     'get': 'retrieve',
+    'post': 'create',
     'patch': 'partial_update',
     'delete': 'destroy'
 })
