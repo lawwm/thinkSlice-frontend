@@ -20,7 +20,6 @@ class AllProfileView(APIView):
         return Response(serializer.data)
 
 
-
 class ProfileView(viewsets.ViewSet):
     parser_classes=[FormParser,MultiPartParser, FileUploadParser]
 

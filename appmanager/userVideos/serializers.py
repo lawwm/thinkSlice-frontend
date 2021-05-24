@@ -13,9 +13,19 @@ class CreateVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = '__all__'
-        
-class EditVideoSerializer(serializers.ModelSerializer):
+
+class ProfileVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = '__all__'
-        read_only_fields = ['asset_id', 'playback_id', 'duaration','created_at']
+        read_only_fields = ['asset_id', 'playback_id', 'duaration','created_at']    
+
+class DisplayVideoSerializer(serializers.ModelSerializer):
+    # username = serializers.CharField()
+    # profile_pic = serializers.CharField()
+
+    class Meta:
+        model = Video
+        fields = '__all__'
+        read_only_fields = ['asset_id', 'playback_id', 'duaration','created_at', 'creator_profile']
+        depth = 1
