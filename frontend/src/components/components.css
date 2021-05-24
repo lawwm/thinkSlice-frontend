@@ -1,12 +1,12 @@
 @font-face {
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold';
   font-weight: 400;
-  src: url(../fonts/Inter-SemiBold.ttf) format("truetype");
+  src: url(../fonts/Inter-SemiBold.ttf) format('truetype');
 }
 
 @font-face {
-  font-family: "Roboto medium";
-  src: url(../fonts//Roboto-Medium.ttf) format("truetype");
+  font-family: 'Roboto medium';
+  src: url(../fonts//Roboto-Medium.ttf) format('truetype');
 }
 
 .navbar {
@@ -18,13 +18,13 @@
   color: #ff4400 !important;
   padding-left: 10px;
   font-size: 36px;
-  font-family: "Inter UI semi-bold" !important;
+  font-family: 'Inter UI semi-bold' !important;
 }
 
 .nav-default {
   color: black !important;
   font-size: 24px;
-  font-family: "Inter UI semi-bold" !important;
+  font-family: 'Inter UI semi-bold' !important;
   margin-left: 40px;
 }
 
@@ -33,14 +33,62 @@ nav a:hover,
   color: #ff4400 !important;
   font-size: 24px;
   margin-left: 40px;
-  font-family: "Inter UI semi-bold" !important;
+  font-family: 'Inter UI semi-bold' !important;
   text-decoration: underline !important;
 }
 
-.circle-small {
+.title-caption {
+  margin: 10px 40px;
+}
+
+/* thumbnail */
+.thumbnail-div {
+  width: 339px;
+  height: 250px;
+  position: relative;
+}
+
+.thumbnail-div:hover,
+.thumbnail-div:active,
+.thumbnail-div:active:after {
+  cursor: pointer;
+}
+
+.thumbnail-subject-info {
+  background-color: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  height: 33px;
+  width: 73px;
+  font-family: 'Roboto';
+  font-size: 14px;
+  padding-top: 6px;
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 5%;
+  text-align: center;
+  left: 3%;
+  top: 4%;
+}
+
+.thumbnail-subject-duration {
+  background-color: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  height: 33px;
+  width: 115px;
+
+  font-family: 'Roboto';
+  font-size: 14px;
+  padding-top: 6px;
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 5%;
+  text-align: center;
+  top: 145px;
+  left: 210px;
+}
+
+.thumbnail-photo {
   border-radius: 50%;
-  height: 50px;
-  width: 50px;
+  height: 48px;
+  width: 48px;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -48,23 +96,28 @@ nav a:hover,
   margin: 10px 0px 10px 5px;
 }
 
-.caption {
-  font-size: 14px;
-  padding: 0px 10px 0px 0px;
-  color: #808088;
+.thumbnail-body {
+  margin-left: 30px;
+  margin-top: 10px;
 }
 
-.vertical-line {
+.thumbnail-title {
+  font-family: 'Roboto medium';
+  font-size: 19px;
+  margin-bottom: 5px;
+}
+
+.thumbnail-caption {
+  font-size: 14px;
+  padding: 2px 6px 0px 0px;
+  color: #808088;
+  font-family: 'Roboto regular';
+}
+
+.thumbnail-line {
   font-size: 14px;
   border-left: solid #808088 thin;
-  padding: 0px 10px;
+  padding: 2px 2px 0px 8px;
   color: #808088;
-}
-
-.video-title {
-  font-family:  "Roboto medium";
-}
-
-.title-caption {
-  margin: 10px 40px;
+  font-family: 'Roboto regular';
 }
