@@ -40,6 +40,7 @@ def UploadVideo(request):
 
 # Upload video to mux using direct url
 class AssetView(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
     def create(self, request, *args, **kwargs):
         # Authentication Setup
         configuration = mux_python.Configuration()
@@ -111,13 +112,15 @@ class GetEditDeleteVideoView(viewsets.ViewSet):
         # API Client Initialization
         assets_api = mux_python.AssetsApi(mux_python.ApiClient(configuration))
 
-        # Delete asset
+        # Delete asset_id
         video = get_object_or_404(Video, pk=self.kwargs['pk'])
         
         # Check that asset is gone
         try:
             assets_api.delete_asset(video.asset_id)
-            return self.destroy(request, *args, **kwargs)
+            deletedVideo = video.delete()
+            print(deletedVideo)
+            return Response("Video successfully deleted", status=status.HTTP_200_OK)
         except NotFoundException as e:
             assert e != None
             return Response("Asset does not exist", status=status.HTTP_424_FAILED_DEPENDENCY)
