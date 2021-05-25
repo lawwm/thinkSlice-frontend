@@ -17,14 +17,14 @@ const App = () => {
   useEffect(() => {
     setAuthToken(localStorage.getItem("token"));
     store.dispatch(loadUser(localStorage.getItem("token")))
-    store.dispatch(getProfile(localStorage.getItem("user")));
+    // store.dispatch(getProfile(localStorage.getItem("user")));
   }, []);
 
   return (
     <Provider store={store} className="App">
-        <BrowserRouter>
-          <Routes />
-        </BrowserRouter>
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
     </Provider>
   );
 };

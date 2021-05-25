@@ -7,10 +7,14 @@ export const ENDPOINTS = {
     LOGIN: "/login",
     REGISTER: "/register",
     LOAD_USER: "/user",
-    LOGOUT: "/logout"
+    LOGOUT: "/logout",
+
+    //VIDEO
+    LIST_VIDEOS: ''
 }
 
 export const DOMAINS = {
     AUTH: "/api/auth",
-    PROFILE: "/api/profiles"
+    PROFILE: "/api/profiles",
+    VIDEO: "/api/videos"
 }

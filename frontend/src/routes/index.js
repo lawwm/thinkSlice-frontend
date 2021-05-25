@@ -3,22 +3,24 @@ import { Switch, Route } from "react-router-dom"
 import Alert from "../components/Alert"
 import { PrivateRoute } from "./routeTypes"
 import LoadingSpinner from "../components/LoadingSpinner";
+import NotFound from './errorpages/notFound';
 
 export const PATHS = {
     HOMEPAGE: '/',
     LOGIN_PAGE: '/login',
     REGISTER_PAGE: '/register',
     PROFILE_PAGE: '/profile',
-    UPLOAD_PAGE: '/video',
-    VIDEO_PAGE: '/video/view'
+    UPLOAD_PAGE: '/video/upload',
+    WATCH_PAGE: '/watch/:videoId'
 }
 
 const Home = React.lazy(() => import("./home/home"))
+const Fallback = React.lazy(() => import("./errorpages/notFound"))
 const Login = React.lazy(() => import("./auth/login"))
 const Register = React.lazy(() => import("./auth/register"))
 const Profile = React.lazy(() => import("./profile/profile"))
 const Upload = React.lazy(() => import("./video/upload"))
-const Video = React.lazy(() => import("./video/video"))
+const WatchPage = React.lazy(() => import("./home/watch"))
 
 const Routes = () => {
     return (
@@ -31,11 +33,11 @@ const Routes = () => {
                     <Route exact path={PATHS.REGISTER_PAGE} component={Register} />
                     <Route exact path={PATHS.PROFILE_PAGE} component={Profile} />
                     <Route exact path={PATHS.UPLOAD_PAGE} component={Upload} />
-                    <Route exact path={PATHS.VIDEO_PAGE} component={Video} />
+                    <Route exact path={PATHS.WATCH_PAGE} component={WatchPage} />
+                    <Route component={Fallback} />
                 </Switch>
             </Suspense>
         </Fragment>
-
     )
 }
 
