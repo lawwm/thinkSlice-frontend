@@ -121,3 +121,57 @@ nav a:hover,
   color: #808088;
   font-family: 'Roboto regular';
 }
+
+.btn-circle {
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  font-size: 15px;
+  float: right;
+  padding: 0px;
+}
+
+.btn-modal,
+.btn-modal-grey {
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+}
+
+.btn-modal-grey,
+.btn-grey {
+  background-color: #787878;
+  border: none;
+  opacity: 0.8;
+  transition: 0.3s;
+}
+
+.btn-modal-grey:hover {
+  background-color: #787878;
+  opacity: 1;
+}
+
+
+.modal-style table,
+.modal-style h4 {
+  font-size: 20px;
+  color: #787878;
+}
+
+.modal-style tr {
+  height: 60px;
+}
+
+.table-data {
+  color: black;
+  padding-left: 30px;
+}
+
+.modal-style h4 {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.modal-style div {
+  padding: 10px;
+}
