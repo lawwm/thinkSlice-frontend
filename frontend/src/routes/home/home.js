@@ -8,10 +8,8 @@ import { Container, Col, Row } from "react-bootstrap";
 import "../styles.css";
 
 const Home = () => {
-  const history = useHistory();
-  const dispatch = useDispatch();
 
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading, username } = useSelector((state) => state.auth);
 
   return (
     <>
@@ -19,11 +17,10 @@ const Home = () => {
       {!loading &&
         (isAuthenticated ? (
           <>
-          <NavBar />
             <Container>
               <Row>
                 <Col>
-                  <h2>Welcome back, user.</h2>
+                  <h2>Welcome back, {username}.</h2>
                 </Col>
                 <Col></Col>
               </Row>
@@ -31,7 +28,6 @@ const Home = () => {
           </>
         ) : (
           <>
-          <NavBar />
             <Container>
               <Row>
                 <Col>

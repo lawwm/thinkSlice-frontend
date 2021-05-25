@@ -51,7 +51,6 @@ const Login = () => {
       {loading && <LoadingSpinner />}
       {!loading && (
         <>
-        <NavBar />
           <Container>
             <Row>
               <Col>
