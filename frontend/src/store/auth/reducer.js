@@ -55,6 +55,7 @@ export const auth = (state = initialState, action) => {
         case LOGIN_FAIL:
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('userId');
             return {
                 ...state,
                 token: null,

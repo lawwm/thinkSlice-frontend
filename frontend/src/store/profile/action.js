@@ -11,16 +11,15 @@ const config = {
 
 export const getProfile = (userId) => async (dispatch) => {
   try {
-    if (userId == null) throw new Error("no user in localStorage");
+    dispatch({
+      type: actionTypes.PROFILE_LOADING,
+    })
     const res = await axios.get(DOMAINS.PROFILE + "/" + userId);
     const res2 = await axios.get(DOMAINS.PROFILE + "/details/" + userId);
 
-    console.log(res.data);
-    console.log(res2.data);
-
     dispatch({
       type: actionTypes.PROFILE_LOADED,
-      payload: { ...res.data, ...res2.data },
+      payload: { basic: res.data, detailed: res2.data },
     });
   } catch (err) {
     dispatch({
@@ -44,17 +43,24 @@ export const toggleEditMode = (boolean) => async (dispatch) => {
 };
 
 export const updateProfile = (userId, profile) => async (dispatch) => {
-
-  const body = JSON.stringify(profile);
-
   try {
-    const res = await axios.patch(DOMAINS.PROFILE + "/" + userId, body, config);
-    const res2 = await axios.patch(DOMAINS.PROFILE + "/details/" + userId, body, config);
+    console.log(profile.basic);
+    console.log(profile.detailed);
+
+    const res = await axios.patch(
+      DOMAINS.PROFILE + "/" + userId,
+      profile.basic
+    );
+    const res2 = await axios.patch(
+      DOMAINS.PROFILE + "/details/" + userId,
+      profile.detailed
+    );
 
     dispatch({
       type: actionTypes.PROFILE_UPDATED,
     });
   } catch (err) {
+    console.log(err);
     dispatch({
       type: actionTypes.PROFILE_ERROR,
     });
@@ -62,18 +68,18 @@ export const updateProfile = (userId, profile) => async (dispatch) => {
 };
 
 export const deleteProfile = (userId) => async (dispatch) => {
-  try {
-    if (userId == null) throw new Error("no user in localStorage");
-    const res = await axios.delete(DOMAINS.PROFILE + "/" + userId);
-
-    dispatch({
-      type: actionTypes.PROFILE_DELETED,
-    });
-  } catch (err) {
-    dispatch({
-      type: actionTypes.PROFILE_ERROR,
-    });
-  }
+  axios.delete(DOMAINS.PROFILE + "/" + userId).then(
+    (response) => {
+      dispatch({
+        type: actionTypes.PROFILE_DELETED,
+      });
+    },
+    (err) => {
+      dispatch({
+        type: actionTypes.PROFILE_ERROR,
+      });
+    }
+  );
 };
 
 export const resetProfile = () => async (dispatch) => {

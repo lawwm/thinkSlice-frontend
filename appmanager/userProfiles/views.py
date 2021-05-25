@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from accounts.permissions import IsOwnerOrReadOnly
-from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser, FileUploadParser
 
 
 class AllProfileView(APIView):
@@ -22,7 +22,7 @@ class AllProfileView(APIView):
 
 
 class ProfileView(viewsets.ViewSet):
-    parser_classes=[FormParser,MultiPartParser, FileUploadParser]
+    parser_classes=[JSONParser, FormParser,MultiPartParser, FileUploadParser]
 
     #GET one profile(general)
     def retrieve(self, request, *args, **kwargs):

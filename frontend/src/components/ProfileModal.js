@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../store/auth/action.js";
+import { loadUser, logout } from "../store/auth/action.js";
 import {
   toggleDetailedView,
   toggleEditMode,
@@ -19,18 +19,29 @@ const ProfileModal = () => {
 
   const [smallModalOpen, setSmallModalOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  const { user_id } = useParams();
   const { detailedMode, editMode, profile } = useSelector(
     (state) => state.profile
   );
 
-  const [profileDetails, setProfileDetails] = useState(profile);
+  const [profileBasic, setProfileBasic] = useState(profile.basic);
+  const [profileDetails, setProfileDetails] = useState(profile.detailed);
 
-  const onChange = (e) => {
+  const onChangeBasic = (e) => {
     let updatedValue = e.target.value;
 
     if (updatedValue === "true" || updatedValue === "false") {
-        updatedValue = JSON.parse(updatedValue);
+      updatedValue = JSON.parse(updatedValue);
     }
+
+    setProfileBasic({
+      ...profileBasic,
+      [e.target.name]: updatedValue,
+    });
+  };
+
+  const onChangeDetailed = (e) => {
+    let updatedValue = e.target.value;
 
     setProfileDetails({
       ...profileDetails,
@@ -39,20 +50,16 @@ const ProfileModal = () => {
   };
 
   const onSubmit = async (e) => {
-    dispatch(updateProfile(user, profileDetails));
+    dispatch(
+      updateProfile(user, { basic: profileBasic, detailed: profileDetails })
+    );
     dispatch(getProfile(user));
     dispatch(toggleEditMode(false));
   };
 
-  const {
-    username,
-    user_bio,
-    tutor_contact,
-    is_tutor,
-    subjects,
-    duration_classes,
-    qualifications,
-  } = profileDetails;
+  const { username, user_bio, is_tutor } = profileBasic;
+  const { tutor_contact, duration_classes, subjects, qualifications } =
+    profileDetails;
 
   return (
     <>
@@ -71,14 +78,14 @@ const ProfileModal = () => {
                     type="text"
                     name="username"
                     value={username}
-                    onChange={(e) => onChange(e)}
+                    onChange={(e) => onChangeBasic(e)}
                   />
                   <Form.Label>User bio</Form.Label>
                   <Form.Control
                     type="text"
                     name="user_bio"
                     value={user_bio}
-                    onChange={(e) => onChange(e)}
+                    onChange={(e) => onChangeBasic(e)}
                   />
                 </Form.Group>
                 <h4>Contact info</h4>
@@ -88,7 +95,7 @@ const ProfileModal = () => {
                     type="tel"
                     name="tutor_contact"
                     value={tutor_contact}
-                    onChange={(e) => onChange(e)}
+                    onChange={(e) => onChangeDetailed(e)}
                   />
                   {/* <Form.Label>Telegram</Form.Label>
                   <Form.Control
@@ -104,8 +111,8 @@ const ProfileModal = () => {
                   <Form.Control
                     as="select"
                     name="is_tutor"
-                    value = {is_tutor}
-                    onChange={(e) => onChange(e)}
+                    value={is_tutor}
+                    onChange={(e) => onChangeBasic(e)}
                   >
                     <option value="true">Tutor</option>
                     <option value="false">Student</option>
@@ -115,21 +122,21 @@ const ProfileModal = () => {
                     type="text"
                     name="subjects"
                     value={subjects}
-                    onChange={(e) => onChange(e)}
+                    onChange={(e) => onChangeDetailed(e)}
                   />
                   <Form.Label>Lesson duration (in hours)</Form.Label>
                   <Form.Control
                     type="number"
                     name="duration_classes"
                     value={duration_classes}
-                    onChange={(e) => onChange(e)}
+                    onChange={(e) => onChangeBasic(e)}
                   />
                   <Form.Label>Qualifications</Form.Label>
                   <Form.Control
                     type="text"
                     name="qualifications"
                     value={qualifications}
-                    onChange={(e) => onChange(e)}
+                    onChange={(e) => onChangeDetailed(e)}
                   />
                 </Form.Group>
               </Modal.Body>
@@ -164,7 +171,7 @@ const ProfileModal = () => {
         >
           <div>
             <Modal.Header>
-              <h3>Your profile details</h3>
+              <h3>{user === user_id ? "Your profile details" : "Details"}</h3>
               <Button
                 className="btn-circle btn-danger"
                 onClick={() => dispatch(toggleDetailedView(false))}
@@ -178,11 +185,15 @@ const ProfileModal = () => {
                   <h4>Contact info</h4>
                   <tr>
                     <td>Whatsapp</td>
-                    <td className="table-data">{profile.tutor_contact}</td>
+                    <td className="table-data">
+                      {profile.detailed.tutor_contact}
+                    </td>
                   </tr>
                   <tr>
                     <td>Telegram</td>
-                    <td className="table-data">{profile.tutor_contact}</td>
+                    <td className="table-data">
+                      {profile.detailed.tutor_contact}
+                    </td>
                   </tr>
                 </table>
                 <br />
@@ -194,34 +205,39 @@ const ProfileModal = () => {
                   </tr>
                   <tr>
                     <td>Subjects taught</td>
-                    <td className="table-data">{profile.subjects}</td>
+                    <td className="table-data">{profile.detailed.subjects}</td>
                   </tr>
                   <tr>
                     <td>Lesson duration</td>
-                    <td className="table-data">{profile.duration_classes}</td>
+                    <td className="table-data">
+                      {profile.detailed.duration_classes}
+                    </td>
                   </tr>
                   <tr>
                     <td>Qualifications</td>
-                    <td>{profile.qualifications}</td>
+                    <td>{profile.detailed.qualifications}</td>
                   </tr>
                 </table>
               </div>
             </Modal.Body>
-            <Modal.Footer>
-              <Button
-                className="btn-modal btn-danger"
-                onClick={() => dispatch(toggleEditMode(true))}
-              >
-                Edit profile
-              </Button>
-              <Button
-                variant="dark"
-                className="btn-modal-grey"
-                onClick={() => setSmallModalOpen(true)}
-              >
-                Delete account
-              </Button>
-            </Modal.Footer>
+            {user === user_id ? (
+              <Modal.Footer>
+                <Button
+                  className="btn-modal btn-danger"
+                  onClick={() => dispatch(toggleEditMode(true))}
+                  visibility
+                >
+                  Edit profile
+                </Button>
+                <Button
+                  variant="dark"
+                  className="btn-modal-grey"
+                  onClick={() => setSmallModalOpen(true)}
+                >
+                  Delete account
+                </Button>
+              </Modal.Footer>
+            ) : null}
           </div>
         </Modal>
       )}
@@ -245,9 +261,9 @@ const ProfileModal = () => {
           <Button
             variant="danger"
             onClick={() => {
-              dispatch(logout());
               dispatch(deleteProfile(user));
-              history.push("/");
+              dispatch(logout());
+              history.push("/login");
             }}
           >
             Delete my account
