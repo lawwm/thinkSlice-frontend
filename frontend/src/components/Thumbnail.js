@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import thumbPic from "../images/Cooking_thumbnail.jpg";
 import profilePic from "../images/Joe_Biden.jpg";
-import { Container, Row, Media, Image } from "react-bootstrap";
+import { Container, Col, Row, Media, Image } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { setVideoLoading } from "../store/home/action";
+import { useDispatch } from "react-redux";
 
-const Thumbnail = ({ title, username, views, date, subject, playback_id }) => {
+const Thumbnail = ({ title, username, views, date, subject, playback_id, imageSrc, videoId }) => {
 
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [urlFormat, setUrlFormat] = useState("/thumbnail.jpg")
   const animateThumbnail = (shouldAnimate) => {
     shouldAnimate
@@ -19,6 +24,11 @@ const Thumbnail = ({ title, username, views, date, subject, playback_id }) => {
           width={337}
           height={192}
           src={"https://image.mux.com/" + playback_id + urlFormat}
+          onClick={() => {
+            dispatch(setVideoLoading())
+            history.push('/watch/' + videoId)
+          }
+          }
           onMouseEnter={() => animateThumbnail(true)}
           onMouseLeave={() => animateThumbnail(false)}
           alt="video thumbnail">
@@ -30,11 +40,11 @@ const Thumbnail = ({ title, username, views, date, subject, playback_id }) => {
           {date}
         </div>
         <Media>
-          <div className="thumbnail-photo">
-            <Image src={profilePic} alt="profile picture" fluid />
+          <div className="thumbnail-photo" onClick={() => history.push('/profile')}>
+            <Image src={imageSrc} alt="profile picture" fluid />
           </div>
 
-          <Media.Body>
+          <Media.Body onClick={() => history.push('/watch/' + videoId)}>
             <div className="thumbnail-body">
               <Row>
                 <h5 className="thumbnail-title">{title}</h5>

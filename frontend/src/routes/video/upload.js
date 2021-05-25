@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
@@ -16,7 +16,7 @@ const Upload = () => {
         let url_id = ''
         const getUploadUrl = async () => {
             try {
-                const res = await axios.post('/api/videos/assets/')
+                const res = await axios.post('/api/videos/assets')
                 url_id = res.data.id
                 return res.data.url
             } catch (err) {
@@ -46,9 +46,13 @@ const Upload = () => {
                     "Content-Type": "application/json",
                 },
             };
-            const body = JSON.stringify(videoData)
-            const res = await axios.post('/api/videos/assets/' + url_id, body, config)
-            console.log(res)
+            try {
+                const body = JSON.stringify(videoData)
+                const res = await axios.post('/api/videos/assets/' + url_id, body, config)
+                console.log(res)
+            } catch (err) {
+                console.log(err)
+            }
         });
 
     };

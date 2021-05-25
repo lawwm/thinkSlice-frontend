@@ -4,12 +4,13 @@ from rest_framework import serializers, viewsets, status, mixins, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import mux_python 
-from .serializers import UploadResponseSerializer, CreateVideoSerializer, EditVideoSerializer
+from .serializers import UploadResponseSerializer, CreateVideoSerializer, DisplayVideoSerializer
 from userProfiles.models import Profile
 from .models import Video
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from accounts.permissions import IsVideoOwnerOrReadOnly
 from appmanager.settings import MUX_TOKEN_SECRET, MUX_TOKEN_ID
+from mux_python.rest import NotFoundException
 
 # Create your views here.
 
@@ -39,6 +40,7 @@ def UploadVideo(request):
 
 # Upload video to mux using direct url
 class AssetView(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
     def create(self, request, *args, **kwargs):
         # Authentication Setup
         configuration = mux_python.Configuration()
@@ -82,32 +84,68 @@ class AssetView(viewsets.ViewSet):
 
 
 # Get/Edit/Delete a video from video_id
-class GetEditDeleteVideoView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
-    serializer_class = EditVideoSerializer
+class GetEditDeleteVideoView(viewsets.ViewSet):
     
-    def get(self, request, *args, **kwargs):
-        print(self.kwargs['pk'])
-        return self.retrieve(request, *args, **kwargs)
+    def retrieve(self, request, *args, **kwargs):
+        print(self.request.method)
+        video = get_object_or_404(Video, pk=self.kwargs['pk'])   
+        video.views = video.views + 1
+        video.save()
+        serializer = DisplayVideoSerializer(video)
+        return Response(serializer.data)
 
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        # Call to API
-        return self.destroy(request, *args, **kwargs)
-
-    def get_object(self):
-        print("we reached here")
-        video = get_object_or_404(Video, pk=self.kwargs['pk'])
+    def partial_update(self, request, *args, **kwargs):
+        video = get_object_or_404(Video, pk=self.kwargs['pk'])  
         self.check_object_permissions(self.request, video)
-        return video
+        serializer = DisplayVideoSerializer(video, data = request.data, partial=True, many=False)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
-    def get_permissions(self):
+    def destroy(self, request, *args, **kwargs):
+        # Call to API
+        # Authentication Setup
+        configuration = mux_python.Configuration()
+        configuration.username = MUX_TOKEN_ID
+        configuration.password = MUX_TOKEN_SECRET
+
+        # API Client Initialization
+        assets_api = mux_python.AssetsApi(mux_python.ApiClient(configuration))
+
+        # Delete asset_id
+        video = get_object_or_404(Video, pk=self.kwargs['pk'])
         
-        if self.request.method == 'GET':
+        # Check that asset is gone
+        try:
+            assets_api.delete_asset(video.asset_id)
+            deletedVideo = video.delete()
+            print(deletedVideo)
+            return Response("Video successfully deleted", status=status.HTTP_200_OK)
+        except NotFoundException as e:
+            assert e != None
+            return Response("Asset does not exist", status=status.HTTP_424_FAILED_DEPENDENCY)
+            
+    def get_permissions(self):
+        if self.action == 'retrieve':
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAuthenticated, IsVideoOwnerOrReadOnly]
         return [permission() for permission in permission_classes]
             
-# Get all the user's videos
+# Get 10 videos ordered either by views or data
+# Query videos from numbers
+class listAllUserVideosView(viewsets.ViewSet):
+#     serializer_class = ProfileVideoSerializer
+    def list(self, request):
+        limit_n = request.GET.get('n', 1)
+        filter_by = request.GET.get('filter_by', 'created_at')
+        ascending = request.GET.get('ascending', 'true')
+        index_tail = int(limit_n) * 10
+        index_head = index_tail - 10
+        if ascending != 'true':
+            filter_by = '-' + filter_by
+        videos = Video.objects.order_by(filter_by)[index_head:index_tail]
+        serializer = DisplayVideoSerializer(videos, many=True)
+        return Response(serializer.data)
+
+
