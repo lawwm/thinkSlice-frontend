@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 import { getProfile, toggleDetailedView } from "../../store/profile/action.js";
 
@@ -14,6 +14,7 @@ import axios from "axios";
 const Profile = () => {
 
   const dispatch = useDispatch();
+  const history = useHistory();
   const { profile, loading } = useSelector((state) => state.profile);
   const { user_id } = useParams();
 
@@ -62,17 +63,24 @@ const Profile = () => {
                   >
                     Details
                   </button>
-                  <button className="btn profile-button">Reviews</button>
+                  <button
+                    className="btn profile-button"
+                    onClick={() =>
+                      history.push("/profile/reviews/" + user_id)
+                    }
+                  >
+                    Reviews
+                  </button>
                 </Media.Body>
 
                 <div
                   className="profile-picture circle align-self-center ml-3"
-                  onClick={() => setPictureModal(true)}
                 >
                   <Image
                     src={profile.basic.profile_pic}
                     alt="profile_pic"
                     fluid
+                    onClick={() => setPictureModal(true)}
                   />
                 </div>
               </Media>

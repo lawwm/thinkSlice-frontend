@@ -1,12 +1,17 @@
 @font-face {
-  font-family: 'Inter UI semi-bold';
+  font-family: "Inter UI semi-bold";
   font-weight: 400;
-  src: url(../fonts/Inter-SemiBold.ttf) format('truetype');
+  src: url(../fonts/Inter-SemiBold.ttf) format("truetype");
 }
 
 @font-face {
-  font-family: 'Roboto medium';
-  src: url(../fonts//Roboto-Medium.ttf) format('truetype');
+  font-family: "Roboto medium";
+  src: url(../fonts//Roboto-Medium.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Inter UI regular";
+  src: url(../fonts//Inter-Regular.ttf) format("truetype");
 }
 
 .navbar {
@@ -18,13 +23,13 @@
   color: #ff4400 !important;
   padding-left: 10px;
   font-size: 36px;
-  font-family: 'Inter UI semi-bold' !important;
+  font-family: "Inter UI semi-bold" !important;
 }
 
 .nav-default {
   color: black !important;
   font-size: 24px;
-  font-family: 'Inter UI semi-bold' !important;
+  font-family: "Inter UI semi-bold" !important;
   margin-left: 40px;
 }
 
@@ -33,7 +38,7 @@ nav a:hover,
   color: #ff4400 !important;
   font-size: 24px;
   margin-left: 40px;
-  font-family: 'Inter UI semi-bold' !important;
+  font-family: "Inter UI semi-bold" !important;
   text-decoration: underline !important;
 }
 
@@ -59,7 +64,7 @@ nav a:hover,
   position: absolute;
   height: 33px;
   width: 73px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-size: 14px;
   padding-top: 6px;
   color: rgba(255, 255, 255, 0.85);
@@ -75,7 +80,7 @@ nav a:hover,
   height: 33px;
   width: 115px;
 
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-size: 14px;
   padding-top: 6px;
   color: rgba(255, 255, 255, 0.85);
@@ -102,7 +107,7 @@ nav a:hover,
 }
 
 .thumbnail-title {
-  font-family: 'Roboto medium';
+  font-family: "Roboto medium";
   font-size: 19px;
   margin-bottom: 5px;
 }
@@ -111,7 +116,7 @@ nav a:hover,
   font-size: 14px;
   padding: 2px 6px 0px 0px;
   color: #808088;
-  font-family: 'Roboto regular';
+  font-family: "Roboto regular";
 }
 
 .thumbnail-line {
@@ -119,7 +124,7 @@ nav a:hover,
   border-left: solid #808088 thin;
   padding: 2px 2px 0px 8px;
   color: #808088;
-  font-family: 'Roboto regular';
+  font-family: "Roboto regular";
 }
 
 .btn-circle {
@@ -151,7 +156,6 @@ nav a:hover,
   opacity: 1;
 }
 
-
 .modal-style table,
 .modal-style h4 {
   font-size: 20px;
@@ -174,4 +178,35 @@ nav a:hover,
 
 .modal-style div {
   padding: 10px;
+}
+
+.modal-style form {
+  margin: 0px;
+  color: #787878;
+  font-size: 20px;
+}
+
+.small-icon {
+  height: 35px;
+  opacity: 0.6;
+}
+
+.table-data-alt {
+  width: 50px;
+}
+
+.reviewer,
+.review-date {
+  font-size: 20px;
+  font-family: "Inter UI regular";
+}
+
+.review-title {
+  font-size: 24px;
+  font-family: "Inter UI semi-bold";
+}
+
+.review-text {
+  font-size: 18px;
+  font-family: "Inter UI regular";
 }
