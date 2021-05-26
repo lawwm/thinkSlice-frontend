@@ -1,6 +1,6 @@
 import React, { Fragment, Suspense } from 'react';
 import { Switch, Route } from "react-router-dom"
-import Alert from "../components/Alert"
+// import Alert from "../components/Alert"
 import { PrivateRoute } from "./routeTypes"
 import LoadingSpinner from "../components/LoadingSpinner";
 import NotFound from './errorpages/notFound';
@@ -25,8 +25,9 @@ const WatchPage = React.lazy(() => import("./home/watch"))
 const Routes = () => {
     return (
         <Fragment>
+
             <Suspense fallback={<LoadingSpinner />}>
-                <Alert />
+                {/* <Alert /> */}
                 <Switch>
                     <Route exact path={PATHS.HOMEPAGE} component={Home} />
                     <Route exact path={PATHS.LOGIN_PAGE} component={Login} />

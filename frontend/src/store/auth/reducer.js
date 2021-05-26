@@ -5,7 +5,9 @@ import {
     AUTH_ERROR,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    LOGOUT
+    LOGOUT,
+    AUTH_BUTTON_LOADED,
+    AUTH_BUTTON_LOADING
 } from "./actionTypes.js";
 
 const initialState = {
@@ -13,7 +15,8 @@ const initialState = {
     isAuthenticated: null,
     loading: true,
     user: null,
-    username: null
+    username: null,
+    authLoading: false
 }
 
 export const auth = (state = initialState, action) => {
@@ -48,6 +51,16 @@ export const auth = (state = initialState, action) => {
                 loading: false,
                 user: payload.user.id,
                 username: payload.user.username
+            }
+        case AUTH_BUTTON_LOADING:
+            return {
+                ...state,
+                authLoading: true
+            }
+        case AUTH_BUTTON_LOADED:
+            return {
+                ...state,
+                authLoading: false
             }
         case AUTH_ERROR:
         case LOGOUT:

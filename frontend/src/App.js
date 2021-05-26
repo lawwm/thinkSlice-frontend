@@ -12,6 +12,7 @@ import store from "./store/store.js";
 
 import "./App.css";
 import NavBar from "./components/NavBar";
+import Alert from "./components/Alert"
 
 const App = () => {
   useEffect(() => {
@@ -21,7 +22,9 @@ const App = () => {
 
   return (
     <Provider store={store} className="App">
+      <Alert />
       <BrowserRouter>
+
         <NavBar />
         <Routes />
       </BrowserRouter>
