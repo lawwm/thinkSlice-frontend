@@ -14,9 +14,9 @@ const Review = () => {
   const { user_id } = useParams();
   const { profile, reviews, loading } = useSelector((state) => state.profile);
 
-  // useEffect(() => {
-  //   dispatch(getReviews(user_id));
-  // }, [user_id]);
+  useEffect(() => {
+    dispatch(getReviews(user_id));
+  }, [user_id]);
 
   return (
     <>

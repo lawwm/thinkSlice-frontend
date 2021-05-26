@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 
 import img from "../images/Barack_Obama.jpg";
 import { Image, Media, Card } from "react-bootstrap";
+import StarRating from "../components/StarRating";
 import "./components.css";
 
 const ReviewPost = () => {
@@ -22,7 +23,7 @@ const ReviewPost = () => {
         </Media.Body>
       </Media>
       <Card.Body>
-        <Card.Title className="review-title">Amazing Roast Chicken!</Card.Title>
+        <Card.Title className="review-title"><StarRating rating={10} /> Amazing Roast Chicken!</Card.Title>
         <Card.Text className="review-text">
           Truly an amazing teacher on the art of preparing chicken. He is the
           Bob Ross of roast chicken, the Einstein of seasoning, the Michangelo

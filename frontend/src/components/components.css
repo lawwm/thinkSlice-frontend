@@ -180,6 +180,37 @@ nav a:hover,
   padding: 10px;
 }
 
+.modal-style form {
+  margin: 0px;
+  color: #787878;
+  font-size: 20px;
+}
+
+.small-icon {
+  height: 35px;
+  opacity: 0.6;
+}
+
+.table-data-alt {
+  width: 50px;
+}
+
+.reviewer,
+.review-date {
+  font-size: 20px;
+  font-family: "Inter UI regular";
+}
+
+.review-title {
+  font-size: 24px;
+  font-family: "Inter UI semi-bold";
+}
+
+.review-text {
+  font-size: 18px;
+  font-family: "Inter UI regular";
+}
+
 /* alert */
 .alert-container {
   align-items: center;
