@@ -5,7 +5,9 @@ import {
   HOMEPAGE_LOAD_FAIL,
   VIDEO_LOADED,
   VIDEO_LOADING,
-  VIDEO_LOAD_FAILED
+  VIDEO_LOAD_FAILED,
+  UPLOAD_STARTED,
+  UPLOAD_ENDED
 } from "./actionTypes"
 import { format, formatDistance } from 'date-fns'
 
@@ -74,5 +76,17 @@ export const loadWatchVideos = (videoId) => async (dispatch) => {
 export const setVideoLoading = () => async (dispatch) => {
   dispatch({
     type: VIDEO_LOADING
+  })
+}
+
+export const startUpload = () => async (dispatch) => {
+  dispatch({
+    type: UPLOAD_STARTED
+  })
+}
+
+export const endUpload = () => async (dispatch) => {
+  dispatch({
+    type: UPLOAD_ENDED
   })
 }

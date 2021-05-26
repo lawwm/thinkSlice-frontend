@@ -78,6 +78,7 @@ export const login = ({ username, password }) => async (dispatch) => {
         });
         dispatch(setAlert("Login successful", "success"))
     } catch (err) {
+        console.log(err.message)
         dispatch({
             type: actionTypes.AUTH_BUTTON_LOADED
         })
