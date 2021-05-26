@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from mux_python.models.asset import Asset
 from rest_framework import serializers, viewsets, status, mixins, generics
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 import mux_python 
 from .serializers import UploadResponseSerializer, CreateVideoSerializer, DisplayVideoSerializer
@@ -16,6 +16,7 @@ from mux_python.rest import NotFoundException
 
 # Create direct url 
 @api_view(['POST'])
+@permission_classes((IsAuthenticated,))
 def UploadVideo(request):
     # Create video
     if request.method == 'POST':

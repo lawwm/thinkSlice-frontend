@@ -4,12 +4,15 @@ import {
   VIDEO_LOADED,
   FAILED_LOAD,
   VIDEO_LOADING,
+  UPLOAD_STARTED,
+  UPLOAD_ENDED
 } from "./actionTypes.js"
 
 const initialState = {
   videos: [],
   videoLoading: true,
-  currentVideo: {}
+  currentVideo: {},
+  isUploading: false
 }
 
 export const home = (state = initialState, action) => {
@@ -36,6 +39,16 @@ export const home = (state = initialState, action) => {
     case HOMEPAGE_LOAD_FAIL:
       return {
         ...state
+      }
+    case UPLOAD_STARTED:
+      return {
+        ...state,
+        isUploading: true
+      }
+    case UPLOAD_ENDED:
+      return {
+        ...state,
+        isUploading: false
       }
     default:
       return state;

@@ -32,6 +32,26 @@ p {
   padding: 0px;
 }
 
+/* auth page */
+.login-form-div {
+  min-width: 500px;
+  width: 540px;
+}
+
+.login-button {
+  width: 172px;
+  height: 44px;
+}
+
+.register-form-div {
+  width: 540px;
+}
+
+.register-button {
+  width: 248px;
+  height: 44px;
+}
+
 .color-black {
   color: black;
 }
@@ -56,8 +76,20 @@ p {
   margin-right: 40px;
 }
 
+/* .btn-custom {
+  padding: 10px 60px;
+  background-color: #ff4400;
+  opacity: 0.8;
+  border-radius: 4px;
+  border: none;
+  transition: 0.3s;
+  float: right;
+  margin-right: 40px; 
+  position: static; 
+} */
+
 .btn-custom:hover,
-.btn-custom:active,
+.btn-custom:disabled .btn-custom:active,
 .btn-custom:active:after {
   opacity: 1;
   background-color: #ff4400;
@@ -71,10 +103,10 @@ p {
   border: none;
   transition: 0.3s;
   float: right;
-  margin-right: 40px;
 }
 
 .btn-alt-custom:hover,
+.btn-alt-custom:disabled,
 .btn-alt-custom:active,
 .btn-alt-custom:active:after {
   opacity: 1;
@@ -165,6 +197,21 @@ p {
   color: white;
 }
 
+.progress-bar-div {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  background-color: #ffb570;
+  color: white;
+}
+
+.upload-btn-size {
+  width: 173px;
+  height: 44px;
+}
+
 /* Video Page */
 .video-header {
   margin-top: 25px;
@@ -219,3 +266,5 @@ p {
 .margin-left-less {
   margin-left: 40px;
 }
+
+/* alert */
