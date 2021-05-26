@@ -5,3 +5,5 @@ export const AUTH_ERROR = "AUTH_ERROR";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
+export const AUTH_BUTTON_LOADING = "AUTH_BUTTON_LOADING";
+export const AUTH_BUTTON_LOADED = "AUTH_BUTTON_LOADED";
