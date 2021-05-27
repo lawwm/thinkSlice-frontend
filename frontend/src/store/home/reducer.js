@@ -5,14 +5,15 @@ import {
   FAILED_LOAD,
   VIDEO_LOADING,
   UPLOAD_STARTED,
-  UPLOAD_ENDED
+  UPLOAD_ENDED,
+  UPDATE_WINDOW_SIZE
 } from "./actionTypes.js"
 
 const initialState = {
   videos: [],
   videoLoading: true,
   currentVideo: {},
-  isUploading: false
+  isUploading: false,
 }
 
 export const home = (state = initialState, action) => {
@@ -50,6 +51,11 @@ export const home = (state = initialState, action) => {
         ...state,
         isUploading: false
       }
+    // case UPDATE_WINDOW_SIZE:
+    //   return {
+    //     ...state,
+    //     videoArranged: payload
+    //   }
     default:
       return state;
   }

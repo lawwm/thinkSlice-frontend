@@ -135,14 +135,17 @@ class GetEditDeleteVideoView(viewsets.ViewSet):
             
 # Get 10 videos ordered either by views or data
 # Query videos from numbers
+# n is the set of 9 videos
+# Either filter by 'created_at' or 'views'
+# ascending is boolean, so either 'true' or 'false'
 class listAllUserVideosView(viewsets.ViewSet):
 #     serializer_class = ProfileVideoSerializer
     def list(self, request):
         limit_n = request.GET.get('n', 1)
         filter_by = request.GET.get('filter_by', 'created_at')
         ascending = request.GET.get('ascending', 'true')
-        index_tail = int(limit_n) * 10
-        index_head = index_tail - 10
+        index_tail = int(limit_n) * 9
+        index_head = index_tail - 9
         if ascending != 'true':
             filter_by = '-' + filter_by
         videos = Video.objects.order_by(filter_by)[index_head:index_tail]

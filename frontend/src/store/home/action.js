@@ -7,7 +7,8 @@ import {
   VIDEO_LOADING,
   VIDEO_LOAD_FAILED,
   UPLOAD_STARTED,
-  UPLOAD_ENDED
+  UPLOAD_ENDED,
+  UPDATE_WINDOW_SIZE
 } from "./actionTypes"
 import { format, formatDistance } from 'date-fns'
 
@@ -28,19 +29,30 @@ function convertUnixToExactDate(date) {
   return format(date, 'PPP')
 }
 
+// function chunkArray(myArray, chunk_size) {
+//   let results = [];
+
+//   while (myArray.length) {
+//     results.push(myArray.splice(0, chunk_size))
+//   }
+
+//   return results
+// }
+
 // Actions
-export const loadHomeVideos = () => async (dispatch) => {
+export const loadHomeVideos = (filtered = "created_at", ascending = "false", num = 1) => async (dispatch) => {
   try {
-    const res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.LIST_VIDEOS);
+    const res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.LIST_VIDEOS
+      + "?n=" + num + "&filter_by=" + filtered + "&ascending=" + ascending);
     let data = res.data
     data = data.map(video => {
       return {
         ...video,
         created_at: convertUnixToTimeElapsed(video.created_at)
       }
-    }
-    )
+    })
     console.log(data)
+
     dispatch({
       type: HOMEPAGE_LOADED,
       payload: data

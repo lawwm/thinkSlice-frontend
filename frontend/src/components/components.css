@@ -109,12 +109,12 @@ nav a:hover,
 .thumbnail-title {
   font-family: "Roboto medium";
   font-size: 19px;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 
 .thumbnail-caption {
   font-size: 14px;
-  padding: 2px 6px 0px 0px;
+  padding: 0px 6px 0px 0px;
   color: #808088;
   font-family: "Roboto regular";
 }
@@ -122,7 +122,7 @@ nav a:hover,
 .thumbnail-line {
   font-size: 14px;
   border-left: solid #808088 thin;
-  padding: 2px 2px 0px 8px;
+  padding: 0px 2px 0px 8px;
   color: #808088;
   font-family: "Roboto regular";
 }

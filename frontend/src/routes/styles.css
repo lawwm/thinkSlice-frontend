@@ -278,6 +278,10 @@ p {
   margin-left: 40px;
 }
 
+/* home */
+.home-video-row {
+  margin-bottom: 30px;
+}
 .tabs {
   font-size: 20px;
 }

@@ -10,38 +10,36 @@ import "../styles.css";
 import { loadHomeVideos } from "../../store/home/action"
 import Thumbnail from "../../components/Thumbnail"
 
-
-
 const VideoGrid = ({ videos }) => {
   return (
     <>
-      {videos.map((video) => {
+      {videos.map((videoRow) => {
         return (
-          <Col>
-            <Thumbnail
-              title={video.video_title}
-              username={video.creator_profile.username}
-              views={video.views}
-              subject={video.subject}
-              date={video.created_at}
-              playback_id={video.playback_id}
-              imageSrc={video.creator_profile.profile_pic}
-              videoId={video.id}
-            />
-          </Col>
+          <div className="home-video-row">
+            <Col md={"auto"} key={videoRow.id}>
+              <Thumbnail
+                title={videoRow.video_title}
+                username={videoRow.creator_profile.username}
+                views={videoRow.views}
+                subject={videoRow.subject}
+                date={videoRow.created_at}
+                playback_id={videoRow.playback_id}
+                imageSrc={videoRow.creator_profile.profile_pic}
+                videoId={videoRow.id}
+              />
+            </Col>
+          </div>
         )
       })}
     </>
   )
 }
 
-const Member = (props) => {
-  const { videos, videoLoading } = useSelector((state) => state.home)
-
+const Member = ({ videos, videoLoading }) => {
   return (
     <Container>
       <h2>Welcome, registered user.</h2>
-      <Row>
+      <Row className="justify-content-md-left">
         {videoLoading
           ? <LoadingSpinner />
           : <VideoGrid videos={videos} />
@@ -51,13 +49,11 @@ const Member = (props) => {
   )
 }
 
-const Guest = () => {
-  const { videos, videoLoading } = useSelector((state) => state.home)
-
+const Guest = ({ videos, videoLoading }) => {
   return (
     <Container>
       <h2>Log in to get started.</h2>
-      <Row>
+      <Row className="justify-content-md-left">
         {videoLoading
           ? <LoadingSpinner />
           : <VideoGrid videos={videos} />
@@ -67,8 +63,11 @@ const Guest = () => {
   )
 }
 
+
+
 const Home = () => {
   const dispatch = useDispatch();
+  const { videos, videoLoading } = useSelector((state) => state.home)
 
   useEffect(() => {
     dispatch(loadHomeVideos())
@@ -76,7 +75,11 @@ const Home = () => {
 
   return (
     <>
-      <AuthNavBar member={<Member />} guest={<Guest />} />
+      <AuthNavBar
+        member={<Member videos={videos} videoLoading={videoLoading} />}
+        guest={<Guest videos={videos} videoLoading={videoLoading} />}
+
+      />
     </>
   );
 };
