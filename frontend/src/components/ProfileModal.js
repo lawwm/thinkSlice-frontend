@@ -9,29 +9,37 @@ import {
   updateProfile,
   getProfile,
 } from "../store/profile/action.js";
+
+import { Modal, Button, Form, Container, Col, Row } from "react-bootstrap";
+import whatsapp from "../images/Whatsapp.png";
+import telegram from "../images/Telegram.png";
 import "./components.css";
 
-import { Modal, Button, Form } from "react-bootstrap";
-
-const ProfileModal = () => {
+const ProfileModal = ({ userId }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
   const [smallModalOpen, setSmallModalOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const { user_id } = useParams();
   const { detailedMode, editMode, profile } = useSelector(
     (state) => state.profile
   );
 
   const [profileBasic, setProfileBasic] = useState(profile.basic);
   const [profileDetails, setProfileDetails] = useState(profile.detailed);
+  const [showTutorOptions, setTutorOptions] = useState(profile.basic.is_tutor);
 
   const onChangeBasic = (e) => {
     let updatedValue = e.target.value;
 
     if (updatedValue === "true" || updatedValue === "false") {
       updatedValue = JSON.parse(updatedValue);
+      setProfileBasic({
+        ...profileBasic,
+        is_tutor: updatedValue,
+        is_student: !updatedValue,
+      });
+      return;
     }
 
     setProfileBasic({
@@ -50,11 +58,10 @@ const ProfileModal = () => {
   };
 
   const onSubmit = async (e) => {
+    dispatch(toggleEditMode(false));
     dispatch(
       updateProfile(user, { basic: profileBasic, detailed: profileDetails })
     );
-    dispatch(getProfile(user));
-    dispatch(toggleEditMode(false));
   };
 
   const { username, user_bio, is_tutor } = profileBasic;
@@ -66,78 +73,92 @@ const ProfileModal = () => {
       {editMode && (
         <Modal show={detailedMode} size="lg" centered className="modal-style">
           <div>
-            <Form onSubmit={(e) => onSubmit(e)} className="modal-form">
-              <Modal.Header>
-                <h3>Editing profile details</h3>
-              </Modal.Header>
+            <Modal.Header>
+              <h3>Editing profile details</h3>
+            </Modal.Header>
+            <Form onSubmit={(e) => onSubmit(e)}>
               <Modal.Body>
-                <h4>User info</h4>
                 <Form.Group>
+                  <h4>User info</h4>
                   <Form.Label>Username</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="username"
                     name="username"
                     value={username}
+                    className="modal-input"
                     onChange={(e) => onChangeBasic(e)}
                   />
                   <Form.Label>User bio</Form.Label>
                   <Form.Control
-                    type="text"
+                    as="textarea"
                     name="user_bio"
                     value={user_bio}
+                    className="modal-input"
                     onChange={(e) => onChangeBasic(e)}
                   />
                 </Form.Group>
-                <h4>Contact info</h4>
+
                 <Form.Group>
+                  <h4>Contact info</h4>
                   <Form.Label>Whatsapp</Form.Label>
                   <Form.Control
                     type="tel"
                     name="tutor_contact"
                     value={tutor_contact}
+                    className="modal-input"
                     onChange={(e) => onChangeDetailed(e)}
                   />
-                  {/* <Form.Label>Telegram</Form.Label>
+                </Form.Group>
+                {/* <Form.Label>Telegram</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="username"
                     name="tutor_contact"
                     defaultValue={tutor_contact}
                     onChange={(e) => onChange(e)}
                   /> */}
-                </Form.Group>
-                <h4>User details</h4>
+
                 <Form.Group>
+                  <h4>User details</h4>
                   <Form.Label>Tutor/Student</Form.Label>
                   <Form.Control
                     as="select"
                     name="is_tutor"
                     value={is_tutor}
-                    onChange={(e) => onChangeBasic(e)}
+                    className="modal-input"
+                    onChange={(e) => {
+                      onChangeBasic(e);
+                      setTutorOptions(!showTutorOptions);
+                    }}
                   >
                     <option value="true">Tutor</option>
                     <option value="false">Student</option>
                   </Form.Control>
-                  <Form.Label>Subjects taught</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="subjects"
-                    value={subjects}
-                    onChange={(e) => onChangeDetailed(e)}
-                  />
-                  <Form.Label>Lesson duration (in hours)</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="duration_classes"
-                    value={duration_classes}
-                    onChange={(e) => onChangeBasic(e)}
-                  />
-                  <Form.Label>Qualifications</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="qualifications"
-                    value={qualifications}
-                    onChange={(e) => onChangeDetailed(e)}
-                  />
+                  {showTutorOptions && (
+                    <>
+                      {/* <Form.Label>Subjects taught</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="subjects"
+                        value={subjects}
+                        onChange={(e) => onChangeDetailed(e)}
+                      />
+                      <Form.Label>Lesson duration (in hours)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="duration_classes"
+                        value={duration_classes}
+                        onChange={(e) => onChangeBasic(e)}
+                      /> */}
+                      <Form.Label>Qualifications</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        name="qualifications"
+                        value={qualifications}
+                        className="modal-input"
+                        onChange={(e) => onChangeDetailed(e)}
+                      />
+                    </>
+                  )}
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
@@ -171,7 +192,7 @@ const ProfileModal = () => {
         >
           <div>
             <Modal.Header>
-              <h3>{user === user_id ? "Your profile details" : "Details"}</h3>
+              <h3>{user == userId ? "Your profile details" : "Details"}</h3>
               <Button
                 className="btn-circle btn-danger"
                 onClick={() => dispatch(toggleDetailedView(false))}
@@ -181,51 +202,72 @@ const ProfileModal = () => {
             </Modal.Header>
             <Modal.Body>
               <div>
+                <h4>Contact info</h4>
                 <table>
-                  <h4>Contact info</h4>
                   <tr>
-                    <td>Whatsapp</td>
+                    <td className="table-data-alt">
+                      <img
+                        src={whatsapp}
+                        alt="whatsapp"
+                        className="small-icon"
+                      />
+                    </td>
                     <td className="table-data">
-                      {profile.detailed.tutor_contact}
+                      {profile.detailed.tutor_contact ||
+                        "User has not provided their Whatsapp"}
                     </td>
                   </tr>
                   <tr>
-                    <td>Telegram</td>
+                    <td className="table-data-alt">
+                      <img
+                        src={telegram}
+                        alt="telegram"
+                        className="small-icon"
+                      />
+                    </td>
                     <td className="table-data">
-                      {profile.detailed.tutor_contact}
+                      {profile.detailed.tutor_contact ||
+                        "User has not provided their Telegram"}
                     </td>
                   </tr>
                 </table>
                 <br />
-                <table>
-                  <h4>User details</h4>
-                  <tr>
-                    <td>Rating</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>Subjects taught</td>
-                    <td className="table-data">{profile.detailed.subjects}</td>
-                  </tr>
-                  <tr>
-                    <td>Lesson duration</td>
-                    <td className="table-data">
-                      {profile.detailed.duration_classes}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Qualifications</td>
-                    <td>{profile.detailed.qualifications}</td>
-                  </tr>
-                </table>
+                {profile.basic.is_tutor && (
+                  <>
+                    <h4>Tutor details</h4>
+                    <table>
+                      <tr>
+                        <td>Rating</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Subjects taught</td>
+                        <td className="table-data">
+                          {profile.detailed.subjects}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Lesson duration</td>
+                        <td className="table-data">
+                          {profile.detailed.duration_classes}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Qualifications</td>
+                        <td className="table-data">
+                          {profile.detailed.qualifications}
+                        </td>
+                      </tr>
+                    </table>
+                  </>
+                )}
               </div>
             </Modal.Body>
-            {user === user_id ? (
+            {user == userId ? (
               <Modal.Footer>
                 <Button
                   className="btn-modal btn-danger"
                   onClick={() => dispatch(toggleEditMode(true))}
-                  visibility
                 >
                   Edit profile
                 </Button>

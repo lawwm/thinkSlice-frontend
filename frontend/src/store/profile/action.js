@@ -1,4 +1,6 @@
 import axios from "axios";
+import { logout } from "../auth/action";
+import { setAlert } from "../components/action";
 
 import { DOMAINS } from "../endpoints";
 import * as actionTypes from "./actionTypes";
@@ -13,7 +15,7 @@ export const getProfile = (userId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.PROFILE_LOADING,
-    })
+    });
     const res = await axios.get(DOMAINS.PROFILE + "/" + userId);
     const res2 = await axios.get(DOMAINS.PROFILE + "/details/" + userId);
 
@@ -44,9 +46,9 @@ export const toggleEditMode = (boolean) => async (dispatch) => {
 
 export const updateProfile = (userId, profile) => async (dispatch) => {
   try {
-    console.log(profile.basic);
-    console.log(profile.detailed);
-
+    dispatch({
+      type: actionTypes.PROFILE_LOADING,
+    });
     const res = await axios.patch(
       DOMAINS.PROFILE + "/" + userId,
       profile.basic
@@ -58,12 +60,15 @@ export const updateProfile = (userId, profile) => async (dispatch) => {
 
     dispatch({
       type: actionTypes.PROFILE_UPDATED,
+      payload: { basic: res.data, detailed: res2.data },
     });
+    dispatch(setAlert("Profile updated", "success"));
   } catch (err) {
     console.log(err);
     dispatch({
-      type: actionTypes.PROFILE_ERROR,
+      type: actionTypes.PROFILE_UPDATE_ERROR,
     });
+    dispatch(setAlert("Profile update failed, please try again", "danger"));
   }
 };
 
@@ -73,11 +78,13 @@ export const deleteProfile = (userId) => async (dispatch) => {
       dispatch({
         type: actionTypes.PROFILE_DELETED,
       });
+      dispatch(setAlert("Account deleted", "success"));
     },
     (err) => {
       dispatch({
         type: actionTypes.PROFILE_ERROR,
       });
+      dispatch(setAlert("Account deletion failed, please try again", "danger"));
     }
   );
 };
@@ -87,3 +94,22 @@ export const resetProfile = () => async (dispatch) => {
     type: actionTypes.PROFILE_RESET,
   });
 };
+
+export const getReviews = (userId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.PROFILE_LOADING,
+    });
+    const res = await axios.get(DOMAINS.REVIEWS + "/tutors/" + userId);
+    const res2 = await axios.get(DOMAINS.REVIEWS + "/students/" + userId);
+
+    dispatch({
+      type: actionTypes.REVIEWS_LOADED,
+      payload: { reviewsGiven: res.data, reviewsReceived: res2.data },
+    });
+  } catch (err) {
+    dispatch({
+      type: actionTypes.REVIEWS_ERROR,
+    });
+  }
+}

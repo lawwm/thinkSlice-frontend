@@ -58,7 +58,8 @@ p {
 
 .btn-custom,
 .btn-circle,
-.btn-modal {
+.btn-modal,
+.btn-nav {
   background-color: #ff4400;
   opacity: 0.8;
   border: none;
@@ -89,8 +90,11 @@ p {
 } */
 
 .btn-custom:hover,
-.btn-custom:disabled .btn-custom:active,
-.btn-custom:active:after {
+.btn-custom:active,
+.btn-custom:active:after,
+.btn-nav:hover,
+.btn-nav:active,
+.btn-nav:active:after {
   opacity: 1;
   background-color: #ff4400;
 }
@@ -113,6 +117,11 @@ p {
   background-color: #5a5a5a;
 }
 
+.btn-nav {
+  margin: 0px 50px 5px 10px;
+  font-size: 20px;
+}
+
 .padding-around {
   margin-left: 50px;
   padding: 0px;
@@ -121,7 +130,6 @@ p {
 .profile-button {
   border-radius: 4px;
   float: right;
-  margin-right: 40px;
 }
 
 .btn-custom:hover,
@@ -136,12 +144,16 @@ p {
   padding: 0px;
 }
 
+.profile-pic {
+  cursor: pointer;
+}
+
 .profile-button,
 .profile-tag {
   background-color: #787878;
   color: white;
   border-radius: 10px;
-  margin-right: 20px;
+  margin-left: 20px;
   font-size: 24px;
   width: 175px;
   height: 50px;
@@ -152,7 +164,6 @@ p {
   color: white;
   opacity: 1;
   border-radius: 10px;
-  margin-right: 20px;
   font-size: 24px;
   padding: 5px 40px;
 }
@@ -271,3 +282,12 @@ p {
 .home-video-row {
   margin-bottom: 30px;
 }
+.tabs {
+  font-size: 20px;
+}
+
+.modal-input {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+/* alert */
