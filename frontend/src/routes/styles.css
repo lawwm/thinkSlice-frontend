@@ -58,7 +58,8 @@ p {
 
 .btn-custom,
 .btn-circle,
-.btn-modal {
+.btn-modal,
+.btn-nav {
   background-color: #ff4400;
   opacity: 0.8;
   border: none;
@@ -89,8 +90,11 @@ p {
 } */
 
 .btn-custom:hover,
-.btn-custom:disabled .btn-custom:active,
-.btn-custom:active:after {
+.btn-custom:active,
+.btn-custom:active:after,
+.btn-nav:hover,
+.btn-nav:active,
+.btn-nav:active:after {
   opacity: 1;
   background-color: #ff4400;
 }
@@ -111,6 +115,11 @@ p {
 .btn-alt-custom:active:after {
   opacity: 1;
   background-color: #5a5a5a;
+}
+
+.btn-nav {
+  margin: 0px 50px 5px 10px;
+  font-size: 20px;
 }
 
 .padding-around {
@@ -267,4 +276,7 @@ p {
   margin-left: 40px;
 }
 
+.tabs {
+  font-size: 20px;
+}
 /* alert */

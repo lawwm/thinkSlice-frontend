@@ -17,7 +17,7 @@ class TutorReviewView(viewsets.ViewSet):
         request.data['tutor_profile'] = get_object_or_404(Profile, user=kwargs['pk']).id
         request.data['student_profile'] = get_object_or_404(Profile, user=request.user.id).id
 
-        # Check that student hasn't already reviewed the teacer
+        # Check that student hasn't already reviewed the teacher
         check_existing = Review.objects.filter(tutor_profile=request.data['tutor_profile'], 
             student_profile=request.data['student_profile'])
         if check_existing.exists():

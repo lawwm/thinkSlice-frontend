@@ -16,5 +16,6 @@ export const ENDPOINTS = {
 export const DOMAINS = {
     AUTH: "/api/auth",
     PROFILE: "/api/profiles",
+    REVIEWS: "api/reviews",
     VIDEO: "/api/videos"
 }

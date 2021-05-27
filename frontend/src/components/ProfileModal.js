@@ -9,9 +9,11 @@ import {
   updateProfile,
   getProfile,
 } from "../store/profile/action.js";
-import "./components.css";
 
 import { Modal, Button, Form } from "react-bootstrap";
+import whatsapp from "../images/Whatsapp.png";
+import telegram from "../images/Telegram.png";
+import "./components.css";
 
 const ProfileModal = () => {
   const history = useHistory();
@@ -50,11 +52,10 @@ const ProfileModal = () => {
   };
 
   const onSubmit = async (e) => {
+    dispatch(toggleEditMode(false));
     dispatch(
       updateProfile(user, { basic: profileBasic, detailed: profileDetails })
     );
-    dispatch(getProfile(user));
-    dispatch(toggleEditMode(false));
   };
 
   const { username, user_bio, is_tutor } = profileBasic;
@@ -66,13 +67,13 @@ const ProfileModal = () => {
       {editMode && (
         <Modal show={detailedMode} size="lg" centered className="modal-style">
           <div>
+            <Modal.Header>
+              <h3>Editing profile details</h3>
+            </Modal.Header>
             <Form onSubmit={(e) => onSubmit(e)} className="modal-form">
-              <Modal.Header>
-                <h3>Editing profile details</h3>
-              </Modal.Header>
               <Modal.Body>
-                <h4>User info</h4>
                 <Form.Group>
+                  <h4>User info</h4>
                   <Form.Label>Username</Form.Label>
                   <Form.Control
                     type="text"
@@ -88,8 +89,9 @@ const ProfileModal = () => {
                     onChange={(e) => onChangeBasic(e)}
                   />
                 </Form.Group>
-                <h4>Contact info</h4>
+
                 <Form.Group>
+                  <h4>Contact info</h4>
                   <Form.Label>Whatsapp</Form.Label>
                   <Form.Control
                     type="tel"
@@ -97,16 +99,17 @@ const ProfileModal = () => {
                     value={tutor_contact}
                     onChange={(e) => onChangeDetailed(e)}
                   />
-                  {/* <Form.Label>Telegram</Form.Label>
+                </Form.Group>
+                {/* <Form.Label>Telegram</Form.Label>
                   <Form.Control
                     type="text"
                     name="tutor_contact"
                     defaultValue={tutor_contact}
                     onChange={(e) => onChange(e)}
                   /> */}
-                </Form.Group>
-                <h4>User details</h4>
+
                 <Form.Group>
+                  <h4>User details</h4>
                   <Form.Label>Tutor/Student</Form.Label>
                   <Form.Control
                     as="select"
@@ -181,24 +184,37 @@ const ProfileModal = () => {
             </Modal.Header>
             <Modal.Body>
               <div>
+                <h4>Contact info</h4>
                 <table>
-                  <h4>Contact info</h4>
                   <tr>
-                    <td>Whatsapp</td>
+                    <td className="table-data-alt">
+                      <img
+                        src={whatsapp}
+                        alt="whatsapp"
+                        className="small-icon"
+                      />
+                    </td>
                     <td className="table-data">
                       {profile.detailed.tutor_contact}
                     </td>
                   </tr>
                   <tr>
-                    <td>Telegram</td>
+                    <td className="table-data-alt">
+                      <img
+                        src={telegram}
+                        alt="telegram"
+                        className="small-icon"
+                      />
+                    </td>
                     <td className="table-data">
                       {profile.detailed.tutor_contact}
                     </td>
                   </tr>
                 </table>
                 <br />
+                <br />
+                <h4>User details</h4>
                 <table>
-                  <h4>User details</h4>
                   <tr>
                     <td>Rating</td>
                     <td></td>
@@ -215,7 +231,9 @@ const ProfileModal = () => {
                   </tr>
                   <tr>
                     <td>Qualifications</td>
-                    <td>{profile.detailed.qualifications}</td>
+                    <td className="table-data">
+                      {profile.detailed.qualifications}
+                    </td>
                   </tr>
                 </table>
               </div>
@@ -225,7 +243,6 @@ const ProfileModal = () => {
                 <Button
                   className="btn-modal btn-danger"
                   onClick={() => dispatch(toggleEditMode(true))}
-                  visibility
                 >
                   Edit profile
                 </Button>
