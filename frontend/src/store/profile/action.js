@@ -1,4 +1,6 @@
 import axios from "axios";
+import { logout } from "../auth/action";
+import { setAlert } from "../components/action";
 
 import { DOMAINS } from "../endpoints";
 import * as actionTypes from "./actionTypes";
@@ -60,11 +62,13 @@ export const updateProfile = (userId, profile) => async (dispatch) => {
       type: actionTypes.PROFILE_UPDATED,
       payload: { basic: res.data, detailed: res2.data },
     });
+    dispatch(setAlert("Profile updated", "success"));
   } catch (err) {
     console.log(err);
     dispatch({
-      type: actionTypes.PROFILE_ERROR,
+      type: actionTypes.PROFILE_UPDATE_ERROR,
     });
+    dispatch(setAlert("Profile update failed, please try again", "danger"));
   }
 };
 
@@ -74,11 +78,13 @@ export const deleteProfile = (userId) => async (dispatch) => {
       dispatch({
         type: actionTypes.PROFILE_DELETED,
       });
+      dispatch(setAlert("Account deleted", "success"));
     },
     (err) => {
       dispatch({
         type: actionTypes.PROFILE_ERROR,
       });
+      dispatch(setAlert("Account deletion failed, please try again", "danger"));
     }
   );
 };

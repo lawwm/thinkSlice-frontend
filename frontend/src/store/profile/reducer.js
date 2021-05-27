@@ -33,7 +33,10 @@ export const profile = (state = initialState, action) => {
     case actionTypes.REVIEWS_LOADED:
       return { ...state, reviews: payload, loading: false };
       
-    case actionTypes.PROFILE_ERROR:
+    case actionTypes.PROFILE_UPDATE_ERROR:
+      return { ...state, loading: false };
+
+    case actionTypes.PROFILE_ERROR: 
     case actionTypes.PROFILE_DELETED:
     case actionTypes.PROFILE_RESET:
       return { ...state, profile: null, loading: false };

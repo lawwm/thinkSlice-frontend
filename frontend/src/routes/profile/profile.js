@@ -4,15 +4,15 @@ import { useParams, useHistory } from "react-router-dom";
 
 import { getProfile, toggleDetailedView } from "../../store/profile/action.js";
 
+import NotFound from "../errorpages/notFound";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ProfileModal from "../../components/ProfileModal.js";
 import Thumbnail from "../../components/Thumbnail.js";
-import { Container, Col, Row, Media, Image } from "react-bootstrap";
+import { Container, Col, Row, Image, Modal } from "react-bootstrap";
 import "../styles.css";
 import axios from "axios";
 
 const Profile = () => {
-
   const dispatch = useDispatch();
   const history = useHistory();
   const { profile, loading } = useSelector((state) => state.profile);
@@ -45,17 +45,29 @@ const Profile = () => {
   return (
     <>
       {loading && <LoadingSpinner />}
-      {!loading && (
-        <>
-          <Container>
-            <Row className="margin-left">
-              <Media className="d-flex">
-                <Media.Body className="mr-auto p-2 col-example">
+      {!loading &&
+        (profile !== null ? (
+          <>
+            <Container>
+              <Row className="margin-left">
+                <Col className="mr-auto p-2 col-example" xs={8}>
                   <h2>{profile.basic.username}</h2>
                   <p>{profile.basic.user_bio}</p>
-                  <br />
+                </Col>
+                <Col>
+                  <div className="profile-picture circle align-self-center ml-3">
+                    <Image
+                      src={profile.basic.profile_pic}
+                      alt="profile_pic"
+                      fluid
+                      onClick={() => setPictureModal(true)}
+                      className="profile-pic"
+                    />
+                  </div>
+                </Col>
+                <Row>
                   <button className="btn profile-tag" disabled>
-                    {profile.is_tutor ? "Tutor" : "Student"}
+                    {profile.basic.is_tutor ? "Tutor" : "Student"}
                   </button>
                   <button
                     className="btn profile-button"
@@ -65,44 +77,39 @@ const Profile = () => {
                   </button>
                   <button
                     className="btn profile-button"
-                    onClick={() =>
-                      history.push("/profile/reviews/" + user_id)
-                    }
+                    onClick={() => history.push("/profile/reviews/" + user_id)}
                   >
                     Reviews
                   </button>
-                </Media.Body>
-
-                <div
-                  className="profile-picture circle align-self-center ml-3"
-                >
-                  <Image
-                    src={profile.basic.profile_pic}
-                    alt="profile_pic"
-                    fluid
-                    onClick={() => setPictureModal(true)}
-                  />
+                </Row>
+              </Row>
+              <br />
+              <hr></hr>
+              <br />
+              <Row className="margin-left">
+                <div>
+                  <h2>Videos</h2>
                 </div>
-              </Media>
-            </Row>
-            <br />
-            <hr></hr>
-            <br />
-            <Row className="margin-left">
-              <div>
-                <h2>Videos</h2>
-              </div>
-            </Row>
-            <Row className="margin-left-less">
-              <Col>{/* <Thumbnail className="remove-margin" /> */}</Col>
-              <Col></Col>
-              <Col></Col>
-            </Row>
-          </Container>
+              </Row>
+              <Row className="margin-left-less">
+                <Col>{/* <Thumbnail className="remove-margin" /> */}</Col>
+                <Col></Col>
+                <Col></Col>
+              </Row>
+            </Container>
 
-          <ProfileModal />
-        </>
-      )}
+            <ProfileModal userId={user_id} />
+
+            <Modal show={pictureModal} onHide={()=>setPictureModal(false)}>
+            <Modal.Header closeButton>
+              
+            </Modal.Header>
+            <Modal.Body></Modal.Body>
+            </Modal>
+          </>
+        ) : (
+          <NotFound />
+        ))}
     </>
   );
 };

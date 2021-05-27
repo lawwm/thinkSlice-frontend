@@ -201,6 +201,11 @@ nav a:hover,
   font-family: "Inter UI regular";
 }
 
+.reviewer {
+  margin-left: 15px;
+  margin-top: 10px;
+}
+
 .review-title {
   font-size: 24px;
   font-family: "Inter UI semi-bold";
@@ -211,11 +216,16 @@ nav a:hover,
   font-family: "Inter UI regular";
 }
 
+.star {
+  margin-bottom: 7px;
+}
+
 /* alert */
 .alert-container {
   align-items: center;
   display: flex;
   justify-content: center;
+  z-index: 999999;
 }
 
 .alert-small-container {
@@ -223,6 +233,7 @@ nav a:hover,
   width: 60%;
   top: 170px;
   z-index: 1;
+  z-index: 999999;
 }
 
 .alert-close {
