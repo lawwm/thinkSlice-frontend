@@ -1,6 +1,10 @@
 import axios from "axios"
 
-axios.defaults.baseURL = "http://localhost:8000";
+if (process.env.NODE_ENV === "development") {
+    axios.defaults.baseURL = "http://localhost:8000";
+} else if (process.env.NODE_ENV === "production") {
+    axios.defaults.baseURL = "https://thinkslice.herokuapp.com";
+}
 
 export const ENDPOINTS = {
     //AUTH
