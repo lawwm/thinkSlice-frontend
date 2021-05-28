@@ -8,13 +8,13 @@ import {
   VIDEO_LOAD_FAILED,
   UPLOAD_STARTED,
   UPLOAD_ENDED,
-  UPDATE_WINDOW_SIZE
+  // UPDATE_WINDOW_SIZE
 } from "./actionTypes"
 import { format, formatDistance } from 'date-fns'
 
 // Helper functions
 function convertUnixToTimeElapsed(date) {
-  var date = new Date(date * 1000)
+  date = new Date(date * 1000)
   return formatDistance(
     date,
     new Date(),
@@ -23,7 +23,7 @@ function convertUnixToTimeElapsed(date) {
 }
 
 function convertUnixToExactDate(date) {
-  var date = new Date(date * 1000)
+  date = new Date(date * 1000)
   console.log(date)
   console.log(format(date, 'PPP'))
   return format(date, 'PPP')

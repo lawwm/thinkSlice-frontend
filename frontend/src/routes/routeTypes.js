@@ -8,15 +8,15 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
     const { isAuthenticated, loading } = useSelector(
         (state) => state.auth
     )
-
+    const dispatch = useDispatch()
     useEffect(() => {
-        if (isAuthenticated == false) {
+        if (isAuthenticated === false) {
             dispatch(setAlert("You are not a registered user", "danger"))
         }
 
-    }, [isAuthenticated])
+    }, [isAuthenticated, dispatch])
 
-    const dispatch = useDispatch()
+
 
     return (
         <>

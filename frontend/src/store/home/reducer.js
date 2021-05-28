@@ -2,11 +2,11 @@ import {
   HOMEPAGE_LOADED,
   HOMEPAGE_LOAD_FAIL,
   VIDEO_LOADED,
-  FAILED_LOAD,
+  // FAILED_LOAD,
   VIDEO_LOADING,
   UPLOAD_STARTED,
   UPLOAD_ENDED,
-  UPDATE_WINDOW_SIZE
+  // UPDATE_WINDOW_SIZE
 } from "./actionTypes.js"
 
 const initialState = {

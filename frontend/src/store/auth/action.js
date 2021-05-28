@@ -18,7 +18,8 @@ export const loadUser = (token) => async (dispatch) => {
         const res = await axios.get(DOMAINS.AUTH + ENDPOINTS.LOAD_USER);
 
         dispatch({
-            type: actionTypes.USER_LOADED
+            type: actionTypes.USER_LOADED,
+            payload: res.data
         });
     } catch (err) {
         dispatch({

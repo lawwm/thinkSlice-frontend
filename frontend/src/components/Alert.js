@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container } from "react-bootstrap"
+// import { Container } from "react-bootstrap"
 import { removeAlert } from "../store/components/action"
 
 const AlertIcon = ({ alertType, msg }) => {
@@ -11,7 +11,7 @@ const AlertIcon = ({ alertType, msg }) => {
                     <div className="icon"><i className="fa fa-times-circle"></i></div>
                     <strong>Error!</strong> {msg}
                 </>)
-                : alertType == "success"
+                : alertType === "success"
                     ? (<>
                         <div className="icon"><i className="fa fa-check"></i></div>
                         <strong>Success!</strong> {msg}

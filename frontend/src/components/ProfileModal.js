@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loadUser, logout } from "../store/auth/action.js";
+import { logout } from "../store/auth/action.js";
 import {
   toggleDetailedView,
   toggleEditMode,
   deleteProfile,
   updateProfile,
-  getProfile,
+  // getProfile,
 } from "../store/profile/action.js";
 
-import { Modal, Button, Form, Container, Col, Row } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import whatsapp from "../images/Whatsapp.png";
 import telegram from "../images/Telegram.png";
 import "./components.css";
@@ -65,7 +65,7 @@ const ProfileModal = ({ userId }) => {
   };
 
   const { username, user_bio, is_tutor } = profileBasic;
-  const { tutor_contact, duration_classes, subjects, qualifications } =
+  const { tutor_contact, qualifications } =
     profileDetails;
 
   return (
@@ -192,7 +192,7 @@ const ProfileModal = ({ userId }) => {
         >
           <div>
             <Modal.Header>
-              <h3>{user == userId ? "Your profile details" : "Details"}</h3>
+              <h3>{user === userId ? "Your profile details" : "Details"}</h3>
               <Button
                 className="btn-circle btn-danger"
                 onClick={() => dispatch(toggleDetailedView(false))}
@@ -263,7 +263,7 @@ const ProfileModal = ({ userId }) => {
                 )}
               </div>
             </Modal.Body>
-            {user == userId ? (
+            {user === userId ? (
               <Modal.Footer>
                 <Button
                   className="btn-modal btn-danger"

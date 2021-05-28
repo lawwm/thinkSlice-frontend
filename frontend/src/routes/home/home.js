@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import { AuthNavBar } from "../../components/AuthNavBar"
@@ -71,7 +71,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(loadHomeVideos())
-  }, [])
+  }, [dispatch])
 
   return (
     <>

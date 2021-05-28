@@ -7,10 +7,10 @@ import { getProfile, toggleDetailedView } from "../../store/profile/action.js";
 import NotFound from "../errorpages/notFound";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ProfileModal from "../../components/ProfileModal.js";
-import Thumbnail from "../../components/Thumbnail.js";
+// import Thumbnail from "../../components/Thumbnail.js";
 import { Container, Col, Row, Image, Modal } from "react-bootstrap";
 import "../styles.css";
-import axios from "axios";
+// import axios from "axios";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -20,27 +20,27 @@ const Profile = () => {
 
   useEffect(() => {
     dispatch(getProfile(user_id));
-  }, [user_id]);
+  }, [user_id, dispatch]);
 
-  const [imageFile, setImageFile] = useState(null);
+  // const [imageFile, setImageFile] = useState(null);
   const [pictureModal, setPictureModal] = useState(false);
-  const onUploadChange = (file) => {
-    console.log(file);
-    console.log(file.name);
-    setImageFile(file);
-  };
+  // const onUploadChange = (file) => {
+  //   console.log(file);
+  //   console.log(file.name);
+  //   setImageFile(file);
+  // };
 
-  const uploadProfilePicture = (e) => {
-    e.preventDefault();
-    let formData = new FormData();
-    formData.append("profile_pic", imageFile, imageFile.name);
-    console.log("/api/profiles/" + localStorage.user);
-    axios.post("/api/profiles/" + localStorage.user, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-  };
+  // const uploadProfilePicture = (e) => {
+  //   e.preventDefault();
+  //   let formData = new FormData();
+  //   formData.append("profile_pic", imageFile, imageFile.name);
+  //   console.log("/api/profiles/" + localStorage.user);
+  //   axios.post("/api/profiles/" + localStorage.user, formData, {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //   });
+  // };
 
   return (
     <>
@@ -100,11 +100,11 @@ const Profile = () => {
 
             <ProfileModal userId={user_id} />
 
-            <Modal show={pictureModal} onHide={()=>setPictureModal(false)}>
-            <Modal.Header closeButton>
-              
-            </Modal.Header>
-            <Modal.Body></Modal.Body>
+            <Modal show={pictureModal} onHide={() => setPictureModal(false)}>
+              <Modal.Header closeButton>
+
+              </Modal.Header>
+              <Modal.Body></Modal.Body>
             </Modal>
           </>
         ) : (

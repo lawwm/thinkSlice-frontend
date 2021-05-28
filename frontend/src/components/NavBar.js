@@ -1,22 +1,22 @@
-import React, { useState, useRef, Fragment, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/auth/action";
-import { getProfile, resetProfile } from "../store/profile/action";
+import { resetProfile } from "../store/profile/action";
 
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import "./components.css";
 
 const NavBar = () => {
-  const history = useHistory();
+  // const history = useHistory();
   const dispatch = useDispatch();
 
   const node = useRef()
 
   const { loading, isAuthenticated, user } = useSelector((state) => state.auth);
-  const { profile } = useSelector((state) => state.profile);
+  // const { profile } = useSelector((state) => state.profile);
 
   const [expanded, setExpanded] = useState(false)
 

@@ -1,15 +1,15 @@
 import axios from "axios";
-import { logout } from "../auth/action";
+// import { logout } from "../auth/action";
 import { setAlert } from "../components/action";
 
 import { DOMAINS } from "../endpoints";
 import * as actionTypes from "./actionTypes";
 
-const config = {
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
+// const config = {
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// };
 
 export const getProfile = (userId) => async (dispatch) => {
   try {

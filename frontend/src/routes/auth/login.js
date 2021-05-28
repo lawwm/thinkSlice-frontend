@@ -82,6 +82,7 @@ const Login = () => {
                     <br />
 
                     <a
+                      href="# "
                       onClick={() => history.push("/register")}
                       type="button"
                       className="mr-auto color-black"

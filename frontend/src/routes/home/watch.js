@@ -1,8 +1,8 @@
 // include the video.js kit javascript and css
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { Row, Col, Container, Media } from 'react-bootstrap';
-import NavBar from "../../components/NavBar.js";
+// import NavBar from "../../components/NavBar.js";
 import { useParams } from 'react-router-dom';
 import { loadWatchVideos } from "../../store/home/action"
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +17,7 @@ const Guest = ({ currentVideo, videoLoading }) => {
   const playerRef = useRef();
 
   useEffect(() => {
-    if (playerRef.current != undefined) {
+    if (playerRef.current !== undefined) {
       const player = videojs(playerRef.current, {
         playbackRates: [0.5, 1, 1.5, 2],
         userActions: {
@@ -67,6 +67,7 @@ const Guest = ({ currentVideo, videoLoading }) => {
             <div>
               <Media>
                 <img
+                  alt="Creator"
                   className="video-profile-picture"
                   src={currentVideo.creator_profile.profile_pic}
                 />
@@ -106,7 +107,7 @@ const Member = ({ currentVideo, videoLoading }) => {
   const playerRef = useRef();
 
   useEffect(() => {
-    if (playerRef.current != undefined) {
+    if (playerRef.current !== undefined) {
       const player = videojs(playerRef.current, {
         playbackRates: [0.5, 1, 1.5, 2],
         userActions: {
@@ -156,6 +157,7 @@ const Member = ({ currentVideo, videoLoading }) => {
             <div>
               <Media>
                 <img
+                  alt="Creator"
                   className="video-profile-picture"
                   src={currentVideo.creator_profile.profile_pic}
                 />
@@ -199,7 +201,7 @@ const WatchPage = (props) => {
 
   useEffect(() => {
     dispatch(loadWatchVideos(videoId))
-  }, [])
+  }, [dispatch, videoId])
 
   return (
     <>

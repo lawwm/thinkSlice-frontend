@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ReviewPost from "../../components/ReviewPost";
-import { getReviews } from "../../store/profile/action";
+// import { getReviews } from "../../store/profile/action";
 
 import { Container, Col, Row, Image, Nav, Button } from "react-bootstrap";
 import "../styles.css";
 
 const Review = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const history = useHistory();
   const { user_id } = useParams();
-  const { user } = useSelector((state) => state.auth);
-  const { profile, reviews, loading } = useSelector((state) => state.profile);
+  // const { user } = useSelector((state) => state.auth);
+  const { profile, loading } = useSelector((state) => state.profile);
 
   // useEffect(() => {
   //   dispatch(getReviews(user_id));

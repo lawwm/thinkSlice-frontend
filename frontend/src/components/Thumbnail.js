@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import thumbPic from "../images/Cooking_thumbnail.jpg";
-import profilePic from "../images/Joe_Biden.jpg";
 import { Row, Media, Image } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { setVideoLoading } from "../store/home/action";

@@ -3,7 +3,6 @@ import { Switch, Route } from "react-router-dom"
 // import Alert from "../components/Alert"
 import { PrivateRoute } from "./routeTypes"
 import LoadingSpinner from "../components/LoadingSpinner";
-import NotFound from './errorpages/notFound';
 
 export const PATHS = {
     HOMEPAGE: '/',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
@@ -105,7 +105,7 @@ const Upload = () => {
     const onSubmit = (e) => {
         e.preventDefault()
         //validate fields
-        if (videoData.title == '' || videoData.subject == '' || videoData.description == '' || file == null) {
+        if (videoData.title === '' || videoData.subject === '' || videoData.description === '' || file === null) {
             //console.log("Your fields are not validated")
             dispatch(setAlert("Your fields are not validated", "danger"))
         } else {
