@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/auth/action";
 import { resetProfile } from "../store/profile/action";
 
-// import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import "./components.css";
 
 const NavBar = () => {
-  // const history = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const node = useRef()
@@ -51,18 +51,18 @@ const NavBar = () => {
           <>
             <Navbar expanded={expanded} collapseOnSelect={true} expand="lg" className="navbar fixed-top">
               <Container>
-                <Navbar.Brand className="mr-auto">ThinkSlice</Navbar.Brand>
+                <Navbar.Brand onClick={() => history.push('/')} className="mr-auto">ThinkSlice</Navbar.Brand>
                 <Navbar.Toggle onClick={() => setExpanded((prevExpanded) => (prevExpanded = !prevExpanded))} aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="ml-auto">
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
-                      to="/"
+                      to="/upload"
                       onClick={() => setExpanded(false)}
                       exact={true}
                     >
-                      Home
+                      Upload
                   </NavLink>
                     <NavLink
                       className="nav-default"
@@ -101,7 +101,7 @@ const NavBar = () => {
           <>
             <Navbar expanded={expanded} collapseOnSelect={true} expand="lg" className="navbar fixed-top">
               <Container>
-                <Navbar.Brand className="mr-auto">ThinkSlice</Navbar.Brand>
+                <Navbar.Brand onClick={() => history.push('/')} className="mr-auto">ThinkSlice</Navbar.Brand>
                 <Navbar.Toggle onClick={() => setExpanded((prevExpanded) => (prevExpanded = !prevExpanded))} aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="ml-auto">

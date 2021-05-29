@@ -24,7 +24,6 @@ const App = () => {
     <Provider store={store} className="App">
       <Alert />
       <BrowserRouter>
-
         <NavBar />
         <Routes />
       </BrowserRouter>

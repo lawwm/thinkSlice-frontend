@@ -53,9 +53,9 @@ const Register = () => {
           <Container>
             <Row>
               <Col>
-                <h2>Register here.</h2>
                 <form onSubmit={(e) => onSubmit(e)}>
                   <div className="register-form-div">
+                    <h2>Register here.</h2>
                     <div class="form-group row">
                       <input
                         type="text"

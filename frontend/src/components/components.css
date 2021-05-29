@@ -1,21 +1,21 @@
 @font-face {
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold';
   font-weight: 400;
-  src: url(../fonts/Inter-SemiBold.ttf) format("truetype");
+  src: url(../fonts/Inter-SemiBold.ttf) format('truetype');
 }
 
 @font-face {
-  font-family: "Roboto medium";
-  src: url(../fonts//Roboto-Medium.ttf) format("truetype");
+  font-family: 'Roboto medium';
+  src: url(../fonts//Roboto-Medium.ttf) format('truetype');
 }
 
 @font-face {
-  font-family: "Inter UI regular";
-  src: url(../fonts//Inter-Regular.ttf) format("truetype");
+  font-family: 'Inter UI regular';
+  src: url(../fonts//Inter-Regular.ttf) format('truetype');
 }
 
 .navbar {
-  padding: 50px 0px;
+  padding: 25px 0px;
   background-color: #fcfcfc;
 }
 
@@ -23,13 +23,14 @@
   color: #ff4400 !important;
   padding-left: 10px;
   font-size: 36px;
-  font-family: "Inter UI semi-bold" !important;
+  font-family: 'Inter UI semi-bold' !important;
+  cursor: pointer;
 }
 
 .nav-default {
   color: black !important;
   font-size: 24px;
-  font-family: "Inter UI semi-bold" !important;
+  font-family: 'Inter UI semi-bold' !important;
   margin-left: 40px;
 }
 
@@ -38,7 +39,7 @@ nav a:hover,
   color: #ff4400 !important;
   font-size: 24px;
   margin-left: 40px;
-  font-family: "Inter UI semi-bold" !important;
+  font-family: 'Inter UI semi-bold' !important;
   text-decoration: underline !important;
 }
 
@@ -64,7 +65,7 @@ nav a:hover,
   position: absolute;
   height: 33px;
   width: 73px;
-  font-family: "Roboto";
+  font-family: 'Roboto';
   font-size: 14px;
   padding-top: 6px;
   color: rgba(255, 255, 255, 0.85);
@@ -80,7 +81,7 @@ nav a:hover,
   height: 33px;
   width: 115px;
 
-  font-family: "Roboto";
+  font-family: 'Roboto';
   font-size: 14px;
   padding-top: 6px;
   color: rgba(255, 255, 255, 0.85);
@@ -107,7 +108,7 @@ nav a:hover,
 }
 
 .thumbnail-title {
-  font-family: "Roboto medium";
+  font-family: 'Roboto medium';
   font-size: 19px;
   margin-bottom: 2px;
 }
@@ -116,7 +117,7 @@ nav a:hover,
   font-size: 14px;
   padding: 0px 6px 0px 0px;
   color: #808088;
-  font-family: "Roboto regular";
+  font-family: 'Roboto regular';
 }
 
 .thumbnail-line {
@@ -124,7 +125,7 @@ nav a:hover,
   border-left: solid #808088 thin;
   padding: 0px 2px 0px 8px;
   color: #808088;
-  font-family: "Roboto regular";
+  font-family: 'Roboto regular';
 }
 
 .btn-circle {
@@ -198,7 +199,7 @@ nav a:hover,
 .reviewer,
 .review-date {
   font-size: 20px;
-  font-family: "Inter UI regular";
+  font-family: 'Inter UI regular';
 }
 
 .reviewer {
@@ -208,12 +209,12 @@ nav a:hover,
 
 .review-title {
   font-size: 24px;
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold';
 }
 
 .review-text {
   font-size: 18px;
-  font-family: "Inter UI regular";
+  font-family: 'Inter UI regular';
 }
 
 .star {

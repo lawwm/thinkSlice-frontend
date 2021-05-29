@@ -34,6 +34,7 @@ p {
 
 /* auth page */
 .login-form-div {
+  margin-top: 50px;
   min-width: 500px;
   width: 540px;
 }
@@ -44,6 +45,7 @@ p {
 }
 
 .register-form-div {
+  margin-top: 50px;
   width: 540px;
 }
 
