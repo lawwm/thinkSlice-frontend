@@ -1,22 +1,90 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router-dom";
 
 import LoadingSpinner from "../../components/LoadingSpinner.js";
-import { AuthNavBar } from "../../components/AuthNavBar"
-import { Container, Col, Row } from "react-bootstrap";
+import NavBar from "../../components/NavBar"
+// import { AuthNavBar } from "../../components/AuthNavBar"
+import { Container, Col, Row, Dropdown } from "react-bootstrap";
 import "../styles.css";
 
-import { loadHomeVideos } from "../../store/home/action"
+import { changeFilter, changeAscending, changePage, loadHomeVideos, clearVideos, setVideoLoading } from "../../store/home/action"
 import Thumbnail from "../../components/Thumbnail"
+// import { findByAltText } from "@testing-library/dom";
+
+const HomeSpinner = () => {
+  return (
+    <>
+      <div className="home-spinner-child">
+        <LoadingSpinner />
+      </div>
+    </>
+  )
+}
+
+const FilterOptions = ({ filtered, ascending, setFilterOption, setOrderOption }) => {
+  return (
+    <>
+      <Row>
+        <Col md={6}>
+          <div>{"Filter: " + filtered + " in "
+            + (!ascending ? "descending order" : "ascending order")}
+          </div>
+        </Col>
+        <Col md={6}>
+          <div className="dropdown-div">
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Sort by
+            </Dropdown.Toggle>
+
+              <Dropdown.Menu align="right">
+                <Dropdown.Item
+                  onClick={() => setFilterOption("popular")}
+                  as="button"
+                >
+                  Popular
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => setFilterOption("recent")}
+                  as="button"
+                >
+                  Recent
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Order
+            </Dropdown.Toggle>
+
+              <Dropdown.Menu align="right">
+                <Dropdown.Item
+                  onClick={() => setOrderOption(true)}
+                  as="button"
+                >Ascending
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => setOrderOption(false)}
+                  as="button">
+                  Descending
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+        </Col>
+      </Row>
+    </>
+  )
+}
 
 const VideoGrid = ({ videos }) => {
   return (
     <>
       {videos.map((videoRow) => {
         return (
-          <div className="home-video-row">
-            <Col md={"auto"} key={videoRow.id}>
+          <div key={videoRow.id} className="home-video-row">
+            <Col md={"auto"} >
               <Thumbnail
                 title={videoRow.video_title}
                 username={videoRow.creator_profile.username}
@@ -35,51 +103,97 @@ const VideoGrid = ({ videos }) => {
   )
 }
 
-const Member = ({ videos, videoLoading }) => {
-  return (
-    <Container>
-      <h2>Welcome, registered user.</h2>
-      <Row className="justify-content-md-left">
-        {videoLoading
-          ? <LoadingSpinner />
-          : <VideoGrid videos={videos} />
-        }
-      </Row>
-    </Container>
-  )
-}
-
-const Guest = ({ videos, videoLoading }) => {
-  return (
-    <Container>
-      <h2>Log in to get started.</h2>
-      <Row className="justify-content-md-left">
-        {videoLoading
-          ? <LoadingSpinner />
-          : <VideoGrid videos={videos} />
-        }
-      </Row>
-    </Container>
-  )
-}
-
-
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { videos, videoLoading } = useSelector((state) => state.home)
+  const { filterBy, ascending, page, videos, videoLoading, reachedEnd } = useSelector((state) => state.home)
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+
+  const loader = useRef(null);
+
+
 
   useEffect(() => {
-    dispatch(loadHomeVideos())
+    let options = {
+      threshold: 1.0
+    }
+    const handleObserver = (entities) => {
+      const target = entities[0];
+      if (target.isIntersecting) {
+        dispatch(changePage(prev => prev + 1))
+      }
+    }
+    const observer = new IntersectionObserver(handleObserver, options);
+    if (loader.current) {
+      observer.observe(loader.current)
+    }
   }, [dispatch])
+
+  useEffect(() => {
+    dispatch(setVideoLoading())
+    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd))
+  }, [page, dispatch, ascending, filterBy, reachedEnd])
+
+  const setFilterOption = (input) => {
+    dispatch(changeFilter(input))
+    dispatch(clearVideos())
+    dispatch(setVideoLoading())
+    dispatch(loadHomeVideos(input, ascending, 1, false))
+  }
+
+  const setOrderOption = (input) => {
+    dispatch(changeAscending(input))
+    dispatch(clearVideos())
+    dispatch(setVideoLoading())
+    dispatch(loadHomeVideos(filterBy, input, 1, false))
+  }
 
   return (
     <>
-      <AuthNavBar
-        member={<Member videos={videos} videoLoading={videoLoading} />}
-        guest={<Guest videos={videos} videoLoading={videoLoading} />}
-
-      />
+      {loading && <LoadingSpinner />}
+      {!loading &&
+        (isAuthenticated ? (
+          <>
+            <NavBar />
+            <Container>
+              <h2>Welcome, registered user.</h2>
+              <FilterOptions
+                filtered={filterBy}
+                ascending={ascending}
+                setFilterOption={setFilterOption}
+                setOrderOption={setOrderOption}
+              />
+              <hr />
+              <Row className="justify-content-md-left">
+                {!videoLoading && <VideoGrid videos={videos} />}
+              </Row>
+              <div ref={loader} className="home-footer">
+                {videoLoading && <HomeSpinner />}
+              </div>
+            </Container>
+          </>
+        ) : (
+          <>
+            <NavBar />
+            <Container>
+              <h2>Log in to get started.</h2>
+              <FilterOptions
+                filtered={filterBy}
+                ascending={ascending}
+                setFilterOption={setFilterOption}
+                setOrderOption={setOrderOption}
+              />
+              <hr />
+              <Row className="justify-content-md-left">
+                {!videoLoading && <VideoGrid videos={videos} />}
+              </Row>
+              <div ref={loader} className="home-footer">
+                {videoLoading && <HomeSpinner />}
+              </div>
+            </Container>
+          </>
+        ))
+      }
     </>
   );
 };

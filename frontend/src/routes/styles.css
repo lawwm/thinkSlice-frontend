@@ -281,8 +281,43 @@ p {
 }
 
 /* home */
+
+.dropdown-div {
+  display: flex;
+  float: right;
+}
+
+#dropdown-basic {
+  background-color: #fcfcfc;
+  border-color: #fcfcfc;
+  color: rgb(51, 51, 51);
+}
+
+#dropdown-basic:focus {
+  background-color: #fcfcfc;
+  border-color: #fcfcfc;
+  color: rgb(51, 51, 51);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.home-spinner-child {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+
+.home-footer {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background-color: #fcfcfc;
+  position: relative;
+}
+
 .home-video-row {
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 .tabs {
   font-size: 20px;

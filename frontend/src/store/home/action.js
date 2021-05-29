@@ -8,9 +8,23 @@ import {
   VIDEO_LOAD_FAILED,
   UPLOAD_STARTED,
   UPLOAD_ENDED,
-  // UPDATE_WINDOW_SIZE
+  CLEAR_VIDEO_PAGE,
+  REACHED_END,
+  CHANGE_FILTER,
+  CHANGE_ASCENDING,
+  CHANGE_PAGE
 } from "./actionTypes"
 import { format, formatDistance } from 'date-fns'
+
+// function chunkArray(myArray, chunk_size) {
+//   let results = [];
+
+//   while (myArray.length) {
+//     results.push(myArray.splice(0, chunk_size))
+//   }
+
+//   return results
+// }
 
 // Helper functions
 function convertUnixToTimeElapsed(date) {
@@ -29,22 +43,70 @@ function convertUnixToExactDate(date) {
   return format(date, 'PPP')
 }
 
-// function chunkArray(myArray, chunk_size) {
-//   let results = [];
-
-//   while (myArray.length) {
-//     results.push(myArray.splice(0, chunk_size))
-//   }
-
-//   return results
-// }
-
 // Actions
-export const loadHomeVideos = (filtered = "created_at", ascending = "false", num = 1) => async (dispatch) => {
+export const changeFilter = (filter) => async (dispatch) => {
   try {
+    dispatch({
+      type: CHANGE_FILTER,
+      payload: filter
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const changeAscending = (order) => async (dispatch) => {
+  try {
+    dispatch({
+      type: CHANGE_ASCENDING,
+      payload: order
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const changePage = (page) => async (dispatch) => {
+  try {
+    dispatch({
+      type: CHANGE_PAGE,
+      payload: page
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const clearVideos = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: CLEAR_VIDEO_PAGE
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, reachedEnd = false) => async (dispatch) => {
+  try {
+    if (reachedEnd) {
+      return
+    }
+    let filterBy
+    if (filtered === "recent") {
+      filterBy = "created_at"
+    } else {
+      filterBy = "views"
+    }
+    let order = ascending ? "true" : "false"
     const res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.LIST_VIDEOS
-      + "?n=" + num + "&filter_by=" + filtered + "&ascending=" + ascending);
+      + "?n=" + num + "&filter_by=" + filterBy + "&ascending=" + order);
     let data = res.data
+    if (data.length === 0) {
+      dispatch({
+        type: REACHED_END
+      })
+    }
     data = data.map(video => {
       return {
         ...video,
