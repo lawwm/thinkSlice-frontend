@@ -1,5 +1,6 @@
 // include the video.js kit javascript and css
 import React, { useEffect, useRef } from 'react'
+import { useHistory } from "react-router-dom";
 
 import { Row, Col, Container, Media } from 'react-bootstrap';
 // import NavBar from "../../components/NavBar.js";
@@ -15,6 +16,7 @@ import "../styles.css";
 
 const Guest = ({ currentVideo, videoLoading }) => {
   const playerRef = useRef();
+  const history = useHistory()
 
   useEffect(() => {
     if (playerRef.current !== undefined) {
@@ -68,6 +70,7 @@ const Guest = ({ currentVideo, videoLoading }) => {
               <Media>
                 <img
                   alt="Creator"
+                  onClick={() => history.push('/profile/' + currentVideo.creator_profile.user)}
                   className="video-profile-picture"
                   src={currentVideo.creator_profile.profile_pic}
                 />
@@ -105,6 +108,7 @@ const Guest = ({ currentVideo, videoLoading }) => {
 
 const Member = ({ currentVideo, videoLoading }) => {
   const playerRef = useRef();
+  const history = useHistory()
 
   useEffect(() => {
     if (playerRef.current !== undefined) {
@@ -159,6 +163,7 @@ const Member = ({ currentVideo, videoLoading }) => {
                 <img
                   alt="Creator"
                   className="video-profile-picture"
+                  onClick={() => history.push('/profile/' + currentVideo.creator_profile.user)}
                   src={currentVideo.creator_profile.profile_pic}
                 />
                 <Media.Body >

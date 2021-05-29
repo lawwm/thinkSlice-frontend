@@ -28,6 +28,7 @@ const Upload = () => {
                 return res.data.url
             } catch (err) {
                 setProgressState(0)
+                console.log(err.message)
                 dispatch(setAlert('Error getting an upload URL', "danger"))
                 dispatch(endUpload())
                 // console.log('Error getting an upload URL', err)
@@ -73,6 +74,7 @@ const Upload = () => {
             } catch (err) {
                 console.log(err)
                 dispatch(endUpload())
+                console.log(err.message)
                 dispatch(setAlert("Failed to upload video", "danger"))
                 setProgressState(0)
             }
@@ -88,6 +90,7 @@ const Upload = () => {
 
     const [fileName, setFileName] = useState("")
     const [file, setFile] = useState(null)
+    const [metadata, setMetadata] = React.useState(null);
 
     const onChange = (e) => {
         setVideoData({
@@ -99,15 +102,20 @@ const Upload = () => {
     const onUploadChange = (videoFile) => {
         setFileName(videoFile.name)
         setFile(videoFile)
-        // console.log(videoFile)
     }
 
     const onSubmit = (e) => {
         e.preventDefault()
         //validate fields
-        if (videoData.title === '' || videoData.subject === '' || videoData.description === '' || file === null) {
+        if (videoData.title === '' || videoData.subject === '' || videoData.description === '') {
             //console.log("Your fields are not validated")
-            dispatch(setAlert("Your fields are not validated", "danger"))
+            dispatch(setAlert("There are empty fields remaining", "danger"))
+        } else if (file === null || metadata === null) {
+            dispatch(setAlert("You have not uploaded any files", "danger"))
+        } else if (metadata.duration > 60) {
+            dispatch(setAlert("Your video file exceeds 60 seconds", "danger"))
+            // } else if (metadata.duration < 10) {
+            //     dispatch(setAlert("Your video file is too short", "danger"))
         } else {
             //console.log("beginning uploading file")
             dispatch(startUpload())
@@ -192,7 +200,23 @@ const Upload = () => {
                                     </Col>
                                 </Row>
                             </form>
-                            {/* <button onClick={() => dispatch(startUpload())}>Upload</button> */}
+                            {file && (
+                                <video
+                                    controls={true}
+                                    width="250"
+                                    className="upload-video-helper"
+                                    onLoadedMetadata={e => {
+                                        setMetadata({
+                                            videoHeight: e.target.videoHeight,
+                                            videoWidth: e.target.videoWidth,
+                                            duration: e.target.duration
+                                        });
+                                    }}
+                                >
+                                    <source src={URL.createObjectURL(file)}
+                                        type="video/mp4" />
+                                </video>
+                            )}
                         </div>
                     </Container>
                 </>

@@ -225,6 +225,10 @@ p {
   height: 44px;
 }
 
+.upload-video-helper {
+  display: none;
+}
+
 /* Video Page */
 .video-header {
   margin-top: 25px;
@@ -252,6 +256,7 @@ p {
   border-radius: 50%;
   height: 75px;
   width: 75px;
+  cursor: pointer;
 }
 
 .video-name-reviews {
