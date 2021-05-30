@@ -92,6 +92,7 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
     if (reachedEnd) {
       return
     }
+    dispatch(setVideoLoading())
     let filterBy
     if (filtered === "recent") {
       filterBy = "created_at"
@@ -106,6 +107,7 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
       dispatch({
         type: REACHED_END
       })
+      return
     }
     data = data.map(video => {
       return {

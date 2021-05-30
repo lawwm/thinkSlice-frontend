@@ -5,7 +5,6 @@ import {
   VIDEO_LOADING,
   UPLOAD_STARTED,
   UPLOAD_ENDED,
-  CLEAR_VIDEO_PAGE,
   REACHED_END,
   CHANGE_FILTER,
   CHANGE_ASCENDING,
@@ -34,12 +33,13 @@ export const home = (state = initialState, action) => {
         videos: state.videos.concat(payload),
         videoLoading: false
       }
-    case CLEAR_VIDEO_PAGE:
-      return {
-        ...state,
-        videos: [],
-        reachedEnd: false
-      }
+    // case CLEAR_VIDEO_PAGE:
+    //   return {
+    //     ...state,
+    //     videos: [],
+    //     reachedEnd: false,
+    //     page: 1
+    //   }
     case VIDEO_LOADED:
       return {
         ...state,
@@ -73,17 +73,23 @@ export const home = (state = initialState, action) => {
     case CHANGE_FILTER:
       return {
         ...state,
-        filterBy: payload
+        filterBy: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1
       }
     case CHANGE_ASCENDING:
       return {
         ...state,
-        ascending: payload
+        ascending: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1
       }
     case CHANGE_PAGE:
       return {
         ...state,
-        page: payload
+        page: state.page + 1
       }
     default:
       return state;

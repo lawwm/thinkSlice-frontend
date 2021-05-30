@@ -8,7 +8,7 @@ import NavBar from "../../components/NavBar"
 import { Container, Col, Row, Dropdown } from "react-bootstrap";
 import "../styles.css";
 
-import { changeFilter, changeAscending, changePage, loadHomeVideos, clearVideos, setVideoLoading } from "../../store/home/action"
+import { changeFilter, changeAscending, changePage, loadHomeVideos } from "../../store/home/action"
 import Thumbnail from "../../components/Thumbnail"
 // import { findByAltText } from "@testing-library/dom";
 
@@ -120,32 +120,26 @@ const Home = () => {
     const handleObserver = (entities) => {
       const target = entities[0];
       if (target.isIntersecting) {
-        dispatch(changePage(prev => prev + 1))
+        dispatch(changePage())
       }
     }
     const observer = new IntersectionObserver(handleObserver, options);
     if (loader.current) {
       observer.observe(loader.current)
     }
+
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(setVideoLoading())
     dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd))
   }, [page, dispatch, ascending, filterBy, reachedEnd])
 
   const setFilterOption = (input) => {
     dispatch(changeFilter(input))
-    dispatch(clearVideos())
-    dispatch(setVideoLoading())
-    dispatch(loadHomeVideos(input, ascending, 1, false))
   }
 
   const setOrderOption = (input) => {
     dispatch(changeAscending(input))
-    dispatch(clearVideos())
-    dispatch(setVideoLoading())
-    dispatch(loadHomeVideos(filterBy, input, 1, false))
   }
 
   return (
