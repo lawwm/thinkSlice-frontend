@@ -28,18 +28,15 @@ export const home = (state = initialState, action) => {
 
   switch (type) {
     case HOMEPAGE_LOADED:
+      let payloadId = payload.map(video => video.id)
+      let newVideos = state.videos.filter(val => !payloadId.includes(val.id))
+      console.log(payload.concat(newVideos))
       return {
         ...state,
-        videos: state.videos.concat(payload),
+        // videos: state.videos.concat(payload),
+        videos: payload.concat(state.videos.filter(val => !(payload.map(video => video.id)).includes(val.id))),
         videoLoading: false
       }
-    // case CLEAR_VIDEO_PAGE:
-    //   return {
-    //     ...state,
-    //     videos: [],
-    //     reachedEnd: false,
-    //     page: 1
-    //   }
     case VIDEO_LOADED:
       return {
         ...state,
@@ -53,7 +50,8 @@ export const home = (state = initialState, action) => {
       }
     case HOMEPAGE_LOAD_FAIL:
       return {
-        ...state
+        ...state,
+        videoLoading: false
       }
     case UPLOAD_STARTED:
       return {

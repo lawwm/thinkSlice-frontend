@@ -9,7 +9,7 @@ import * as UpChunk from '@mux/upchunk'
 import axios from 'axios'
 import "../styles.css";
 import { setAlert } from "../../store/components/action"
-import { startUpload, endUpload } from "../../store/home/action.js";
+import { startUpload, endUpload, setVideoLoading } from "../../store/home/action.js";
 
 const Upload = () => {
     const dispatch = useDispatch()
@@ -65,11 +65,13 @@ const Upload = () => {
             };
             try {
                 const body = JSON.stringify(videoData)
+                console.log(body)
                 const res = await axios.post('/api/videos/assets/' + url_id, body, config)
                 console.log(res.data)
                 dispatch(endUpload())
                 dispatch(setAlert("Successfully uploaded video", "success"))
                 setProgressState(0)
+                dispatch(setVideoLoading())
                 history.push("/watch/" + res.data.id)
             } catch (err) {
                 console.log(err)
@@ -117,6 +119,7 @@ const Upload = () => {
             // } else if (metadata.duration < 10) {
             //     dispatch(setAlert("Your video file is too short", "danger"))
         } else {
+            console.log(JSON.stringify(videoData))
             //console.log("beginning uploading file")
             dispatch(startUpload())
             uploadFile(file)

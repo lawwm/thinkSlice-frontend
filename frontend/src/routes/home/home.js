@@ -111,24 +111,30 @@ const Home = () => {
 
   const loader = useRef(null);
 
-
-
   useEffect(() => {
     let options = {
       threshold: 1.0
     }
+
+    const node = loader.current
+
     const handleObserver = (entities) => {
       const target = entities[0];
       if (target.isIntersecting) {
-        dispatch(changePage())
+        if (!reachedEnd) {
+          dispatch(changePage())
+        }
       }
     }
     const observer = new IntersectionObserver(handleObserver, options);
     if (loader.current) {
-      observer.observe(loader.current)
+      observer.observe(node)
     }
 
-  }, [dispatch])
+    return () => {
+      observer.disconnect()
+    }
+  }, [dispatch, reachedEnd])
 
   useEffect(() => {
     dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd))

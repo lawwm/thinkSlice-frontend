@@ -52,7 +52,7 @@ const Guest = ({ currentVideo, videoLoading }) => {
               width="100%"
               data-setup='{}'
               ref={playerRef}
-              fluid
+              fluid="true"
             >
             </video>
             <div className="video-header">
@@ -144,7 +144,7 @@ const Member = ({ currentVideo, videoLoading }) => {
               width="100%"
               data-setup='{}'
               ref={playerRef}
-              fluid
+              fluid="true"
             >
             </video>
             <div className="video-header">

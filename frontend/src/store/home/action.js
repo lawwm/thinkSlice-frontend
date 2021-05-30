@@ -89,10 +89,15 @@ export const clearVideos = () => async (dispatch) => {
 
 export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, reachedEnd = false) => async (dispatch) => {
   try {
+
+    //Prevent getting API when last query has been reached
+    //Else set loading
     if (reachedEnd) {
       return
     }
     dispatch(setVideoLoading())
+
+    //field manipulation
     let filterBy
     if (filtered === "recent") {
       filterBy = "created_at"
@@ -100,15 +105,24 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
       filterBy = "views"
     }
     let order = ascending ? "true" : "false"
+
+    // GET video arrays
     const res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.LIST_VIDEOS
       + "?n=" + num + "&filter_by=" + filterBy + "&ascending=" + order);
     let data = res.data
+
+    //Set reached end to true if no data found
     if (data.length === 0) {
       dispatch({
         type: REACHED_END
       })
+      dispatch({
+        type: HOMEPAGE_LOAD_FAIL
+      })
       return
     }
+
+    //Manipulate fields
     data = data.map(video => {
       return {
         ...video,
