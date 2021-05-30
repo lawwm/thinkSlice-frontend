@@ -88,6 +88,7 @@ const Upload = () => {
         video_title: "",
         subject: "",
         video_description: "",
+        duration: 0
     });
 
     const [fileName, setFileName] = useState("")
@@ -119,7 +120,10 @@ const Upload = () => {
             // } else if (metadata.duration < 10) {
             //     dispatch(setAlert("Your video file is too short", "danger"))
         } else {
-            console.log(JSON.stringify(videoData))
+            setVideoData({
+                ...videoData,
+                duration: metadata.duration
+            })
             //console.log("beginning uploading file")
             dispatch(startUpload())
             uploadFile(file)
