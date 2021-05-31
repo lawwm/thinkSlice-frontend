@@ -20,8 +20,11 @@ const initialState = {
   reachedEnd: false,
   filterBy: "recent",
   ascending: false,
-  page: 1
+  page: 0
 }
+//set initial page to zero so initial loadhomevideo action before 
+//bottom div is observed is negated 
+
 
 export const home = (state = initialState, action) => {
   const { type, payload } = action;
@@ -30,11 +33,9 @@ export const home = (state = initialState, action) => {
     case HOMEPAGE_LOADED:
       let payloadId = payload.map(video => video.id)
       let newVideos = state.videos.filter(val => !payloadId.includes(val.id))
-      console.log(payload.concat(newVideos))
       return {
         ...state,
-        // videos: state.videos.concat(payload),
-        videos: payload.concat(state.videos.filter(val => !(payload.map(video => video.id)).includes(val.id))),
+        videos: newVideos.concat(payload),
         videoLoading: false
       }
     case VIDEO_LOADED:
@@ -74,7 +75,7 @@ export const home = (state = initialState, action) => {
         filterBy: payload,
         videos: [],
         reachedEnd: false,
-        page: 1
+        page: 0
       }
     case CHANGE_ASCENDING:
       return {
@@ -82,7 +83,7 @@ export const home = (state = initialState, action) => {
         ascending: payload,
         videos: [],
         reachedEnd: false,
-        page: 1
+        page: 0
       }
     case CHANGE_PAGE:
       return {

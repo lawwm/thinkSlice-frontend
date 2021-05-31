@@ -124,6 +124,7 @@ const Upload = () => {
                 ...videoData,
                 duration: metadata.duration
             })
+            dispatch(setAlert("Uploading video... do not leave page", "success"))
             //console.log("beginning uploading file")
             dispatch(startUpload())
             uploadFile(file)

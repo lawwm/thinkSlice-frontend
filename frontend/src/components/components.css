@@ -196,6 +196,8 @@ nav a:hover,
   width: 50px;
 }
 
+/* review */
+
 .reviewer,
 .review-date {
   font-size: 20px;
@@ -382,4 +384,57 @@ button.alert-close {
 .alert-white.alert-info .icon:after {
   border-color: #3a8ace;
   background: #4d90fd;
+}
+
+/* comment */
+.commenter,
+.comment-date {
+  font-size: 20px;
+  font-family: 'Inter UI regular';
+  background-color: #fcfcfc;
+}
+
+.commenter {
+  margin-left: 15px;
+  margin-top: 10px;
+}
+
+.comment-title {
+  display: flex;
+}
+
+.comment-name {
+  font-family: 'Inter UI semi-bold';
+  font-size: 20px;
+}
+
+.comment-date {
+  font-size: 15px;
+  padding-top: 5px;
+  padding-left: 8px;
+}
+
+.comment-text {
+  font-size: 16px;
+  font-family: 'Inter UI regular';
+  margin-bottom: 5px;
+}
+
+.comment-button {
+  font-family: 'Inter UI semi-bold';
+  background-color: #fcfcfc;
+  font-size: 16px;
+  border: 0px;
+  margin-right: 9px;
+  padding: 0px;
+}
+
+.replies-button {
+  font-family: 'Inter UI semi-bold';
+  background-color: #fcfcfc;
+  color: #f40;
+  font-size: 16px;
+  border: 0px;
+  margin-right: 16px;
+  padding: 0px;
 }

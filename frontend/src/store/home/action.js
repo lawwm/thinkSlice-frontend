@@ -89,6 +89,10 @@ export const clearVideos = () => async (dispatch) => {
 
 export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, reachedEnd = false) => async (dispatch) => {
   try {
+    //zero and below are invalid queries
+    if (num <= 0) {
+      return
+    }
 
     //Prevent getting API when last query has been reached
     //Else set loading
@@ -129,7 +133,7 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
         created_at: convertUnixToTimeElapsed(video.created_at)
       }
     })
-    console.log(data)
+    // console.log(data)
 
     dispatch({
       type: HOMEPAGE_LOADED,

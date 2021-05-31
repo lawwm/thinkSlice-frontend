@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import NavBar from "../../components/NavBar"
-// import { AuthNavBar } from "../../components/AuthNavBar"
+import { AuthNavBar } from "../../components/AuthNavBar"
 import { Container, Col, Row, Dropdown } from "react-bootstrap";
 import "../styles.css";
 
@@ -27,7 +27,7 @@ const FilterOptions = ({ filtered, ascending, setFilterOption, setOrderOption })
     <>
       <Row>
         <Col md={6}>
-          <div>{"Filter: " + filtered + " in "
+          <div className="home-filter-description">{"Filter: " + filtered + " in "
             + (!ascending ? "descending order" : "ascending order")}
           </div>
         </Col>
@@ -103,32 +103,33 @@ const VideoGrid = ({ videos }) => {
   )
 }
 
-
-const Home = () => {
+const Member = () => {
   const dispatch = useDispatch();
   const { filterBy, ascending, page, videos, videoLoading, reachedEnd } = useSelector((state) => state.home)
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
 
   const loader = useRef(null);
 
   useEffect(() => {
-    let options = {
-      threshold: 1.0
-    }
+    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd))
+  }, [dispatch, page, ascending, filterBy, reachedEnd])
 
-    const node = loader.current
+  useEffect(() => {
+    let options = {
+      threshold: 0.5
+    }
 
     const handleObserver = (entities) => {
       const target = entities[0];
       if (target.isIntersecting) {
         if (!reachedEnd) {
+          // console.log("Just saw the footer man!")
           dispatch(changePage())
         }
       }
     }
     const observer = new IntersectionObserver(handleObserver, options);
     if (loader.current) {
-      observer.observe(node)
+      observer.observe(loader.current)
     }
 
     return () => {
@@ -136,9 +137,6 @@ const Home = () => {
     }
   }, [dispatch, reachedEnd])
 
-  useEffect(() => {
-    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd))
-  }, [page, dispatch, ascending, filterBy, reachedEnd])
 
   const setFilterOption = (input) => {
     dispatch(changeFilter(input))
@@ -150,50 +148,106 @@ const Home = () => {
 
   return (
     <>
-      {loading && <LoadingSpinner />}
-      {!loading &&
-        (isAuthenticated ? (
-          <>
-            <NavBar />
-            <Container>
-              <h2>Welcome, registered user.</h2>
-              <FilterOptions
-                filtered={filterBy}
-                ascending={ascending}
-                setFilterOption={setFilterOption}
-                setOrderOption={setOrderOption}
-              />
-              <hr />
-              <Row className="justify-content-md-left">
-                {!videoLoading && <VideoGrid videos={videos} />}
-              </Row>
-              <div ref={loader} className="home-footer">
-                {videoLoading && <HomeSpinner />}
-              </div>
-            </Container>
-          </>
-        ) : (
-          <>
-            <NavBar />
-            <Container>
-              <h2>Log in to get started.</h2>
-              <FilterOptions
-                filtered={filterBy}
-                ascending={ascending}
-                setFilterOption={setFilterOption}
-                setOrderOption={setOrderOption}
-              />
-              <hr />
-              <Row className="justify-content-md-left">
-                {!videoLoading && <VideoGrid videos={videos} />}
-              </Row>
-              <div ref={loader} className="home-footer">
-                {videoLoading && <HomeSpinner />}
-              </div>
-            </Container>
-          </>
-        ))
+      <NavBar />
+      <Container>
+        <h2>Welcome, registered user.</h2>
+        <FilterOptions
+          filtered={filterBy}
+          ascending={ascending}
+          setFilterOption={setFilterOption}
+          setOrderOption={setOrderOption}
+        />
+        <hr className="home-filter-break" />
+        <Row className="justify-content-md-left">
+          <VideoGrid videos={videos} />
+        </Row>
+        <div ref={loader} className="home-footer">
+          {videoLoading && <HomeSpinner />}
+          {reachedEnd && <div className="home-content-end">
+            <hr className="home-footer-break" />
+            <h5>You've reached the end of the page.</h5>
+            <a href="#top">Back to top.</a>
+          </div>}
+        </div>
+      </Container>
+    </>
+  )
+}
+
+const Guest = () => {
+  const dispatch = useDispatch();
+  const { filterBy, ascending, page, videos, videoLoading, reachedEnd } = useSelector((state) => state.home)
+
+  const loader = useRef(null);
+
+  useEffect(() => {
+    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd))
+  }, [dispatch, page, ascending, filterBy, reachedEnd])
+
+  useEffect(() => {
+    let options = {
+      threshold: 0.5
+    }
+
+    const handleObserver = (entities) => {
+      const target = entities[0];
+      if (target.isIntersecting) {
+        if (!reachedEnd) {
+          // console.log("Just saw the footer man!")
+          dispatch(changePage())
+        }
       }
+    }
+    const observer = new IntersectionObserver(handleObserver, options);
+    if (loader.current) {
+      observer.observe(loader.current)
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [dispatch, reachedEnd])
+
+  const setFilterOption = (input) => {
+    dispatch(changeFilter(input))
+  }
+
+  const setOrderOption = (input) => {
+    dispatch(changeAscending(input))
+  }
+
+  return (
+    <>
+      <NavBar />
+      <Container>
+        <h2>Log in to get started.</h2>
+        <FilterOptions
+          filtered={filterBy}
+          ascending={ascending}
+          setFilterOption={setFilterOption}
+          setOrderOption={setOrderOption}
+        />
+        <hr className="home-filter-break" />
+        <Row className="justify-content-md-left">
+          <VideoGrid videos={videos} />
+        </Row>
+        <div ref={loader} className="home-footer">
+          {videoLoading && <HomeSpinner />}
+          {reachedEnd && <div className="home-content-end">
+            <hr className="home-footer-break" />
+            <h5>You've reached the end of the page.</h5>
+            <a href="#top">Back to top.</a>
+          </div>}
+        </div>
+      </Container>
+    </>
+  )
+}
+
+const Home = () => {
+  return (
+    <>
+      <AuthNavBar member={<Member />} guest={<Guest />} />
     </>
   );
 };

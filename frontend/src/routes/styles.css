@@ -312,18 +312,38 @@ p {
   left: 50%;
 }
 
+.home-filter-description {
+  padding-top: 7px;
+}
+
+.home-filter-break {
+  margin-top: 0px;
+  margin-bottom: 25px;
+}
+
 .home-footer {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 90px;
+  height: 170px;
   background-color: #fcfcfc;
   position: relative;
+}
+
+.home-footer-break {
+  margin-bottom: 27px;
 }
 
 .home-video-row {
   margin-bottom: 50px;
 }
+
+.home-content-end {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 150px;
+}
+
 .tabs {
   font-size: 20px;
 }
