@@ -18,6 +18,7 @@ import "./components.css";
 const ProfileModal = ({ userId }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+  console.log(userId);
 
   const [smallModalOpen, setSmallModalOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
@@ -65,8 +66,7 @@ const ProfileModal = ({ userId }) => {
   };
 
   const { username, user_bio, is_tutor } = profileBasic;
-  const { tutor_contact, qualifications } =
-    profileDetails;
+  const { tutor_whatsapp, tutor_telegram, qualifications } = profileDetails;
 
   return (
     <>
@@ -104,18 +104,18 @@ const ProfileModal = ({ userId }) => {
                   <Form.Control
                     type="tel"
                     name="tutor_contact"
-                    value={tutor_contact}
+                    value={tutor_whatsapp}
                     className="modal-input"
                     onChange={(e) => onChangeDetailed(e)}
                   />
-                </Form.Group>
-                {/* <Form.Label>Telegram</Form.Label>
+                  <Form.Label>Telegram</Form.Label>
                   <Form.Control
                     type="username"
                     name="tutor_contact"
-                    defaultValue={tutor_contact}
-                    onChange={(e) => onChange(e)}
-                  /> */}
+                    defaultValue={tutor_telegram}
+                    onChange={(e) => onChangeDetailed(e)}
+                  />
+                </Form.Group>
 
                 <Form.Group>
                   <h4>User details</h4>
@@ -192,7 +192,7 @@ const ProfileModal = ({ userId }) => {
         >
           <div>
             <Modal.Header>
-              <h3>{user === userId ? "Your profile details" : "Details"}</h3>
+              <h3>{user === userId.user_id ? "Your profile details" : "Details"}</h3>
               <Button
                 className="btn-circle btn-danger"
                 onClick={() => dispatch(toggleDetailedView(false))}
@@ -263,7 +263,7 @@ const ProfileModal = ({ userId }) => {
                 )}
               </div>
             </Modal.Body>
-            {user === userId ? (
+            {user == userId ? (
               <Modal.Footer>
                 <Button
                   className="btn-modal btn-danger"
