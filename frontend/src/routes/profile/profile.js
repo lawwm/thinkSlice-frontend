@@ -17,7 +17,6 @@ const Profile = () => {
   const history = useHistory();
   const { profile, loading } = useSelector((state) => state.profile);
   const { user_id } = useParams();
-  console.log(user_id);
 
   useEffect(() => {
     dispatch(getProfile(user_id));

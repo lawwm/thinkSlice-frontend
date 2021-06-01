@@ -18,7 +18,6 @@ import "./components.css";
 const ProfileModal = ({ userId }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  console.log(userId);
 
   const [smallModalOpen, setSmallModalOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
@@ -66,7 +65,7 @@ const ProfileModal = ({ userId }) => {
   };
 
   const { username, user_bio, is_tutor } = profileBasic;
-  const { tutor_whatsapp, tutor_telegram, qualifications } = profileDetails;
+  const { tutor_contact, qualifications } = profileDetails;
 
   return (
     <>
@@ -104,17 +103,17 @@ const ProfileModal = ({ userId }) => {
                   <Form.Control
                     type="tel"
                     name="tutor_contact"
-                    value={tutor_whatsapp}
+                    value={tutor_contact}
                     className="modal-input"
                     onChange={(e) => onChangeDetailed(e)}
                   />
                   <Form.Label>Telegram</Form.Label>
-                  <Form.Control
+                  {/* <Form.Control
                     type="username"
                     name="tutor_contact"
                     defaultValue={tutor_telegram}
                     onChange={(e) => onChangeDetailed(e)}
-                  />
+                  /> */}
                 </Form.Group>
 
                 <Form.Group>
