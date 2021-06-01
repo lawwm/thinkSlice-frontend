@@ -65,7 +65,7 @@ const ProfileModal = ({ userId }) => {
   };
 
   const { username, user_bio, is_tutor } = profileBasic;
-  const { tutor_contact, qualifications } = profileDetails;
+  const { tutor_whatsapp, tutor_telegram, qualifications } = profileDetails;
 
   return (
     <>
@@ -102,18 +102,18 @@ const ProfileModal = ({ userId }) => {
                   <Form.Label>Whatsapp</Form.Label>
                   <Form.Control
                     type="tel"
-                    name="tutor_contact"
-                    value={tutor_contact}
+                    name="tutor_whatsapp"
+                    value={tutor_whatsapp}
                     className="modal-input"
                     onChange={(e) => onChangeDetailed(e)}
                   />
                   <Form.Label>Telegram</Form.Label>
-                  {/* <Form.Control
+                  <Form.Control
                     type="username"
-                    name="tutor_contact"
+                    name="tutor_telegram"
                     defaultValue={tutor_telegram}
                     onChange={(e) => onChangeDetailed(e)}
-                  /> */}
+                  />
                 </Form.Group>
 
                 <Form.Group>
@@ -212,7 +212,7 @@ const ProfileModal = ({ userId }) => {
                       />
                     </td>
                     <td className="table-data">
-                      {profile.detailed.tutor_contact ||
+                      {profile.detailed.tutor_whatsapp ||
                         "User has not provided their Whatsapp"}
                     </td>
                   </tr>
@@ -225,7 +225,7 @@ const ProfileModal = ({ userId }) => {
                       />
                     </td>
                     <td className="table-data">
-                      {profile.detailed.tutor_contact ||
+                      {profile.detailed.tutor_telegram ||
                         "User has not provided their Telegram"}
                     </td>
                   </tr>
