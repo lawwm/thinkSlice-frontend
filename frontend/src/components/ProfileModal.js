@@ -262,7 +262,8 @@ const ProfileModal = ({ userId }) => {
                 )}
               </div>
             </Modal.Body>
-            {user == userId ? (
+            {// eslint-disable-next-line
+            user == userId ? (
               <Modal.Footer>
                 <Button
                   className="btn-modal btn-danger"
