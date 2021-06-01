@@ -98,7 +98,7 @@ const Profile = () => {
               </Row>
             </Container>
 
-            <ProfileModal userId={user_id} />
+            <ProfileModal userId={user_id}/>
 
             <Modal show={pictureModal} onHide={() => setPictureModal(false)}>
               <Modal.Header closeButton>
