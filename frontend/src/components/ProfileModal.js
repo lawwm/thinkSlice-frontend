@@ -51,6 +51,10 @@ const ProfileModal = ({ userId }) => {
   const onChangeDetailed = (e) => {
     let updatedValue = e.target.value;
 
+    if (updatedValue === "") {
+      updatedValue = null;
+    }
+
     setProfileDetails({
       ...profileDetails,
       [e.target.name]: updatedValue,
