@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { setAlert } from "../store/components/action";
 import { logout } from "../store/auth/action.js";
 import {
   toggleDetailedView,
@@ -9,6 +10,7 @@ import {
   updateProfile,
   // getProfile,
 } from "../store/profile/action.js";
+import update from "immutability-helper";
 
 import { Modal, Button, Form } from "react-bootstrap";
 import whatsapp from "../images/Whatsapp.png";
@@ -24,6 +26,9 @@ const ProfileModal = ({ userId }) => {
   const { detailedMode, editMode, profile } = useSelector(
     (state) => state.profile
   );
+
+  const oldProfileBasic = JSON.parse(JSON.stringify(profile.basic));
+  const oldProfileDetails = JSON.parse(JSON.stringify(profile.detailed));
 
   const [profileBasic, setProfileBasic] = useState(profile.basic);
   const [profileDetails, setProfileDetails] = useState(profile.detailed);
@@ -61,15 +66,46 @@ const ProfileModal = ({ userId }) => {
     });
   };
 
-  const onSubmit = async (e) => {
-    dispatch(toggleEditMode(false));
-    dispatch(
-      updateProfile(user, { basic: profileBasic, detailed: profileDetails })
-    );
+  const onChangeArray = (e) => {
+    if (e.target.value === "0") {
+      setProfileDetails(
+        update(profileDetails, {
+          duration_classes: {
+            0: { $set: 0 },
+            1: { $set: 0 },
+          },
+        })
+      );
+    } else {
+      setProfileDetails(
+        update(profileDetails, {
+          duration_classes: {
+            [e.target.name]: { $set: parseInt(e.target.value) },
+          },
+        })
+      );
+    }
   };
 
   const { username, user_bio, is_tutor } = profileBasic;
-  const { tutor_whatsapp, tutor_telegram, qualifications } = profileDetails;
+  const { tutor_whatsapp, tutor_telegram, duration_classes, qualifications } =
+    profileDetails;
+
+  const onSubmit = async (e) => {
+    if (duration_classes[0] > duration_classes[1]) {
+      dispatch(
+        setAlert(
+          "The min lesson duration cannot be greater than the max lesson duration",
+          "danger"
+        )
+      );
+    } else {
+      dispatch(toggleEditMode(false));
+      dispatch(
+        updateProfile(user, { basic: profileBasic, detailed: profileDetails })
+      );
+    }
+  };
 
   return (
     <>
@@ -144,14 +180,27 @@ const ProfileModal = ({ userId }) => {
                         name="subjects"
                         value={subjects}
                         onChange={(e) => onChangeDetailed(e)}
-                      />
-                      <Form.Label>Lesson duration (in hours)</Form.Label>
-                      <Form.Control
-                        type="number"
-                        name="duration_classes"
-                        value={duration_classes}
-                        onChange={(e) => onChangeBasic(e)}
                       /> */}
+                      <Form.Label>Min Lesson duration (in hours)</Form.Label>
+                      <Form.Control
+                        type="range"
+                        name="0"
+                        value={duration_classes[0]}
+                        onChange={(e) => onChangeArray(e)}
+                        min={0}
+                        max={12}
+                        custom
+                      />
+                      <Form.Label>Max Lesson duration (in hours)</Form.Label>
+                      <Form.Control
+                        type="range"
+                        name="1"
+                        value={duration_classes[1]}
+                        onChange={(e) => onChangeArray(e)}
+                        min={0}
+                        max={12}
+                        custom
+                      />
                       <Form.Label>Qualifications</Form.Label>
                       <Form.Control
                         as="textarea"
@@ -167,15 +216,18 @@ const ProfileModal = ({ userId }) => {
               <Modal.Footer>
                 <Button
                   className="btn-modal btn-danger"
-                  type="submit"
-                  value="submit"
+                  onClick={(e) => onSubmit()}
                 >
                   Save changes
                 </Button>
                 <Button
                   variant="dark"
                   className="btn-modal-grey"
-                  onClick={() => dispatch(toggleEditMode(false))}
+                  onClick={() => {
+                    dispatch(toggleEditMode(false));
+                    setProfileBasic(oldProfileBasic);
+                    setProfileDetails(oldProfileDetails);
+                  }}
                 >
                   Cancel changes
                 </Button>
@@ -195,7 +247,9 @@ const ProfileModal = ({ userId }) => {
         >
           <div>
             <Modal.Header>
-              <h3>{user === userId.user_id ? "Your profile details" : "Details"}</h3>
+              <h3>
+                {user === userId.user_id ? "Your profile details" : "Details"}
+              </h3>
               <Button
                 className="btn-circle btn-danger"
                 onClick={() => dispatch(toggleDetailedView(false))}
@@ -216,8 +270,7 @@ const ProfileModal = ({ userId }) => {
                       />
                     </td>
                     <td className="table-data">
-                      {profile.detailed.tutor_whatsapp ||
-                        "User has not provided their Whatsapp"}
+                      {tutor_whatsapp || "User has not provided their Whatsapp"}
                     </td>
                   </tr>
                   <tr>
@@ -229,8 +282,7 @@ const ProfileModal = ({ userId }) => {
                       />
                     </td>
                     <td className="table-data">
-                      {profile.detailed.tutor_telegram ||
-                        "User has not provided their Telegram"}
+                      {tutor_telegram || "User has not provided their Telegram"}
                     </td>
                   </tr>
                 </table>
@@ -243,47 +295,54 @@ const ProfileModal = ({ userId }) => {
                         <td>Rating</td>
                         <td></td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td>Subjects taught</td>
                         <td className="table-data">
-                          {profile.detailed.subjects}
+                          {subjects}
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td>Lesson duration</td>
                         <td className="table-data">
-                          {profile.detailed.duration_classes}
+                          {duration_classes[0] === 0
+                            ? "User has not provided the duration of their lessons"
+                            : duration_classes[0] === duration_classes[1]
+                            ? duration_classes[0] + " hrs"
+                            : duration_classes[0] +
+                              " - " +
+                              duration_classes[1] +
+                              " hrs"}
                         </td>
                       </tr>
                       <tr>
                         <td>Qualifications</td>
-                        <td className="table-data">
-                          {profile.detailed.qualifications}
-                        </td>
+                        <td className="table-data">{qualifications}</td>
                       </tr>
                     </table>
                   </>
                 )}
               </div>
             </Modal.Body>
-            {// eslint-disable-next-line
-            user == userId ? (
-              <Modal.Footer>
-                <Button
-                  className="btn-modal btn-danger"
-                  onClick={() => dispatch(toggleEditMode(true))}
-                >
-                  Edit profile
-                </Button>
-                <Button
-                  variant="dark"
-                  className="btn-modal-grey"
-                  onClick={() => setSmallModalOpen(true)}
-                >
-                  Delete account
-                </Button>
-              </Modal.Footer>
-            ) : null}
+            {
+              // eslint-disable-next-line
+              user == userId ? (
+                <Modal.Footer>
+                  <Button
+                    className="btn-modal btn-danger"
+                    onClick={() => dispatch(toggleEditMode(true))}
+                  >
+                    Edit profile
+                  </Button>
+                  <Button
+                    variant="dark"
+                    className="btn-modal-grey"
+                    onClick={() => setSmallModalOpen(true)}
+                  >
+                    Delete account
+                  </Button>
+                </Modal.Footer>
+              ) : null
+            }
           </div>
         </Modal>
       )}
