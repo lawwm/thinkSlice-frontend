@@ -3,6 +3,8 @@ import * as actionTypes from "./actionTypes";
 const initialState = {
   profile: null,
   profileLoading: true,
+  reviewLoading: true,
+  reviewPostLoading: false,
   detailedMode: false,
   editMode: false,
   reviewsGiven: [],
@@ -36,12 +38,69 @@ export const profile = (state = initialState, action) => {
         ...state,
         reviewsGiven: payload.reviewsGiven,
         reviewsReceived: payload.reviewsReceived,
-        profileLoading: false
+        reviewLoading: false
       };
-
+    case actionTypes.SET_REVIEW_LOADING:
+      return {
+        ...state,
+        reviewLoading: true
+      }
+    case actionTypes.SET_REVIEW_POST_LOADING:
+      return {
+        ...state,
+        reviewPostLoading: true
+      }
+    case actionTypes.STOP_REVIEW_LOADING:
+      return {
+        ...state,
+        reviewLoading: false
+      }
+    case actionTypes.STOP_REVIEW_POST_LOADING:
+      return {
+        ...state,
+        reviewPostLoading: false
+      }
     case actionTypes.PROFILE_UPDATE_ERROR:
       return { ...state, profileLoading: false };
+    case actionTypes.CREATE_REVIEW:
+      return {
+        ...state,
+        reviewsReceived: [payload].concat(state.reviewsReceived),
+        reviewLoading: false
+      }
+    case actionTypes.EDIT_REVIEW:
+      const { id, updatedData } = payload
 
+      const indexGiven = state.reviewsGiven.findIndex(review => review.id === id); //finding index of the item
+      const indexReceived = state.reviewsReceived.findIndex(todo => todo.id === id); //finding index of the item
+      const arrayGiven = [...state.reviewsGiven]
+      const arrayReceived = [...state.reviewsReceived]
+
+      if (indexGiven !== -1) {
+        arrayGiven[indexGiven] = {
+          ...updatedData,
+          creator_details: arrayGiven[indexGiven].creator_details
+        }
+      }
+      if (indexReceived !== -1) {
+        arrayReceived[indexReceived] = {
+          ...updatedData,
+          creator_details: arrayReceived[indexReceived].creator_details
+        }
+      }
+      return {
+        ...state,
+        reviewsGiven: arrayGiven,
+        reviewsReceived: arrayReceived,
+        reviewPostLoading: false
+      }
+    case actionTypes.DELETE_REVIEW:
+      return {
+        ...state,
+        reviewsGiven: state.reviewsGiven.filter(review => review.id !== payload),
+        reviewsReceived: state.reviewsReceived.filter(review => review.id !== payload),
+        reviewPostLoading: false
+      }
     case actionTypes.PROFILE_ERROR:
     case actionTypes.PROFILE_DELETED:
     case actionTypes.PROFILE_RESET:

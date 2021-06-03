@@ -31,86 +31,86 @@ export const loadUser = (token) => async (dispatch) => {
 //Register User
 export const register =
   ({ username, email, password, confirmPassword }) =>
-  async (dispatch) => {
-    //convert to json for post
+    async (dispatch) => {
+      //convert to json for post
 
-    if (confirmPassword !== password) {
-      dispatch({
-        type: actionTypes.REGISTER_FAIL,
-      });
-      dispatch({
-        type: actionTypes.AUTH_BUTTON_LOADED,
-      });
-      dispatch(setAlert("Passwords must match", "danger"));
-    } else {
-      const body = JSON.stringify({ username, email, password });
-
-      try {
-        dispatch({
-          type: actionTypes.AUTH_BUTTON_LOADING,
-        });
-        const res = await axios.post(
-          DOMAINS.AUTH + ENDPOINTS.REGISTER,
-          body,
-          config
-        );
-        setAuthToken(res.token);
-        dispatch({
-          type: actionTypes.AUTH_BUTTON_LOADED,
-        });
-        dispatch({
-          type: actionTypes.REGISTER_SUCCESS,
-          payload: res.data,
-        });
-        dispatch(setAlert("Welcome to ThinkSlice", "success"));
-      } catch (err) {
+      if (confirmPassword !== password) {
         dispatch({
           type: actionTypes.REGISTER_FAIL,
         });
         dispatch({
           type: actionTypes.AUTH_BUTTON_LOADED,
         });
-        dispatch(setAlert("Failed to register", "danger"));
+        dispatch(setAlert("Passwords must match", "danger"));
+      } else {
+        const body = JSON.stringify({ username, email, password });
+
+        try {
+          dispatch({
+            type: actionTypes.AUTH_BUTTON_LOADING,
+          });
+          const res = await axios.post(
+            DOMAINS.AUTH + ENDPOINTS.REGISTER,
+            body,
+            config
+          );
+          setAuthToken(res.data.token);
+          dispatch({
+            type: actionTypes.AUTH_BUTTON_LOADED,
+          });
+          dispatch({
+            type: actionTypes.REGISTER_SUCCESS,
+            payload: res.data,
+          });
+          dispatch(setAlert("Welcome to ThinkSlice", "success"));
+        } catch (err) {
+          dispatch({
+            type: actionTypes.REGISTER_FAIL,
+          });
+          dispatch({
+            type: actionTypes.AUTH_BUTTON_LOADED,
+          });
+          dispatch(setAlert("Failed to register", "danger"));
+        }
       }
-    }
-  };
+    };
 
 //Login User
 export const login =
   ({ username, password }) =>
-  async (dispatch) => {
-    const body = JSON.stringify({ username, password });
+    async (dispatch) => {
+      const body = JSON.stringify({ username, password });
 
-    try {
-      dispatch({
-        type: actionTypes.AUTH_BUTTON_LOADING,
-      });
-      const res = await axios.post(
-        DOMAINS.AUTH + ENDPOINTS.LOGIN,
-        body,
-        config
-      );
+      try {
+        dispatch({
+          type: actionTypes.AUTH_BUTTON_LOADING,
+        });
+        const res = await axios.post(
+          DOMAINS.AUTH + ENDPOINTS.LOGIN,
+          body,
+          config
+        );
 
-      setAuthToken(res.data.token);
-      dispatch({
-        type: actionTypes.AUTH_BUTTON_LOADED,
-      });
-      dispatch({
-        type: actionTypes.LOGIN_SUCCESS,
-        payload: res.data,
-      });
-      dispatch(setAlert("Login successful", "success"));
-    } catch (err) {
-      console.log(err.message);
-      dispatch({
-        type: actionTypes.AUTH_BUTTON_LOADED,
-      });
-      dispatch({
-        type: actionTypes.LOGIN_FAIL,
-      });
-      dispatch(setAlert("Login failed", "danger"));
-    }
-  };
+        setAuthToken(res.data.token);
+        dispatch({
+          type: actionTypes.AUTH_BUTTON_LOADED,
+        });
+        dispatch({
+          type: actionTypes.LOGIN_SUCCESS,
+          payload: res.data,
+        });
+        dispatch(setAlert("Login successful", "success"));
+      } catch (err) {
+        console.log(err.message);
+        dispatch({
+          type: actionTypes.AUTH_BUTTON_LOADED,
+        });
+        dispatch({
+          type: actionTypes.LOGIN_FAIL,
+        });
+        dispatch(setAlert("Login failed", "danger"));
+      }
+    };
 
 //Logout & clear profile
 export const logout = () => async (dispatch) => {
