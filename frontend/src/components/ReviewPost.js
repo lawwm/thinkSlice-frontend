@@ -1,13 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import img from "../images/Barack_Obama.jpg";
-import { Image, Media, Card } from "react-bootstrap";
-import StarRating from "../components/StarRating";
+import { Image, Media, Card, Row, Col, Modal, Button, Container, Form } from "react-bootstrap";
+import { StarDisplay, StarChoice } from "../components/StarRating";
 import "./components.css";
+import "../routes/styles.css"
+import { FaRegEdit, FaTrashAlt } from "react-icons/fa";
 
-const ReviewPost = () => {
+const ReviewPost = ({ reviewPic, username, reviewTitle, reviewEssay, dateReview, starRating, viewerId, profileId, reviewerId, asTutor }) => {
   const history = useHistory();
+  // console.log(viewerId, typeof (viewerId))
+  // console.log(reviewerId, typeof (reviewerId))
+  // console.log(profileId, typeof (profileId))
+  // console.log(asTutor, typeof (asTutor))
+  const [editShow, setEditShow] = useState(false);
+
+  const handleEditClose = () => setEditShow(false);
+  const handleEditShow = () => setEditShow(true);
+
+  const [deleteShow, setDeleteShow] = useState(false);
+
+  const handleDeleteClose = () => setDeleteShow(false)
+  const handleDeleteShow = () => setDeleteShow(true)
+
+  const [formData, setFormData] = useState({
+    "review_title": reviewTitle,
+    "review_essay": reviewEssay,
+    "star_rating": starRating
+  })
+
+  const onChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const changeRating = (index) => {
+    setFormData({
+      ...formData,
+      "star_rating": index
+    })
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    //create review
+    console.log(formData)
+  }
+
 
   return (
     <Card>
@@ -16,23 +57,110 @@ const ReviewPost = () => {
           className="thumbnail-photo mr-3"
           onClick={() => history.push("/profile")}
         >
-          <Image src={img} alt="profile picture" fluid />
+          <Image src={reviewPic} alt="profile picture" fluid />
         </div>
         <Media.Body className="align-self-center">
-          <h5>Barack Obama</h5>
+          <h5>{username}</h5>
         </Media.Body>
       </Media>
-      <Card.Body>
-        <Card.Title className="review-title"><StarRating rating={10}/> Amazing Roast Chicken!</Card.Title>
+      <div className="review-div">
+        <Card.Title className="review-title"><StarDisplay num={Math.round(starRating)} /> {reviewTitle} </Card.Title>
+
         <Card.Text className="review-text">
-          Truly an amazing teacher on the art of preparing chicken. He is the
-          Bob Ross of roast chicken, the Einstein of seasoning, the Michangelo
-          of plating and the Aristotle of teaching. You would surely regret not
-          attending his cooking lessons!! His roast chicken was so good, the
-          troops came back from Iraq.
+          {reviewEssay}
         </Card.Text>
-        <footer className="review-date">Written on 5/17/2009</footer>
-      </Card.Body>
+        <footer className="review-date">
+          <Row>
+            <Col md={6}>Written on {dateReview}</Col>
+            {asTutor && (viewerId === reviewerId) &&
+              <Col md={6}>
+                <div className="review-edit-delete-div">
+                  <button
+
+                    className="review-edit-delete-btn" >
+                    <FaRegEdit size={30} />
+                  </button>
+                  <button className="review-edit-delete-btn" >
+                    <FaTrashAlt size={30} />
+                  </button>
+                </div>
+              </Col>}
+            {!asTutor && (viewerId === profileId.toString()) &&
+              <Col md={6}>
+                <div className="review-edit-delete-div">
+                  <button onClick={handleEditShow} className="review-edit-delete-btn" ><FaRegEdit size={30} /></button>
+                  <button onClick={handleDeleteShow} className="review-edit-delete-btn" ><FaTrashAlt size={30} /></button>
+                </div>
+              </Col>}
+          </Row>
+        </footer>
+      </div>
+
+      {/* edit modal */}
+      <Modal backdrop="static" size="xl" show={editShow} onHide={handleEditClose}>
+        <Form onSubmit={(e) => onSubmit(e)}>
+          <Container>
+            <div className="create-review-modal">
+              <div className="create-review-header">
+                <h2>Edit Review</h2>
+                <div className="create-review-rating-div">
+                  <StarChoice rating={formData.star_rating} setRating={changeRating} />
+                </div>
+              </div>
+              <Form.Group controlId="formGroupEmail">
+                <Form.Control
+                  as='input'
+                  placeholder="Title"
+                  name="review_title"
+                  value={formData.review_title}
+                  onChange={(e) => onChange(e)}
+                />
+                <Form.Control
+                  className="create-review-textarea"
+                  rows={8}
+                  as='textarea'
+                  name="review_essay"
+                  placeholder="Description"
+                  value={formData.review_essay}
+                  onChange={(e) => onChange(e)}
+                />
+              </Form.Group>
+            </div>
+            <Modal.Footer>
+              <Button
+                className="btn-review-alt-custom"
+                variant="secondary"
+                onClick={handleEditClose}>
+                Close
+                  </Button>
+              <Button
+                type="submit"
+                value="Submit"
+                className="btn-review-custom"
+                variant="primary"
+              >
+                Submit
+                  </Button>
+            </Modal.Footer>
+          </Container>
+        </Form>
+      </Modal>
+
+      {/* delete modal */}
+      <Modal show={deleteShow} onHide={handleDeleteClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete review</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure about this? This action cannot be undone.</Modal.Body>
+        <Modal.Footer>
+          <Button className="btn-review-alt-custom" variant="secondary" onClick={handleDeleteClose}>
+            Close
+          </Button>
+          <Button className="btn-review-custom" variant="primary" onClick={handleDeleteClose}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Card>
   );
 };

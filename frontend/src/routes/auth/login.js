@@ -32,7 +32,7 @@ const Login = () => {
     });
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
 
     dispatch(login(loginData));

@@ -102,7 +102,8 @@ export const getReviews = (userId) => async (dispatch) => {
     });
     const res = await axios.get(DOMAINS.REVIEWS + "/tutors/" + userId);
     const res2 = await axios.get(DOMAINS.REVIEWS + "/students/" + userId);
-
+    // console.log(res.data)
+    // console.log(res2.data)
     dispatch({
       type: actionTypes.REVIEWS_LOADED,
       payload: { reviewsGiven: res.data, reviewsReceived: res2.data },

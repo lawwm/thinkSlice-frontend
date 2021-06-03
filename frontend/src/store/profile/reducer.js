@@ -2,10 +2,11 @@ import * as actionTypes from "./actionTypes";
 
 const initialState = {
   profile: null,
-  loading: true,
+  profileLoading: true,
   detailedMode: false,
   editMode: false,
-  reviews: null,
+  reviewsGiven: [],
+  reviewsReceived: []
 };
 
 export const profile = (state = initialState, action) => {
@@ -13,13 +14,13 @@ export const profile = (state = initialState, action) => {
 
   switch (type) {
     case actionTypes.PROFILE_LOADING:
-      return { ...state, loading: true };
+      return { ...state, profileLoading: true };
 
     case actionTypes.PROFILE_LOADED:
       return {
         ...state,
         profile: payload,
-        loading: false,
+        profileLoading: false,
       };
     case actionTypes.PROFILE_DETAILED_VIEW:
       return { ...state, detailedMode: payload };
@@ -28,18 +29,23 @@ export const profile = (state = initialState, action) => {
       return { ...state, editMode: payload };
 
     case actionTypes.PROFILE_UPDATED:
-      return { ...state, profile: payload, loading: false };
+      return { ...state, profile: payload, profileLoading: false };
 
     case actionTypes.REVIEWS_LOADED:
-      return { ...state, reviews: payload, loading: false };
-      
-    case actionTypes.PROFILE_UPDATE_ERROR:
-      return { ...state, loading: false };
+      return {
+        ...state,
+        reviewsGiven: payload.reviewsGiven,
+        reviewsReceived: payload.reviewsReceived,
+        profileLoading: false
+      };
 
-    case actionTypes.PROFILE_ERROR: 
+    case actionTypes.PROFILE_UPDATE_ERROR:
+      return { ...state, profileLoading: false };
+
+    case actionTypes.PROFILE_ERROR:
     case actionTypes.PROFILE_DELETED:
     case actionTypes.PROFILE_RESET:
-      return { ...state, profile: null, loading: false };
+      return { ...state, profile: null, profileLoading: false };
 
     default:
       return state;

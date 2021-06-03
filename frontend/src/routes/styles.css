@@ -170,6 +170,89 @@ p {
   padding: 5px 40px;
 }
 
+/* review page */
+.review-button {
+  margin-left: 0px;
+  margin-right: 20px;
+}
+
+.review-header-div {
+  margin-bottom: 30px;
+  margin-left: 40px;
+}
+
+.review-button-alt {
+  margin: 0px 40px 5px 5px;
+  font-size: 20px;
+  background-color: #929292;
+  border: 0px;
+}
+
+.review-button-alt:hover,
+.review-button-alt:active,
+.review-button-alt:active:after {
+  opacity: 1;
+  background-color: #727272;
+}
+
+.create-review-modal {
+  margin-top: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 40px;
+}
+
+.create-review-textarea {
+  margin-top: 10px;
+}
+
+.create-review-header {
+  display: flex;
+}
+
+.create-review-rating-div {
+  margin-top: 6px;
+  margin-left: 14px;
+}
+
+.btn-review-custom {
+  padding: 10px 60px;
+  background-color: #ff4400;
+  opacity: 0.8;
+  border-radius: 4px;
+  border: none;
+  transition: 0.3s;
+  float: right;
+}
+
+.btn-review-custom:hover,
+.btn-custom:active,
+.btn-custom:active:after,
+.btn-nav:hover,
+.btn-nav:active,
+.btn-nav:active:after {
+  opacity: 1;
+  background-color: #ff4400;
+}
+
+.btn-review-alt-custom {
+  padding: 10px 60px;
+  background-color: #777777;
+  opacity: 0.8;
+  border-radius: 4px;
+  border: none;
+  transition: 0.3s;
+  float: right;
+}
+
+.btn-review-alt-custom:hover,
+.btn-alt-custom:disabled,
+.btn-alt-custom:active,
+.btn-alt-custom:active:after {
+  opacity: 1;
+  background-color: #5a5a5a;
+}
+
 /* Upload Page */
 
 .custom-file-upload {

@@ -200,8 +200,12 @@ nav a:hover,
 
 .reviewer,
 .review-date {
-  font-size: 20px;
+  font-size: 18px;
   font-family: 'Inter UI regular';
+}
+
+.review-div {
+  padding: 10px 30px 30px 30px;
 }
 
 .reviewer {
@@ -219,8 +223,33 @@ nav a:hover,
   font-family: 'Inter UI regular';
 }
 
-.star {
+.review-edit-delete-div {
+  float: right;
+}
+
+.review-edit-delete-btn {
+  border: 0px;
+  background-color: #ffffff;
+  color: #787878;
+  margin-right: 5px;
+}
+
+.review-edit-delete-btn:hover {
+  color: #414141;
+}
+
+/* rating */
+.star-display {
   margin-bottom: 7px;
+}
+
+.star-choice {
+  margin-right: 2px;
+  cursor: pointer;
+}
+
+.rating-div {
+  display: flex;
 }
 
 /* alert */

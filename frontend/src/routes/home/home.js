@@ -94,6 +94,7 @@ const VideoGrid = ({ videos }) => {
                 playback_id={videoRow.playback_id}
                 imageSrc={videoRow.creator_profile.profile_pic}
                 videoId={videoRow.id}
+                profileId={videoRow.creator_profile.user}
               />
             </Col>
           </div>
