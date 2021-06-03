@@ -248,7 +248,7 @@ const ProfileModal = ({ userId }) => {
           <div>
             <Modal.Header>
               <h3>
-                {user === userId.user_id ? "Your profile details" : "Details"}
+                {user === parseInt(userId) ? "Your profile details" : "Details"}
               </h3>
               <Button
                 className="btn-circle btn-danger"
@@ -324,8 +324,7 @@ const ProfileModal = ({ userId }) => {
               </div>
             </Modal.Body>
             {
-              // eslint-disable-next-line
-              user == userId ? (
+              user === parseInt(userId) ? (
                 <Modal.Footer>
                   <Button
                     className="btn-modal btn-danger"
