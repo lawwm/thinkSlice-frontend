@@ -11,12 +11,15 @@ const Register = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { isAuthenticated, loading, authLoading } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading, authLoading } = useSelector(
+    (state) => state.auth
+  );
 
   const [registerData, setRegisterData] = useState({
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const onChange = (e) => {
@@ -43,7 +46,7 @@ const Register = () => {
     history.push("/");
   }
 
-  const { username, email, password } = registerData;
+  const { username, email, password, confirmPassword } = registerData;
 
   return (
     <>
@@ -86,13 +89,16 @@ const Register = () => {
                         value={password}
                       />
                     </div>
-                    {/*
-              <br />
-              <input
-                type="confirmPassword"
-                name="comfirmPassword"
-                placeholder="Confirm Password"
-              /> */}
+                    <div class="form-group row">
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        className="form-control"
+                        placeholder="Confirm Password"
+                        onChange={(e) => onChange(e)}
+                        value={confirmPassword}
+                      />
+                    </div>
                     <br />
                     <a
                       href="# "
@@ -101,17 +107,18 @@ const Register = () => {
                       className="color-black"
                     >
                       Already have an account?
-                  </a>
+                    </a>
                     <button
                       type="submit"
                       value="Submit"
                       className="btn btn-danger btn-custom register-button"
                       disabled={authLoading}
                     >
-                      {authLoading
-                        ? <Spinner size="sm" animation="border" variant="light" />
-                        : <div>Register account</div>
-                      }
+                      {authLoading ? (
+                        <Spinner size="sm" animation="border" variant="light" />
+                      ) : (
+                        <div>Register account</div>
+                      )}
                     </button>
                   </div>
                 </form>
