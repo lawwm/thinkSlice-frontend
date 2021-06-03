@@ -49,6 +49,7 @@ export const updateProfile = (userId, profile) => async (dispatch) => {
     dispatch({
       type: actionTypes.PROFILE_LOADING,
     });
+    console.log(profile);
     const res = await axios.patch(
       DOMAINS.PROFILE + "/" + userId,
       profile.basic
