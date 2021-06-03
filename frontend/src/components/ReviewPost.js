@@ -8,7 +8,7 @@ import "./components.css";
 import { FaRegEdit, FaTrashAlt } from "react-icons/fa";
 import { deleteReviews, editReviews } from "../store/profile/action"
 
-const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, dateReview, starRating, viewerId, profileId, reviewerId, asTutor }) => {
+const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, dateReview, editedDateReview, starRating, edited, viewerId, profileId, reviewerId, asTutor }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -83,7 +83,10 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
         </Card.Text>
         <footer className="review-date">
           <Row>
-            <Col md={6}>Written on {dateReview}</Col>
+            <Col md={6}>
+              {edited ? <span>Edited</span> : <span>Written</span>}
+              &nbsp;on {edited ? <span>{editedDateReview}</span> : <span>{dateReview}</span>}
+            </Col>
             {asTutor && (viewerId === reviewerId.toString()) &&
               <Col md={6}>
                 <div className="review-edit-delete-div">

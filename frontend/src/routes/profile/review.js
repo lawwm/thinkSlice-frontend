@@ -26,7 +26,9 @@ const MapReviews = ({ reviews, viewerId, profileId, asTutor }) => {
                 reviewTitle={review.review_title}
                 reviewEssay={review.review_essay}
                 dateReview={review.date_review}
+                editedDateReview={review.date_review_edited}
                 starRating={review.star_rating}
+                edited={review.edited}
                 viewerId={viewerId}
                 profileId={profileId}
                 reviewerId={review.creator_details.user}
@@ -53,9 +55,10 @@ const Review = () => {
     dispatch(getReviews(user_id));
   }, [user_id, dispatch]);
 
-  const [selectReview, setSelectReview] = useState("reviewReceived")
+  const [selectReview, setSelectReview] = useState("reviewsReceived")
   const handleSelect = (eventKey) => {
     setSelectReview(eventKey)
+    console.log(selectReview)
   }
 
   //Create Review Modal
@@ -143,9 +146,9 @@ const Review = () => {
             </Col>
           </Row>
           <br />
-          <Nav justify variant="tabs" defaultActiveKey="reviewReceived" onSelect={handleSelect}>
+          <Nav justify variant="tabs" defaultActiveKey="reviewsReceived" onSelect={handleSelect}>
             <Nav.Item>
-              <Nav.Link className="tabs" eventKey="reviewReceived">
+              <Nav.Link className="tabs" eventKey="reviewsReceived">
                 As tutor
               </Nav.Link>
             </Nav.Item>
@@ -159,14 +162,14 @@ const Review = () => {
             <div className="review-loading-div">
               <LoadingSpinner />
             </div>}
-          {!reviewLoading && selectReview === "reviewReceived" && <MapReviews
+          {!reviewLoading && selectReview === "reviewsReceived" && <MapReviews
             reviews={reviewsReceived}
             viewerId={viewerId}
             profileId={profile.basic.user}
             asTutor={true}
           />
           }
-          {reviewLoading && selectReview === "reviewsGiven" && <MapReviews
+          {!reviewLoading && selectReview === "reviewsGiven" && <MapReviews
             reviews={reviewsGiven}
             viewerId={viewerId}
             profileId={profile.basic.user}
