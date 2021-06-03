@@ -248,7 +248,7 @@ const ProfileModal = ({ userId }) => {
           <div>
             <Modal.Header>
               <h3>
-                {user === parseInt(userId) ? "Your profile details" : "Details"}
+                {parseInt(userId) === parseInt(user) ? "Your profile details" : "Details"}
               </h3>
               <Button
                 className="btn-circle btn-danger"
@@ -324,7 +324,7 @@ const ProfileModal = ({ userId }) => {
               </div>
             </Modal.Body>
             {
-              user === parseInt(userId) ? (
+              parseInt(userId) === parseInt(user) ? (
                 <Modal.Footer>
                   <Button
                     className="btn-modal btn-danger"
