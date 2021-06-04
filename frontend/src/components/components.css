@@ -79,7 +79,7 @@ nav a:hover,
   background-color: rgba(0, 0, 0, 0.4);
   position: absolute;
   height: 33px;
-  width: 115px;
+  width: 140px;
 
   font-family: 'Roboto';
   font-size: 14px;
@@ -88,7 +88,21 @@ nav a:hover,
   border-radius: 5%;
   text-align: center;
   top: 145px;
-  left: 210px;
+  left: 185px;
+}
+
+.thumbnail-subject-delete {
+  background-color: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  height: 33px;
+  width: 35px;
+  padding-top: 2px;
+
+  color: rgba(255, 255, 255, 1);
+  border-radius: 5%;
+  text-align: center;
+  top: 4%;
+  left: 290px;
 }
 
 .thumbnail-photo {

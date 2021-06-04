@@ -3,12 +3,13 @@ import * as actionTypes from "./actionTypes";
 const initialState = {
   profile: null,
   profileLoading: true,
+  profileComponentLoading: false,
   reviewLoading: true,
   reviewPostLoading: false,
   detailedMode: false,
   editMode: false,
   reviewsGiven: [],
-  reviewsReceived: []
+  reviewsReceived: [],
 };
 
 export const profile = (state = initialState, action) => {
@@ -24,12 +25,42 @@ export const profile = (state = initialState, action) => {
         profile: payload,
         profileLoading: false,
       };
+
+    case actionTypes.PROFILE_COMPONENT_LOADING:
+      return {
+        ...state, profileComponentLoading: true
+      }
+    case actionTypes.PROFILE_COMPONENT_LOADED:
+      return {
+        ...state, profileComponentLoading: false
+      }
+    case actionTypes.PROFILE_DELETE_VIDEO:
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          basic: {
+            ...state.profile.basic,
+            video: state.profile.basic.video.filter(video => video.id !== payload)
+          }
+        }
+      }
     case actionTypes.PROFILE_DETAILED_VIEW:
       return { ...state, detailedMode: payload };
 
     case actionTypes.PROFILE_EDIT_MODE:
       return { ...state, editMode: payload };
-
+    case actionTypes.PROFILE_PIC_EDIT:
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          basic: {
+            ...state.profile.basic,
+            profile_pic: payload
+          }
+        }
+      }
     case actionTypes.PROFILE_UPDATED:
       return { ...state, profile: payload, profileLoading: false };
 

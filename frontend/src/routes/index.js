@@ -8,8 +8,8 @@ export const PATHS = {
     HOMEPAGE: '/',
     LOGIN_PAGE: '/login',
     REGISTER_PAGE: '/register',
-    PROFILE_PAGE: '/profile',
-    REVIEW_PAGE: '/profile/reviews',
+    PROFILE_PAGE: '/profile/:user_id',
+    REVIEW_PAGE: '/profile/reviews/:user_id',
     UPLOAD_PAGE: '/upload',
     WATCH_PAGE: '/watch/:videoId'
 }
@@ -33,11 +33,12 @@ const Routes = () => {
                     <Route exact path={PATHS.HOMEPAGE} component={Home} />
                     <Route exact path={PATHS.LOGIN_PAGE} component={Login} />
                     <Route exact path={PATHS.REGISTER_PAGE} component={Register} />
-                    <Route exact path={PATHS.PROFILE_PAGE + "/:user_id"} component={Profile} />
-                    <Route exact path={PATHS.REVIEW_PAGE + "/:user_id"} component={Review} />
+                    <Route exact path={PATHS.PROFILE_PAGE} component={Profile} />
+                    <Route exact path={PATHS.REVIEW_PAGE} component={Review} />
+
                     <PrivateRoute exact path={PATHS.UPLOAD_PAGE} component={Upload} />
                     <Route exact path={PATHS.WATCH_PAGE} component={WatchPage} />
-                    <Route component={Fallback} />
+                    {/* <Route component={Fallback} /> */}
                 </Switch>
             </Suspense>
         </Fragment>

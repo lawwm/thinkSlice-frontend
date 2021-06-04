@@ -2,50 +2,46 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 
-import { getProfile, toggleDetailedView } from "../../store/profile/action.js";
+import { getProfile, toggleDetailedView, changePicture } from "../../store/profile/action.js";
 
 import NotFound from "../errorpages/notFound";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ProfileModal from "../../components/ProfileModal.js";
-// import Thumbnail from "../../components/Thumbnail.js";
-import { Container, Col, Row, Image, Modal } from "react-bootstrap";
+import Thumbnail from "../../components/Thumbnail.js";
+import { Container, Col, Row, Modal, Button, Spinner } from "react-bootstrap";
 import "../styles.css";
-// import axios from "axios";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { profile, loading } = useSelector((state) => state.profile);
+  const { profile, profileLoading, profileComponentLoading } = useSelector((state) => state.profile);
   const { user_id } = useParams();
+  const currentViewer = localStorage.getItem("user")
 
   useEffect(() => {
     dispatch(getProfile(user_id));
   }, [user_id, dispatch]);
 
-  // const [imageFile, setImageFile] = useState(null);
   const [pictureModal, setPictureModal] = useState(false);
-  // const onUploadChange = (file) => {
-  //   console.log(file);
-  //   console.log(file.name);
-  //   setImageFile(file);
-  // };
 
-  // const uploadProfilePicture = (e) => {
-  //   e.preventDefault();
-  //   let formData = new FormData();
-  //   formData.append("profile_pic", imageFile, imageFile.name);
-  //   console.log("/api/profiles/" + localStorage.user);
-  //   axios.post("/api/profiles/" + localStorage.user, formData, {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //   });
-  // };
+  const [imageFile, setImageFile] = useState(null);
+  const [imageURL, setImageURL] = useState(null)
+
+  const onUploadChange = (file) => {
+    setImageFile(file);
+    URL.revokeObjectURL(imageURL)
+    setImageURL(URL.createObjectURL(file))
+  };
+
+  const uploadProfilePicture = (e) => {
+    e.preventDefault();
+    dispatch(changePicture(imageFile, () => setPictureModal(false)))
+  };
 
   return (
     <>
-      {loading && <LoadingSpinner />}
-      {!loading &&
+      {profileLoading && <LoadingSpinner />}
+      {!profileLoading &&
         (profile !== null ? (
           <>
             <Container>
@@ -55,14 +51,18 @@ const Profile = () => {
                   <p>{profile.basic.user_bio}</p>
                 </Col>
                 <Col>
-                  <div className="profile-picture circle align-self-center ml-3">
-                    <Image
+                  <div
+                    onClick={() => setPictureModal(true && (currentViewer === user_id))}
+                    className={(currentViewer === user_id) ? "profile-pic-container circle" : "circle"}>
+                    <img
                       src={profile.basic.profile_pic}
                       alt="profile_pic"
                       fluid
-                      onClick={() => setPictureModal(true)}
                       className="profile-pic"
                     />
+                    <div className="profile-pic-middle">
+                      <div className="profile-pic-text">Edit profile?</div>
+                    </div>
                   </div>
                 </Col>
                 <Row>
@@ -89,6 +89,26 @@ const Profile = () => {
               <Row className="margin-left">
                 <div>
                   <h2>Videos</h2>
+                  {profile.basic.video.map((videoRow) => {
+                    return (
+                      <div key={videoRow.id} className="home-video-row">
+                        <Col md={"auto"} >
+                          <Thumbnail
+                            title={videoRow.video_title}
+                            username={profile.basic.username}
+                            views={videoRow.views}
+                            subject={videoRow.subject}
+                            date={videoRow.created_at}
+                            playback_id={videoRow.playback_id}
+                            imageSrc={profile.basic.profile_pic}
+                            videoId={videoRow.id}
+                            profileId={videoRow.creator_profile.user}
+                            deleteButton={(currentViewer === user_id)}
+                          />
+                        </Col>
+                      </div>
+                    )
+                  })}
                 </div>
               </Row>
               <Row className="margin-left-less">
@@ -98,13 +118,52 @@ const Profile = () => {
               </Row>
             </Container>
 
-            <ProfileModal userId={user_id}/>
+            <ProfileModal userId={user_id} />
 
-            <Modal show={pictureModal} onHide={() => setPictureModal(false)}>
-              <Modal.Header closeButton>
-
+            <Modal show={pictureModal} onHide={() => setPictureModal(false)} className="modal-style" size="lg">
+              <Modal.Header>
+                <Modal.Title>Change your profile picture.</Modal.Title>
               </Modal.Header>
-              <Modal.Body></Modal.Body>
+              <form id="uploadbanner" encType="multipart/form-data" onSubmit={(e) => { uploadProfilePicture(e) }} >
+                <Modal.Body>
+                  <div className='profile-upload-layout'>
+                    <div>Upload your picture here.</div>
+                    <div >
+                      <img className="image-preview" src={imageURL} />
+                    </div>
+                    <div>
+                      <label htmlFor="file-upload" className='custom-file-upload btn btn-danger' >
+                        Select File
+                      </label>
+                      <input id="file-upload" name='file-upload' type="file" onChange={(e) => onUploadChange(e.target.files[0])} />
+                    </div>
+                  </div>
+
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="dark"
+                    className="btn-modal-grey"
+                    onClick={() => setPictureModal(false)}
+                  >
+                    Go back
+              </Button>
+                  <Button
+                    type="submit"
+                    value="Submit"
+                    variant="danger"
+                    className="btn-modal btn-danger profile-pic-upload-btn"
+                    onSubmit={(e) => {
+                      uploadProfilePicture(e)
+                    }}
+                  >
+                    {profileComponentLoading
+                      ? <Spinner size="sm" animation="border" variant="light" />
+                      : "Upload"
+                    }
+                  </Button>
+                </Modal.Footer>
+              </form>
             </Modal>
           </>
         ) : (

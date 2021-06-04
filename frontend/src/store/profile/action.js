@@ -4,12 +4,35 @@ import { setAlert } from "../components/action";
 
 import { DOMAINS, ENDPOINTS } from "../endpoints";
 import * as actionTypes from "./actionTypes";
+import { formatDistance } from 'date-fns'
 
 const config = {
   headers: {
     "Content-Type": "application/json",
   },
 };
+
+//Helper function
+function convertUnixToTimeElapsed(date) {
+  date = new Date(date * 1000)
+  return formatDistance(
+    date,
+    new Date(),
+    { addSuffix: true },
+  )
+}
+
+export const loadProfileComponent = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.PROFILE_COMPONENT_LOADING
+  })
+}
+
+export const profileComponentLoaded = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.PROFILE_COMPONENT_LOADED
+  })
+}
 
 export const getProfile = (userId) => async (dispatch) => {
   try {
@@ -18,10 +41,19 @@ export const getProfile = (userId) => async (dispatch) => {
     });
     const res = await axios.get(DOMAINS.PROFILE + "/" + userId);
     const res2 = await axios.get(DOMAINS.PROFILE + "/details/" + userId);
+    const basicRes = {
+      ...res.data,
+      video: res.data.video.map(video => {
+        return {
+          ...video,
+          created_at: convertUnixToTimeElapsed(video.created_at)
+        }
+      })
+    }
 
     dispatch({
       type: actionTypes.PROFILE_LOADED,
-      payload: { basic: res.data, detailed: res2.data },
+      payload: { basic: basicRes, detailed: res2.data },
     });
   } catch (err) {
     dispatch({
@@ -29,6 +61,26 @@ export const getProfile = (userId) => async (dispatch) => {
     });
   }
 };
+
+export const deleteVideo = (videoId, closeModalFunction, stopLoading) => async (dispatch) => {
+  try {
+    if (videoId === null) {
+      throw new Error("No video id provided")
+    }
+    await axios.delete(DOMAINS.VIDEO + "/" + videoId);
+    dispatch({
+      type: actionTypes.PROFILE_DELETE_VIDEO,
+      payload: videoId
+    })
+    dispatch(setAlert("Video has successfully been deleted", "success"));
+    closeModalFunction()
+    stopLoading()
+  } catch (err) {
+    dispatch(setAlert(err.message, "danger"));
+    closeModalFunction()
+    stopLoading()
+  }
+}
 
 export const toggleDetailedView = (boolean) => async (dispatch) => {
   dispatch({
@@ -43,6 +95,33 @@ export const toggleEditMode = (boolean) => async (dispatch) => {
     payload: boolean,
   });
 };
+
+export const changePicture = (imageFile, closeModalFunction) => async (dispatch) => {
+  try {
+    dispatch(loadProfileComponent())
+    if (imageFile === null) {
+      return new Error("There is no image selected")
+    }
+    let formData = new FormData();
+    formData.append("profile_pic", imageFile, imageFile.name);
+    const res = await axios.post("/api/profiles/" + localStorage.user, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    dispatch({
+      type: actionTypes.PROFILE_PIC_EDIT,
+      payload: res.data.profile_pic,
+    });
+    dispatch(setAlert("Image changed successfully", "success"));
+    dispatch(profileComponentLoaded())
+    closeModalFunction()
+  } catch (err) {
+    dispatch(setAlert("Profile update failed, please try again", "danger"));
+    dispatch(profileComponentLoaded())
+  }
+}
 
 export const updateProfile = (userId, profile) => async (dispatch) => {
   try {
@@ -137,7 +216,7 @@ export const createReviews = ({ review_title, review_essay, star_rating, tutorId
       throw new Error("Fields are empty!")
     }
     const body = JSON.stringify({ review_title, review_essay, star_rating })
-    console.log(body)
+
     const res = await axios.post(DOMAINS.REVIEWS + ENDPOINTS.CREATE_REVIEW + '/' + tutorId,
       body,
       config)
