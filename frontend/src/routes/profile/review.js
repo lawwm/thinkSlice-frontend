@@ -58,10 +58,10 @@ const Review = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { user_id } = useParams();
-  const { profileLoading, reviewsGiven, reviewsReceived } = useSelector(
+  const { profileLoading, reviewsGiven, reviewsReceived, reviewLoading } = useSelector(
     (state) => state.profile
   );
-  const { user, is_tutor, username, profile_pic } = useSelector(
+  const { user, username, profile_pic } = useSelector(
     (state) => state.profile.profile.basic
   );
 
@@ -140,7 +140,7 @@ const Review = () => {
                   {/* {profile.basic.is_tutor
                     ? "User reviews for " + profile.basic.username
                     : "User reviews by " + profile.basic.username} */}
-                  {profile.basic.username + "'s reviews"}
+                  {username + "'s reviews"}
                 </h2>
                 <Button
                   className="btn-nav btn review-button"
