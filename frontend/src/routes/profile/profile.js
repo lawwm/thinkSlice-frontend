@@ -15,7 +15,7 @@ import "../styles.css";
 const Profile = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { profile, loading } = useSelector((state) => state.profile);
+  const { profile, profileLoading } = useSelector((state) => state.profile);
   const { user_id } = useParams();
 
   useEffect(() => {
@@ -44,8 +44,8 @@ const Profile = () => {
 
   return (
     <>
-      {loading && <LoadingSpinner />}
-      {!loading &&
+      {profileLoading && <LoadingSpinner />}
+      {!profileLoading &&
         (profile !== null ? (
           <>
             <Container>

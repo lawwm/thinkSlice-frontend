@@ -13,6 +13,7 @@ import {
 import update from "immutability-helper";
 
 import { Modal, Button, Form } from "react-bootstrap";
+import { StarDisplay } from "./StarRating.js";
 import whatsapp from "../images/Whatsapp.png";
 import telegram from "../images/Telegram.png";
 import "./components.css";
@@ -88,8 +89,13 @@ const ProfileModal = ({ userId }) => {
   };
 
   const { username, user_bio, is_tutor } = profileBasic;
-  const { tutor_whatsapp, tutor_telegram, duration_classes, qualifications } =
-    profileDetails;
+  const {
+    tutor_whatsapp,
+    tutor_telegram,
+    aggregate_star,
+    duration_classes,
+    qualifications,
+  } = profileDetails;
 
   const onSubmit = async (e) => {
     if (duration_classes[0] > duration_classes[1]) {
@@ -248,7 +254,9 @@ const ProfileModal = ({ userId }) => {
           <div>
             <Modal.Header>
               <h3>
-                {parseInt(userId) === parseInt(user) ? "Your profile details" : "Details"}
+                {parseInt(userId) === parseInt(user)
+                  ? "Your profile details"
+                  : "Details"}
               </h3>
               <Button
                 className="btn-circle btn-danger"
@@ -287,13 +295,19 @@ const ProfileModal = ({ userId }) => {
                   </tr>
                 </table>
                 <br />
-                {profile.basic.is_tutor && (
+                {is_tutor && (
                   <>
                     <h4>Tutor details</h4>
                     <table>
                       <tr>
                         <td>Rating</td>
-                        <td></td>
+                        <td className="table-data">
+                          {aggregate_star === null ? (
+                            "User does not have any ratings yet"
+                          ) : (
+                            <StarDisplay num={aggregate_star} />
+                          )}
+                        </td>
                       </tr>
                       {/* <tr>
                         <td>Subjects taught</td>
@@ -323,25 +337,23 @@ const ProfileModal = ({ userId }) => {
                 )}
               </div>
             </Modal.Body>
-            {
-              parseInt(userId) === parseInt(user) ? (
-                <Modal.Footer>
-                  <Button
-                    className="btn-modal btn-danger"
-                    onClick={() => dispatch(toggleEditMode(true))}
-                  >
-                    Edit profile
-                  </Button>
-                  <Button
-                    variant="dark"
-                    className="btn-modal-grey"
-                    onClick={() => setSmallModalOpen(true)}
-                  >
-                    Delete account
-                  </Button>
-                </Modal.Footer>
-              ) : null
-            }
+            {parseInt(userId) === parseInt(user) ? (
+              <Modal.Footer>
+                <Button
+                  className="btn-modal btn-danger"
+                  onClick={() => dispatch(toggleEditMode(true))}
+                >
+                  Edit profile
+                </Button>
+                <Button
+                  variant="dark"
+                  className="btn-modal-grey"
+                  onClick={() => setSmallModalOpen(true)}
+                >
+                  Delete account
+                </Button>
+              </Modal.Footer>
+            ) : null}
           </div>
         </Modal>
       )}
