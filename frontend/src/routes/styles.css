@@ -171,19 +171,26 @@ p {
 }
 
 /* review page */
+.review-loading-div {
+  margin-top: 70px;
+}
+
 .review-button {
+  font-size: 16px;
   margin-left: 0px;
-  margin-right: 20px;
+  margin-right: 15px;
+  padding: 8px 23px;
 }
 
 .review-header-div {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   margin-left: 40px;
 }
 
 .review-button-alt {
   margin: 0px 40px 5px 5px;
-  font-size: 20px;
+  padding: 8px 23px;
+  font-size: 16px;
   background-color: #929292;
   border: 0px;
 }
@@ -251,6 +258,11 @@ p {
 .btn-alt-custom:active:after {
   opacity: 1;
   background-color: #5a5a5a;
+}
+
+.create-review-btn {
+  width: 173px;
+  height: 44px;
 }
 
 /* Upload Page */

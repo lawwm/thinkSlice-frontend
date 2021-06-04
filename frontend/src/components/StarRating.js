@@ -70,6 +70,7 @@ export const StarChoice = ({ rating, setRating }) => {
       {[1, 2, 3, 4, 5].map((index) => {
         return (
           <StarIcon
+            key={index}
             index={index}
             rating={rating}
             hoverRating={hoverRating}

@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Image, Media, Card, Row, Col, Modal, Button, Container, Form } from "react-bootstrap";
+import { Image, Media, Card, Row, Col, Modal, Button, Container, Form, Spinner } from "react-bootstrap";
 import { StarDisplay, StarChoice } from "../components/StarRating";
 import "./components.css";
-import "../routes/styles.css"
 import { FaRegEdit, FaTrashAlt } from "react-icons/fa";
+import { deleteReviews, editReviews } from "../store/profile/action"
 
-const ReviewPost = ({ reviewPic, username, reviewTitle, reviewEssay, dateReview, starRating, viewerId, profileId, reviewerId, asTutor }) => {
+const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, dateReview, editedDateReview, starRating, edited, viewerId, profileId, reviewerId, asTutor }) => {
   const history = useHistory();
-  // console.log(viewerId, typeof (viewerId))
-  // console.log(reviewerId, typeof (reviewerId))
-  // console.log(profileId, typeof (profileId))
-  // console.log(asTutor, typeof (asTutor))
+  const dispatch = useDispatch();
+
+  const { reviewPostLoading } = useSelector((state) => state.profile);
+
   const [editShow, setEditShow] = useState(false);
 
   const handleEditClose = () => setEditShow(false);
@@ -46,9 +47,20 @@ const ReviewPost = ({ reviewPic, username, reviewTitle, reviewEssay, dateReview,
   const onSubmit = (e) => {
     e.preventDefault();
     //create review
-    console.log(formData)
+    const { review_title, review_essay, star_rating } = formData;
+    const submitData = {
+      review_title: review_title,
+      review_essay: review_essay,
+      star_rating: star_rating,
+      reviewId: reviewId
+    }
+
+    dispatch(editReviews(submitData, handleEditClose))
   }
 
+  const onDelete = () => {
+    dispatch(deleteReviews(reviewId, handleDeleteClose))
+  }
 
   return (
     <Card>
@@ -71,16 +83,21 @@ const ReviewPost = ({ reviewPic, username, reviewTitle, reviewEssay, dateReview,
         </Card.Text>
         <footer className="review-date">
           <Row>
-            <Col md={6}>Written on {dateReview}</Col>
-            {asTutor && (viewerId === reviewerId) &&
+            <Col md={6}>
+              {edited ? <span>Edited</span> : <span>Written</span>}
+              &nbsp;on {edited ? <span>{editedDateReview}</span> : <span>{dateReview}</span>}
+            </Col>
+            {asTutor && (viewerId === reviewerId.toString()) &&
               <Col md={6}>
                 <div className="review-edit-delete-div">
                   <button
-
+                    onClick={handleEditShow}
                     className="review-edit-delete-btn" >
                     <FaRegEdit size={30} />
                   </button>
-                  <button className="review-edit-delete-btn" >
+                  <button
+                    onClick={handleDeleteShow}
+                    className="review-edit-delete-btn" >
                     <FaTrashAlt size={30} />
                   </button>
                 </div>
@@ -88,8 +105,16 @@ const ReviewPost = ({ reviewPic, username, reviewTitle, reviewEssay, dateReview,
             {!asTutor && (viewerId === profileId.toString()) &&
               <Col md={6}>
                 <div className="review-edit-delete-div">
-                  <button onClick={handleEditShow} className="review-edit-delete-btn" ><FaRegEdit size={30} /></button>
-                  <button onClick={handleDeleteShow} className="review-edit-delete-btn" ><FaTrashAlt size={30} /></button>
+                  <button
+                    onClick={handleEditShow}
+                    className="review-edit-delete-btn" >
+                    <FaRegEdit size={30} />
+                  </button>
+                  <button
+                    onClick={handleDeleteShow}
+                    className="review-edit-delete-btn" >
+                    <FaTrashAlt size={30} />
+                  </button>
                 </div>
               </Col>}
           </Row>
@@ -136,11 +161,13 @@ const ReviewPost = ({ reviewPic, username, reviewTitle, reviewEssay, dateReview,
               <Button
                 type="submit"
                 value="Submit"
-                className="btn-review-custom"
+                className="btn-review-custom edit-review-btn"
                 variant="primary"
               >
-                Submit
-                  </Button>
+                {reviewPostLoading
+                  ? <Spinner size="sm" animation="border" variant="light" />
+                  : <div>Submit</div>}
+              </Button>
             </Modal.Footer>
           </Container>
         </Form>
@@ -156,8 +183,13 @@ const ReviewPost = ({ reviewPic, username, reviewTitle, reviewEssay, dateReview,
           <Button className="btn-review-alt-custom" variant="secondary" onClick={handleDeleteClose}>
             Close
           </Button>
-          <Button className="btn-review-custom" variant="primary" onClick={handleDeleteClose}>
-            Delete
+          <Button
+            className="btn-review-custom edit-review-btn"
+            variant="primary"
+            onClick={onDelete}>
+            {reviewPostLoading
+              ? <Spinner size="sm" animation="border" variant="light" />
+              : <div>Delete</div>}
           </Button>
         </Modal.Footer>
       </Modal>

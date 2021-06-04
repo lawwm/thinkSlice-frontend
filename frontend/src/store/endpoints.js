@@ -14,7 +14,11 @@ export const ENDPOINTS = {
     LOGOUT: "/logout",
 
     //VIDEO
-    LIST_VIDEOS: ''
+    LIST_VIDEOS: '',
+
+    //REVIEWS
+    CREATE_REVIEW: '/tutors',
+    EDIT_DELETE_REVIEW: ''
 }
 
 export const DOMAINS = {

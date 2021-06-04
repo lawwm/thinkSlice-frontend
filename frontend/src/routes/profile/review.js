@@ -5,14 +5,14 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import ReviewPost from "../../components/ReviewPost";
 // import { getReviews } from "../../store/profile/action";
 
-import { Container, Col, Row, Image, Nav, Button, Modal, Form } from "react-bootstrap";
+import { Container, Col, Row, Image, Nav, Button, Modal, Form, Spinner } from "react-bootstrap";
 import "../styles.css";
 
-import { getProfile, getReviews } from "../../store/profile/action"
+import { getProfile, getReviews, createReviews } from "../../store/profile/action"
 
 import { StarChoice } from "../../components/StarRating"
 
-const MapReviews = ({ reviews, viewerId, profileId, reviewerId, asTutor }) => {
+const MapReviews = ({ reviews, viewerId, profileId, asTutor }) => {
   return (
     <>
       {
@@ -20,13 +20,15 @@ const MapReviews = ({ reviews, viewerId, profileId, reviewerId, asTutor }) => {
           return (
             <Fragment key={index}>
               <ReviewPost
-
+                reviewId={review.id}
                 reviewPic={review.creator_details.profile_pic}
                 username={review.creator_details.username}
                 reviewTitle={review.review_title}
                 reviewEssay={review.review_essay}
                 dateReview={review.date_review}
+                editedDateReview={review.date_review_edited}
                 starRating={review.star_rating}
+                edited={review.edited}
                 viewerId={viewerId}
                 profileId={profileId}
                 reviewerId={review.creator_details.user}
@@ -54,9 +56,10 @@ const Review = () => {
     dispatch(getReviews(user_id));
   }, [user_id, dispatch]);
 
-  const [selectReview, setSelectReview] = useState("reviewReceived")
+  const [selectReview, setSelectReview] = useState("reviewsReceived")
   const handleSelect = (eventKey) => {
     setSelectReview(eventKey)
+    console.log(selectReview)
   }
 
   //Create Review Modal
@@ -90,7 +93,19 @@ const Review = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     //create review
-    console.log(formData)
+    const { review_title, review_essay, star_rating } = formData;
+    const submitData = {
+      review_title: review_title,
+      review_essay: review_essay,
+      star_rating: star_rating,
+      tutorId: user_id
+    }
+
+    dispatch(createReviews(submitData, handleClose, () => setFormData({
+      "review_title": "",
+      "review_essay": "",
+      "star_rating": 0
+    })))
   }
 
   return (
@@ -102,9 +117,7 @@ const Review = () => {
             <Col className="align-self-center" xs={8}>
               <div>
                 <h2>
-                  {is_tutor
-                    ? "User reviews for " + username
-                    : "User reviews by " + username}
+                  {profile.basic.username + "'s reviews"}
                 </h2>
                 <Button
                   className="btn-nav btn review-button"
@@ -131,9 +144,9 @@ const Review = () => {
             </Col>
           </Row>
           <br />
-          <Nav justify variant="tabs" defaultActiveKey="reviewReceived" onSelect={handleSelect}>
+          <Nav justify variant="tabs" defaultActiveKey="reviewsReceived" onSelect={handleSelect}>
             <Nav.Item>
-              <Nav.Link className="tabs" eventKey="reviewReceived">
+              <Nav.Link className="tabs" eventKey="reviewsReceived">
                 As tutor
               </Nav.Link>
             </Nav.Item>
@@ -143,14 +156,18 @@ const Review = () => {
               </Nav.Link>
             </Nav.Item>
           </Nav>
-          {selectReview === "reviewReceived" && <MapReviews
+          {reviewLoading &&
+            <div className="review-loading-div">
+              <LoadingSpinner />
+            </div>}
+          {!reviewLoading && selectReview === "reviewsReceived" && <MapReviews
             reviews={reviewsReceived}
             viewerId={viewerId}
             profileId={user}
             asTutor={true}
           />
           }
-          {selectReview === "reviewsGiven" && <MapReviews
+          {!reviewLoading && selectReview === "reviewsGiven" && <MapReviews
             reviews={reviewsGiven}
             viewerId={viewerId}
             profileId={user}
@@ -197,10 +214,12 @@ const Review = () => {
                   <Button
                     type="submit"
                     value="Submit"
-                    className="btn-review-custom"
+                    className="btn-review-custom create-review-btn"
                     variant="primary"
                   >
-                    Submit
+                    {reviewLoading
+                      ? <Spinner size="sm" animation="border" variant="light" />
+                      : <div>Submit</div>}
                   </Button>
                 </Modal.Footer>
               </Container>
