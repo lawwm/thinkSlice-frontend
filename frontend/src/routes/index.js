@@ -38,7 +38,7 @@ const Routes = () => {
 
                     <PrivateRoute exact path={PATHS.UPLOAD_PAGE} component={Upload} />
                     <Route exact path={PATHS.WATCH_PAGE} component={WatchPage} />
-                    {/* <Route component={Fallback} /> */}
+                    <Route component={Fallback} />
                 </Switch>
             </Suspense>
         </Fragment>

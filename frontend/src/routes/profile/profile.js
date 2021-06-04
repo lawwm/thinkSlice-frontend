@@ -129,7 +129,7 @@ const Profile = () => {
                   <div className='profile-upload-layout'>
                     <div>Upload your picture here.</div>
                     <div >
-                      <img className="image-preview" src={imageURL} />
+                      <img alt="Preview" className="image-preview" src={imageURL} />
                     </div>
                     <div>
                       <label htmlFor="file-upload" className='custom-file-upload btn btn-danger' >
