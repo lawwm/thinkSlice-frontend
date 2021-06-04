@@ -44,7 +44,8 @@ const Review = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { user_id } = useParams();
-  const { profile, profileLoading, reviewsGiven, reviewsReceived } = useSelector((state) => state.profile);
+  const { profileLoading, reviewsGiven, reviewsReceived } = useSelector((state) => state.profile);
+  const { user, is_tutor, username, profile_pic } = useSelector((state) => state.profile.profile.basic)
 
   const viewerId = localStorage.getItem("user")
 
@@ -101,9 +102,9 @@ const Review = () => {
             <Col className="align-self-center" xs={8}>
               <div>
                 <h2>
-                  {profile.basic.is_tutor
-                    ? "User reviews for " + profile.basic.username
-                    : "User reviews by " + profile.basic.username}
+                  {is_tutor
+                    ? "User reviews for " + username
+                    : "User reviews by " + username}
                 </h2>
                 <Button
                   className="btn-nav btn review-button"
@@ -122,7 +123,7 @@ const Review = () => {
             <Col>
               <div className="profile-picture circle align-self-center ml-3">
                 <Image
-                  src={profile.basic.profile_pic}
+                  src={profile_pic}
                   alt="profile_pic"
                   fluid
                 />
@@ -145,14 +146,14 @@ const Review = () => {
           {selectReview === "reviewReceived" && <MapReviews
             reviews={reviewsReceived}
             viewerId={viewerId}
-            profileId={profile.basic.user}
+            profileId={user}
             asTutor={true}
           />
           }
           {selectReview === "reviewsGiven" && <MapReviews
             reviews={reviewsGiven}
             viewerId={viewerId}
-            profileId={profile.basic.user}
+            profileId={user}
             asTutor={false}
           />
           }
