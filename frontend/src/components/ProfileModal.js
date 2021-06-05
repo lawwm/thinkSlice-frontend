@@ -14,6 +14,7 @@ import update from "immutability-helper";
 
 import { Modal, Button, Form } from "react-bootstrap";
 import { StarDisplay } from "./StarRating.js";
+import { CheckboxGroup } from "./CheckboxGroup.js";
 import whatsapp from "../images/Whatsapp.png";
 import telegram from "../images/Telegram.png";
 import "./components.css";
@@ -57,7 +58,7 @@ const ProfileModal = ({ userId }) => {
   const onChangeDetailed = (e) => {
     let updatedValue = e.target.value;
 
-    if (updatedValue === "") {
+    if (updatedValue === "" || updatedValue === "null") {
       updatedValue = null;
     }
 
@@ -67,7 +68,7 @@ const ProfileModal = ({ userId }) => {
     });
   };
 
-  const onChangeArray = (e) => {
+  const onChangeDuration = (e) => {
     if (e.target.value === "0") {
       setProfileDetails(
         update(profileDetails, {
@@ -93,6 +94,9 @@ const ProfileModal = ({ userId }) => {
     tutor_whatsapp,
     tutor_telegram,
     aggregate_star,
+    total_tutor_reviews,
+    location,
+    subjects,
     duration_classes,
     qualifications,
   } = profileDetails;
@@ -111,6 +115,21 @@ const ProfileModal = ({ userId }) => {
         updateProfile(user, { basic: profileBasic, detailed: profileDetails })
       );
     }
+  };
+
+  const subjectList = (subjects) => {
+    if (subjects === null) {
+      return [];
+    }
+    let result = "";
+    for (let i = 0; i < subjects.length; i++) {
+      if (i === subjects.length - 1) {
+        result += subjects[i];
+      } else {
+        result += subjects[i] + ", ";
+      }
+    }
+    return result;
   };
 
   return (
@@ -180,19 +199,39 @@ const ProfileModal = ({ userId }) => {
                   </Form.Control>
                   {showTutorOptions && (
                     <>
-                      {/* <Form.Label>Subjects taught</Form.Label>
+                      <Form.Label>Location</Form.Label>
                       <Form.Control
-                        type="text"
+                        as="select"
+                        name="location"
+                        value={location}
+                        className="modal-input"
+                        onChange={(e) => onChangeDetailed(e)}
+                      >
+                        <option value="null">Do not specify</option>
+                        <option>North</option>
+                        <option>South</option>
+                        <option>East</option>
+                        <option>West</option>
+                        <option>Central</option>
+                      </Form.Control>
+                      <br />
+                      <Form.Label>Subjects taught</Form.Label>
+                      <Form
                         name="subjects"
                         value={subjects}
-                        onChange={(e) => onChangeDetailed(e)}
-                      /> */}
+                        onChange={(e) => {
+                          onChangeDetailed(e);
+                        }}
+                      >
+                        <CheckboxGroup subjectList={subjects} />
+                      </Form>
+                      <br />
                       <Form.Label>Min Lesson duration (in hours)</Form.Label>
                       <Form.Control
                         type="range"
                         name="0"
                         value={duration_classes[0]}
-                        onChange={(e) => onChangeArray(e)}
+                        onChange={(e) => onChangeDuration(e)}
                         min={0}
                         max={12}
                         custom
@@ -202,7 +241,7 @@ const ProfileModal = ({ userId }) => {
                         type="range"
                         name="1"
                         value={duration_classes[1]}
-                        onChange={(e) => onChangeArray(e)}
+                        onChange={(e) => onChangeDuration(e)}
                         min={0}
                         max={12}
                         custom
@@ -305,16 +344,26 @@ const ProfileModal = ({ userId }) => {
                           {aggregate_star === null ? (
                             "User does not have any ratings yet"
                           ) : (
-                            <StarDisplay num={aggregate_star} />
+                            <>
+                            <StarDisplay num={parseInt(aggregate_star)} />
+                            <span className="add-margin-left">({total_tutor_reviews} reviews)</span>
+                            </>
                           )}
                         </td>
                       </tr>
-                      {/* <tr>
+                      <tr>
+                        <td>Location</td>
+                        <td className="table-data">
+                          {location || "User has not provided their location"}
+                        </td>
+                      </tr>
+                      <tr>
                         <td>Subjects taught</td>
                         <td className="table-data">
-                          {subjects}
+                          {subjectList(subjects) ||
+                            "User has not shared what subjects they teach"}
                         </td>
-                      </tr> */}
+                      </tr>
                       <tr>
                         <td>Lesson duration</td>
                         <td className="table-data">
@@ -330,7 +379,10 @@ const ProfileModal = ({ userId }) => {
                       </tr>
                       <tr>
                         <td>Qualifications</td>
-                        <td className="table-data">{qualifications}</td>
+                        <td className="table-data">
+                          {qualifications ||
+                            "User has not shared their qualifications"}
+                        </td>
                       </tr>
                     </table>
                   </>

@@ -47,6 +47,10 @@ nav a:hover,
   margin: 10px 40px;
 }
 
+.add-margin-left {
+  margin-left: 10px;
+}
+
 /* thumbnail */
 .thumbnail-div {
   width: 339px;
@@ -151,6 +155,7 @@ nav a:hover,
   padding: 0px;
 }
 
+/* modal */
 .btn-modal,
 .btn-modal-grey {
   width: 200px;
