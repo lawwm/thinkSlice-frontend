@@ -34,7 +34,7 @@ p {
 
 /* auth page */
 .login-form-div {
-  margin-top: 50px;
+  margin-top: 86px;
   min-width: 500px;
   width: 540px;
 }
@@ -45,7 +45,7 @@ p {
 }
 
 .register-form-div {
-  margin-top: 50px;
+  margin-top: 86px;
   width: 540px;
 }
 
@@ -127,6 +127,12 @@ p {
 .padding-around {
   margin-left: 50px;
   padding: 0px;
+}
+
+/* Profile page */
+
+.profile-div {
+  margin-top: 36px;
 }
 
 .profile-button {
@@ -237,6 +243,10 @@ p {
 }
 
 /* review page */
+.review-div {
+  margin-top: 36px;
+}
+
 .review-loading-div {
   margin-top: 70px;
 }
@@ -333,6 +343,10 @@ p {
 
 /* Upload Page */
 
+.upload-div {
+  margin-top: 36px;
+}
+
 .custom-file-upload {
   border: 1px solid #ccc;
   display: inline-block;
@@ -421,6 +435,7 @@ p {
 }
 
 .video-name-reviews {
+  margin-top: 10px;
   padding-left: 10px;
   margin-bottom: 15px;
   vertical-align: center;
@@ -430,6 +445,121 @@ p {
 .video-student-reviews {
   text-align: right;
 }
+
+.video-description-div {
+  margin-bottom: 20px;
+}
+
+.video-description-btn {
+  border: none;
+  background-color: #fcfcfc;
+  color: rgb(87, 87, 87);
+  font-family: 'Inter UI semi-bold';
+}
+
+/* video comment  */
+
+.video-comment-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.video-add-comment {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.video-add-comment-button {
+  margin-top: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #d6d6d6;
+}
+
+.video-submit-comment {
+  margin-left: 10px;
+}
+
+.video-comment-button-div {
+  margin-top: 5px;
+}
+
+.btn-comment-custom {
+  padding: 10px 40px;
+  background-color: #ff4400;
+  opacity: 0.8;
+  border-radius: 4px;
+  border: none;
+  transition: 0.3s;
+  float: right;
+  margin-right: 5px;
+}
+
+.btn-comment-custom:hover,
+.btn-comment-custom:active,
+.btn-comment-custom:active:after {
+  opacity: 1;
+  background-color: #ff4400;
+}
+
+.btn-comment-alt-custom {
+  padding: 10px 40px;
+  background-color: #777777;
+  opacity: 0.8;
+  border-radius: 4px;
+  border: none;
+  transition: 0.3s;
+  float: right;
+}
+
+.btn-comment-alt-custom:hover,
+.btn-comment-alt-custom:disabled,
+.btn-comment-alt-custom:active,
+.btn-comment-alt-custom:active:after {
+  opacity: 1;
+  background-color: #5a5a5a;
+}
+
+/* video recommendation */
+.video-reco-div {
+  margin-top: 15px;
+}
+
+.browse-more-vid {
+  width: 339px;
+  height: 250px;
+  position: relative;
+  background-color: #ff7a4a;
+  border-radius: 1%;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.browse-more-sentence {
+  color: white;
+  font-family: 'Roboto medium';
+  font-size: 28px;
+  text-align: center;
+}
+
+.browse-more-header {
+  color: white;
+  font-family: 'Inter UI regular';
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.browse-label {
+  display: flex;
+  align-items: center;
+}
+
 /* modal page */
 
 .circle {
@@ -447,6 +577,10 @@ p {
 }
 
 /* home */
+
+.home-div {
+  margin-top: 36px;
+}
 
 .dropdown-div {
   display: flex;

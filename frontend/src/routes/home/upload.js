@@ -138,7 +138,7 @@ const Upload = () => {
                 <>
                     <NavBar />
                     <Container>
-                        <div>
+                        <div className="upload-div">
                             <h2>Create a video.</h2>
                             <form id="uploadbanner" encType="multipart/form-data" onSubmit={e => onSubmit(e)}>
 

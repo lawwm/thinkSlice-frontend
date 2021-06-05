@@ -45,77 +45,79 @@ const Profile = () => {
         (profile !== null ? (
           <>
             <Container>
-              <Row className="margin-left">
-                <Col className="mr-auto p-2 col-example" xs={8}>
-                  <h2>{profile.basic.username}</h2>
-                  <p>{profile.basic.user_bio}</p>
-                </Col>
-                <Col>
-                  <div
-                    onClick={() => setPictureModal(true && (currentViewer === user_id))}
-                    className={(currentViewer === user_id) ? "profile-pic-container circle" : "circle"}>
-                    <img
-                      src={profile.basic.profile_pic}
-                      alt="profile_pic"
-                      fluid
-                      className="profile-pic"
-                    />
-                    <div className="profile-pic-middle">
-                      <div className="profile-pic-text">Edit profile?</div>
-                    </div>
-                  </div>
-                </Col>
-                <Row>
-                  <button className="btn profile-tag" disabled>
-                    {profile.basic.is_tutor ? "Tutor" : "Student"}
-                  </button>
-                  <button
-                    className="btn profile-button"
-                    onClick={() => dispatch(toggleDetailedView(true))}
-                  >
-                    Details
-                  </button>
-                  <button
-                    className="btn profile-button"
-                    onClick={() => history.push("/profile/reviews/" + user_id)}
-                  >
-                    Reviews
-                  </button>
-                </Row>
-              </Row>
-              <br />
-              <hr></hr>
-              <br />
-              <Row className="margin-left">
-                <div>
-                  <h2>Videos</h2>
-                  {profile.basic.video.map((videoRow) => {
-                    return (
-                      <div key={videoRow.id} className="home-video-row">
-                        <Col md={"auto"} >
-                          <Thumbnail
-                            title={videoRow.video_title}
-                            username={profile.basic.username}
-                            views={videoRow.views}
-                            subject={videoRow.subject}
-                            date={videoRow.created_at}
-                            playback_id={videoRow.playback_id}
-                            imageSrc={profile.basic.profile_pic}
-                            videoId={videoRow.id}
-                            profileId={videoRow.creator_profile.user}
-                            deleteButton={(currentViewer === user_id)}
-                          />
-                        </Col>
+              <div className="profile-div">
+                <Row className="margin-left">
+                  <Col className="mr-auto p-2 col-example" xs={8}>
+                    <h2>{profile.basic.username}</h2>
+                    <p>{profile.basic.user_bio}</p>
+                  </Col>
+                  <Col>
+                    <div
+                      onClick={() => setPictureModal(true && (currentViewer === user_id))}
+                      className={(currentViewer === user_id) ? "profile-pic-container circle" : "circle"}>
+                      <img
+                        src={profile.basic.profile_pic}
+                        alt="profile_pic"
+                        fluid
+                        className="profile-pic"
+                      />
+                      <div className="profile-pic-middle">
+                        <div className="profile-pic-text">Edit profile?</div>
                       </div>
-                    )
-                  })}
-                </div>
-              </Row>
-              <Row className="margin-left-less">
-                <Col>{/* <Thumbnail className="remove-margin" /> */}</Col>
-                <Col></Col>
-                <Col></Col>
-              </Row>
+                    </div>
+                  </Col>
+                  <Row>
+                    <button className="btn profile-tag" disabled>
+                      {profile.basic.is_tutor ? "Tutor" : "Student"}
+                    </button>
+                    <button
+                      className="btn profile-button"
+                      onClick={() => dispatch(toggleDetailedView(true))}
+                    >
+                      Details
+                  </button>
+                    <button
+                      className="btn profile-button"
+                      onClick={() => history.push("/profile/reviews/" + user_id)}
+                    >
+                      Reviews
+                  </button>
+                  </Row>
+                </Row>
+                <br />
+                <hr></hr>
+                <br />
+                <Row className="margin-left">
+                  <div>
+                    <h2>Videos</h2>
+                    {profile.basic.video.map((videoRow) => {
+                      return (
+                        <div key={videoRow.id} className="home-video-row">
+                          <Col md={"auto"} >
+                            <Thumbnail
+                              title={videoRow.video_title}
+                              username={profile.basic.username}
+                              views={videoRow.views}
+                              subject={videoRow.subject}
+                              date={videoRow.created_at}
+                              playback_id={videoRow.playback_id}
+                              imageSrc={profile.basic.profile_pic}
+                              videoId={videoRow.id}
+                              profileId={videoRow.creator_profile.user}
+                              deleteButton={(currentViewer === user_id)}
+                            />
+                          </Col>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </Row>
+                <Row className="margin-left-less">
+                  <Col>{/* <Thumbnail className="remove-margin" /> */}</Col>
+                  <Col></Col>
+                  <Col></Col>
+                </Row>
+              </div>
             </Container>
 
             <ProfileModal userId={user_id} />

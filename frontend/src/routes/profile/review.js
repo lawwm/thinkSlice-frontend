@@ -133,128 +133,130 @@ const Review = () => {
       {profileLoading && <LoadingSpinner />}
       {!profileLoading && (
         <Container>
-          <Row className="review-header-div">
-            <Col className="align-self-center" xs={8}>
-              <div>
-                <h2>
-                  {/* {profile.basic.is_tutor
+          <div className="review-div">
+            <Row className="review-header-div">
+              <Col className="align-self-center" xs={8}>
+                <div>
+                  <h2>
+                    {/* {profile.basic.is_tutor
                     ? "User reviews for " + profile.basic.username
                     : "User reviews by " + profile.basic.username} */}
-                  {username + "'s reviews"}
-                </h2>
-                <Button
-                  className="btn-nav btn review-button"
-                  onClick={() => history.push("/profile/" + user_id)}
-                >
-                  Return to user profile
+                    {username + "'s reviews"}
+                  </h2>
+                  <Button
+                    className="btn-nav btn review-button"
+                    onClick={() => history.push("/profile/" + user_id)}
+                  >
+                    Return to user profile
                 </Button>
-                <Button className="btn review-button-alt" onClick={handleShow}>
-                  Post review
+                  <Button className="btn review-button-alt" onClick={handleShow}>
+                    Post review
                 </Button>
-              </div>
-            </Col>
-            <Col>
-              <div className="profile-picture circle align-self-center ml-3">
-                <Image src={profile_pic} alt="profile_pic" fluid />
-              </div>
-            </Col>
-          </Row>
-          <br />
-          <Nav
-            justify
-            variant="tabs"
-            defaultActiveKey="reviewsReceived"
-            onSelect={handleSelect}
-          >
-            <Nav.Item>
-              <Nav.Link className="tabs" eventKey="reviewsReceived">
-                As tutor
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link className="tabs" eventKey="reviewsGiven">
-                As student
-              </Nav.Link>
-            </Nav.Item>
-          </Nav>
-          {reviewLoading && (
-            <div className="review-loading-div">
-              <LoadingSpinner />
-            </div>
-          )}
-          {!reviewLoading && selectReview === "reviewsReceived" && (
-            <MapReviews
-              reviews={reviewsReceived}
-              viewerId={viewerId}
-              profileId={user}
-              asTutor={true}
-            />
-          )}
-          {!reviewLoading && selectReview === "reviewsGiven" && (
-            <MapReviews
-              reviews={reviewsGiven}
-              viewerId={viewerId}
-              profileId={user}
-              asTutor={false}
-            />
-          )}
-          {/* Modal set up below */}
-          <Modal backdrop="static" size="xl" show={show} onHide={handleClose}>
-            <Form onSubmit={(e) => onSubmit(e)}>
-              <Container>
-                <div className="create-review-modal">
-                  <div className="create-review-header">
-                    <h2>Submit Review</h2>
-                    <div className="create-review-rating-div">
-                      <StarChoice
-                        rating={formData.star_rating}
-                        setRating={changeRating}
-                      />
-                    </div>
-                  </div>
-                  <Form.Group controlId="formGroupEmail">
-                    <Form.Control
-                      as="input"
-                      placeholder="Title"
-                      name="review_title"
-                      value={formData.review_title}
-                      onChange={(e) => onChange(e)}
-                    />
-                    <Form.Control
-                      className="create-review-textarea"
-                      rows={8}
-                      as="textarea"
-                      name="review_essay"
-                      placeholder="Description"
-                      value={formData.review_essay}
-                      onChange={(e) => onChange(e)}
-                    />
-                  </Form.Group>
                 </div>
-                <Modal.Footer>
-                  <Button
-                    className="btn-review-alt-custom"
-                    variant="secondary"
-                    onClick={handleClose}
-                  >
-                    Close
+              </Col>
+              <Col>
+                <div className="profile-picture circle align-self-center ml-3">
+                  <Image src={profile_pic} alt="profile_pic" fluid />
+                </div>
+              </Col>
+            </Row>
+            <br />
+            <Nav
+              justify
+              variant="tabs"
+              defaultActiveKey="reviewsReceived"
+              onSelect={handleSelect}
+            >
+              <Nav.Item>
+                <Nav.Link className="tabs" eventKey="reviewsReceived">
+                  As tutor
+              </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link className="tabs" eventKey="reviewsGiven">
+                  As student
+              </Nav.Link>
+              </Nav.Item>
+            </Nav>
+            {reviewLoading && (
+              <div className="review-loading-div">
+                <LoadingSpinner />
+              </div>
+            )}
+            {!reviewLoading && selectReview === "reviewsReceived" && (
+              <MapReviews
+                reviews={reviewsReceived}
+                viewerId={viewerId}
+                profileId={user}
+                asTutor={true}
+              />
+            )}
+            {!reviewLoading && selectReview === "reviewsGiven" && (
+              <MapReviews
+                reviews={reviewsGiven}
+                viewerId={viewerId}
+                profileId={user}
+                asTutor={false}
+              />
+            )}
+            {/* Modal set up below */}
+            <Modal backdrop="static" size="xl" show={show} onHide={handleClose}>
+              <Form onSubmit={(e) => onSubmit(e)}>
+                <Container>
+                  <div className="create-review-modal">
+                    <div className="create-review-header">
+                      <h2>Submit Review</h2>
+                      <div className="create-review-rating-div">
+                        <StarChoice
+                          rating={formData.star_rating}
+                          setRating={changeRating}
+                        />
+                      </div>
+                    </div>
+                    <Form.Group controlId="formGroupEmail">
+                      <Form.Control
+                        as="input"
+                        placeholder="Title"
+                        name="review_title"
+                        value={formData.review_title}
+                        onChange={(e) => onChange(e)}
+                      />
+                      <Form.Control
+                        className="create-review-textarea"
+                        rows={8}
+                        as="textarea"
+                        name="review_essay"
+                        placeholder="Description"
+                        value={formData.review_essay}
+                        onChange={(e) => onChange(e)}
+                      />
+                    </Form.Group>
+                  </div>
+                  <Modal.Footer>
+                    <Button
+                      className="btn-review-alt-custom"
+                      variant="secondary"
+                      onClick={handleClose}
+                    >
+                      Close
                   </Button>
-                  <Button
-                    type="submit"
-                    value="Submit"
-                    className="btn-review-custom create-review-btn"
-                    variant="primary"
-                  >
-                    {reviewLoading ? (
-                      <Spinner size="sm" animation="border" variant="light" />
-                    ) : (
-                      <div>Submit</div>
-                    )}
-                  </Button>
-                </Modal.Footer>
-              </Container>
-            </Form>
-          </Modal>
+                    <Button
+                      type="submit"
+                      value="Submit"
+                      className="btn-review-custom create-review-btn"
+                      variant="primary"
+                    >
+                      {reviewLoading ? (
+                        <Spinner size="sm" animation="border" variant="light" />
+                      ) : (
+                        <div>Submit</div>
+                      )}
+                    </Button>
+                  </Modal.Footer>
+                </Container>
+              </Form>
+            </Modal>
+          </div>
         </Container>
       )}
     </>
