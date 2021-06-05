@@ -151,24 +151,26 @@ const Member = () => {
     <>
       <NavBar />
       <Container>
-        <h2>Welcome, registered user.</h2>
-        <FilterOptions
-          filtered={filterBy}
-          ascending={ascending}
-          setFilterOption={setFilterOption}
-          setOrderOption={setOrderOption}
-        />
-        <hr className="home-filter-break" />
-        <Row className="justify-content-md-left">
-          <VideoGrid videos={videos} />
-        </Row>
-        <div ref={loader} className="home-footer">
-          {videoLoading && <HomeSpinner />}
-          {reachedEnd && <div className="home-content-end">
-            <hr className="home-footer-break" />
-            <h5>You've reached the end of the page.</h5>
-            <a href="#top">Back to top.</a>
-          </div>}
+        <div className="home-div">
+          <h2>Welcome, registered user.</h2>
+          <FilterOptions
+            filtered={filterBy}
+            ascending={ascending}
+            setFilterOption={setFilterOption}
+            setOrderOption={setOrderOption}
+          />
+          <hr className="home-filter-break" />
+          <Row className="justify-content-md-left">
+            <VideoGrid videos={videos} />
+          </Row>
+          <div ref={loader} className="home-footer">
+            {videoLoading && <HomeSpinner />}
+            {reachedEnd && <div className="home-content-end">
+              <hr className="home-footer-break" />
+              <h5>You've reached the end of the page.</h5>
+              <a href="#top">Back to top.</a>
+            </div>}
+          </div>
         </div>
       </Container>
     </>
@@ -221,24 +223,26 @@ const Guest = () => {
     <>
       <NavBar />
       <Container>
-        <h2>Log in to get started.</h2>
-        <FilterOptions
-          filtered={filterBy}
-          ascending={ascending}
-          setFilterOption={setFilterOption}
-          setOrderOption={setOrderOption}
-        />
-        <hr className="home-filter-break" />
-        <Row className="justify-content-md-left">
-          <VideoGrid videos={videos} />
-        </Row>
-        <div ref={loader} className="home-footer">
-          {videoLoading && <HomeSpinner />}
-          {reachedEnd && <div className="home-content-end">
-            <hr className="home-footer-break" />
-            <h5>You've reached the end of the page.</h5>
-            <a href="#top">Back to top.</a>
-          </div>}
+        <div className="home-div">
+          <h2>Log in to get started.</h2>
+          <FilterOptions
+            filtered={filterBy}
+            ascending={ascending}
+            setFilterOption={setFilterOption}
+            setOrderOption={setOrderOption}
+          />
+          <hr className="home-filter-break" />
+          <Row className="justify-content-md-left">
+            <VideoGrid videos={videos} />
+          </Row>
+          <div ref={loader} className="home-footer">
+            {videoLoading && <HomeSpinner />}
+            {reachedEnd && <div className="home-content-end">
+              <hr className="home-footer-break" />
+              <h5>You've reached the end of the page.</h5>
+              <a href="#top">Back to top.</a>
+            </div>}
+          </div>
         </div>
       </Container>
     </>

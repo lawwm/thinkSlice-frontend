@@ -486,3 +486,7 @@ button.alert-close {
   margin-right: 16px;
   padding: 0px;
 }
+
+.replies-create-div {
+  margin-top: 20px;
+}

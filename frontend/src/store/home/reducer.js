@@ -8,12 +8,14 @@ import {
   REACHED_END,
   CHANGE_FILTER,
   CHANGE_ASCENDING,
-  CHANGE_PAGE
+  CHANGE_PAGE,
+  HOME_LOADING
   // UPDATE_WINDOW_SIZE
 } from "./actionTypes.js"
 
 const initialState = {
   videos: [],
+  homeLoading: true,
   videoLoading: true,
   currentVideo: {},
   isUploading: false,
@@ -36,7 +38,7 @@ export const home = (state = initialState, action) => {
       return {
         ...state,
         videos: newVideos.concat(payload),
-        videoLoading: false
+        homeLoading: false
       }
     case VIDEO_LOADED:
       return {
@@ -48,6 +50,11 @@ export const home = (state = initialState, action) => {
       return {
         ...state,
         videoLoading: true
+      }
+    case HOME_LOADING:
+      return {
+        ...state,
+        homeLoading: true
       }
     case HOMEPAGE_LOAD_FAIL:
       return {
