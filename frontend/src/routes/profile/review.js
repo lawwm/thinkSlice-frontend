@@ -58,12 +58,12 @@ const Review = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { user_id } = useParams();
-  const { profileLoading, reviewsGiven, reviewsReceived, reviewLoading } = useSelector(
+  const { profile, profileLoading, reviewsGiven, reviewsReceived, reviewLoading } = useSelector(
     (state) => state.profile
   );
-  const { user, username, profile_pic } = useSelector(
-    (state) => state.profile.profile.basic
-  );
+  // const { user, username, profile_pic } = useSelector(
+  //   (state) => state.profile.profile.basic
+  // );
 
   const viewerId = localStorage.getItem("user");
 
@@ -141,7 +141,7 @@ const Review = () => {
                     {/* {profile.basic.is_tutor
                     ? "User reviews for " + profile.basic.username
                     : "User reviews by " + profile.basic.username} */}
-                    {username + "'s reviews"}
+                    {profile.basic.username + "'s reviews"}
                   </h2>
                   <Button
                     className="btn-nav btn review-button"
@@ -156,7 +156,7 @@ const Review = () => {
               </Col>
               <Col>
                 <div className="profile-picture circle align-self-center ml-3">
-                  <Image src={profile_pic} alt="profile_pic" fluid />
+                  <Image src={profile.basic.profile_pic} alt="profile_pic" fluid />
                 </div>
               </Col>
             </Row>
@@ -187,7 +187,7 @@ const Review = () => {
               <MapReviews
                 reviews={reviewsReceived}
                 viewerId={viewerId}
-                profileId={user}
+                profileId={profile.basic.user}
                 asTutor={true}
               />
             )}
@@ -195,7 +195,7 @@ const Review = () => {
               <MapReviews
                 reviews={reviewsGiven}
                 viewerId={viewerId}
-                profileId={user}
+                profileId={profile.basic.user}
                 asTutor={false}
               />
             )}

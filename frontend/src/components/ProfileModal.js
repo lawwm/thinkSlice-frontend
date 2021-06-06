@@ -12,7 +12,7 @@ import {
 } from "../store/profile/action.js";
 import update from "immutability-helper";
 
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Nav } from "react-bootstrap";
 import { StarDisplay } from "./StarRating.js";
 import { CheckboxGroup } from "./CheckboxGroup.js";
 import whatsapp from "../images/Whatsapp.png";
@@ -35,6 +35,12 @@ const ProfileModal = ({ userId }) => {
   const [profileBasic, setProfileBasic] = useState(profile.basic);
   const [profileDetails, setProfileDetails] = useState(profile.detailed);
   const [showTutorOptions, setTutorOptions] = useState(profile.basic.is_tutor);
+
+  const [selectPage, setSelectPage] = useState("1")
+
+  const handleSelectPage = (eventKey) => {
+    setSelectPage(eventKey);
+  };
 
   const onChangeBasic = (e) => {
     let updatedValue = e.target.value;
@@ -142,46 +148,47 @@ const ProfileModal = ({ userId }) => {
             </Modal.Header>
             <Form onSubmit={(e) => onSubmit(e)}>
               <Modal.Body>
-                <Form.Group>
-                  <h4>User info</h4>
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control
-                    type="username"
-                    name="username"
-                    value={username}
-                    className="modal-input"
-                    onChange={(e) => onChangeBasic(e)}
-                  />
-                  <Form.Label>User bio</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    name="user_bio"
-                    value={user_bio}
-                    className="modal-input"
-                    onChange={(e) => onChangeBasic(e)}
-                  />
-                </Form.Group>
+                {selectPage === "1" &&
+                  (<><Form.Group>
+                    <h4>User info</h4>
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control
+                      type="username"
+                      name="username"
+                      value={username}
+                      className="modal-input"
+                      onChange={(e) => onChangeBasic(e)}
+                    />
+                    <Form.Label>User bio</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      name="user_bio"
+                      value={user_bio}
+                      className="modal-input"
+                      onChange={(e) => onChangeBasic(e)}
+                    />
+                  </Form.Group>
 
-                <Form.Group>
-                  <h4>Contact info</h4>
-                  <Form.Label>Whatsapp</Form.Label>
-                  <Form.Control
-                    type="tel"
-                    name="tutor_whatsapp"
-                    value={tutor_whatsapp}
-                    className="modal-input"
-                    onChange={(e) => onChangeDetailed(e)}
-                  />
-                  <Form.Label>Telegram</Form.Label>
-                  <Form.Control
-                    type="username"
-                    name="tutor_telegram"
-                    defaultValue={tutor_telegram}
-                    onChange={(e) => onChangeDetailed(e)}
-                  />
-                </Form.Group>
-
-                <Form.Group>
+                    <Form.Group>
+                      <h4>Contact info</h4>
+                      <Form.Label>Whatsapp</Form.Label>
+                      <Form.Control
+                        type="tel"
+                        name="tutor_whatsapp"
+                        value={tutor_whatsapp}
+                        className="modal-input"
+                        onChange={(e) => onChangeDetailed(e)}
+                      />
+                      <Form.Label>Telegram</Form.Label>
+                      <Form.Control
+                        type="username"
+                        name="tutor_telegram"
+                        defaultValue={tutor_telegram}
+                        onChange={(e) => onChangeDetailed(e)}
+                      />
+                    </Form.Group></>)
+                }
+                {selectPage === "2" && <Form.Group>
                   <h4>User details</h4>
                   <Form.Label>Tutor/Student</Form.Label>
                   <Form.Control
@@ -197,7 +204,7 @@ const ProfileModal = ({ userId }) => {
                     <option value="true">Tutor</option>
                     <option value="false">Student</option>
                   </Form.Control>
-                  {showTutorOptions && (
+                  {selectPage === "3" && showTutorOptions && (
                     <>
                       <Form.Label>Location</Form.Label>
                       <Form.Control
@@ -256,7 +263,29 @@ const ProfileModal = ({ userId }) => {
                       />
                     </>
                   )}
-                </Form.Group>
+                </Form.Group>}
+                <Nav
+                  fill
+                  variant="pills"
+                  defaultActiveKey="reviewsReceived"
+                  onSelect={handleSelectPage}
+                >
+                  <Nav.Item>
+                    <Nav.Link className="tabs" eventKey="1">
+                      Page 1
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link className="tabs" eventKey="2">
+                      Page 2
+                     </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link className="tabs" eventKey="3">
+                      Page 3
+                     </Nav.Link>
+                  </Nav.Item>
+                </Nav>
               </Modal.Body>
               <Modal.Footer>
                 <Button
@@ -345,8 +374,8 @@ const ProfileModal = ({ userId }) => {
                             "User does not have any ratings yet"
                           ) : (
                             <>
-                            <StarDisplay num={parseInt(aggregate_star)} />
-                            <span className="add-margin-left">({total_tutor_reviews} reviews)</span>
+                              <StarDisplay num={parseInt(aggregate_star)} />
+                              <span className="add-margin-left">({total_tutor_reviews} reviews)</span>
                             </>
                           )}
                         </td>
@@ -370,8 +399,8 @@ const ProfileModal = ({ userId }) => {
                           {duration_classes[0] === 0
                             ? "User has not provided the duration of their lessons"
                             : duration_classes[0] === duration_classes[1]
-                            ? duration_classes[0] + " hrs"
-                            : duration_classes[0] +
+                              ? duration_classes[0] + " hrs"
+                              : duration_classes[0] +
                               " - " +
                               duration_classes[1] +
                               " hrs"}
