@@ -48,7 +48,15 @@ const Profile = () => {
               <div className="profile-div">
                 <Row className="margin-left">
                   <Col className="mr-auto p-2 col-example" xs={8}>
-                    <h2>{profile.basic.username}</h2>
+                    <div className="username-tag-div">
+                      <h2>{profile.basic.username}</h2>
+                      {profile.basic.is_tutor && <button className="btn profile-tag" disabled>
+                        Tutor
+                      </button>}
+                      {profile.basic.is_student && <button className="btn profile-tag" disabled>
+                        Student
+                      </button>}
+                    </div>
                     <p>{profile.basic.user_bio}</p>
                   </Col>
                   <Col>
@@ -67,9 +75,7 @@ const Profile = () => {
                     </div>
                   </Col>
                   <Row>
-                    <button className="btn profile-tag" disabled>
-                      {profile.basic.is_tutor ? "Tutor" : "Student"}
-                    </button>
+
                     <button
                       className="btn profile-button"
                       onClick={() => dispatch(toggleDetailedView(true))}
@@ -130,6 +136,7 @@ const Profile = () => {
                 <Modal.Body>
                   <div className='profile-upload-layout'>
                     <div>Upload your picture here.</div>
+
                     <div >
                       <img alt="Preview" className="image-preview" src={imageURL} />
                     </div>
@@ -139,6 +146,7 @@ const Profile = () => {
                       </label>
                       <input id="file-upload" name='file-upload' type="file" onChange={(e) => onUploadChange(e.target.files[0])} />
                     </div>
+                    <div className="profile-pic-upload-note">Note: Image should be less than 100kb</div>
                   </div>
 
                 </Modal.Body>

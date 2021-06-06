@@ -215,6 +215,19 @@ nav a:hover,
   width: 50px;
 }
 
+.profile-modal-page {
+  color: rgb(112, 112, 112);
+}
+
+.profile-modal-page:hover {
+  color: rgb(39, 39, 39);
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: rgb(255, 98, 41);
+}
+
 /* review */
 
 .reviewer,

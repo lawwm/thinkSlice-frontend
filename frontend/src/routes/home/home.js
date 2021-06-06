@@ -106,7 +106,7 @@ const VideoGrid = ({ videos }) => {
 
 const Member = () => {
   const dispatch = useDispatch();
-  const { filterBy, ascending, page, videos, videoLoading, reachedEnd } = useSelector((state) => state.home)
+  const { filterBy, ascending, page, videos, homeLoading, reachedEnd } = useSelector((state) => state.home)
 
   const loader = useRef(null);
 
@@ -164,7 +164,7 @@ const Member = () => {
             <VideoGrid videos={videos} />
           </Row>
           <div ref={loader} className="home-footer">
-            {videoLoading && <HomeSpinner />}
+            {homeLoading && <HomeSpinner />}
             {reachedEnd && <div className="home-content-end">
               <hr className="home-footer-break" />
               <h5>You've reached the end of the page.</h5>
@@ -179,7 +179,7 @@ const Member = () => {
 
 const Guest = () => {
   const dispatch = useDispatch();
-  const { filterBy, ascending, page, videos, videoLoading, reachedEnd } = useSelector((state) => state.home)
+  const { filterBy, ascending, page, videos, homeLoading, reachedEnd } = useSelector((state) => state.home)
 
   const loader = useRef(null);
 
@@ -236,7 +236,7 @@ const Guest = () => {
             <VideoGrid videos={videos} />
           </Row>
           <div ref={loader} className="home-footer">
-            {videoLoading && <HomeSpinner />}
+            {homeLoading && <HomeSpinner />}
             {reachedEnd && <div className="home-content-end">
               <hr className="home-footer-break" />
               <h5>You've reached the end of the page.</h5>

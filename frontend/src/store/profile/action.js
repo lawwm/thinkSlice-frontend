@@ -99,8 +99,14 @@ export const toggleEditMode = (boolean) => async (dispatch) => {
 export const changePicture = (imageFile, closeModalFunction) => async (dispatch) => {
   try {
     dispatch(loadProfileComponent())
+
+    if (imageFile.size > 100000) {
+      console.log("shit's fucked")
+      throw new Error("Image size should be less than 100kb")
+    }
+
     if (imageFile === null) {
-      return new Error("There is no image selected")
+      throw new Error("There is no image selected")
     }
     let formData = new FormData();
     formData.append("profile_pic", imageFile, imageFile.name);
@@ -118,7 +124,7 @@ export const changePicture = (imageFile, closeModalFunction) => async (dispatch)
     dispatch(profileComponentLoaded())
     closeModalFunction()
   } catch (err) {
-    dispatch(setAlert("Profile update failed, please try again", "danger"));
+    dispatch(setAlert(err.message, "danger"));
     dispatch(profileComponentLoaded())
   }
 }
@@ -138,9 +144,19 @@ export const updateProfile = (userId, profile) => async (dispatch) => {
       profile.detailed
     );
 
+    const basicRes = {
+      ...res.data,
+      video: res.data.video.map(video => {
+        return {
+          ...video,
+          created_at: convertUnixToTimeElapsed(video.created_at)
+        }
+      })
+    }
+
     dispatch({
       type: actionTypes.PROFILE_UPDATED,
-      payload: { basic: res.data, detailed: res2.data },
+      payload: { basic: basicRes, detailed: res2.data },
     });
     dispatch(setAlert("Profile updated", "success"));
   } catch (err) {
