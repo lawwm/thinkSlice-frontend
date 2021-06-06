@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
@@ -10,6 +10,7 @@ import axios from 'axios'
 import "../styles.css";
 import { setAlert } from "../../store/components/action"
 import { startUpload, endUpload, setVideoLoading } from "../../store/home/action.js";
+import { getProfile } from "../../store/profile/action"
 
 const Upload = () => {
     const dispatch = useDispatch()
@@ -17,7 +18,13 @@ const Upload = () => {
 
     const { loading } = useSelector((state) => state.auth);
     const { isUploading } = useSelector((state) => state.home)
+    const { profile, profileLoading } = useSelector((state) => state.profile)
     const [progressState, setProgressState] = useState(0)
+
+    const userId = localStorage.getItem("user")
+    useEffect(() => {
+        dispatch(getProfile(userId));
+    }, [dispatch, userId])
 
     const uploadFile = (videoFile) => {
         let url_id = ''
@@ -119,6 +126,8 @@ const Upload = () => {
             dispatch(setAlert("Your video file exceeds 60 seconds", "danger"))
             // } else if (metadata.duration < 10) {
             //     dispatch(setAlert("Your video file is too short", "danger"))
+        } else if (!profile.basic.is_tutor) {
+            dispatch(setAlert("Only tutors are authorized to upload videos", "danger"))
         } else {
             setVideoData({
                 ...videoData,
@@ -137,98 +146,101 @@ const Upload = () => {
             {!loading && (
                 <>
                     <NavBar />
-                    <Container>
-                        <div className="upload-div">
-                            <h2>Create a video.</h2>
-                            <form id="uploadbanner" encType="multipart/form-data" onSubmit={e => onSubmit(e)}>
+                    {profileLoading && <LoadingSpinner />}
+                    {!profileLoading && (
+                        <Container>
+                            <div className="upload-div">
+                                <h2>Create a video.</h2>
+                                <form id="uploadbanner" encType="multipart/form-data" onSubmit={e => onSubmit(e)}>
 
-                                <div className="form-group row">
-                                    <input
-                                        type="text"
-                                        name="video_title"
-                                        className="form-control"
-                                        placeholder="Title"
-                                        onChange={(e) => onChange(e)}
-                                        value={videoData.video_title}
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group row">
-                                    <input
-                                        type="text"
-                                        name="subject"
-                                        className="form-control"
-                                        placeholder="Subject"
-                                        onChange={(e) => onChange(e)}
-                                        value={videoData.subject}
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group row">
-                                    <textarea
-                                        type="textarea"
-                                        name="video_description"
-                                        className="form-control"
-                                        placeholder="Description"
-                                        onChange={(e) => onChange(e)}
-                                        value={videoData.video_description}
-                                        required
-                                    />
-                                </div>
-                                <div className='upload-layout'>
-                                    <div>
-                                        <label htmlFor="file-upload" className='custom-file-upload btn btn-danger' >
-                                            Select File
+                                    <div className="form-group row">
+                                        <input
+                                            type="text"
+                                            name="video_title"
+                                            className="form-control"
+                                            placeholder="Title"
+                                            onChange={(e) => onChange(e)}
+                                            value={videoData.video_title}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group row">
+                                        <input
+                                            type="text"
+                                            name="subject"
+                                            className="form-control"
+                                            placeholder="Subject"
+                                            onChange={(e) => onChange(e)}
+                                            value={videoData.subject}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group row">
+                                        <textarea
+                                            type="textarea"
+                                            name="video_description"
+                                            className="form-control"
+                                            placeholder="Description"
+                                            onChange={(e) => onChange(e)}
+                                            value={videoData.video_description}
+                                            required
+                                        />
+                                    </div>
+                                    <div className='upload-layout'>
+                                        <div>
+                                            <label htmlFor="file-upload" className='custom-file-upload btn btn-danger' >
+                                                Select File
                                         </label>
-                                        <input id="file-upload" name='file-upload' type="file" onChange={(e) => onUploadChange(e.target.files[0])} />
-                                    </div>
-                                    <div className='upload-filename'>
-                                        {fileName}
-                                    </div>
-                                </div>
-                                <hr className='upload-break' />
-                                <Row >
-                                    <Col md={8}>
-                                        <div className="progress-bar-div">
-                                            {isUploading && <ProgressBar striped className="custom-progress-bar" now={progressState} />}
+                                            <input id="file-upload" name='file-upload' type="file" onChange={(e) => onUploadChange(e.target.files[0])} />
                                         </div>
-                                    </Col>
-                                    <Col md={4}>
-                                        <button
-                                            type="submit"
-                                            value="Submit"
-                                            className="btn btn-danger btn-alt-custom upload-btn-size"
-                                            onSubmit={e => onSubmit(e)}
-                                        >
-                                            {isUploading
-                                                ? <Spinner size="sm" animation="border" variant="light" />
-                                                : <div>Submit</div>
-                                            }
-                                        </button>
-                                    </Col>
-                                </Row>
-                            </form>
-                            {file && (
-                                <video
-                                    controls={true}
-                                    width="250"
-                                    className="upload-video-helper"
-                                    onLoadedMetadata={e => {
-                                        setMetadata({
-                                            videoHeight: e.target.videoHeight,
-                                            videoWidth: e.target.videoWidth,
-                                            duration: e.target.duration
-                                        });
-                                    }}
-                                >
-                                    <source src={URL.createObjectURL(file)}
-                                        type="video/mp4" />
-                                </video>
-                            )}
-                        </div>
-                    </Container>
+                                        <div className='upload-filename'>
+                                            {fileName}
+                                        </div>
+                                    </div>
+                                    <hr className='upload-break' />
+                                    <Row >
+                                        <Col md={8}>
+                                            <div className="progress-bar-div">
+                                                {isUploading && <ProgressBar striped className="custom-progress-bar" now={progressState} />}
+                                            </div>
+                                        </Col>
+                                        <Col md={4}>
+                                            <button
+                                                type="submit"
+                                                value="Submit"
+                                                className="btn btn-danger btn-alt-custom upload-btn-size"
+                                                onSubmit={e => onSubmit(e)}
+                                            >
+                                                {isUploading
+                                                    ? <Spinner size="sm" animation="border" variant="light" />
+                                                    : <div>Submit</div>
+                                                }
+                                            </button>
+                                        </Col>
+                                    </Row>
+                                </form>
+                                {file && (
+                                    <video
+                                        controls={true}
+                                        width="250"
+                                        className="upload-video-helper"
+                                        onLoadedMetadata={e => {
+                                            setMetadata({
+                                                videoHeight: e.target.videoHeight,
+                                                videoWidth: e.target.videoWidth,
+                                                duration: e.target.duration
+                                            });
+                                        }}
+                                    >
+                                        <source src={URL.createObjectURL(file)}
+                                            type="video/mp4" />
+                                    </video>
+                                )}
+                            </div>
+                        </Container>)}
                 </>
             )}
+
         </>
     );
 };

@@ -48,7 +48,15 @@ const Profile = () => {
               <div className="profile-div">
                 <Row className="margin-left">
                   <Col className="mr-auto p-2 col-example" xs={8}>
-                    <h2>{profile.basic.username}</h2>
+                    <div className="username-tag-div">
+                      <h2>{profile.basic.username}</h2>
+                      {profile.basic.is_tutor && <button className="btn profile-tag" disabled>
+                        Tutor
+                      </button>}
+                      {profile.basic.is_student && <button className="btn profile-tag" disabled>
+                        Student
+                      </button>}
+                    </div>
                     <p>{profile.basic.user_bio}</p>
                   </Col>
                   <Col>
@@ -67,9 +75,7 @@ const Profile = () => {
                     </div>
                   </Col>
                   <Row>
-                    <button className="btn profile-tag" disabled>
-                      {profile.basic.is_tutor ? "Tutor" : "Student"}
-                    </button>
+
                     <button
                       className="btn profile-button"
                       onClick={() => dispatch(toggleDetailedView(true))}

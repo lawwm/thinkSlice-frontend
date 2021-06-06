@@ -40,7 +40,6 @@ const ProfileModal = ({ userId }) => {
   const [selectPage, setSelectPage] = useState("1")
 
   const handleSelectPage = (eventKey) => {
-    console.log(eventKey)
     setSelectPage(eventKey);
   };
 
@@ -246,7 +245,7 @@ const ProfileModal = ({ userId }) => {
                         as="select"
                         name="is_tutor"
                         className="modal-input"
-                        defaultValue={setTutorDropdownDefault(profile.basic.is_student, profile.basic.is_tutor)}
+                        defaultValue={setTutorDropdownDefault(profileBasic.is_student, profileBasic.is_tutor)}
                         onChange={(e) => {
                           onChangeBasic(e);
                           setShowTutorOptions(e.target.value % 2 !== 0);
@@ -256,7 +255,11 @@ const ProfileModal = ({ userId }) => {
                         <option value="1">Tutor</option>
                         <option value="2">Student</option>
                         <option value="3">Both</option>
-                      </Form.Control></>)}
+                      </Form.Control>
+                      <div>
+                        Helpful tip: Select your role as a student and/or tutor. Tutors get
+                        to upload videos and display additional information on their profiles.
+                      </div></>)}
                   {selectPage === "3" && (
                     <>
                       <Form.Label>Location</Form.Label>
@@ -320,7 +323,7 @@ const ProfileModal = ({ userId }) => {
                 <Nav
                   fill
                   variant="pills"
-                  defaultActiveKey="1"
+                  defaultActiveKey={selectPage}
                   onSelect={handleSelectPage}
                 >
                   <Nav.Item>

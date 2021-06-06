@@ -144,9 +144,19 @@ export const updateProfile = (userId, profile) => async (dispatch) => {
       profile.detailed
     );
 
+    const basicRes = {
+      ...res.data,
+      video: res.data.video.map(video => {
+        return {
+          ...video,
+          created_at: convertUnixToTimeElapsed(video.created_at)
+        }
+      })
+    }
+
     dispatch({
       type: actionTypes.PROFILE_UPDATED,
-      payload: { basic: res.data, detailed: res2.data },
+      payload: { basic: basicRes, detailed: res2.data },
     });
     dispatch(setAlert("Profile updated", "success"));
   } catch (err) {

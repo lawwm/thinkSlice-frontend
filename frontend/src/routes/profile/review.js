@@ -4,6 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ReviewPost from "../../components/ReviewPost";
 // import { getReviews } from "../../store/profile/action";
+import "../styles.css";
 
 import {
   Container,
@@ -16,7 +17,6 @@ import {
   Form,
   Spinner,
 } from "react-bootstrap";
-import "../styles.css";
 
 import {
   getProfile,
@@ -61,9 +61,6 @@ const Review = () => {
   const { profile, profileLoading, reviewsGiven, reviewsReceived, reviewLoading } = useSelector(
     (state) => state.profile
   );
-  // const { user, username, profile_pic } = useSelector(
-  //   (state) => state.profile.profile.basic
-  // );
 
   const viewerId = localStorage.getItem("user");
 
@@ -73,6 +70,13 @@ const Review = () => {
   }, [user_id, dispatch]);
 
   const [selectReview, setSelectReview] = useState("reviewsReceived");
+
+  useEffect(() => {
+    if (profile) {
+      setSelectReview(profile.basic.is_tutor ? "reviewsReceived" : "reviewsGiven")
+    }
+  }, [profile])
+
   const handleSelect = (eventKey) => {
     setSelectReview(eventKey);
     console.log(selectReview);
@@ -82,9 +86,6 @@ const Review = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  //Set rating star
-  // const [rating, setRating] = React.useState(0);
 
   const [formData, setFormData] = useState({
     review_title: "",
@@ -138,9 +139,6 @@ const Review = () => {
               <Col className="align-self-center" xs={8}>
                 <div>
                   <h2>
-                    {/* {profile.basic.is_tutor
-                    ? "User reviews for " + profile.basic.username
-                    : "User reviews by " + profile.basic.username} */}
                     {profile.basic.username + "'s reviews"}
                   </h2>
                   <Button
@@ -164,41 +162,63 @@ const Review = () => {
             <Nav
               justify
               variant="tabs"
-              defaultActiveKey="reviewsReceived"
+              defaultActiveKey={profile.basic.is_tutor ? "reviewsReceived" : "reviewsGiven"}
               onSelect={handleSelect}
             >
-              <Nav.Item>
-                <Nav.Link className="tabs" eventKey="reviewsReceived">
-                  As tutor
-              </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link className="tabs" eventKey="reviewsGiven">
-                  As student
-              </Nav.Link>
-              </Nav.Item>
+              {profile.basic.is_tutor &&
+                (<Nav.Item>
+                  <Nav.Link className="tabs" eventKey="reviewsReceived">
+                    As tutor
+                  </Nav.Link>
+                </Nav.Item>)}
+              {profile.basic.is_student &&
+                (<Nav.Item>
+                  <Nav.Link className="tabs" eventKey="reviewsGiven">
+                    As student
+                  </Nav.Link>
+                </Nav.Item>)}
             </Nav>
             {reviewLoading && (
               <div className="review-loading-div">
                 <LoadingSpinner />
               </div>
             )}
-            {!reviewLoading && selectReview === "reviewsReceived" && (
-              <MapReviews
-                reviews={reviewsReceived}
-                viewerId={viewerId}
-                profileId={profile.basic.user}
-                asTutor={true}
-              />
-            )}
-            {!reviewLoading && selectReview === "reviewsGiven" && (
-              <MapReviews
-                reviews={reviewsGiven}
-                viewerId={viewerId}
-                profileId={profile.basic.user}
-                asTutor={false}
-              />
-            )}
+            {
+              !reviewLoading && !profile.basic.is_tutor && !profile.basic.is_student &&
+              (<>
+                <div className="no-review-message">
+                  User is not a student or a tutor.
+                </div>
+              </>)
+            }
+            {!reviewLoading && selectReview === "reviewsReceived" && profile.basic.is_tutor &&
+              (<>
+                {reviewsReceived.length === 0
+                  ? <div className="no-review-message">
+                    User has not received any reviews as a tutor.
+                    </div>
+                  : <MapReviews
+                    reviews={reviewsReceived}
+                    viewerId={viewerId}
+                    profileId={profile.basic.user}
+                    asTutor={true}
+                  />}
+              </>)
+            }
+            {!reviewLoading && selectReview === "reviewsGiven" && profile.basic.is_student &&
+              (<>
+                {reviewsGiven.length === 0
+                  ? <div className="no-review-message">
+                    User has not given any reviews as a student.
+                    </div>
+                  : <MapReviews
+                    reviews={reviewsGiven}
+                    viewerId={viewerId}
+                    profileId={profile.basic.user}
+                    asTutor={false}
+                  />}
+              </>)
+            }
             {/* Modal set up below */}
             <Modal backdrop="static" size="xl" show={show} onHide={handleClose}>
               <Form onSubmit={(e) => onSubmit(e)}>
@@ -258,7 +278,8 @@ const Review = () => {
             </Modal>
           </div>
         </Container>
-      )}
+      )
+      }
     </>
   );
 };
