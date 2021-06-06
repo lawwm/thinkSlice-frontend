@@ -130,6 +130,7 @@ const Profile = () => {
                 <Modal.Body>
                   <div className='profile-upload-layout'>
                     <div>Upload your picture here.</div>
+
                     <div >
                       <img alt="Preview" className="image-preview" src={imageURL} />
                     </div>
@@ -139,6 +140,7 @@ const Profile = () => {
                       </label>
                       <input id="file-upload" name='file-upload' type="file" onChange={(e) => onUploadChange(e.target.files[0])} />
                     </div>
+                    <div className="profile-pic-upload-note">Note: Image should be less than 100kb</div>
                   </div>
 
                 </Modal.Body>

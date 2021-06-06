@@ -23,9 +23,10 @@ const subjects = [
 export const CheckboxGroup = ({ subjectList }) => {
   return (
     <>
-      {subjects.map((subject) => {
+      {subjects.map((subject, index) => {
         return (
           <Form.Check
+            key={index}
             type="checkbox"
             label={subject}
             value={subject}

@@ -34,31 +34,79 @@ const ProfileModal = ({ userId }) => {
 
   const [profileBasic, setProfileBasic] = useState(profile.basic);
   const [profileDetails, setProfileDetails] = useState(profile.detailed);
-  const [showTutorOptions, setTutorOptions] = useState(profile.basic.is_tutor);
+  const [showTutorOptions, setShowTutorOptions] = useState(profile.basic.is_tutor);
+
 
   const [selectPage, setSelectPage] = useState("1")
 
   const handleSelectPage = (eventKey) => {
+    console.log(eventKey)
     setSelectPage(eventKey);
   };
 
+  const setTutorDropdownDefault = (isStudent, isTutor) => {
+    if (!isStudent && !isTutor) {
+      return "0"
+    } else if (!isStudent && isTutor) {
+      return "1"
+    } else if (isStudent && !isTutor) {
+      return "2"
+    } else {
+      return "3"
+    }
+  }
+
   const onChangeBasic = (e) => {
     let updatedValue = e.target.value;
-
-    if (updatedValue === "true" || updatedValue === "false") {
-      updatedValue = JSON.parse(updatedValue);
-      setProfileBasic({
-        ...profileBasic,
-        is_tutor: updatedValue,
-        is_student: !updatedValue,
-      });
-      return;
+    console.log(e.target.value)
+    switch (updatedValue) {
+      case "0":
+        setProfileBasic({
+          ...profileBasic,
+          is_tutor: false,
+          is_student: false,
+        });
+        break;
+      case "1":
+        setProfileBasic({
+          ...profileBasic,
+          is_tutor: true,
+          is_student: false,
+        });
+        break;
+      case "2":
+        setProfileBasic({
+          ...profileBasic,
+          is_tutor: false,
+          is_student: true,
+        });
+        break;
+      case "3":
+        setProfileBasic({
+          ...profileBasic,
+          is_tutor: true,
+          is_student: true,
+        });
+        break;
+      default:
+        setProfileBasic({
+          ...profileBasic,
+          [e.target.name]: updatedValue,
+        });
+        break;
     }
+    // console.log("hello world")
+    // if (updatedValue === "0" || updatedValue === "false") {
+    //   updatedValue = JSON.parse(updatedValue);
+    //   setProfileBasic({
+    //     ...profileBasic,
+    //     is_tutor: updatedValue,
+    //     is_student: !updatedValue,
+    //   });
+    //   return;
+    // }
 
-    setProfileBasic({
-      ...profileBasic,
-      [e.target.name]: updatedValue,
-    });
+
   };
 
   const onChangeDetailed = (e) => {
@@ -108,6 +156,7 @@ const ProfileModal = ({ userId }) => {
   } = profileDetails;
 
   const onSubmit = async (e) => {
+    e.preventDefault()
     if (duration_classes[0] > duration_classes[1]) {
       dispatch(
         setAlert(
@@ -116,6 +165,7 @@ const ProfileModal = ({ userId }) => {
         )
       );
     } else {
+      console.log(profileBasic, profileDetails)
       dispatch(toggleEditMode(false));
       dispatch(
         updateProfile(user, { basic: profileBasic, detailed: profileDetails })
@@ -141,35 +191,36 @@ const ProfileModal = ({ userId }) => {
   return (
     <>
       {editMode && (
-        <Modal show={detailedMode} size="lg" centered className="modal-style">
+        <Modal backdrop="static" show={detailedMode} size="lg" centered className="modal-style">
           <div>
             <Modal.Header>
               <h3>Editing profile details</h3>
             </Modal.Header>
             <Form onSubmit={(e) => onSubmit(e)}>
               <Modal.Body>
-                {selectPage === "1" &&
-                  (<><Form.Group>
-                    <h4>User info</h4>
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                      type="username"
-                      name="username"
-                      value={username}
-                      className="modal-input"
-                      onChange={(e) => onChangeBasic(e)}
-                    />
-                    <Form.Label>User bio</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      name="user_bio"
-                      value={user_bio}
-                      className="modal-input"
-                      onChange={(e) => onChangeBasic(e)}
-                    />
-                  </Form.Group>
+                <Form.Group>
+                  {selectPage === "1" &&
+                    (<>
+                      <h4>User info</h4>
+                      <Form.Label>Username</Form.Label>
+                      <Form.Control
+                        type="username"
+                        name="username"
+                        value={username}
+                        className="modal-input"
+                        onChange={(e) => onChangeBasic(e)}
+                      />
+                      <Form.Label>User bio</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        name="user_bio"
+                        value={user_bio}
+                        className="modal-input"
+                        onChange={(e) => onChangeBasic(e)}
+                      />
 
-                    <Form.Group>
+
+
                       <h4>Contact info</h4>
                       <Form.Label>Whatsapp</Form.Label>
                       <Form.Control
@@ -186,25 +237,27 @@ const ProfileModal = ({ userId }) => {
                         defaultValue={tutor_telegram}
                         onChange={(e) => onChangeDetailed(e)}
                       />
-                    </Form.Group></>)
-                }
-                {selectPage === "2" && <Form.Group>
-                  <h4>User details</h4>
-                  <Form.Label>Tutor/Student</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="is_tutor"
-                    value={is_tutor}
-                    className="modal-input"
-                    onChange={(e) => {
-                      onChangeBasic(e);
-                      setTutorOptions(!showTutorOptions);
-                    }}
-                  >
-                    <option value="true">Tutor</option>
-                    <option value="false">Student</option>
-                  </Form.Control>
-                  {selectPage === "3" && showTutorOptions && (
+                    </>)
+                  }
+                  {selectPage === "2" &&
+                    (<><h4>User details</h4>
+                      <Form.Label>Tutor/Student</Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="is_tutor"
+                        className="modal-input"
+                        defaultValue={setTutorDropdownDefault(profile.basic.is_student, profile.basic.is_tutor)}
+                        onChange={(e) => {
+                          onChangeBasic(e);
+                          setShowTutorOptions(e.target.value % 2 !== 0);
+                        }}
+                      >
+                        <option value="0">Just viewing</option>
+                        <option value="1">Tutor</option>
+                        <option value="2">Student</option>
+                        <option value="3">Both</option>
+                      </Form.Control></>)}
+                  {selectPage === "3" && (
                     <>
                       <Form.Label>Location</Form.Label>
                       <Form.Control
@@ -263,25 +316,25 @@ const ProfileModal = ({ userId }) => {
                       />
                     </>
                   )}
-                </Form.Group>}
+                </Form.Group>
                 <Nav
                   fill
                   variant="pills"
-                  defaultActiveKey="reviewsReceived"
+                  defaultActiveKey="1"
                   onSelect={handleSelectPage}
                 >
                   <Nav.Item>
-                    <Nav.Link className="tabs" eventKey="1">
+                    <Nav.Link className="tabs profile-modal-page" eventKey="1">
                       Page 1
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link className="tabs" eventKey="2">
+                    <Nav.Link className="tabs profile-modal-page" eventKey="2">
                       Page 2
                      </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link className="tabs" eventKey="3">
+                    <Nav.Link className="tabs profile-modal-page" eventKey="3" disabled={!showTutorOptions}>
                       Page 3
                      </Nav.Link>
                   </Nav.Item>
@@ -290,7 +343,7 @@ const ProfileModal = ({ userId }) => {
               <Modal.Footer>
                 <Button
                   className="btn-modal btn-danger"
-                  onClick={(e) => onSubmit()}
+                  onClick={(e) => onSubmit(e)}
                 >
                   Save changes
                 </Button>

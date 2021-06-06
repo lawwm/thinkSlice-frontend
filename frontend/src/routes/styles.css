@@ -215,6 +215,12 @@ p {
   justify-content: center;
 }
 
+.profile-pic-upload-note {
+  margin: 0px;
+  font-size: 15px;
+  padding: 0px;
+}
+
 .image-preview {
   height: 250px;
   width: 250px;
