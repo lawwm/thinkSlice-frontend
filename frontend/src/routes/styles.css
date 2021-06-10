@@ -483,6 +483,13 @@ p {
 
 /* video comment  */
 
+.video-comment-spinner {
+  margin: 0 auto;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .video-comment-picture {
   width: 50px;
   height: 50px;
@@ -548,6 +555,7 @@ p {
 /* video recommendation */
 .video-reco-div {
   margin-top: 15px;
+  margin-bottom: 100px;
 }
 
 .browse-more-vid {

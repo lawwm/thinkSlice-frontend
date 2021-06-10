@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { Row, Col, Container, Media, Form, Button } from 'react-bootstrap';
 // import NavBar from "../../components/NavBar.js";
 import { useParams } from 'react-router-dom';
-import { loadWatchVideos, loadHomeVideos } from "../../store/home/action"
+import { loadWatchVideos, loadHomeVideos, getComments, addComments } from "../../store/home/action"
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import { AuthNavBar } from "../../components/AuthNavBar"
@@ -20,9 +20,12 @@ import "../styles.css";
 import "../../fonts/css/videojs.css"
 import { CommentPost } from "../../components/Comment.js"
 
-const Comment = () => {
+const Comment = ({ totalComments, videoId }) => {
   const [showComment, setShowComment] = useState(false)
   const [showAddComment, setShowAddComment] = useState(false)
+  const dispatch = useDispatch()
+
+  const { commentLoading, comments } = useSelector((state) => state.home);
 
   const [commentForm, setCommentForm] = useState({
     comment: ""
@@ -38,65 +41,92 @@ const Comment = () => {
   const onCommentSubmit = (e) => {
     e.preventDefault();
     console.log(commentForm)
+    dispatch(addComments(commentForm, videoId, () => setShowAddComment(false), () => setCommentForm({ comment: "" })))
   }
 
   return (
     <>
-      {
-        showComment
-          ? (<>
-            <Container>
-              <button
-                onClick={() => setShowComment(false)}
-                className="video-description-btn">
-                Hide comments<FaAngleUp />
-              </button>
-              <div className="video-add-comment">
-                <Media >
-                  <img
-                    alt="Commenter"
-                    className="video-comment-picture"
-                    src="https://thinkslice-project.s3-ap-southeast-1.amazonaws.com/user-images/download.jpg" />
-                  <Media.Body >
-                    {showAddComment
-                      ? (<div className="video-submit-comment">
-                        <Form.Control
-                          as="textarea"
-                          rows={3}
-                          name="comment"
-                          onChange={(e) => onCommentChange(e)}
-                          value={commentForm.comment}
-                        />
-                        <div className="video-comment-button-div">
-                          <Button
-                            onClick={() => setShowAddComment(false)}
-                            className="btn-comment-alt-custom">Cancel</Button>
-                          <Button onClick={(e) => onCommentSubmit(e)} className="btn-comment-custom">Submit</Button>
-                        </div>
+      {commentLoading && (
+        <>
+          <div className="video-comment-spinner">
+            <LoadingSpinner />
+            <hr />
+          </div>
+        </>
+      )}
+      {!commentLoading &&
+        (<>{
+          showComment ? (
+            <>
+              <Container>
+                <button
+                  onClick={() => setShowComment(false)}
+                  className="video-description-btn">
+                  Hide comments<FaAngleUp />
+                </button>
+                <div className="video-add-comment">
+                  <Media >
+                    <img
+                      alt="Commenter"
+                      className="video-comment-picture"
+                      src="https://thinkslice-project.s3-ap-southeast-1.amazonaws.com/user-images/download.jpg" />
+                    <Media.Body >
+                      {showAddComment
+                        ? (<div className="video-submit-comment">
+                          <Form.Control
+                            as="textarea"
+                            rows={3}
+                            name="comment"
+                            onChange={(e) => onCommentChange(e)}
+                            value={commentForm.comment}
+                          />
+                          <div className="video-comment-button-div">
+                            <Button
+                              onClick={() => setShowAddComment(false)}
+                              className="btn-comment-alt-custom">Cancel</Button>
+                            <Button onClick={(e) => onCommentSubmit(e)} className="btn-comment-custom">Submit</Button>
+                          </div>
 
-                      </div>)
-                      : (<div
-                        onClick={() => setShowAddComment(true)}
-                        className="video-add-comment-button"> Comment on this video?</div>
-                      )}
-                  </Media.Body>
-                </Media>
+                        </div>)
+                        : (<div
+                          onClick={() => setShowAddComment(true)}
+                          className="video-add-comment-button"> Comment on this video?</div>
+                        )}
+                    </Media.Body>
+                  </Media>
 
-              </div>
-              <CommentPost />
-              <hr />
-            </Container>
-          </>)
-          : (<>
-            <Container>
-              <button
-                onClick={() => setShowComment(true)}
-                className="video-description-btn">
-                Show comments<FaAngleDown />
-              </button>
-              <hr />
-            </Container>
-          </>)
+                </div>
+                {comments.map(comment => (
+                  <div key={comment.id}>
+                    <CommentPost
+                      commentId={comment.id}
+                      commentText={comment.comment_text}
+                      date={comment.date_comment}
+                      username={comment.username}
+                      userId={comment.userId}
+                      profilePic={comment.profilePic}
+                      hasReplies={comment.has_replies}
+                      edited={comment.edited}
+                      dateEdited={comment.date_comment_edited}
+                      replies={comment.replies}
+                    />
+                  </div>
+                ))}
+                <hr />
+              </Container>
+            </>)
+            : (
+              <>
+                <Container>
+                  <button
+                    onClick={() => setShowComment(true)}
+                    className="video-description-btn">
+                    {"Show " + totalComments + " comments"}<FaAngleDown />
+                  </button>
+                  <hr />
+                </Container>
+              </>)
+        }</>)
       }
     </>
   )
@@ -299,7 +329,7 @@ const Guest = ({ currentVideo, videoLoading, videos }) => {
                 </Col>
               </Row>
               <Row>
-                <Comment />
+                <Comment totalComments={currentVideo.num_of_comments} videoId={currentVideo.id} />
               </Row>
             </div>
             <VideoGrid videos={videos} />
@@ -311,7 +341,7 @@ const Guest = ({ currentVideo, videoLoading, videos }) => {
   )
 }
 
-const Member = ({ currentVideo, videoLoading }) => {
+const Member = ({ currentVideo, videoLoading, videos }) => {
   const playerRef = useRef();
   const history = useHistory()
   const videoRef = useRef()
@@ -395,9 +425,10 @@ const Member = ({ currentVideo, videoLoading }) => {
                 </Col>
               </Row>
               <Row>
-                <Comment />
+                <Comment totalComments={currentVideo.num_of_comments} videoId={currentVideo.id} />
               </Row>
             </div>
+            <VideoGrid videos={videos} />
           </Container>
         </>
         )
@@ -419,6 +450,10 @@ const WatchPage = () => {
   useEffect(() => {
     dispatch(loadHomeVideos())
   }, [dispatch])
+
+  useEffect(() => {
+    dispatch(getComments(videoId))
+  }, [dispatch, videoId])
 
   return (
     <>

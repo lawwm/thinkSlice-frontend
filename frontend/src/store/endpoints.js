@@ -18,12 +18,18 @@ export const ENDPOINTS = {
 
     //REVIEWS
     CREATE_REVIEW: '/tutors',
-    EDIT_DELETE_REVIEW: ''
+    EDIT_DELETE_REVIEW: '',
+
+    //COMMENTS
+    GET_ADD_COMMENT: '/comments',
+    EDIT_DELETE_COMMENT: '',
+    GET_ADD_REPLY: '/replies'
 }
 
 export const DOMAINS = {
     AUTH: "/api/auth",
     PROFILE: "/api/profiles",
     REVIEWS: "api/reviews",
-    VIDEO: "/api/videos"
+    VIDEO: "/api/videos",
+    COMMENTS: "/api/comments"
 }
