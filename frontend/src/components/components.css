@@ -453,6 +453,10 @@ button.alert-close {
 }
 
 /* comment */
+.comment-div {
+  margin-top: 12px;
+}
+
 .commenter,
 .comment-date {
   font-size: 20px;
@@ -474,6 +478,24 @@ button.alert-close {
   font-size: 20px;
 }
 
+.comment-pic {
+  object-fit: cover;
+  height: 48px;
+  width: 48px;
+}
+
+.comment-thumbnail-photo {
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  object-fit: cover;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0px 10px 5px;
+}
+
 .comment-date {
   font-size: 15px;
   padding-top: 5px;
@@ -493,6 +515,34 @@ button.alert-close {
   border: 0px;
   margin-right: 9px;
   padding: 0px;
+}
+
+.delete-comment-button {
+  font-family: 'Inter UI semi-bold';
+  background-color: #fcfcfc;
+  font-size: 16px;
+  border: 0px;
+  margin-right: 15px;
+  padding: 0px;
+}
+
+.delete-comment-button:hover {
+  font-family: 'Inter UI semi-bold';
+  background-color: #fcfcfc;
+  font-size: 16px;
+  border: 0px;
+  margin-right: 15px;
+  padding: 0px;
+  color: #f40;
+}
+
+.comment-delete-div {
+  margin-left: auto;
+}
+
+.comment-post-loading-div {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .replies-button {

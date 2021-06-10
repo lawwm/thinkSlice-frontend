@@ -1,18 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import { BsFillCaretDownFill, BsFillCaretUpFill } from "react-icons/bs";
-import { Image, Media, Card, Form, Button } from "react-bootstrap";
-import img from "../images/Barack_Obama.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { BsFillCaretDownFill, BsFillCaretUpFill, BsTrash } from "react-icons/bs";
+import { Media, Card, Form, Button } from "react-bootstrap";
 import "./components.css";
+import LoadingSpinner from "../components/LoadingSpinner"
+import { editComments, deleteComments, getReplies, postReply, editReply, deleteReply } from "../store/home/action"
 
-export const CommentPost = () => {
+export const CommentPost = ({ commentId, commentText, date, username, userId, profilePic, hasReplies, edited, dateEdited, replies }) => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const viewerId = localStorage.getItem("user");
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { commentLoadingId, commentReplyLoadingId } = useSelector((state) => state.home);
 
+  //Create reply
   const [showReply, setShowReply] = useState(false)
   const [createReply, setCreateReply] = useState(false)
   const [replyForm, setReplyForm] = useState({
-    "reply": ""
+    "reply": `@${username}`
   })
+  const retrievedRepliesAPI = useRef(false)
+  const openReplyAccordion = () => {
+    setShowReply(true)
+    if (retrievedRepliesAPI.current === false) {
+      dispatch(getReplies(commentId))
+      retrievedRepliesAPI.current = true
+    }
+  }
 
   const onChange = (e) => {
     setReplyForm({
@@ -24,60 +39,113 @@ export const CommentPost = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(replyForm)
+    dispatch(postReply(replyForm, commentId, () => setCreateReply(false)))
   };
+
+  //Edit comment
+  const [showEdit, setShowEdit] = useState(false)
+  const [editForm, setEditForm] = useState(commentText)
+  const onChangeEdit = (e) => {
+    setEditForm(e.target.value)
+  };
+
+  const onSubmitEdit = (e) => {
+    e.preventDefault();
+    console.log(editForm)
+    dispatch(editComments(editForm, commentId, () => setShowEdit(false)))
+  };
+
+  //Delete comment
+  const [showDelete, setShowDelete] = useState(false)
+  const trashComment = () => {
+    dispatch(deleteComments(commentId))
+  }
 
   return (
     <>
-      <div>
+      {(commentLoadingId.includes(commentId)) && <div className="comment-post-loading-div"><LoadingSpinner /></div>}
+      {(!commentLoadingId.includes(commentId)) && <div className="comment-div">
         <Media className="commenter" fluid>
           <div
-            className="thumbnail-photo mr-3"
-            onClick={() => history.push("/profile")}
+            className="comment-thumbnail-photo mr-3"
+            onClick={() => history.push("/profile/" + userId)}
           >
-            <Image src={img} alt="profile picture" fluid />
+            <img
+              src={"https://thinkslice-project.s3.amazonaws.com/" + profilePic}
+              alt="profile"
+              className="comment-pic"
+              fluid />
           </div>
           <Media.Body className="align-self-center">
             <div className="comment-title">
-              <div className="comment-name">Barack Obama</div>
-              <div className="comment-date">15 May 2006</div>
+              <div className="comment-name">{username}</div>
+              <div className="comment-date">{edited ? dateEdited + " (edited)" : date}</div>
+              <div className="comment-delete-div">
+                {showDelete &&
+                  (<>
+                    <button onClick={() => trashComment()} className="delete-comment-button">
+                      <BsTrash size={23} />
+                    </button>
+                  </>)}
+              </div>
             </div>
-            <Card.Text className="comment-text">
-              Truly an amazing teacher on the art of preparing chicken. He is the
-              Bob Ross of roast chicken, the Einstein of seasoning, the Michangelo
-              of plating and the Aristotle of teaching. You would surely regret not
-              attending his cooking lessons!! His roast chicken was so good, the
-              troops came back from Iraq.
-            </Card.Text>
-            <div className="comment-title">
-              {showReply
-                ? (
-                  <button
-                    onClick={() => setShowReply(false)}
-                    className="replies-button">
-                    <BsFillCaretUpFill /> Hide replies
-                  </button>
-                )
-                : (
-                  <>
-                    <button
-                      onClick={() => setShowReply(true)}
-                      className="replies-button">
-                      <BsFillCaretDownFill /> View more replies
-                  </button>
+            {showEdit
+              ? <div className="video-submit-comment">
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  name="edit"
+                  onChange={(e) => onChangeEdit(e)}
+                  value={editForm}
+                />
+                <div className="video-comment-button-div">
+                  <Button
+                    onClick={() => setShowEdit(false)}
+                    className="btn-comment-alt-custom">Cancel</Button>
+                  <Button
+                    onClick={(e) => onSubmitEdit(e)}
+                    className="btn-comment-custom">
+                    Submit</Button>
+                </div>
+              </div>
+              :
+              <><Card.Text className="comment-text">
+                {commentText}
+              </Card.Text>
+                <div className="comment-title">
+                  {hasReplies && (<>{
+                    showReply
+                      ? (
+                        <button
+                          onClick={() => setShowReply(false)}
+                          className="replies-button">
+                          <BsFillCaretUpFill /> Hide replies
+                        </button>
+                      )
+                      : (
+                        <>
+                          <button
+                            onClick={() => openReplyAccordion()}
+                            className="replies-button">
+                            <BsFillCaretDownFill /> View more replies
+                          </button>
 
-                  </>
-                )
-              }
-              <button onClick={() => setCreateReply(prev => !prev)} className="comment-button">
-                Reply
-              </button>
-              <button className="comment-button">
-                Edit
-              </button>
-              <button className="comment-button">
-                Delete
-              </button>
-            </div>
+                        </>
+                      )
+                  }</>)}
+                  {isAuthenticated && (<>
+                    <button onClick={() => setCreateReply(prev => !prev)} className="comment-button">
+                      Reply
+                    </button>
+                    {(viewerId === userId.toString()) && (<><button onClick={() => setShowEdit(true)} className="comment-button">
+                      Edit
+                    </button>
+                      <button onClick={() => setShowDelete(prev => !prev)} className="comment-button">
+                        Delete
+                    </button></>)}
+                  </>)}
+                </div>
+              </>}
             {createReply && (<div className="replies-create-div">
               <Media>
                 <img
@@ -107,24 +175,52 @@ export const CommentPost = () => {
               </Media>
             </div>)}
             {showReply && (<>
-              <ReplyPost />
-              <ReplyPost />
-              <ReplyPost />
+              {(commentReplyLoadingId.includes(commentId)) && <div className="comment-post-loading-div"><LoadingSpinner /></div>}
+              {(!commentReplyLoadingId.includes(commentId)) &&
+                <MapReplies replies={replies} commentId={commentId} />
+              }
             </>)}
           </Media.Body>
         </Media>
 
       </div>
-    </>
+      }</>
   );
 };
 
-export const ReplyPost = () => {
+export const MapReplies = ({ replies, commentId }) => {
+  return (
+    <>
+      {replies.map(reply => (
+        <div key={reply.id}>
+          <ReplyPost
+            commentId={commentId}
+            replyId={reply.id}
+            commentText={reply.comment_text}
+            date={reply.date_comment}
+            username={reply.username}
+            userId={reply.userId}
+            profilePic={reply.profilePic}
+            edited={reply.edited}
+            dateEdited={reply.date_comment_edited}
+          />
+        </div>
+      ))}
+    </>
+  )
+}
+
+export const ReplyPost = ({ commentId, replyId, commentText, date, username, userId, profilePic, edited, dateEdited }) => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [createReply, setCreateReply] = useState(false)
   const [replyForm, setReplyForm] = useState({
-    "reply": "@Hillary Clinton"
+    "reply": `@${username}`
   })
+
+  const viewerId = localStorage.getItem("user");
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { replyLoadingId } = useSelector((state) => state.home)
 
   const onChange = (e) => {
     setReplyForm({
@@ -136,71 +232,125 @@ export const ReplyPost = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(replyForm)
+    dispatch(postReply(replyForm, commentId, () => setCreateReply(false)))
   };
+
+  //Edit comment
+  const [showEdit, setShowEdit] = useState(false)
+  const [editForm, setEditForm] = useState(commentText)
+  const onChangeEdit = (e) => {
+    setEditForm(e.target.value)
+  };
+
+  const onSubmitEdit = (e) => {
+    e.preventDefault();
+    dispatch(editReply(editForm, replyId, commentId, () => setShowEdit(false)))
+  };
+
+  //Delete comment
+  const [showDelete, setShowDelete] = useState(false)
+  const trashComment = () => {
+    dispatch(deleteReply(replyId, commentId, () => setShowDelete(false)))
+  }
 
   return (
     <>
-      <div>
-        <Media className="commenter" fluid>
-          <div
-            className="thumbnail-photo mr-3"
-            onClick={() => history.push("/profile")}
-          >
-            <Image src={img} alt="profile picture" fluid />
-          </div>
-          <Media.Body className="align-self-center">
-            <div className="comment-title">
-              <div className="comment-name">Hillary Clinton</div>
-              <div className="comment-date">16 May 2006</div>
+      {(replyLoadingId.includes(replyId)) && <div className="comment-post-loading-div"><LoadingSpinner /></div>}
+      {(!replyLoadingId.includes(replyId)) && <><div className="comment-div"></div>
+        <div>
+          <Media className="commenter" fluid>
+            <div
+              className="thumbnail-photo mr-3"
+              onClick={() => history.push("/profile")}
+            >
+              <img
+                src={"https://thinkslice-project.s3.amazonaws.com/" + profilePic}
+                alt="profile"
+                className="comment-pic"
+                fluid />
             </div>
-            <Card.Text className="comment-text">
-              Are you sure? He made me overcook his chicken the last time. Moreover, he was stuttering
-              so much I could barely understand him.
-            </Card.Text>
-            <div className="comment-title">
-              <button
-                onClick={() => setCreateReply(prev => !prev)}
-                className="comment-button">
-                Reply
-              </button>
-              <button className="comment-button">
-                Edit
-              </button>
-              <button className="comment-button">
-                Delete
-              </button>
-            </div>
-            {createReply && (<div className="replies-create-div">
-              <Media>
-                <img
-                  alt="Replyer"
-                  className="video-comment-picture"
-                  src="https://thinkslice-project.s3-ap-southeast-1.amazonaws.com/user-images/download.jpg" />
-                <Media.Body>
-                  <div className="video-submit-comment">
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      name="reply"
-                      onChange={(e) => onChange(e)}
-                      value={replyForm.reply}
-                    />
-                    <div className="video-comment-button-div">
-                      <Button
-                        onClick={() => setCreateReply(false)}
-                        className="btn-comment-alt-custom">Cancel</Button>
-                      <Button
-                        onClick={(e) => onSubmit(e)}
-                        className="btn-comment-custom">
-                        Submit</Button>
-                    </div>
+            <Media.Body className="align-self-center">
+              <div className="comment-title">
+                <div className="comment-name">{username}</div>
+                <div className="comment-date">{edited ? dateEdited + " (edited)" : date}</div>
+                <div className="comment-delete-div">
+                  {showDelete &&
+                    (<>
+                      <button onClick={() => trashComment()} className="delete-comment-button">
+                        <BsTrash size={23} />
+                      </button>
+                    </>)}
+                </div>
+              </div>
+              {showEdit
+                ? <div className="video-submit-comment">
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    name="edit"
+                    onChange={(e) => onChangeEdit(e)}
+                    value={editForm}
+                  />
+                  <div className="video-comment-button-div">
+                    <Button
+                      onClick={() => setShowEdit(false)}
+                      className="btn-comment-alt-custom">Cancel</Button>
+                    <Button
+                      onClick={(e) => onSubmitEdit(e)}
+                      className="btn-comment-custom">
+                      Submit</Button>
                   </div>
-                </Media.Body>
-              </Media>
-            </div>)}
-          </Media.Body>
-        </Media>
-      </div>
+                </div>
+                : <>
+                  <Card.Text className="comment-text">
+                    {commentText}
+                  </Card.Text>
+                  <div className="comment-title">
+                    {isAuthenticated && (<>
+                      <button onClick={() => setCreateReply(prev => !prev)} className="comment-button">
+                        Reply
+                    </button>
+                      {(viewerId === userId.toString()) && (<><button onClick={() => setShowEdit(true)} className="comment-button">
+                        Edit
+                    </button>
+                        <button onClick={() => setShowDelete(prev => !prev)} className="comment-button">
+                          Delete
+                    </button></>)}
+                    </>)}
+                  </div>
+                </>}
+              {createReply && (<div className="replies-create-div">
+                <Media>
+                  <img
+                    alt="Replyer"
+                    className="video-comment-picture"
+                    src="https://thinkslice-project.s3-ap-southeast-1.amazonaws.com/user-images/download.jpg" />
+                  <Media.Body>
+                    <div className="video-submit-comment">
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
+                        name="reply"
+                        onChange={(e) => onChange(e)}
+                        value={replyForm.reply}
+                      />
+                      <div className="video-comment-button-div">
+                        <Button
+                          onClick={() => setCreateReply(false)}
+                          className="btn-comment-alt-custom">Cancel</Button>
+                        <Button
+                          onClick={(e) => onSubmit(e)}
+                          className="btn-comment-custom">
+                          Submit</Button>
+                      </div>
+                    </div>
+                  </Media.Body>
+                </Media>
+              </div>)}
+            </Media.Body>
+          </Media>
+        </div>
+      </>}
     </>
   );
 };
