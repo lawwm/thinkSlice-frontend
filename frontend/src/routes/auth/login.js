@@ -8,11 +8,6 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import { Container, Col, Row, Spinner } from "react-bootstrap";
 import "../styles.css";
 
-
-export const sum = (a, b) => {
-  return a + b;
-}
-
 const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -39,18 +34,10 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     dispatch(login(loginData));
-
-    // setLoginData({
-    //     username: "",
-    //     password: ""
-    // })
   };
 
   const { username, password } = loginData;
-
-
 
   return (
     <>

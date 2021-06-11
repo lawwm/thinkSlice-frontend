@@ -101,25 +101,20 @@ export const login =
         });
         dispatch(setAlert("Login successful", "success"));
       } catch (err) {
-        console.log(err.message);
         dispatch({
           type: actionTypes.AUTH_BUTTON_LOADED,
         });
         dispatch({
           type: actionTypes.LOGIN_FAIL,
         });
-        dispatch(setAlert("Login failed", "danger"));
+        dispatch(setAlert(err.message, "danger"));
       }
     };
 
 //Logout & clear profile
 export const logout = () => async (dispatch) => {
-  try {
-    //const res = await axios.post('/api/auth/logout', config);
-    //console.log(res)
-    dispatch({ type: actionTypes.LOGOUT });
-    dispatch(setAlert("See you next time!", "success"));
-  } catch (err) {
-    dispatch(setAlert("Failed to logout", "danger"));
-  }
+  //const res = await axios.post('/api/auth/logout', config);
+  //console.log(res)
+  dispatch({ type: actionTypes.LOGOUT });
+  dispatch(setAlert("See you next time!", "success"));
 };

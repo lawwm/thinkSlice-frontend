@@ -63,6 +63,7 @@ const Register = () => {
                       <input
                         type="text"
                         name="username"
+                        aria-label="username"
                         className="form-control"
                         placeholder="Username"
                         onChange={(e) => onChange(e)}

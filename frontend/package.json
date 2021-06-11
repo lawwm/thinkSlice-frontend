@@ -41,7 +41,8 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "plugin:testing-library/react"
     ]
   },
   "browserslist": {
@@ -57,6 +58,8 @@
     ]
   },
   "devDependencies": {
-    "react-test-renderer": "^17.0.2"
+    "eslint-plugin-testing-library": "^4.6.0",
+    "react-test-renderer": "^17.0.2",
+    "redux-mock-store": "^1.5.4"
   }
 }
