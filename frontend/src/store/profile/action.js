@@ -67,11 +67,13 @@ export const deleteVideo = (videoId, closeModalFunction, stopLoading) => async (
     if (videoId === null) {
       throw new Error("No video id provided")
     }
+    console.log("inside delete action")
     await axios.delete(DOMAINS.VIDEO + "/" + videoId);
     dispatch({
       type: actionTypes.PROFILE_DELETE_VIDEO,
       payload: videoId
     })
+    console.log(videoId)
     dispatch(setAlert("Video has successfully been deleted", "success"));
     closeModalFunction()
     stopLoading()

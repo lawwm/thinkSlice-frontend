@@ -6,20 +6,18 @@ export const StarDisplay = ({ num }) => {
     <>
       {[...Array(num)].map((i, index) => (
         <Fragment key={index}>
-          <FaStar color={"#ff4400"} className="star-display" />
+          <FaStar data-testid="filled" role="img" color={"#ff4400"} className="star-display" />
         </Fragment>
 
       ))}
       {[...Array(5 - num)].map((i, index) => (
         <Fragment key={index}>
-          <FaRegStar color={"#ff4400"} className="star-display" />
+          <FaRegStar data-testid="hollow" role="img" color={"#ff4400"} className="star-display" />
         </Fragment>
       ))}
     </>
   );
 };
-
-
 
 export const StarIcon = ({
   index,
@@ -41,13 +39,14 @@ export const StarIcon = ({
 
   return (
     <div
+      data-testid="star"
       className="cursor-pointer"
       onMouseEnter={() => onMouseEnter(index)}
       onMouseLeave={() => onMouseLeave()}
       onClick={() => onSaveRating(index)}>
       {fill
-        ? <FaStar color={"#ff4400"} className="star-choice" size={30} />
-        : <FaRegStar color={"#ff4400"} className="star-choice" size={30} />
+        ? <FaStar data-testid="filled" role="application" color={"#ff4400"} className="star-choice" size={30} />
+        : <FaRegStar data-testid="hollow" role="application" color={"#ff4400"} className="star-choice" size={30} />
       }
     </div>
   )

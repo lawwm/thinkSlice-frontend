@@ -53,7 +53,7 @@ const NavBar = () => {
               <Container>
                 <Navbar.Brand onClick={() => history.push('/')} className="mr-auto">ThinkSlice</Navbar.Brand>
                 <Navbar.Toggle onClick={() => setExpanded((prevExpanded) => (prevExpanded = !prevExpanded))} aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
+                <Navbar.Collapse aria-label="trial" id="responsive-navbar-nav">
                   <Nav className="ml-auto">
                     <NavLink
                       className="nav-default"
@@ -63,7 +63,7 @@ const NavBar = () => {
                       exact={true}
                     >
                       Upload
-                  </NavLink>
+                    </NavLink>
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
@@ -71,7 +71,7 @@ const NavBar = () => {
                       onClick={() => setExpanded(false)}
                     >
                       Categories
-                  </NavLink>
+                    </NavLink>
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
@@ -79,7 +79,7 @@ const NavBar = () => {
                       onClick={() => setExpanded(false)}
                     >
                       Profile
-                  </NavLink>
+                    </NavLink>
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
@@ -113,7 +113,7 @@ const NavBar = () => {
                       exact={true}
                     >
                       Home
-                  </NavLink>
+                    </NavLink>
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
@@ -121,7 +121,7 @@ const NavBar = () => {
                       onClick={() => setExpanded(false)}
                     >
                       Categories
-                  </NavLink>
+                    </NavLink>
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
@@ -129,7 +129,7 @@ const NavBar = () => {
                       onClick={() => setExpanded(false)}
                     >
                       Login
-                  </NavLink>
+                    </NavLink>
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
@@ -137,7 +137,7 @@ const NavBar = () => {
                       onClick={() => setExpanded(false)}
                     >
                       Register
-                  </NavLink>
+                    </NavLink>
                   </Nav>
                 </Navbar.Collapse>
               </Container>
