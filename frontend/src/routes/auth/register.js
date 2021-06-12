@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../store/auth/action";
@@ -22,6 +22,12 @@ const Register = () => {
     confirmPassword: "",
   });
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push("/");
+    }
+  }, [isAuthenticated, history])
+
   const onChange = (e) => {
     setRegisterData({
       ...registerData,
@@ -31,20 +37,8 @@ const Register = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(username);
-
     dispatch(register(registerData));
-    // setRegisterData({
-    //     username: "",
-    //     email: "",
-    //     password: ""
-    // })
   };
-
-  if (isAuthenticated) {
-    history.push("/");
-  }
 
   const { username, email, password, confirmPassword } = registerData;
 

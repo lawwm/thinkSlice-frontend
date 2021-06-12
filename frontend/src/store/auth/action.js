@@ -100,6 +100,7 @@ export const login =
           payload: res.data,
         });
         dispatch(setAlert("Login successful", "success"));
+
       } catch (err) {
         dispatch({
           type: actionTypes.AUTH_BUTTON_LOADED,

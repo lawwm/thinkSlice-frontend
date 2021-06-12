@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,11 +14,13 @@ const Login = () => {
 
   const { isAuthenticated, loading, authLoading } = useSelector((state) => state.auth);
 
-  if (isAuthenticated) {
-    // dispatch(setAlert("Login successful", "success"))
-    history.push("/");
-  }
 
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push("/");
+    }
+  }, [isAuthenticated, history])
 
   const [loginData, setLoginData] = useState({
     username: "",
