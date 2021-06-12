@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,22 +8,19 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import { Container, Col, Row, Spinner } from "react-bootstrap";
 import "../styles.css";
 
-
-export const sum = (a, b) => {
-  return a + b;
-}
-
 const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
   const { isAuthenticated, loading, authLoading } = useSelector((state) => state.auth);
 
-  if (isAuthenticated) {
-    // dispatch(setAlert("Login successful", "success"))
-    history.push("/");
-  }
 
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push("/");
+    }
+  }, [isAuthenticated, history])
 
   const [loginData, setLoginData] = useState({
     username: "",
@@ -39,18 +36,10 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     dispatch(login(loginData));
-
-    // setLoginData({
-    //     username: "",
-    //     password: ""
-    // })
   };
 
   const { username, password } = loginData;
-
-
 
   return (
     <>
