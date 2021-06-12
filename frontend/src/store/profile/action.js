@@ -64,16 +64,16 @@ export const getProfile = (userId) => async (dispatch) => {
 
 export const deleteVideo = (videoId, closeModalFunction, stopLoading) => async (dispatch) => {
   try {
-    if (videoId === null) {
+    if (videoId === undefined || videoId === "") {
       throw new Error("No video id provided")
     }
-    console.log("inside delete action")
+    // console.log("inside delete action")
     await axios.delete(DOMAINS.VIDEO + "/" + videoId);
     dispatch({
       type: actionTypes.PROFILE_DELETE_VIDEO,
       payload: videoId
     })
-    console.log(videoId)
+    // console.log(videoId)
     dispatch(setAlert("Video has successfully been deleted", "success"));
     closeModalFunction()
     stopLoading()
@@ -102,17 +102,18 @@ export const changePicture = (imageFile, closeModalFunction) => async (dispatch)
   try {
     dispatch(loadProfileComponent())
 
+    if (imageFile === undefined) {
+      throw new Error("There is no image selected")
+    }
+
     if (imageFile.size > 100000) {
-      console.log("shit's fucked")
+      // console.log("shit's fucked")
       throw new Error("Image size should be less than 100kb")
     }
 
-    if (imageFile === null) {
-      throw new Error("There is no image selected")
-    }
     let formData = new FormData();
     formData.append("profile_pic", imageFile, imageFile.name);
-    const res = await axios.post("/api/profiles/" + localStorage.user, formData, {
+    const res = await axios.post(DOMAINS.PROFILE + '/' + localStorage.getItem('user'), formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -136,13 +137,13 @@ export const updateProfile = (userId, profile) => async (dispatch) => {
     dispatch({
       type: actionTypes.PROFILE_LOADING,
     });
-    console.log(profile);
+    // console.log(profile);
     const res = await axios.patch(
       DOMAINS.PROFILE + "/" + userId,
       profile.basic
     );
     const res2 = await axios.patch(
-      DOMAINS.PROFILE + "/details/" + userId,
+      DOMAINS.PROFILE + ENDPOINTS.PROFILE_DETAILS + "/" + userId,
       profile.detailed
     );
 
@@ -162,7 +163,7 @@ export const updateProfile = (userId, profile) => async (dispatch) => {
     });
     dispatch(setAlert("Profile updated", "success"));
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     dispatch({
       type: actionTypes.PROFILE_UPDATE_ERROR,
     });
@@ -171,20 +172,32 @@ export const updateProfile = (userId, profile) => async (dispatch) => {
 };
 
 export const deleteProfile = (userId) => async (dispatch) => {
-  axios.delete(DOMAINS.PROFILE + "/" + userId).then(
-    (response) => {
-      dispatch({
-        type: actionTypes.PROFILE_DELETED,
-      });
-      dispatch(setAlert("Account deleted", "success"));
-    },
-    (err) => {
-      dispatch({
-        type: actionTypes.PROFILE_ERROR,
-      });
-      dispatch(setAlert("Account deletion failed, please try again", "danger"));
-    }
-  );
+  // axios.delete(DOMAINS.PROFILE + "/" + userId).then(
+  //   (response) => {
+  //     dispatch({
+  //       type: actionTypes.PROFILE_DELETED,
+  //     });
+  //     dispatch(setAlert("Account deleted", "success"));
+  //   },
+  //   (err) => {
+  //     dispatch({
+  //       type: actionTypes.PROFILE_ERROR,
+  //     });
+  //     dispatch(setAlert("Account deletion failed, please try again", "danger"));
+  //   }
+  // );
+  try {
+    await axios.delete(DOMAINS.PROFILE + "/" + userId)
+    dispatch({
+      type: actionTypes.PROFILE_DELETED,
+    });
+    dispatch(setAlert("Account deleted", "success"));
+  } catch (err) {
+    dispatch({
+      type: actionTypes.PROFILE_ERROR,
+    });
+    dispatch(setAlert("Account deletion failed, please try again", "danger"));
+  }
 };
 
 export const resetProfile = () => async (dispatch) => {

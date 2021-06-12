@@ -33,16 +33,6 @@ import {
 import { format, formatDistance } from 'date-fns'
 import { setAlert } from '../components/action';
 
-// function chunkArray(myArray, chunk_size) {
-//   let results = [];
-
-//   while (myArray.length) {
-//     results.push(myArray.splice(0, chunk_size))
-//   }
-
-//   return results
-// }
-
 // Helper functions
 const config = {
   headers: {
@@ -61,53 +51,37 @@ function convertUnixToTimeElapsed(date) {
 
 function convertUnixToExactDate(date) {
   date = new Date(date * 1000)
-  console.log(date)
-  console.log(format(date, 'PPP'))
+  // console.log(date)
+  // console.log(format(date, 'PPP'))
   return format(date, 'PPP')
 }
 
 // Actions
 export const changeFilter = (filter) => async (dispatch) => {
-  try {
-    dispatch({
-      type: CHANGE_FILTER,
-      payload: filter
-    })
-  } catch (err) {
-    console.log(err)
-  }
+  dispatch({
+    type: CHANGE_FILTER,
+    payload: filter
+  })
 }
 
 export const changeAscending = (order) => async (dispatch) => {
-  try {
-    dispatch({
-      type: CHANGE_ASCENDING,
-      payload: order
-    })
-  } catch (err) {
-    console.log(err)
-  }
+  dispatch({
+    type: CHANGE_ASCENDING,
+    payload: order
+  })
 }
 
 export const changePage = (page) => async (dispatch) => {
-  try {
-    dispatch({
-      type: CHANGE_PAGE,
-      payload: page
-    })
-  } catch (err) {
-    console.log(err)
-  }
+  dispatch({
+    type: CHANGE_PAGE,
+    payload: page
+  })
 }
 
 export const clearVideos = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: CLEAR_VIDEO_PAGE
-    })
-  } catch (err) {
-    console.log(err)
-  }
+  dispatch({
+    type: CLEAR_VIDEO_PAGE
+  })
 }
 
 export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, reachedEnd = false) => async (dispatch) => {
@@ -163,7 +137,7 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
       payload: data
     });
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     dispatch({
       type: HOMEPAGE_LOAD_FAIL,
     })
@@ -183,7 +157,7 @@ export const loadWatchVideos = (videoId) => async (dispatch) => {
       payload: data
     })
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     dispatch({
       type: VIDEO_LOAD_FAILED
     })
@@ -224,6 +198,9 @@ export const getComments = (videoId) => async (dispatch) => {
   try {
     //Prevent getting API when last query has been reached
     //Else set loading
+    dispatch({
+      type: COMMENT_LOADING
+    })
     if (videoId === undefined) {
       throw new Error("No video id is provided.")
     }
@@ -233,16 +210,15 @@ export const getComments = (videoId) => async (dispatch) => {
 
     let comments = res.data
 
-    console.log(comments)
     dispatch({
       type: GET_COMMENTS,
       payload: comments
     });
   } catch (err) {
-    console.log(err)
-    // dispatch({
-    //   type: HOMEPAGE_LOAD_FAIL,
-    // })
+    dispatch({
+      type: COMMENT_LOADED
+    })
+    dispatch(setAlert(err.message, 'danger'))
   }
 }
 
@@ -361,7 +337,7 @@ export const getReplies = (commentId) => async (dispatch) => {
     const res = await axios.get(DOMAINS.COMMENTS + ENDPOINTS.GET_ADD_REPLY + '/' + commentId,
       config)
 
-    console.log(res.data)
+    // console.log(res.data)
     dispatch({
       type: GET_REPLIES,
       payload: {
@@ -396,7 +372,7 @@ export const postReply = ({ reply }, commentId, closeReplyForm) => async (dispat
       "comment_text": reply
     })
 
-    console.log(body)
+    // console.log(body)
 
     const res = await axios.post(DOMAINS.COMMENTS + ENDPOINTS.GET_ADD_REPLY + '/' + commentId,
       body,
@@ -442,7 +418,7 @@ export const editReply = (reply, replyId, commentId, closeFormFunction) => async
       body,
       config)
 
-    console.log(res.data)
+    // console.log(res.data)
     dispatch({
       type: EDIT_REPLIES,
       payload: {
