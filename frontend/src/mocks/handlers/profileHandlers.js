@@ -8,7 +8,7 @@ export const profileHandlers = [
       ctx.json({
         // data: {
         id: 25,
-        is_student: false,
+        is_student: true,
         is_tutor: true,
         profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
         user: 26,
@@ -176,7 +176,22 @@ export const profileHandlers = [
     return res(
       ctx.status(200),
       ctx.json(
-        []
+        [{
+          id: 49,
+          creator_details: {
+            profile_pic: 'https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GaQiFtfz9YMj%2Bor97HYK3VIL9vo%3D&Expires=1623606778',
+            username: 'tim',
+            user: 31
+          },
+          star_rating: 5,
+          review_title: 'Amazing teacher, truly the best',
+          review_essay: 'Great mentor! Super',
+          date_review: '2021-06-06',
+          date_review_edited: '2021-06-13',
+          edited: true,
+          tutor_profile: 30,
+          student_profile: 25
+        }]
       )
     )
   }),
@@ -207,15 +222,21 @@ export const profileHandlers = [
       // Respond with a 200 status code
       ctx.status(200),
       ctx.json({
-        id: 52,
-        star_rating: 5.0,
-        review_title: "Amazing!",
-        review_essay: "You won't believe what this guy would do for $5!",
-        date_review: "2021-06-07",
-        date_review_edited: "2021-06-07",
-        edited: false,
-        tutor_profile: 2,
-        student_profile: 1
+        id: 49,
+        creator_details: {
+          profile_pic: 'https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GaQiFtfz9YMj%2Bor97HYK3VIL9vo%3D&Expires=1623606778',
+          username: 'tim',
+          user: 31
+        },
+        star_rating: 5,
+        review_title: 'Amazing teacher, truly the best',
+        review_essay: 'Great mentor! Super',
+        date_review: '2021-06-06',
+        date_review_edited: '2021-06-13',
+        edited: true,
+        tutor_profile: 30,
+        student_profile: 25
+
       })
     )
   }),

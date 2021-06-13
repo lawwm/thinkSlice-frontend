@@ -50,7 +50,6 @@ export const getProfile = (userId) => async (dispatch) => {
         }
       })
     }
-
     dispatch({
       type: actionTypes.PROFILE_LOADED,
       payload: { basic: basicRes, detailed: res2.data },

@@ -1,4 +1,4 @@
-import { render, screen, waitFor, waitForElementToBeRemoved } from '../../../util/test-utils'
+import { render, screen, waitForElementToBeRemoved } from '../../../util/test-utils'
 
 import ProfileModal from '../../../components/ProfileModal'
 import userEvent from '@testing-library/user-event'
@@ -147,6 +147,7 @@ describe("Profile modal", () => {
       userEvent.click(screen.queryByText(/delete my account/i))
       expect(history.location.pathname).toEqual("/login")
     })
+
   })
 
   describe("Profile modal UI edit mode component should work", () => {
@@ -290,8 +291,57 @@ describe("Profile modal", () => {
       expect(screen.queryByText(/username/i)).toBeInTheDocument()
     })
 
-    // it('change inputs', () => {
+    it('change inputs', async () => {
+      // Change username input
+      expect(screen.getByDisplayValue("jimijam")).toBeInTheDocument()
+      userEvent.type(screen.getByDisplayValue("jimijam"), "thegod")
+      expect(screen.getByDisplayValue("jimijamthegod")).toBeInTheDocument()
 
-    // })
+      // Change userbio input
+      expect(screen.getByDisplayValue(/Hi, welcome to my profile/)).toBeInTheDocument()
+      userEvent.type(screen.getByDisplayValue(/Hi, welcome to my profile/), "mang")
+      expect(screen.getByDisplayValue(/cool profilezmang/i)).toBeInTheDocument()
+
+      // Change whatsapp input
+      expect(screen.getByDisplayValue(/12345678/)).toBeInTheDocument()
+      userEvent.type(screen.getByDisplayValue(/12345678/), "9")
+      expect(screen.getByDisplayValue(/123456789/i)).toBeInTheDocument()
+
+      // Change telegram input
+      expect(screen.getByDisplayValue(/@jimijam/)).toBeInTheDocument()
+      userEvent.type(screen.getByDisplayValue(/@jimijam/), "thegod")
+      expect(screen.getByDisplayValue(/@jimijamthegod/i)).toBeInTheDocument()
+
+      //change page
+      userEvent.click(screen.queryByText(/page 2/i))
+
+      // Select tutor/student input
+      userEvent.selectOptions(screen.getByRole('combobox', { name: "" }), ['1'])
+      expect(screen.getByDisplayValue(/tutor/i)).toBeInTheDocument()
+
+      //change page
+      userEvent.click(screen.queryByText(/page 3/i))
+
+      // Select location input
+      userEvent.selectOptions(screen.getByRole('combobox', { name: "" }), ['north'])
+      expect(screen.getByDisplayValue(/north/i)).toBeInTheDocument()
+
+      // Select subjects
+      userEvent.click(screen.getByLabelText(/health/i))
+      expect(screen.getByLabelText(/health/i)).toBeChecked()
+      userEvent.click(screen.getByLabelText(/math/i))
+      expect(screen.getByLabelText(/math/i)).not.toBeChecked()
+
+      //Min lesson duration
+
+      //Select qualifications
+      expect(screen.getByDisplayValue(/p6 tutor/i)).toBeInTheDocument()
+      userEvent.type(screen.getByDisplayValue(/p6 tutor/i), "thegod")
+      expect(screen.getByDisplayValue(/p6 tutorthegod/i)).toBeInTheDocument()
+
+      //Submit edit changes
+      userEvent.click(screen.getByText(/save changes/i))
+      expect(screen.queryByText(/your profile details/i)).toBeInTheDocument()
+    })
   })
 })

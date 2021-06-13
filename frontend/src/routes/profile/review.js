@@ -79,7 +79,7 @@ const Review = () => {
 
   const handleSelect = (eventKey) => {
     setSelectReview(eventKey);
-    console.log(selectReview);
+    // console.log(selectReview);
   };
 
   //Create Review Modal
@@ -146,10 +146,10 @@ const Review = () => {
                     onClick={() => history.push("/profile/" + user_id)}
                   >
                     Return to user profile
-                </Button>
+                  </Button>
                   <Button className="btn review-button-alt" onClick={handleShow}>
                     Post review
-                </Button>
+                  </Button>
                 </div>
               </Col>
               <Col>
@@ -196,7 +196,7 @@ const Review = () => {
                 {reviewsReceived.length === 0
                   ? <div className="no-review-message">
                     User has not received any reviews as a tutor.
-                    </div>
+                  </div>
                   : <MapReviews
                     reviews={reviewsReceived}
                     viewerId={viewerId}
@@ -210,7 +210,7 @@ const Review = () => {
                 {reviewsGiven.length === 0
                   ? <div className="no-review-message">
                     User has not given any reviews as a student.
-                    </div>
+                  </div>
                   : <MapReviews
                     reviews={reviewsGiven}
                     viewerId={viewerId}
@@ -259,7 +259,7 @@ const Review = () => {
                       onClick={handleClose}
                     >
                       Close
-                  </Button>
+                    </Button>
                     <Button
                       type="submit"
                       value="Submit"

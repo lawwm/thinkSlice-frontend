@@ -166,4 +166,14 @@ export const homeHandlers = [
       ctx.status(400)
     )
   }),
+  //POST create upload URL
+  rest.post('http://localhost/api/videos/assets', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: 1,
+        url: 1
+      })
+    )
+  })
 ]

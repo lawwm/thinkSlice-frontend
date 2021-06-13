@@ -1,7 +1,7 @@
 // test-utils.js
 import React from 'react'
 import { render as rtlRender } from '@testing-library/react'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 // Import your own reducer
 import thunk from 'redux-thunk'

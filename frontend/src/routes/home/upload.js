@@ -32,6 +32,7 @@ const Upload = () => {
             try {
                 const res = await axios.post('/api/videos/assets')
                 url_id = res.data.id
+                console.log(res.data)
                 return res.data.url
             } catch (err) {
                 setProgressState(0)
@@ -139,7 +140,6 @@ const Upload = () => {
             uploadFile(file)
         }
     }
-
     return (
         <>
             {loading && <LoadingSpinner />}
@@ -190,7 +190,7 @@ const Upload = () => {
                                         <div>
                                             <label htmlFor="file-upload" className='custom-file-upload btn btn-danger' >
                                                 Select File
-                                        </label>
+                                            </label>
                                             <input id="file-upload" name='file-upload' type="file" onChange={(e) => onUploadChange(e.target.files[0])} />
                                         </div>
                                         <div className='upload-filename'>
@@ -201,7 +201,10 @@ const Upload = () => {
                                     <Row >
                                         <Col md={8}>
                                             <div className="progress-bar-div">
-                                                {isUploading && <ProgressBar striped className="custom-progress-bar" now={progressState} />}
+                                                {isUploading && <ProgressBar
+                                                    striped
+                                                    className="custom-progress-bar"
+                                                    now={progressState} />}
                                             </div>
                                         </Col>
                                         <Col md={4}>
