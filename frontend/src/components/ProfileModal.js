@@ -334,12 +334,12 @@ const ProfileModal = ({ userId }) => {
                   <Nav.Item>
                     <Nav.Link className="tabs profile-modal-page" eventKey="2">
                       Page 2
-                     </Nav.Link>
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
                     <Nav.Link className="tabs profile-modal-page" eventKey="3" disabled={!showTutorOptions}>
                       Page 3
-                     </Nav.Link>
+                    </Nav.Link>
                   </Nav.Item>
                 </Nav>
               </Modal.Body>
@@ -393,82 +393,86 @@ const ProfileModal = ({ userId }) => {
               <div>
                 <h4>Contact info</h4>
                 <table>
-                  <tr>
-                    <td className="table-data-alt">
-                      <img
-                        src={whatsapp}
-                        alt="whatsapp"
-                        className="small-icon"
-                      />
-                    </td>
-                    <td className="table-data">
-                      {tutor_whatsapp || "User has not provided their Whatsapp"}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="table-data-alt">
-                      <img
-                        src={telegram}
-                        alt="telegram"
-                        className="small-icon"
-                      />
-                    </td>
-                    <td className="table-data">
-                      {tutor_telegram || "User has not provided their Telegram"}
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <td className="table-data-alt">
+                        <img
+                          src={whatsapp}
+                          alt="whatsapp"
+                          className="small-icon"
+                        />
+                      </td>
+                      <td className="table-data">
+                        {tutor_whatsapp || "User has not provided their Whatsapp"}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="table-data-alt">
+                        <img
+                          src={telegram}
+                          alt="telegram"
+                          className="small-icon"
+                        />
+                      </td>
+                      <td className="table-data">
+                        {tutor_telegram || "User has not provided their Telegram"}
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
                 <br />
                 {is_tutor && (
                   <>
                     <h4>Tutor details</h4>
                     <table>
-                      <tr>
-                        <td>Rating</td>
-                        <td className="table-data">
-                          {aggregate_star === null ? (
-                            "User does not have any ratings yet"
-                          ) : (
-                            <>
-                              <StarDisplay num={parseInt(aggregate_star)} />
-                              <span className="add-margin-left">({total_tutor_reviews} reviews)</span>
-                            </>
-                          )}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Location</td>
-                        <td className="table-data">
-                          {location || "User has not provided their location"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Subjects taught</td>
-                        <td className="table-data">
-                          {subjectList(subjects) ||
-                            "User has not shared what subjects they teach"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Lesson duration</td>
-                        <td className="table-data">
-                          {duration_classes[0] === 0
-                            ? "User has not provided the duration of their lessons"
-                            : duration_classes[0] === duration_classes[1]
-                              ? duration_classes[0] + " hrs"
-                              : duration_classes[0] +
-                              " - " +
-                              duration_classes[1] +
-                              " hrs"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Qualifications</td>
-                        <td className="table-data">
-                          {qualifications ||
-                            "User has not shared their qualifications"}
-                        </td>
-                      </tr>
+                      <tbody>
+                        <tr>
+                          <td>Rating</td>
+                          <td className="table-data">
+                            {aggregate_star === null ? (
+                              "User does not have any ratings yet"
+                            ) : (
+                              <>
+                                <StarDisplay num={parseInt(aggregate_star)} />
+                                <span className="add-margin-left">({total_tutor_reviews} reviews)</span>
+                              </>
+                            )}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Location</td>
+                          <td className="table-data">
+                            {location || "User has not provided their location"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Subjects taught</td>
+                          <td className="table-data">
+                            {subjectList(subjects) ||
+                              "User has not shared what subjects they teach"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Lesson duration</td>
+                          <td className="table-data">
+                            {duration_classes[0] === 0
+                              ? "User has not provided the duration of their lessons"
+                              : duration_classes[0] === duration_classes[1]
+                                ? duration_classes[0] + " hrs"
+                                : duration_classes[0] +
+                                " - " +
+                                duration_classes[1] +
+                                " hrs"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Qualifications</td>
+                          <td className="table-data">
+                            {qualifications ||
+                              "User has not shared their qualifications"}
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </>
                 )}

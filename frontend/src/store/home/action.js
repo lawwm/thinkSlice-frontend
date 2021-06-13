@@ -373,11 +373,9 @@ export const postReply = ({ reply }, commentId, closeReplyForm) => async (dispat
     })
 
     // console.log(body)
-
     const res = await axios.post(DOMAINS.COMMENTS + ENDPOINTS.GET_ADD_REPLY + '/' + commentId,
       body,
       config)
-
     dispatch({
       type: CREATE_REPLIES,
       payload: {
@@ -385,9 +383,11 @@ export const postReply = ({ reply }, commentId, closeReplyForm) => async (dispat
         id: commentId
       }
     })
+
     dispatch(setAlert("Reply successfully created!", "success"));
     closeReplyForm()
   } catch (err) {
+
     dispatch(setAlert(err.message, "danger"));
     dispatch({
       type: REMOVE_COMMENT_LOADING_ID,

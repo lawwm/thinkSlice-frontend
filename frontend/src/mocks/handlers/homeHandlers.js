@@ -147,8 +147,16 @@ export const homeHandlers = [
       ctx.json({
         "id": 49,
         "username": "Pearsauce",
+        "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+        "userId": 1,
         "comment_text": "@Hamburger This video is terrible, I can't understand him at all",
         "date_comment": "2021-06-10",
+        "date_comment_edited": "2021-06-10",
+        "edited": false,
+        "has_replies": false,
+        "commented_video": 1,
+        "user_commenting": 1,
+        "parent_comment": 25
       })
     )
   }),
