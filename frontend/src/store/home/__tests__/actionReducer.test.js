@@ -5,6 +5,7 @@ import { fakeLocalStorage } from "../../../util/storage"
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { home } from "../reducer"
 
 //yarn run test -- --coverage --watchAll=false
 const middlewares = [thunk]
@@ -436,6 +437,1333 @@ describe('home actions calling APIs should dispatch correctly', () => {
         })
       })
 
+    })
+  })
+})
+
+describe('home page reducers should work', () => {
+  it('HOMEPAGE_LOADED reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.HOMEPAGE_LOADED,
+        payload: [{
+          "id": 2,
+          "video_title": "Learn physics",
+          "video_description": "Quantum physics is a popular phrase used nowadays, but what is it about? Learn the  basics of quantum physics today!",
+          "subject": "Physics",
+          "views": 404,
+          "likes": 0,
+          "num_of_comments": 4,
+          "asset_id": "HcDHzBMgnn39HOx02Mv9qcO1HONggk6lJwxVwjHQwjhQ",
+          "playback_id": "kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM",
+          "duration": 0.0,
+          "policy": "public",
+          "created_at": 1622812186,
+          "creator_profile": {
+            "id": 25,
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/",
+            "username": "jimijam",
+            "user_bio": "Hi, welcome to my profile! Cool profilez",
+            "is_tutor": true,
+            "is_student": false,
+            "tutor_whatsapp": 12345678,
+            "tutor_telegram": "@jimijam",
+            "aggregate_star": null,
+            "location": "South",
+            "duration_classes": [
+              5,
+              8
+            ],
+            "subjects": [
+              "Math",
+              "Cooking",
+              "Biology",
+              "Business",
+              "Computing"
+            ],
+            "total_tutor_reviews": 0,
+            "qualifications": "P6 tutor",
+            "user": 26
+          }
+        }]
+      })
+    ).toEqual({
+      videos: [{
+        "id": 2,
+        "video_title": "Learn physics",
+        "video_description": "Quantum physics is a popular phrase used nowadays, but what is it about? Learn the  basics of quantum physics today!",
+        "subject": "Physics",
+        "views": 404,
+        "likes": 0,
+        "num_of_comments": 4,
+        "asset_id": "HcDHzBMgnn39HOx02Mv9qcO1HONggk6lJwxVwjHQwjhQ",
+        "playback_id": "kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM",
+        "duration": 0.0,
+        "policy": "public",
+        "created_at": 1622812186,
+        "creator_profile": {
+          "id": 25,
+          "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/",
+          "username": "jimijam",
+          "user_bio": "Hi, welcome to my profile! Cool profilez",
+          "is_tutor": true,
+          "is_student": false,
+          "tutor_whatsapp": 12345678,
+          "tutor_telegram": "@jimijam",
+          "aggregate_star": null,
+          "location": "South",
+          "duration_classes": [
+            5,
+            8
+          ],
+          "subjects": [
+            "Math",
+            "Cooking",
+            "Biology",
+            "Business",
+            "Computing"
+          ],
+          "total_tutor_reviews": 0,
+          "qualifications": "P6 tutor",
+          "user": 26
+        }
+      }],
+      homeLoading: false,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      currentVideo: {},
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('VIDEO_LOADED reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.VIDEO_LOADED,
+        payload: {
+          "id": 2,
+          "video_title": "Learn physics",
+          "video_description": "Quantum physics is a popular phrase used nowadays, but what is it about? Learn the  basics of quantum physics today!",
+          "subject": "Physics",
+          "views": 404,
+          "likes": 0,
+          "num_of_comments": 4,
+          "asset_id": "HcDHzBMgnn39HOx02Mv9qcO1HONggk6lJwxVwjHQwjhQ",
+          "playback_id": "kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM",
+          "duration": 0.0,
+          "policy": "public",
+          "created_at": 1622812186,
+          "creator_profile": {
+            "id": 25,
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/",
+            "username": "jimijam",
+            "user_bio": "Hi, welcome to my profile! Cool profilez",
+            "is_tutor": true,
+            "is_student": false,
+            "tutor_whatsapp": 12345678,
+            "tutor_telegram": "@jimijam",
+            "aggregate_star": null,
+            "location": "South",
+            "duration_classes": [
+              5,
+              8
+            ],
+            "subjects": [
+              "Math",
+              "Cooking",
+              "Biology",
+              "Business",
+              "Computing"
+            ],
+            "total_tutor_reviews": 0,
+            "qualifications": "P6 tutor",
+            "user": 26
+          }
+        }
+      })
+    ).toEqual({
+      currentVideo: {
+        "id": 2,
+        "video_title": "Learn physics",
+        "video_description": "Quantum physics is a popular phrase used nowadays, but what is it about? Learn the  basics of quantum physics today!",
+        "subject": "Physics",
+        "views": 404,
+        "likes": 0,
+        "num_of_comments": 4,
+        "asset_id": "HcDHzBMgnn39HOx02Mv9qcO1HONggk6lJwxVwjHQwjhQ",
+        "playback_id": "kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM",
+        "duration": 0.0,
+        "policy": "public",
+        "created_at": 1622812186,
+        "creator_profile": {
+          "id": 25,
+          "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/",
+          "username": "jimijam",
+          "user_bio": "Hi, welcome to my profile! Cool profilez",
+          "is_tutor": true,
+          "is_student": false,
+          "tutor_whatsapp": 12345678,
+          "tutor_telegram": "@jimijam",
+          "aggregate_star": null,
+          "location": "South",
+          "duration_classes": [
+            5,
+            8
+          ],
+          "subjects": [
+            "Math",
+            "Cooking",
+            "Biology",
+            "Business",
+            "Computing"
+          ],
+          "total_tutor_reviews": 0,
+          "qualifications": "P6 tutor",
+          "user": 26
+        }
+      },
+      homeLoading: true,
+      videoLoading: false,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('VIDEO_LOADING reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.VIDEO_LOADING
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('HOME_LOADING reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.HOME_LOADING
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('HOMEPAGE_LOAD_FAIL reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.HOMEPAGE_LOAD_FAIL
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: false,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('UPLOAD_STARTED reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.UPLOAD_STARTED
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: true,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('UPLOAD_ENDED reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.UPLOAD_ENDED
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('REACHED_END reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.REACHED_END
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: true,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('CHANGE_FILTER reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.CHANGE_FILTER,
+        payload: 'popular'
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "popular",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('CHANGE_ASCENDING reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.CHANGE_ASCENDING,
+        payload: true
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: true,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('CHANGE_PAGE reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.CHANGE_PAGE,
+        payload: true
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 1,
+      comments: [],
+    })
+  })
+
+  it('COMMENT_LOADING reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.COMMENT_LOADING,
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('COMMENT_LOADED reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.COMMENT_LOADED,
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('GET_COMMENTS reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.GET_COMMENTS,
+        payload: [
+          {
+            "id": 13,
+            "username": "Pearsauce",
+            "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+            "userId": 1,
+            "comment_text": "Physics is really, really cool!",
+            "date_comment": "2021-06-09",
+            "date_comment_edited": "2021-06-10",
+            "edited": true,
+            "has_replies": false,
+            "commented_video": 2,
+            "user_commenting": 1,
+            "parent_comment": null
+          }
+        ]
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [{
+        "id": 13,
+        "username": "Pearsauce",
+        "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+        "userId": 1,
+        "comment_text": "Physics is really, really cool!",
+        "date_comment": "2021-06-09",
+        "date_comment_edited": "2021-06-10",
+        "edited": true,
+        "has_replies": false,
+        "commented_video": 2,
+        "user_commenting": 1,
+        "parent_comment": null,
+        "replies": []
+      }],
+    })
+  })
+
+
+  it('ADD_COMMENTS reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.ADD_COMMENT,
+        payload:
+        {
+          "id": 13,
+          "username": "Pearsauce",
+          "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+          "userId": 1,
+          "comment_text": "Physics is really, really cool!",
+          "date_comment": "2021-06-09",
+          "date_comment_edited": "2021-06-10",
+          "edited": true,
+          "has_replies": false,
+          "commented_video": 2,
+          "user_commenting": 1,
+          "parent_comment": null
+        }
+
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [{
+        "id": 13,
+        "username": "Pearsauce",
+        "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+        "userId": 1,
+        "comment_text": "Physics is really, really cool!",
+        "date_comment": "2021-06-09",
+        "date_comment_edited": "2021-06-10",
+        "edited": true,
+        "has_replies": false,
+        "commented_video": 2,
+        "user_commenting": 1,
+        "parent_comment": null,
+        "replies": []
+      }],
+    })
+  })
+
+  it('SET_COMMENT_LOADING_ID reducers should work', () => {
+    expect(
+      home(undefined, {
+        type: types.SET_COMMENT_LOADING_ID,
+        payload: 2
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [2],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+
+  it('REMOVE_COMMENT_LOADING_ID reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: true,
+        commentLoadingId: [2, 3, 4],
+        commentReplyLoadingId: [],
+        replyLoadingId: [],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [],
+      }, {
+        type: types.REMOVE_COMMENT_LOADING_ID,
+        payload: 2
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: true,
+      commentLoadingId: [3, 4],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('EDIT_COMMENT reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: false,
+        commentLoadingId: [13],
+        commentReplyLoadingId: [],
+        replyLoadingId: [],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [{
+          "id": 13,
+          "username": "Pearsauce",
+          "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+          "userId": 1,
+          "comment_text": "Physics is really, really cool!",
+          "date_comment": "2021-06-09",
+          "date_comment_edited": "2021-06-10",
+          "edited": true,
+          "has_replies": false,
+          "commented_video": 2,
+          "user_commenting": 1,
+          "parent_comment": null,
+          "replies": []
+        }],
+      }, {
+        type: types.EDIT_COMMENT,
+        payload:
+        {
+          id: 13,
+          data: {
+            "id": 13,
+            "comment_text": "Math is really, really cool!",
+            "date_comment": "2021-06-09",
+            "date_comment_edited": "2021-06-10",
+            "edited": true,
+            "has_replies": false,
+            "commented_video": 2,
+            "user_commenting": 1,
+            "parent_comment": null
+          }
+        }
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [{
+        "id": 13,
+        "username": "Pearsauce",
+        "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+        "userId": 1,
+        "comment_text": "Math is really, really cool!",
+        "date_comment": "2021-06-09",
+        "date_comment_edited": "2021-06-10",
+        "edited": true,
+        "has_replies": false,
+        "commented_video": 2,
+        "user_commenting": 1,
+        "parent_comment": null,
+        "replies": []
+      }],
+    })
+  })
+
+  it('DELETE_COMMENT reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: false,
+        commentLoadingId: [13],
+        commentReplyLoadingId: [],
+        replyLoadingId: [],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [{
+          "id": 13,
+          "username": "Pearsauce",
+          "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+          "userId": 1,
+          "comment_text": "Physics is really, really cool!",
+          "date_comment": "2021-06-09",
+          "date_comment_edited": "2021-06-10",
+          "edited": true,
+          "has_replies": false,
+          "commented_video": 2,
+          "user_commenting": 1,
+          "parent_comment": null,
+          "replies": []
+        }],
+      }, {
+        type: types.DELETE_COMMENT,
+        payload: 13
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+
+  it('SET_COMMENTREPLY_LOADING_ID reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: false,
+        commentLoadingId: [],
+        commentReplyLoadingId: [],
+        replyLoadingId: [],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [],
+      }, {
+        type: types.SET_COMMENTREPLY_LOADING_ID,
+        payload: 13
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [13],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('SET_REPLY_LOADING_ID reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: false,
+        commentLoadingId: [],
+        commentReplyLoadingId: [],
+        replyLoadingId: [],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [],
+      }, {
+        type: types.SET_REPLY_LOADING_ID,
+        payload: 13
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [13],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('REMOVE_COMMENTREPLY_LOADING_ID reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: false,
+        commentLoadingId: [],
+        commentReplyLoadingId: [13, 14, 15],
+        replyLoadingId: [],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [],
+      }, {
+        type: types.REMOVE_COMMENTREPLY_LOADING_ID,
+        payload: 13
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [14, 15],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('REMOVE_REPLY_LOADING_ID reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: false,
+        commentLoadingId: [],
+        commentReplyLoadingId: [],
+        replyLoadingId: [13, 14, 15],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [],
+      }, {
+        type: types.REMOVE_REPLY_LOADING_ID,
+        payload: 13
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [14, 15],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [],
+    })
+  })
+
+  it('GET_REPLIES reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: false,
+        commentLoadingId: [],
+        commentReplyLoadingId: [13],
+        replyLoadingId: [],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [{
+          "id": 13,
+          "username": "Pearsauce",
+          "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+          "userId": 1,
+          "comment_text": "Physics is really, really cool!",
+          "date_comment": "2021-06-09",
+          "date_comment_edited": "2021-06-10",
+          "edited": true,
+          "has_replies": false,
+          "commented_video": 2,
+          "user_commenting": 1,
+          "parent_comment": null,
+          "replies": []
+        }],
+      }, {
+        type: types.GET_REPLIES,
+        payload:
+        {
+          id: 13,
+          data: [{
+            "id": 49,
+            "username": "Pearsauce",
+            "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+            "userId": 1,
+            "comment_text": "@Hamburger This video is terrible, I can't understand him at all",
+            "date_comment": "2021-06-10",
+            "date_comment_edited": "2021-06-10",
+            "edited": false,
+            "has_replies": false,
+            "commented_video": 1,
+            "user_commenting": 1,
+            "parent_comment": 25
+          }]
+        }
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [{
+        "id": 13,
+        "username": "Pearsauce",
+        "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+        "userId": 1,
+        "comment_text": "Physics is really, really cool!",
+        "date_comment": "2021-06-09",
+        "date_comment_edited": "2021-06-10",
+        "edited": true,
+        "has_replies": false,
+        "commented_video": 2,
+        "user_commenting": 1,
+        "parent_comment": null,
+        "replies": [{
+          "id": 49,
+          "username": "Pearsauce",
+          "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+          "userId": 1,
+          "comment_text": "@Hamburger This video is terrible, I can't understand him at all",
+          "date_comment": "2021-06-10",
+          "date_comment_edited": "2021-06-10",
+          "edited": false,
+          "has_replies": false,
+          "commented_video": 1,
+          "user_commenting": 1,
+          "parent_comment": 25
+        }]
+      }],
+    })
+  })
+
+  it('CREATE_REPLIES reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: false,
+        commentLoadingId: [13],
+        commentReplyLoadingId: [],
+        replyLoadingId: [],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [{
+          "id": 13,
+          "username": "Pearsauce",
+          "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+          "userId": 1,
+          "comment_text": "Physics is really, really cool!",
+          "date_comment": "2021-06-09",
+          "date_comment_edited": "2021-06-10",
+          "edited": true,
+          "has_replies": false,
+          "commented_video": 2,
+          "user_commenting": 1,
+          "parent_comment": null,
+          "replies": []
+        }],
+      }, {
+        type: types.CREATE_REPLIES,
+        payload:
+        {
+          id: 13,
+          data: {
+            "id": 49,
+            "username": "Pearsauce",
+            "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+            "userId": 1,
+            "comment_text": "@Hamburger This video is terrible, I can't understand him at all",
+            "date_comment": "2021-06-10",
+            "date_comment_edited": "2021-06-10",
+            "edited": false,
+            "has_replies": false,
+            "commented_video": 1,
+            "user_commenting": 1,
+            "parent_comment": 25
+          }
+        }
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [{
+        "id": 13,
+        "username": "Pearsauce",
+        "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+        "userId": 1,
+        "comment_text": "Physics is really, really cool!",
+        "date_comment": "2021-06-09",
+        "date_comment_edited": "2021-06-10",
+        "edited": true,
+        "has_replies": true,
+        "commented_video": 2,
+        "user_commenting": 1,
+        "parent_comment": null,
+        "replies": [{
+          "id": 49,
+          "username": "Pearsauce",
+          "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+          "userId": 1,
+          "comment_text": "@Hamburger This video is terrible, I can't understand him at all",
+          "date_comment": "2021-06-10",
+          "date_comment_edited": "2021-06-10",
+          "edited": false,
+          "has_replies": false,
+          "commented_video": 1,
+          "user_commenting": 1,
+          "parent_comment": 25
+        }]
+      }],
+    })
+  })
+
+  it('EDIT_REPLIES reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: false,
+        commentLoadingId: [],
+        commentReplyLoadingId: [],
+        replyLoadingId: [49],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [{
+          "id": 13,
+          "username": "Pearsauce",
+          "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+          "userId": 1,
+          "comment_text": "Physics is really, really cool!",
+          "date_comment": "2021-06-09",
+          "date_comment_edited": "2021-06-10",
+          "edited": true,
+          "has_replies": true,
+          "commented_video": 2,
+          "user_commenting": 1,
+          "parent_comment": null,
+          "replies": [{
+            "id": 49,
+            "username": "Pearsauce",
+            "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+            "userId": 1,
+            "comment_text": "@Hamburger This video is terrible, I can't understand him at all",
+            "date_comment": "2021-06-10",
+            "date_comment_edited": "2021-06-10",
+            "edited": false,
+            "has_replies": false,
+            "commented_video": 1,
+            "user_commenting": 1,
+            "parent_comment": 25
+          }]
+        }],
+      }, {
+        type: types.EDIT_REPLIES,
+        payload:
+        {
+          commentId: 13,
+          replyId: 49,
+          data: {
+            "id": 49,
+            "username": "Pearsauce",
+            "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+            "userId": 1,
+            "comment_text": "@Hamburger This video is great, I can understand him",
+            "date_comment": "2021-06-10",
+            "date_comment_edited": "2021-06-10",
+            "edited": false,
+            "has_replies": false,
+            "commented_video": 1,
+            "user_commenting": 1,
+            "parent_comment": 25
+          }
+        }
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [{
+        "id": 13,
+        "username": "Pearsauce",
+        "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+        "userId": 1,
+        "comment_text": "Physics is really, really cool!",
+        "date_comment": "2021-06-09",
+        "date_comment_edited": "2021-06-10",
+        "edited": true,
+        "has_replies": true,
+        "commented_video": 2,
+        "user_commenting": 1,
+        "parent_comment": null,
+        "replies": [{
+          "id": 49,
+          "username": "Pearsauce",
+          "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+          "userId": 1,
+          "comment_text": "@Hamburger This video is great, I can understand him",
+          "date_comment": "2021-06-10",
+          "date_comment_edited": "2021-06-10",
+          "edited": false,
+          "has_replies": false,
+          "commented_video": 1,
+          "user_commenting": 1,
+          "parent_comment": 25
+        }]
+      }],
+    })
+  })
+
+  it('DELETE_REPLIES reducers should work', () => {
+    expect(
+      home({
+        currentVideo: {},
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: false,
+        commentLoadingId: [],
+        commentReplyLoadingId: [],
+        replyLoadingId: [49],
+        videos: [],
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 0,
+        comments: [{
+          "id": 13,
+          "username": "Pearsauce",
+          "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+          "userId": 1,
+          "comment_text": "Physics is really, really cool!",
+          "date_comment": "2021-06-09",
+          "date_comment_edited": "2021-06-10",
+          "edited": true,
+          "has_replies": true,
+          "commented_video": 2,
+          "user_commenting": 1,
+          "parent_comment": null,
+          "replies": [{
+            "id": 49,
+            "username": "Pearsauce",
+            "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+            "userId": 1,
+            "comment_text": "@Hamburger This video is terrible, I can't understand him at all",
+            "date_comment": "2021-06-10",
+            "date_comment_edited": "2021-06-10",
+            "edited": false,
+            "has_replies": false,
+            "commented_video": 1,
+            "user_commenting": 1,
+            "parent_comment": 25
+          }]
+        }],
+      }, {
+        type: types.DELETE_REPLIES,
+        payload:
+        {
+          commentId: 13,
+          replyId: 49,
+          data: {
+            "id": 49,
+            "username": "Pearsauce",
+            "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+            "userId": 1,
+            "comment_text": "@Hamburger This video is great, I can understand him",
+            "date_comment": "2021-06-10",
+            "date_comment_edited": "2021-06-10",
+            "edited": false,
+            "has_replies": false,
+            "commented_video": 1,
+            "user_commenting": 1,
+            "parent_comment": 25
+          }
+        }
+      })
+    ).toEqual({
+      currentVideo: {},
+      homeLoading: true,
+      videoLoading: true,
+      commentLoading: false,
+      commentLoadingId: [],
+      commentReplyLoadingId: [],
+      replyLoadingId: [],
+      videos: [],
+      isUploading: false,
+      reachedEnd: false,
+      filterBy: "recent",
+      ascending: false,
+      page: 0,
+      comments: [{
+        "id": 13,
+        "username": "Pearsauce",
+        "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
+        "userId": 1,
+        "comment_text": "Physics is really, really cool!",
+        "date_comment": "2021-06-09",
+        "date_comment_edited": "2021-06-10",
+        "edited": true,
+        "has_replies": true,
+        "commented_video": 2,
+        "user_commenting": 1,
+        "parent_comment": null,
+        "replies": []
+      }],
     })
   })
 })

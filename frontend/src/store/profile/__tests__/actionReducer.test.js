@@ -2,6 +2,7 @@ import * as actions from "../action"
 import * as types from "../actionTypes"
 import * as componentTypes from "../../components/actionTypes"
 import { fakeLocalStorage } from "../../../util/storage"
+import { profile } from "../reducer"
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -415,5 +416,901 @@ describe('profile actions calling API should dispatch correctly', () => {
         expect(store.getActions()[2].type).toEqual(types.STOP_REVIEW_POST_LOADING)
       })
     })
+  })
+})
+
+describe('profile reducers should work', () => {
+  it('PROFILE_LOADING case should work', () => {
+    expect(
+      profile(undefined, {
+        type: types.PROFILE_LOADING,
+      })
+    ).toEqual({
+      profile: null,
+      profileLoading: true,
+      profileComponentLoading: false,
+      reviewLoading: true,
+      reviewPostLoading: false,
+      detailedMode: false,
+      editMode: false,
+      reviewsGiven: [],
+      reviewsReceived: [],
+    })
+  })
+
+  it('PROFILE_LOADED case should work', () => {
+    expect(
+      profile({
+        profile: null,
+        profileLoading: false,
+        profileComponentLoading: false,
+        reviewLoading: true,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: [],
+      }, {
+        type: types.PROFILE_LOADED,
+        payload: {
+          basic: {
+            id: 3,
+            profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
+            username: "Applesauce",
+            user_bio: "Hi, welcome to my profile!",
+            is_tutor: true,
+            is_student: false,
+            user: 3,
+            video: []
+          },
+          detailed: {
+            tutor_whatsapp: 12345678,
+            tutor_telegram: "@jimijam",
+            aggregate_star: null,
+            location: "South",
+            duration_classes: [
+              5,
+              8
+            ],
+            subjects: [
+              "Math",
+              "Cooking",
+              "Biology",
+              "Business",
+              "Computing"
+            ],
+            total_tutor_reviews: 0,
+            qualifications: "P6 tutor"
+          }
+        }
+      })
+    ).toEqual({
+      profile: {
+        basic: {
+          id: 3,
+          profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
+          username: "Applesauce",
+          user_bio: "Hi, welcome to my profile!",
+          is_tutor: true,
+          is_student: false,
+          user: 3,
+          video: []
+        },
+        detailed: {
+          tutor_whatsapp: 12345678,
+          tutor_telegram: "@jimijam",
+          aggregate_star: null,
+          location: "South",
+          duration_classes: [
+            5,
+            8
+          ],
+          subjects: [
+            "Math",
+            "Cooking",
+            "Biology",
+            "Business",
+            "Computing"
+          ],
+          total_tutor_reviews: 0,
+          qualifications: "P6 tutor"
+        }
+      },
+      profileLoading: false,
+      profileComponentLoading: false,
+      reviewLoading: true,
+      reviewPostLoading: false,
+      detailedMode: false,
+      editMode: false,
+      reviewsGiven: [],
+      reviewsReceived: [],
+    })
+  })
+
+  it('PROFILE_COMPONENT_LOADING case should work', () => {
+    expect(
+      profile(undefined, {
+        type: types.PROFILE_COMPONENT_LOADING,
+      })
+    ).toEqual({
+      profile: null,
+      profileLoading: true,
+      profileComponentLoading: true,
+      reviewLoading: true,
+      reviewPostLoading: false,
+      detailedMode: false,
+      editMode: false,
+      reviewsGiven: [],
+      reviewsReceived: [],
+    })
+  })
+
+  it('PROFILE_COMPONENT_LOADED case should work', () => {
+    expect(
+      profile(undefined, {
+        type: types.PROFILE_COMPONENT_LOADED,
+      })
+    ).toEqual({
+      profile: null,
+      profileLoading: true,
+      profileComponentLoading: false,
+      reviewLoading: true,
+      reviewPostLoading: false,
+      detailedMode: false,
+      editMode: false,
+      reviewsGiven: [],
+      reviewsReceived: [],
+    })
+  })
+
+  it('PROFILE_DELETE_VIDEO case should work', () => {
+    expect(
+      profile({
+        profile: {
+          basic: {
+            id: 3,
+            profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
+            username: "Applesauce",
+            user_bio: "Hi, welcome to my profile!",
+            is_tutor: true,
+            is_student: false,
+            user: 3,
+            video: [{
+              "id": 1,
+              "video_title": "Milestone 1 Video (Snippet)",
+              "video_description": "Testing upload function",
+              "subject": "Science",
+              "views": 30,
+              "likes": 0,
+              "num_of_comments": 4,
+              "asset_id": "rTlMQEuMQAUV2VnTUc202QL56FPqQOgmXTu9348BNEWg",
+              "playback_id": "yuV6wIzNXSnX7eZL8uyRTaJjxWPU9fLBV6I7LTKfh02k",
+              "duration": 0.0,
+              "policy": "public",
+              "created_at": 1622792907,
+              "creator_profile": 2
+            }]
+          },
+          detailed: {
+            tutor_whatsapp: 12345678,
+            tutor_telegram: "@jimijam",
+            aggregate_star: null,
+            location: "South",
+            duration_classes: [
+              5,
+              8
+            ],
+            subjects: [
+              "Math",
+              "Cooking",
+              "Biology",
+              "Business",
+              "Computing"
+            ],
+            total_tutor_reviews: 0,
+            qualifications: "P6 tutor"
+          }
+        },
+        profileLoading: false,
+        profileComponentLoading: false,
+        reviewLoading: true,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: [],
+      }, {
+        type: types.PROFILE_DELETE_VIDEO,
+        payload: 1
+      })
+    ).toEqual({
+      profile: {
+        basic: {
+          id: 3,
+          profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
+          username: "Applesauce",
+          user_bio: "Hi, welcome to my profile!",
+          is_tutor: true,
+          is_student: false,
+          user: 3,
+          video: []
+        },
+        detailed: {
+          tutor_whatsapp: 12345678,
+          tutor_telegram: "@jimijam",
+          aggregate_star: null,
+          location: "South",
+          duration_classes: [
+            5,
+            8
+          ],
+          subjects: [
+            "Math",
+            "Cooking",
+            "Biology",
+            "Business",
+            "Computing"
+          ],
+          total_tutor_reviews: 0,
+          qualifications: "P6 tutor"
+        }
+      },
+      profileLoading: false,
+      profileComponentLoading: false,
+      reviewLoading: true,
+      reviewPostLoading: false,
+      detailedMode: false,
+      editMode: false,
+      reviewsGiven: [],
+      reviewsReceived: [],
+    })
+  })
+
+  it('PROFILE_DETAILED_VIEW case should work', () => {
+    expect(
+      profile(undefined, {
+        type: types.PROFILE_DETAILED_VIEW,
+        payload: true
+      })
+    ).toEqual({
+      profile: null,
+      profileLoading: true,
+      profileComponentLoading: false,
+      reviewLoading: true,
+      reviewPostLoading: false,
+      detailedMode: true,
+      editMode: false,
+      reviewsGiven: [],
+      reviewsReceived: [],
+    })
+  })
+
+  it('PROFILE_EDIT_MODE case should work', () => {
+    expect(
+      profile(undefined, {
+        type: types.PROFILE_EDIT_MODE,
+        payload: true
+      })
+    ).toEqual({
+      profile: null,
+      profileLoading: true,
+      profileComponentLoading: false,
+      reviewLoading: true,
+      reviewPostLoading: false,
+      detailedMode: false,
+      editMode: true,
+      reviewsGiven: [],
+      reviewsReceived: [],
+    })
+  })
+
+  it('PROFILE_PIC_EDIT case should work', () => {
+    expect(
+      profile({
+        profile: {
+          basic: {
+            id: 3,
+            profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
+            username: "Applesauce",
+            user_bio: "Hi, welcome to my profile!",
+            is_tutor: true,
+            is_student: false,
+            user: 3,
+            video: []
+          },
+          detailed: {
+            tutor_whatsapp: 12345678,
+            tutor_telegram: "@jimijam",
+            aggregate_star: null,
+            location: "South",
+            duration_classes: [
+              5,
+              8
+            ],
+            subjects: [
+              "Math",
+              "Cooking",
+              "Biology",
+              "Business",
+              "Computing"
+            ],
+            total_tutor_reviews: 0,
+            qualifications: "P6 tutor"
+          }
+        },
+        profileLoading: false,
+        profileComponentLoading: false,
+        reviewLoading: true,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: [],
+      }, {
+        type: types.PROFILE_PIC_EDIT,
+        payload: "fake video"
+      })
+    ).toEqual({
+      profile: {
+        basic: {
+          id: 3,
+          profile_pic: "fake video",
+          username: "Applesauce",
+          user_bio: "Hi, welcome to my profile!",
+          is_tutor: true,
+          is_student: false,
+          user: 3,
+          video: []
+        },
+        detailed: {
+          tutor_whatsapp: 12345678,
+          tutor_telegram: "@jimijam",
+          aggregate_star: null,
+          location: "South",
+          duration_classes: [
+            5,
+            8
+          ],
+          subjects: [
+            "Math",
+            "Cooking",
+            "Biology",
+            "Business",
+            "Computing"
+          ],
+          total_tutor_reviews: 0,
+          qualifications: "P6 tutor"
+        }
+      },
+      profileLoading: false,
+      profileComponentLoading: false,
+      reviewLoading: true,
+      reviewPostLoading: false,
+      detailedMode: false,
+      editMode: false,
+      reviewsGiven: [],
+      reviewsReceived: [],
+    })
+  })
+
+  it('PROFILE_UPDATED case should work', () => {
+    expect(
+      profile({
+        profile: {
+          basic: {
+            id: 3,
+            profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
+            username: "Applesauce",
+            user_bio: "Hi, welcome to my profile!",
+            is_tutor: true,
+            is_student: false,
+            user: 3,
+            video: []
+          },
+          detailed: {
+            tutor_whatsapp: 12345678,
+            tutor_telegram: "@jimijam",
+            aggregate_star: null,
+            location: "South",
+            duration_classes: [
+              5,
+              8
+            ],
+            subjects: [
+              "Math",
+              "Cooking",
+              "Biology",
+              "Business",
+              "Computing"
+            ],
+            total_tutor_reviews: 0,
+            qualifications: "P6 tutor"
+          }
+        },
+        profileLoading: true,
+        profileComponentLoading: false,
+        reviewLoading: true,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: [],
+      }, {
+        type: types.PROFILE_UPDATED,
+        payload: {
+          basic: {
+            id: 3,
+            profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
+            username: "New name",
+            user_bio: "Hi, welcome to my profile!",
+            is_tutor: true,
+            is_student: false,
+            user: 3,
+            video: []
+          },
+          detailed: {
+            tutor_whatsapp: 12345678,
+            tutor_telegram: "@jimijam",
+            aggregate_star: null,
+            location: "South",
+            duration_classes: [
+              5,
+              8
+            ],
+            subjects: [
+              "Math",
+              "Cooking",
+              "Biology",
+              "Business",
+              "Computing"
+            ],
+            total_tutor_reviews: 0,
+            qualifications: "P6 tutor"
+          }
+        }
+      })
+    ).toEqual({
+      profile: {
+        basic: {
+          id: 3,
+          profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
+          username: "New name",
+          user_bio: "Hi, welcome to my profile!",
+          is_tutor: true,
+          is_student: false,
+          user: 3,
+          video: []
+        },
+        detailed: {
+          tutor_whatsapp: 12345678,
+          tutor_telegram: "@jimijam",
+          aggregate_star: null,
+          location: "South",
+          duration_classes: [
+            5,
+            8
+          ],
+          subjects: [
+            "Math",
+            "Cooking",
+            "Biology",
+            "Business",
+            "Computing"
+          ],
+          total_tutor_reviews: 0,
+          qualifications: "P6 tutor"
+        }
+      },
+      profileLoading: false,
+      profileComponentLoading: false,
+      reviewLoading: true,
+      reviewPostLoading: false,
+      detailedMode: false,
+      editMode: false,
+      reviewsGiven: [],
+      reviewsReceived: [],
+    })
+  })
+
+  it('REVIEWS_LOADED case should work', () => {
+    expect(
+      profile({
+        profile: null,
+        profileLoading: true,
+        profileComponentLoading: false,
+        reviewLoading: true,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: [],
+      }, {
+        type: types.REVIEWS_LOADED,
+        payload: {
+          reviewsGiven: [{
+            "id": 52,
+            "creator_details": {
+              "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=QxXXShDOIs4xmiK8HNUIXCpshVk%3D&Expires=1623560876",
+              "username": "Pearsauce",
+              "user": 1
+            },
+            "star_rating": 5.0,
+            "review_title": "Amazing!",
+            "review_essay": "You won't believe what this guy would do for $5!",
+            "date_review": "2021-06-07",
+            "date_review_edited": "2021-06-07",
+            "edited": false,
+            "tutor_profile": 2,
+            "student_profile": 1
+          }],
+          reviewsReceived: [{
+            "id": 53,
+            "creator_details": {
+              "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GZHI1BfgS7c1RZiErYdiIQ3ouZ4%3D&Expires=1623560877",
+              "username": "Applesauce",
+              "user": 3
+            },
+            "star_rating": 4.0,
+            "review_title": "Amazing!",
+            "review_essay": "You won't believe what this guy would do for $5!",
+            "date_review": "2021-06-07",
+            "date_review_edited": "2021-06-07",
+            "edited": true,
+            "tutor_profile": 2,
+            "student_profile": 3
+          }]
+        }
+      })
+    ).toEqual({
+      profile: null,
+      profileLoading: true,
+      profileComponentLoading: false,
+      reviewLoading: false,
+      reviewPostLoading: false,
+      detailedMode: false,
+      editMode: false,
+      reviewsGiven: [{
+        "id": 52,
+        "creator_details": {
+          "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=QxXXShDOIs4xmiK8HNUIXCpshVk%3D&Expires=1623560876",
+          "username": "Pearsauce",
+          "user": 1
+        },
+        "star_rating": 5.0,
+        "review_title": "Amazing!",
+        "review_essay": "You won't believe what this guy would do for $5!",
+        "date_review": "2021-06-07",
+        "date_review_edited": "2021-06-07",
+        "edited": false,
+        "tutor_profile": 2,
+        "student_profile": 1
+      }],
+      reviewsReceived: [{
+        "id": 53,
+        "creator_details": {
+          "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GZHI1BfgS7c1RZiErYdiIQ3ouZ4%3D&Expires=1623560877",
+          "username": "Applesauce",
+          "user": 3
+        },
+        "star_rating": 4.0,
+        "review_title": "Amazing!",
+        "review_essay": "You won't believe what this guy would do for $5!",
+        "date_review": "2021-06-07",
+        "date_review_edited": "2021-06-07",
+        "edited": true,
+        "tutor_profile": 2,
+        "student_profile": 3
+      }]
+    })
+  })
+
+  it('SET_REVIEW_LOADING case should work', () => {
+    expect(
+      profile(undefined, {
+        type: types.SET_REVIEW_LOADING,
+      }))
+      .toEqual({
+        profile: null,
+        profileLoading: true,
+        profileComponentLoading: false,
+        reviewLoading: true,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: []
+      })
+  })
+
+  it('SET_REVIEW_POST_LOADING case should work', () => {
+    expect(
+      profile(undefined, {
+        type: types.SET_REVIEW_POST_LOADING,
+      }))
+      .toEqual({
+        profile: null,
+        profileLoading: true,
+        profileComponentLoading: false,
+        reviewLoading: true,
+        reviewPostLoading: true,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: []
+      })
+  })
+
+  it('STOP_REVIEW_LOADING case should work', () => {
+    expect(
+      profile(undefined, {
+        type: types.STOP_REVIEW_LOADING,
+      }))
+      .toEqual({
+        profile: null,
+        profileLoading: true,
+        profileComponentLoading: false,
+        reviewLoading: false,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: []
+      })
+  })
+
+  it('STOP_REVIEW_POST_LOADING case should work', () => {
+    expect(
+      profile(undefined, {
+        type: types.STOP_REVIEW_POST_LOADING,
+      }))
+      .toEqual({
+        profile: null,
+        profileLoading: true,
+        profileComponentLoading: false,
+        reviewLoading: true,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: []
+      })
+  })
+
+  it('PROFILE_UPDATE_ERROR case should work', () => {
+    expect(
+      profile(undefined, {
+        type: types.PROFILE_UPDATE_ERROR,
+      }))
+      .toEqual({
+        profile: null,
+        profileLoading: false,
+        profileComponentLoading: false,
+        reviewLoading: true,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: []
+      })
+  })
+
+  it('CREATE_REVIEW case should work', () => {
+    expect(
+      profile({
+        profile: null,
+        profileLoading: false,
+        profileComponentLoading: false,
+        reviewLoading: true,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: []
+      }, {
+        type: types.CREATE_REVIEW,
+        payload: {
+          "id": 53,
+          "creator_details": {
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GZHI1BfgS7c1RZiErYdiIQ3ouZ4%3D&Expires=1623560877",
+            "username": "Applesauce",
+            "user": 3
+          },
+          "star_rating": 4.0,
+          "review_title": "Amazing!",
+          "review_essay": "You won't believe what this guy would do for $5!",
+          "date_review": "2021-06-07",
+          "date_review_edited": "2021-06-07",
+          "edited": true,
+          "tutor_profile": 2,
+          "student_profile": 3
+        },
+      }))
+      .toEqual({
+        profile: null,
+        profileLoading: false,
+        profileComponentLoading: false,
+        reviewLoading: false,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: [{
+          "id": 53,
+          "creator_details": {
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GZHI1BfgS7c1RZiErYdiIQ3ouZ4%3D&Expires=1623560877",
+            "username": "Applesauce",
+            "user": 3
+          },
+          "star_rating": 4.0,
+          "review_title": "Amazing!",
+          "review_essay": "You won't believe what this guy would do for $5!",
+          "date_review": "2021-06-07",
+          "date_review_edited": "2021-06-07",
+          "edited": true,
+          "tutor_profile": 2,
+          "student_profile": 3
+        }]
+      })
+  })
+
+  it('EDIT_REVIEW case should work', () => {
+    expect(
+      profile({
+        profile: null,
+        profileLoading: false,
+        profileComponentLoading: false,
+        reviewLoading: false,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [{
+          "id": 53,
+          "creator_details": {
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GZHI1BfgS7c1RZiErYdiIQ3ouZ4%3D&Expires=1623560877",
+            "username": "Applesauce",
+            "user": 3
+          },
+          "star_rating": 4.0,
+          "review_title": "Amazing!",
+          "review_essay": "You won't believe what this guy would do for $5!",
+          "date_review": "2021-06-07",
+          "date_review_edited": "2021-06-07",
+          "edited": true,
+          "tutor_profile": 2,
+          "student_profile": 3
+        }],
+        reviewsReceived: [{
+          "id": 53,
+          "creator_details": {
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GZHI1BfgS7c1RZiErYdiIQ3ouZ4%3D&Expires=1623560877",
+            "username": "Applesauce",
+            "user": 3
+          },
+          "star_rating": 4.0,
+          "review_title": "Amazing!",
+          "review_essay": "You won't believe what this guy would do for $5!",
+          "date_review": "2021-06-07",
+          "date_review_edited": "2021-06-07",
+          "edited": true,
+          "tutor_profile": 2,
+          "student_profile": 3
+        }]
+      }, {
+        type: types.EDIT_REVIEW,
+        payload: {
+          id: 53,
+          updatedData: {
+            "id": 53,
+            "star_rating": 4.0,
+            "review_title": "Bad!",
+            "review_essay": "Terrible!",
+            "date_review": "2021-06-07",
+            "date_review_edited": "2021-06-07",
+            "edited": true,
+            "tutor_profile": 2,
+            "student_profile": 3
+          }
+        }
+      }))
+      .toEqual({
+        profile: null,
+        profileLoading: false,
+        profileComponentLoading: false,
+        reviewLoading: false,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [{
+          "id": 53,
+          "creator_details": {
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GZHI1BfgS7c1RZiErYdiIQ3ouZ4%3D&Expires=1623560877",
+            "username": "Applesauce",
+            "user": 3
+          },
+          "star_rating": 4.0,
+          "review_title": "Bad!",
+          "review_essay": "Terrible!",
+          "date_review": "2021-06-07",
+          "date_review_edited": "2021-06-07",
+          "edited": true,
+          "tutor_profile": 2,
+          "student_profile": 3
+        }],
+        reviewsReceived: [{
+          "id": 53,
+          "creator_details": {
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GZHI1BfgS7c1RZiErYdiIQ3ouZ4%3D&Expires=1623560877",
+            "username": "Applesauce",
+            "user": 3
+          },
+          "star_rating": 4.0,
+          "review_title": "Bad!",
+          "review_essay": "Terrible!",
+          "date_review": "2021-06-07",
+          "date_review_edited": "2021-06-07",
+          "edited": true,
+          "tutor_profile": 2,
+          "student_profile": 3
+        }]
+      })
+  })
+
+  it('DELETE_REVIEW case should work', () => {
+    expect(
+      profile({
+        profile: null,
+        profileLoading: false,
+        profileComponentLoading: false,
+        reviewLoading: false,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [{
+          "id": 53,
+          "creator_details": {
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GZHI1BfgS7c1RZiErYdiIQ3ouZ4%3D&Expires=1623560877",
+            "username": "Applesauce",
+            "user": 3
+          },
+          "star_rating": 4.0,
+          "review_title": "Amazing!",
+          "review_essay": "You won't believe what this guy would do for $5!",
+          "date_review": "2021-06-07",
+          "date_review_edited": "2021-06-07",
+          "edited": true,
+          "tutor_profile": 2,
+          "student_profile": 3
+        }],
+        reviewsReceived: [{
+          "id": 53,
+          "creator_details": {
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/download.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GZHI1BfgS7c1RZiErYdiIQ3ouZ4%3D&Expires=1623560877",
+            "username": "Applesauce",
+            "user": 3
+          },
+          "star_rating": 4.0,
+          "review_title": "Amazing!",
+          "review_essay": "You won't believe what this guy would do for $5!",
+          "date_review": "2021-06-07",
+          "date_review_edited": "2021-06-07",
+          "edited": true,
+          "tutor_profile": 2,
+          "student_profile": 3
+        }]
+      }, {
+        type: types.DELETE_REVIEW,
+        payload: 53,
+      }))
+      .toEqual({
+        profile: null,
+        profileLoading: false,
+        profileComponentLoading: false,
+        reviewLoading: false,
+        reviewPostLoading: false,
+        detailedMode: false,
+        editMode: false,
+        reviewsGiven: [],
+        reviewsReceived: []
+      })
   })
 })

@@ -141,7 +141,7 @@ export const home = (state = initialState, action) => {
     case ADD_COMMENT:
       return {
         ...state,
-        comments: state.comments.concat([payload]),
+        comments: state.comments.concat([{ ...payload, replies: [] }]),
         commentLoading: false
       }
     case SET_COMMENT_LOADING_ID:
@@ -163,6 +163,7 @@ export const home = (state = initialState, action) => {
         username: state.comments[commentIndex].username,
         profilePic: state.comments[commentIndex].profilePic,
         userId: state.comments[commentIndex].userId,
+        replies: state.comments[commentIndex].replies
       }
       return {
         ...state,
@@ -198,8 +199,8 @@ export const home = (state = initialState, action) => {
     case GET_REPLIES:
       const findComment = state.comments.findIndex(comment => comment.id === payload.id)
       const newComment = [...state.comments]
-      console.log(payload.data)
-      console.log(newComment[findComment])
+      // console.log(payload.data)
+      // console.log(newComment[findComment])
       newComment[findComment] = {
         ...newComment[findComment],
         replies: payload.data
