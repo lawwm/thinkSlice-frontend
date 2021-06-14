@@ -1,22 +1,24 @@
 name: Main workflow
 
-on:
-  [pull_request]
+on: [pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 10.x
-      uses: actions/setup-node@v2
-      with:
-        version: 10.x
-    - name: yarn install, build, and test
-      run: |
-        yarn install
-        yarn build
-        yarn test
+      - name: CHECKOUT GIT REPO
+        uses: actions/checkout@v2
+      - name: Use Node.js 10.x
+        uses: actions/setup-node@v2
+      - name: INSTALL DEPENDENCIES
+        run: yarn install
+      - name: BUILD CODE
+        run: yarn build
+      - name: UNIT TEST
+        run: yarn test
   deploy_now:
     needs: build
     runs-on: ubuntu-latest
@@ -25,6 +27,5 @@ jobs:
       - uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
-          vercel-org-id: ${{ secrets.ORG_ID}}  #Required
-          vercel-project-id: ${{ secrets.PROJECT_ID}} #Required 
-          working-directory: ./frontend
+          vercel-org-id: ${{ secrets.ORG_ID}} #Required
+          vercel-project-id: ${{ secrets.PROJECT_ID}} #Required
