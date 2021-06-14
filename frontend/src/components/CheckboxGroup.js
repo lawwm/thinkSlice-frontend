@@ -29,6 +29,7 @@ export const CheckboxGroup = ({ subjectList }) => {
             key={index}
             type="checkbox"
             label={subject}
+            id={`checkbox-${subject}`}
             value={subject}
             checked={
               subjectList === null ? false : subjectList.includes(subject)

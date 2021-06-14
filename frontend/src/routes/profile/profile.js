@@ -37,7 +37,6 @@ const Profile = () => {
     e.preventDefault();
     dispatch(changePicture(imageFile, () => setPictureModal(false)))
   };
-
   return (
     <>
       {profileLoading && <LoadingSpinner />}
@@ -66,7 +65,7 @@ const Profile = () => {
                       <img
                         src={profile.basic.profile_pic}
                         alt="profile_pic"
-                        fluid
+                        fluid="true"
                         className="profile-pic"
                       />
                       <div className="profile-pic-middle">
@@ -81,13 +80,13 @@ const Profile = () => {
                       onClick={() => dispatch(toggleDetailedView(true))}
                     >
                       Details
-                  </button>
+                    </button>
                     <button
                       className="btn profile-button"
                       onClick={() => history.push("/profile/reviews/" + user_id)}
                     >
                       Reviews
-                  </button>
+                    </button>
                   </Row>
                 </Row>
                 <br />
@@ -157,7 +156,7 @@ const Profile = () => {
                     onClick={() => setPictureModal(false)}
                   >
                     Go back
-              </Button>
+                  </Button>
                   <Button
                     type="submit"
                     value="Submit"

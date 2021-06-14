@@ -3,7 +3,7 @@ import { Spinner } from "react-bootstrap";
 
 const LoadingSpinner = () => {
   return (
-    <div className="d-flex justify-content-center align-items-center" >
+    <div role="img" aria-label="spinner" className="d-flex justify-content-center align-items-center" >
       <Spinner animation="border" variant="dark" />
     </div>
   );

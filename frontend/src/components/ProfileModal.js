@@ -57,7 +57,7 @@ const ProfileModal = ({ userId }) => {
 
   const onChangeBasic = (e) => {
     let updatedValue = e.target.value;
-    console.log(e.target.value)
+    // console.log(e.target.value)
     switch (updatedValue) {
       case "0":
         setProfileBasic({
@@ -164,7 +164,7 @@ const ProfileModal = ({ userId }) => {
         )
       );
     } else {
-      console.log(profileBasic, profileDetails)
+      // console.log(profileBasic, profileDetails)
       dispatch(toggleEditMode(false));
       dispatch(
         updateProfile(user, { basic: profileBasic, detailed: profileDetails })
@@ -197,10 +197,10 @@ const ProfileModal = ({ userId }) => {
             </Modal.Header>
             <Form onSubmit={(e) => onSubmit(e)}>
               <Modal.Body>
-                <Form.Group>
-                  {selectPage === "1" &&
-                    (<>
-                      <h4>User info</h4>
+                {selectPage === "1" &&
+                  (<>
+                    <h4>User info</h4>
+                    <Form.Group>
                       <Form.Label>Username</Form.Label>
                       <Form.Control
                         type="username"
@@ -209,18 +209,23 @@ const ProfileModal = ({ userId }) => {
                         className="modal-input"
                         onChange={(e) => onChangeBasic(e)}
                       />
+                    </Form.Group>
+                    <Form.Group>
                       <Form.Label>User bio</Form.Label>
                       <Form.Control
                         as="textarea"
+                        // type="text"
                         name="user_bio"
                         value={user_bio}
                         className="modal-input"
                         onChange={(e) => onChangeBasic(e)}
                       />
+                    </Form.Group>
 
 
 
-                      <h4>Contact info</h4>
+                    <h4>Contact info</h4>
+                    <Form.Group>
                       <Form.Label>Whatsapp</Form.Label>
                       <Form.Control
                         type="tel"
@@ -229,6 +234,8 @@ const ProfileModal = ({ userId }) => {
                         className="modal-input"
                         onChange={(e) => onChangeDetailed(e)}
                       />
+                    </Form.Group>
+                    <Form.Group>
                       <Form.Label>Telegram</Form.Label>
                       <Form.Control
                         type="username"
@@ -236,10 +243,12 @@ const ProfileModal = ({ userId }) => {
                         defaultValue={tutor_telegram}
                         onChange={(e) => onChangeDetailed(e)}
                       />
-                    </>)
-                  }
-                  {selectPage === "2" &&
-                    (<><h4>User details</h4>
+                    </Form.Group>
+                  </>)
+                }
+                {selectPage === "2" &&
+                  (<><h4>User details</h4>
+                    <Form.Group>
                       <Form.Label>Tutor/Student</Form.Label>
                       <Form.Control
                         as="select"
@@ -256,12 +265,14 @@ const ProfileModal = ({ userId }) => {
                         <option value="2">Student</option>
                         <option value="3">Both</option>
                       </Form.Control>
-                      <div>
-                        Helpful tip: Select your role as a student and/or tutor. Tutors get
-                        to upload videos and display additional information on their profiles.
-                      </div></>)}
-                  {selectPage === "3" && (
-                    <>
+                    </Form.Group>
+                    <div>
+                      Helpful tip: Select your role as a student and/or tutor. Tutors get
+                      to upload videos and display additional information on their profiles.
+                    </div></>)}
+                {selectPage === "3" && (
+                  <>
+                    <Form.Group>
                       <Form.Label>Location</Form.Label>
                       <Form.Control
                         as="select"
@@ -271,24 +282,27 @@ const ProfileModal = ({ userId }) => {
                         onChange={(e) => onChangeDetailed(e)}
                       >
                         <option value="null">Do not specify</option>
-                        <option>North</option>
-                        <option>South</option>
-                        <option>East</option>
-                        <option>West</option>
-                        <option>Central</option>
+                        <option value="north">North</option>
+                        <option value="south">South</option>
+                        <option value="east">East</option>
+                        <option value="west">West</option>
+                        <option value="central">Central</option>
                       </Form.Control>
-                      <br />
-                      <Form.Label>Subjects taught</Form.Label>
-                      <Form
-                        name="subjects"
-                        value={subjects}
-                        onChange={(e) => {
-                          onChangeDetailed(e);
-                        }}
-                      >
-                        <CheckboxGroup subjectList={subjects} />
-                      </Form>
-                      <br />
+                    </Form.Group>
+                    <br />
+
+                    <Form.Label>Subjects taught</Form.Label>
+                    <Form.Group
+                      name="subjects"
+                      value={subjects}
+                      onChange={(e) => {
+                        onChangeDetailed(e);
+                      }}
+                    >
+                      <CheckboxGroup subjectList={subjects} />
+                    </Form.Group>
+                    <br />
+                    <Form.Group>
                       <Form.Label>Min Lesson duration (in hours)</Form.Label>
                       <Form.Control
                         type="range"
@@ -299,6 +313,8 @@ const ProfileModal = ({ userId }) => {
                         max={12}
                         custom
                       />
+                    </Form.Group>
+                    <Form.Group>
                       <Form.Label>Max Lesson duration (in hours)</Form.Label>
                       <Form.Control
                         type="range"
@@ -309,6 +325,8 @@ const ProfileModal = ({ userId }) => {
                         max={12}
                         custom
                       />
+                    </Form.Group>
+                    <Form.Group>
                       <Form.Label>Qualifications</Form.Label>
                       <Form.Control
                         as="textarea"
@@ -317,9 +335,9 @@ const ProfileModal = ({ userId }) => {
                         className="modal-input"
                         onChange={(e) => onChangeDetailed(e)}
                       />
-                    </>
-                  )}
-                </Form.Group>
+                    </Form.Group>
+                  </>
+                )}
                 <Nav
                   fill
                   variant="pills"
@@ -334,12 +352,12 @@ const ProfileModal = ({ userId }) => {
                   <Nav.Item>
                     <Nav.Link className="tabs profile-modal-page" eventKey="2">
                       Page 2
-                     </Nav.Link>
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
                     <Nav.Link className="tabs profile-modal-page" eventKey="3" disabled={!showTutorOptions}>
                       Page 3
-                     </Nav.Link>
+                    </Nav.Link>
                   </Nav.Item>
                 </Nav>
               </Modal.Body>
@@ -393,82 +411,86 @@ const ProfileModal = ({ userId }) => {
               <div>
                 <h4>Contact info</h4>
                 <table>
-                  <tr>
-                    <td className="table-data-alt">
-                      <img
-                        src={whatsapp}
-                        alt="whatsapp"
-                        className="small-icon"
-                      />
-                    </td>
-                    <td className="table-data">
-                      {tutor_whatsapp || "User has not provided their Whatsapp"}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="table-data-alt">
-                      <img
-                        src={telegram}
-                        alt="telegram"
-                        className="small-icon"
-                      />
-                    </td>
-                    <td className="table-data">
-                      {tutor_telegram || "User has not provided their Telegram"}
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <td className="table-data-alt">
+                        <img
+                          src={whatsapp}
+                          alt="whatsapp"
+                          className="small-icon"
+                        />
+                      </td>
+                      <td className="table-data">
+                        {tutor_whatsapp || "User has not provided their Whatsapp"}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="table-data-alt">
+                        <img
+                          src={telegram}
+                          alt="telegram"
+                          className="small-icon"
+                        />
+                      </td>
+                      <td className="table-data">
+                        {tutor_telegram || "User has not provided their Telegram"}
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
                 <br />
                 {is_tutor && (
                   <>
                     <h4>Tutor details</h4>
                     <table>
-                      <tr>
-                        <td>Rating</td>
-                        <td className="table-data">
-                          {aggregate_star === null ? (
-                            "User does not have any ratings yet"
-                          ) : (
-                            <>
-                              <StarDisplay num={parseInt(aggregate_star)} />
-                              <span className="add-margin-left">({total_tutor_reviews} reviews)</span>
-                            </>
-                          )}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Location</td>
-                        <td className="table-data">
-                          {location || "User has not provided their location"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Subjects taught</td>
-                        <td className="table-data">
-                          {subjectList(subjects) ||
-                            "User has not shared what subjects they teach"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Lesson duration</td>
-                        <td className="table-data">
-                          {duration_classes[0] === 0
-                            ? "User has not provided the duration of their lessons"
-                            : duration_classes[0] === duration_classes[1]
-                              ? duration_classes[0] + " hrs"
-                              : duration_classes[0] +
-                              " - " +
-                              duration_classes[1] +
-                              " hrs"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Qualifications</td>
-                        <td className="table-data">
-                          {qualifications ||
-                            "User has not shared their qualifications"}
-                        </td>
-                      </tr>
+                      <tbody>
+                        <tr>
+                          <td>Rating</td>
+                          <td className="table-data">
+                            {aggregate_star === null ? (
+                              "User does not have any ratings yet"
+                            ) : (
+                              <>
+                                <StarDisplay num={parseInt(aggregate_star)} />
+                                <span className="add-margin-left">({total_tutor_reviews} reviews)</span>
+                              </>
+                            )}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Location</td>
+                          <td className="table-data">
+                            {location || "User has not provided their location"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Subjects taught</td>
+                          <td className="table-data">
+                            {subjectList(subjects) ||
+                              "User has not shared what subjects they teach"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Lesson duration</td>
+                          <td className="table-data">
+                            {duration_classes[0] === 0
+                              ? "User has not provided the duration of their lessons"
+                              : duration_classes[0] === duration_classes[1]
+                                ? duration_classes[0] + " hrs"
+                                : duration_classes[0] +
+                                " - " +
+                                duration_classes[1] +
+                                " hrs"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Qualifications</td>
+                          <td className="table-data">
+                            {qualifications ||
+                              "User has not shared their qualifications"}
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </>
                 )}

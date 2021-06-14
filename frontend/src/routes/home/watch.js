@@ -20,7 +20,7 @@ import "../styles.css";
 import "../../fonts/css/videojs.css"
 import { CommentPost } from "../../components/Comment.js"
 
-const Comment = ({ totalComments, videoId }) => {
+export const Comment = ({ totalComments, videoId }) => {
   const [showComment, setShowComment] = useState(false)
   const [showAddComment, setShowAddComment] = useState(false)
   const dispatch = useDispatch()
@@ -40,7 +40,7 @@ const Comment = ({ totalComments, videoId }) => {
 
   const onCommentSubmit = (e) => {
     e.preventDefault();
-    console.log(commentForm)
+    // console.log(commentForm)
     dispatch(addComments(commentForm, videoId, () => setShowAddComment(false), () => setCommentForm({ comment: "" })))
   }
 
@@ -132,7 +132,7 @@ const Comment = ({ totalComments, videoId }) => {
   )
 }
 
-const Description = ({ description }) => {
+export const Description = ({ description }) => {
 
   const [showMore, setShowMore] = useState(false)
   const wordLimit = 120
@@ -141,7 +141,7 @@ const Description = ({ description }) => {
     <>
       {description.length > wordLimit
         ? <>
-          { showMore
+          {showMore
             ? (
               <>
                 <div className="video-description-div">
@@ -442,7 +442,6 @@ const WatchPage = () => {
   const { videoId } = useParams();
   const dispatch = useDispatch();
   const { currentVideo, videoLoading, videos } = useSelector((state) => state.home)
-
   useEffect(() => {
     dispatch(loadWatchVideos(videoId))
   }, [dispatch, videoId])

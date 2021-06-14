@@ -38,7 +38,7 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(replyForm)
+    // console.log(replyForm)
     dispatch(postReply(replyForm, commentId, () => setCreateReply(false)))
   };
 
@@ -51,7 +51,7 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
 
   const onSubmitEdit = (e) => {
     e.preventDefault();
-    console.log(editForm)
+    // console.log(editForm)
     dispatch(editComments(editForm, commentId, () => setShowEdit(false)))
   };
 
@@ -65,16 +65,16 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
     <>
       {(commentLoadingId.includes(commentId)) && <div className="comment-post-loading-div"><LoadingSpinner /></div>}
       {(!commentLoadingId.includes(commentId)) && <div className="comment-div">
-        <Media className="commenter" fluid>
+        <Media className="commenter" fluid="true">
           <div
             className="comment-thumbnail-photo mr-3"
             onClick={() => history.push("/profile/" + userId)}
           >
             <img
               src={"https://thinkslice-project.s3.amazonaws.com/" + profilePic}
-              alt="profile"
+              alt="comment profile"
               className="comment-pic"
-              fluid />
+              fluid="true" />
           </div>
           <Media.Body className="align-self-center">
             <div className="comment-title">
@@ -83,7 +83,10 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
               <div className="comment-delete-div">
                 {showDelete &&
                   (<>
-                    <button onClick={() => trashComment()} className="delete-comment-button">
+                    <button
+                      aria-label="delete comment submit"
+                      onClick={() => trashComment()}
+                      className="delete-comment-button">
                       <BsTrash size={23} />
                     </button>
                   </>)}
@@ -100,9 +103,11 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
                 />
                 <div className="video-comment-button-div">
                   <Button
+                    aria-label="edit comment cancel"
                     onClick={() => setShowEdit(false)}
                     className="btn-comment-alt-custom">Cancel</Button>
                   <Button
+                    aria-label="edit comment submit"
                     onClick={(e) => onSubmitEdit(e)}
                     className="btn-comment-custom">
                     Submit</Button>
@@ -134,15 +139,25 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
                       )
                   }</>)}
                   {isAuthenticated && (<>
-                    <button onClick={() => setCreateReply(prev => !prev)} className="comment-button">
+                    <button
+                      aria-label="reply comment show"
+                      onClick={() => setCreateReply(prev => !prev)}
+                      className="comment-button">
                       Reply
                     </button>
-                    {(viewerId === userId.toString()) && (<><button onClick={() => setShowEdit(true)} className="comment-button">
-                      Edit
-                    </button>
-                      <button onClick={() => setShowDelete(prev => !prev)} className="comment-button">
+                    {(viewerId === userId.toString()) && (<>
+                      <button
+                        aria-label="edit comment show"
+                        onClick={() => setShowEdit(true)}
+                        className="comment-button">
+                        Edit
+                      </button>
+                      <button
+                        aria-label="delete comment show"
+                        onClick={() => setShowDelete(prev => !prev)}
+                        className="comment-button">
                         Delete
-                    </button></>)}
+                      </button></>)}
                   </>)}
                 </div>
               </>}
@@ -163,9 +178,11 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
                     />
                     <div className="video-comment-button-div">
                       <Button
+                        aria-label="reply comment cancel"
                         onClick={() => setCreateReply(false)}
                         className="btn-comment-alt-custom">Cancel</Button>
                       <Button
+                        aria-label="reply comment submit"
                         onClick={(e) => onSubmit(e)}
                         className="btn-comment-custom">
                         Submit</Button>
@@ -231,7 +248,7 @@ export const ReplyPost = ({ commentId, replyId, commentText, date, username, use
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(replyForm)
+    // console.log(replyForm)
     dispatch(postReply(replyForm, commentId, () => setCreateReply(false)))
   };
 
@@ -258,16 +275,16 @@ export const ReplyPost = ({ commentId, replyId, commentText, date, username, use
       {(replyLoadingId.includes(replyId)) && <div className="comment-post-loading-div"><LoadingSpinner /></div>}
       {(!replyLoadingId.includes(replyId)) && <><div className="comment-div"></div>
         <div>
-          <Media className="commenter" fluid>
+          <Media className="commenter" fluid="true">
             <div
               className="thumbnail-photo mr-3"
-              onClick={() => history.push("/profile")}
+              onClick={() => history.push("/profile/" + userId)}
             >
               <img
                 src={"https://thinkslice-project.s3.amazonaws.com/" + profilePic}
-                alt="profile"
+                alt="reply profile"
                 className="comment-pic"
-                fluid />
+                fluid="true" />
             </div>
             <Media.Body className="align-self-center">
               <div className="comment-title">
@@ -276,7 +293,10 @@ export const ReplyPost = ({ commentId, replyId, commentText, date, username, use
                 <div className="comment-delete-div">
                   {showDelete &&
                     (<>
-                      <button onClick={() => trashComment()} className="delete-comment-button">
+                      <button
+                        aria-label="delete reply submit"
+                        onClick={() => trashComment()}
+                        className="delete-comment-button">
                         <BsTrash size={23} />
                       </button>
                     </>)}
@@ -293,9 +313,11 @@ export const ReplyPost = ({ commentId, replyId, commentText, date, username, use
                   />
                   <div className="video-comment-button-div">
                     <Button
+                      aria-label="edit reply cancel"
                       onClick={() => setShowEdit(false)}
                       className="btn-comment-alt-custom">Cancel</Button>
                     <Button
+                      aria-label="edit reply submit"
                       onClick={(e) => onSubmitEdit(e)}
                       className="btn-comment-custom">
                       Submit</Button>
@@ -307,15 +329,25 @@ export const ReplyPost = ({ commentId, replyId, commentText, date, username, use
                   </Card.Text>
                   <div className="comment-title">
                     {isAuthenticated && (<>
-                      <button onClick={() => setCreateReply(prev => !prev)} className="comment-button">
+                      <button
+                        aria-label="reply reply show"
+                        onClick={() => setCreateReply(prev => !prev)}
+                        className="comment-button">
                         Reply
-                    </button>
-                      {(viewerId === userId.toString()) && (<><button onClick={() => setShowEdit(true)} className="comment-button">
-                        Edit
-                    </button>
-                        <button onClick={() => setShowDelete(prev => !prev)} className="comment-button">
-                          Delete
-                    </button></>)}
+                      </button>
+                      {(viewerId === userId.toString()) && (
+                        <><button
+                          aria-label="edit reply show"
+                          onClick={() => setShowEdit(true)}
+                          className="comment-button">
+                          Edit
+                        </button>
+                          <button
+                            aria-label="delete reply show"
+                            onClick={() => setShowDelete(prev => !prev)}
+                            className="comment-button">
+                            Delete
+                          </button></>)}
                     </>)}
                   </div>
                 </>}
@@ -331,14 +363,17 @@ export const ReplyPost = ({ commentId, replyId, commentText, date, username, use
                         as="textarea"
                         rows={3}
                         name="reply"
+
                         onChange={(e) => onChange(e)}
                         value={replyForm.reply}
                       />
                       <div className="video-comment-button-div">
                         <Button
+                          aria-label="reply reply cancel"
                           onClick={() => setCreateReply(false)}
                           className="btn-comment-alt-custom">Cancel</Button>
                         <Button
+                          aria-label="reply reply submit"
                           onClick={(e) => onSubmit(e)}
                           className="btn-comment-custom">
                           Submit</Button>

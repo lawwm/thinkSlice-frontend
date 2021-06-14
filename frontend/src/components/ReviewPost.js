@@ -67,7 +67,7 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
       <Media className="reviewer">
         <div
           className="thumbnail-photo mr-3"
-          onClick={() => history.push("/profile")}
+          onClick={() => history.push("/profile/" + profileId)}
         >
           <Image src={reviewPic} alt="profile picture" fluid />
         </div>
@@ -91,11 +91,13 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
               <Col md={6}>
                 <div className="review-edit-delete-div">
                   <button
+                    aria-label="show edit modal"
                     onClick={handleEditShow}
                     className="review-edit-delete-btn" >
                     <FaRegEdit size={30} />
                   </button>
                   <button
+                    aria-label="show delete modal"
                     onClick={handleDeleteShow}
                     className="review-edit-delete-btn" >
                     <FaTrashAlt size={30} />
@@ -106,11 +108,13 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
               <Col md={6}>
                 <div className="review-edit-delete-div">
                   <button
+                    aria-label="show edit modal"
                     onClick={handleEditShow}
                     className="review-edit-delete-btn" >
                     <FaRegEdit size={30} />
                   </button>
                   <button
+                    aria-label="show delete modal"
                     onClick={handleDeleteShow}
                     className="review-edit-delete-btn" >
                     <FaTrashAlt size={30} />
@@ -153,12 +157,14 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
             </div>
             <Modal.Footer>
               <Button
+                aria-label="close edit modal"
                 className="btn-review-alt-custom"
                 variant="secondary"
                 onClick={handleEditClose}>
                 Close
-                  </Button>
+              </Button>
               <Button
+                aria-label="submit edit modal"
                 type="submit"
                 value="Submit"
                 className="btn-review-custom edit-review-btn"
@@ -180,10 +186,15 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
         </Modal.Header>
         <Modal.Body>Are you sure about this? This action cannot be undone.</Modal.Body>
         <Modal.Footer>
-          <Button className="btn-review-alt-custom" variant="secondary" onClick={handleDeleteClose}>
+          <Button
+            aria-label="close delete modal"
+            className="btn-review-alt-custom"
+            variant="secondary"
+            onClick={handleDeleteClose}>
             Close
           </Button>
           <Button
+            aria-label="submit delete modal"
             className="btn-review-custom edit-review-btn"
             variant="primary"
             onClick={onDelete}>

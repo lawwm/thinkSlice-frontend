@@ -1,7 +1,7 @@
 // src/mocks/handlers.js
 import { rest } from 'msw'
-import { DOMAINS, ENDPOINTS } from "../store/endpoints"
-export const handlers = [
+import { DOMAINS, ENDPOINTS } from "../../store/endpoints"
+export const authHandlers = [
   rest.get('http://localhost' + DOMAINS.AUTH + ENDPOINTS.LOAD_USER, (req, res, ctx) => {
     return res(
       ctx.status(200),

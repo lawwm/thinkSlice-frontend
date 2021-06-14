@@ -13,10 +13,15 @@ export const ENDPOINTS = {
     LOAD_USER: "/user",
     LOGOUT: "/logout",
 
+    //PROFILE
+    PROFILE_DETAILS: '/details',
+
     //VIDEO
     LIST_VIDEOS: '',
 
     //REVIEWS
+    TUTOR: '/tutors',
+    STUDENT: '/students',
     CREATE_REVIEW: '/tutors',
     EDIT_DELETE_REVIEW: '',
 

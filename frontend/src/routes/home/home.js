@@ -22,7 +22,7 @@ const HomeSpinner = () => {
   )
 }
 
-const FilterOptions = ({ filtered, ascending, setFilterOption, setOrderOption }) => {
+export const FilterOptions = ({ filtered, ascending, setFilterOption, setOrderOption }) => {
   return (
     <>
       <Row>
@@ -36,7 +36,7 @@ const FilterOptions = ({ filtered, ascending, setFilterOption, setOrderOption })
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Sort by
-            </Dropdown.Toggle>
+              </Dropdown.Toggle>
 
               <Dropdown.Menu align="right">
                 <Dropdown.Item
@@ -56,7 +56,7 @@ const FilterOptions = ({ filtered, ascending, setFilterOption, setOrderOption })
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Order
-            </Dropdown.Toggle>
+              </Dropdown.Toggle>
 
               <Dropdown.Menu align="right">
                 <Dropdown.Item
@@ -78,7 +78,7 @@ const FilterOptions = ({ filtered, ascending, setFilterOption, setOrderOption })
   )
 }
 
-const VideoGrid = ({ videos }) => {
+export const VideoGrid = ({ videos }) => {
   return (
     <>
       {videos.map((videoRow) => {

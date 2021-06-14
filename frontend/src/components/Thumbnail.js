@@ -24,7 +24,8 @@ const Thumbnail = ({ title, username, views, date, subject, playback_id, imageSr
 
   const onDelete = () => {
     setThumbnailLoading(true)
-    console.log(videoId)
+    // console.log(videoId)
+    // console.log("start deleting")
     dispatch(deleteVideo(videoId, handleDeleteClose, () => setThumbnailLoading(false)))
   }
 
@@ -54,7 +55,7 @@ const Thumbnail = ({ title, username, views, date, subject, playback_id, imageSr
           <div
             onClick={handleDeleteShow}
             className="thumbnail-subject-delete">
-            <FaTrashAlt size={18} />
+            <FaTrashAlt role="img" alt="delete" size={18} />
           </div>}
         <Media>
           <div className="thumbnail-photo" onClick={() => history.push('/profile/' + profileId)}>
@@ -82,7 +83,7 @@ const Thumbnail = ({ title, username, views, date, subject, playback_id, imageSr
           <Modal.Footer>
             <Button className="btn-review-alt-custom" variant="secondary" onClick={handleDeleteClose}>
               Close
-          </Button>
+            </Button>
             <Button
               className="btn-review-custom edit-review-btn"
               variant="primary"
