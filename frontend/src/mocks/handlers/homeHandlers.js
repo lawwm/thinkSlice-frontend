@@ -9,8 +9,45 @@ export const homeHandlers = [
       return res(
         ctx.status(200),
         ctx.json([{
+          "id": 2,
+          "video_title": "Learn physics",
+          "video_description": "Quantum physics is a popular phrase used nowadays, but what is it about? Learn the  basics of quantum physics today!",
+          "subject": "Physics",
+          "views": 404,
+          "likes": 1,
+          "num_of_comments": 6,
+          "asset_id": "HcDHzBMgnn39HOx02Mv9qcO1HONggk6lJwxVwjHQwjhQ",
+          "playback_id": "kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM",
+          "duration": 0,
+          "policy": "public",
           "created_at": 1622812186,
-        }])
+          "creator_profile": {
+            "id": 25,
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/427ed110edb63dbe449c5a8aaefa4ca9_pe9mMiy.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GO4eGWFHtMlaiEBVVlbvvivVgbg%3D&Expires=1623653343",
+            "username": "jimijam",
+            "user_bio": "Hi, welcome to my profile! Cool profilez",
+            "is_tutor": true,
+            "is_student": true,
+            "tutor_whatsapp": 12345678,
+            "tutor_telegram": "@jimijam",
+            "aggregate_star": null,
+            "location": "east",
+            "duration_classes": [
+              3,
+              8
+            ],
+            "subjects": [
+              "Biology",
+              "Math",
+              "Sports",
+              "Visual Arts"
+            ],
+            "total_tutor_reviews": 0,
+            "qualifications": "P6 tutor",
+            "user": 26
+          }
+        }]
+        )
       )
     } else if (page === "2") {
       return res(
@@ -29,7 +66,43 @@ export const homeHandlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        "created_at": 1622812186,
+        id: 1,
+        video_title: 'Learn physics',
+        video_description: 'Quantum physics is a popular phrase used nowadays, but what is it about? Learn the  basics of quantum physics today!',
+        subject: 'Physics',
+        views: 405,
+        likes: 1,
+        num_of_comments: 6,
+        asset_id: 'HcDHzBMgnn39HOx02Mv9qcO1HONggk6lJwxVwjHQwjhQ',
+        playback_id: 'kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM',
+        duration: 0,
+        policy: 'public',
+        created_at: 1622812186,
+        creator_profile: {
+          id: 1,
+          profile_pic: 'https://thinkslice-project.s3.amazonaws.com/user-images/427ed110edb63dbe449c5a8aaefa4ca9_pe9mMiy.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GO4eGWFHtMlaiEBVVlbvvivVgbg%3D&Expires=1623653343',
+          username: 'jimijam',
+          user_bio: 'Hi, welcome to my profile! Cool profilez',
+          is_tutor: true,
+          is_student: true,
+          tutor_whatsapp: 12345678,
+          tutor_telegram: '@jimijam',
+          aggregate_star: null,
+          location: 'east',
+          duration_classes: [
+            3,
+            8
+          ],
+          subjects: [
+            'Biology',
+            'Math',
+            'Sports',
+            'Visual Arts'
+          ],
+          total_tutor_reviews: 0,
+          qualifications: 'P6 tutor',
+          user: 1
+        }
       })
     )
   }),
@@ -44,11 +117,19 @@ export const homeHandlers = [
     return res(
       ctx.status(200),
       ctx.json([{
-        "id": 13,
-        "username": "Pearsauce",
-        "profilePic": "user-images/shrug_gumball_by_bornreprehensible-d7mr2jr.png",
-        "userId": 1,
-        "comment_text": "Physics is really, really cool!",
+        id: 56,
+        username: 'jimijam',
+        profilePic: 'user-images/427ed110edb63dbe449c5a8aaefa4ca9_pe9mMiy.jpg',
+        userId: 26,
+        comment_text: 'Hello world',
+        date_comment: '2021-06-13',
+        date_comment_edited: '2021-06-13',
+        edited: false,
+        has_replies: false,
+        commented_video: 2,
+        user_commenting: 25,
+        parent_comment: null,
+        replies: []
       }])
     )
   }),

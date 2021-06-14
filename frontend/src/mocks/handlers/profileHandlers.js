@@ -35,6 +35,11 @@ export const profileHandlers = [
       })
     )
   }),
+  rest.get("http://localhost/api/profiles/reviews", (req, res, ctx) => {
+    return res(
+      ctx.status(400)
+    )
+  }),
   //GET user basic profile error
   rest.get('http://localhost' + DOMAINS.PROFILE + "/0", (req, res, ctx) => {
     return res(
