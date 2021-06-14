@@ -12,7 +12,7 @@ jobs:
         working-directory: ./frontend
     steps:
       # step 1 checkout
-      - name: CHECKOUT GIT REPO
+      - name: Checkout
         uses: actions/checkout@v2
 
       # step 2 initiate deployment status
@@ -25,17 +25,16 @@ jobs:
           env: Production
 
       # step 3 setup
-      - name: Use Node.js 10.x
+      - name: Setup Node
         uses: actions/setup-node@v2
-      - name: INSTALL DEPENDENCIES
+      - name: Install dependencies
         run: yarn install
-      - name: BUILD CODE
+      - name: Build code
         run: yarn build
-      - name: UNIT TEST
+      - name: Unit testing
         run: yarn test
 
-      # step 4 deploy tp vercel
-      - uses: actions/checkout@v2
+      # step 4 deploy to vercel
       - uses: amondnet/vercel-action@v20
         id: vercel-deployment
         with:
@@ -54,4 +53,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          env_url: ${{ steps.vercel-action.outputs.preview-url }}
+          env_url: ${{ steps.vercel-deployment.outputs.preview-url }}
