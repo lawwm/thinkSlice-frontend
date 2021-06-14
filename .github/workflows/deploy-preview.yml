@@ -21,6 +21,7 @@ jobs:
           step: start
           token: ${{ secrets.GITHUB_TOKEN }}
           env: Preview
+          ref: ${{ github.head_ref }}
 
       # step 3 setup
       - name: Use Node.js 10.x
