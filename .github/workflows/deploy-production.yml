@@ -46,7 +46,7 @@ jobs:
           vercel-org-id: ${{ secrets.ORG_ID}} #Required
           vercel-project-id: ${{ secrets.PROJECT_ID}} #Required
           vercel-args: '--prod'
-          working-directory: public
+          # working-directory: public
 
       # step 5 update deployment status
       - name: Update Deployment Status
