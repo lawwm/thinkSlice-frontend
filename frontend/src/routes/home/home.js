@@ -1,16 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router-dom";
 
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import NavBar from "../../components/NavBar"
 import { AuthNavBar } from "../../components/AuthNavBar"
-import { Container, Col, Row, Dropdown } from "react-bootstrap";
+import { Container, Col, Row, Dropdown, Button, InputGroup, FormControl } from "react-bootstrap";
 import "../styles.css";
 
 import { changeFilter, changeAscending, changePage, loadHomeVideos } from "../../store/home/action"
 import Thumbnail from "../../components/Thumbnail"
-// import { findByAltText } from "@testing-library/dom";
+import { Sidebar } from "../../components/Sidebar"
+import { SidebarModal } from "../../components/SidebarModal.js";
+import { FaSearch } from "react-icons/fa";
 
 const HomeSpinner = () => {
   return (
@@ -150,29 +152,27 @@ const Member = () => {
   return (
     <>
       <NavBar />
-      <Container>
-        <div className="home-div">
-          <h2>Welcome, registered user.</h2>
-          <FilterOptions
-            filtered={filterBy}
-            ascending={ascending}
-            setFilterOption={setFilterOption}
-            setOrderOption={setOrderOption}
-          />
-          <hr className="home-filter-break" />
-          <Row className="justify-content-md-left">
-            <VideoGrid videos={videos} />
-          </Row>
-          <div ref={loader} className="home-footer">
-            {homeLoading && <HomeSpinner />}
-            {reachedEnd && <div className="home-content-end">
-              <hr className="home-footer-break" />
-              <h5>You've reached the end of the page.</h5>
-              <a href="#top">Back to top.</a>
-            </div>}
-          </div>
+      <div className="home-div">
+        <h2>Welcome, registered user.</h2>
+        <FilterOptions
+          filtered={filterBy}
+          ascending={ascending}
+          setFilterOption={setFilterOption}
+          setOrderOption={setOrderOption}
+        />
+        <hr className="home-filter-break" />
+        <Row className="justify-content-md-left">
+          <VideoGrid videos={videos} />
+        </Row>
+        <div ref={loader} className="home-footer">
+          {homeLoading && <HomeSpinner />}
+          {reachedEnd && <div className="home-content-end">
+            <hr className="home-footer-break" />
+            <h5>You've reached the end of the page.</h5>
+            <a href="#top">Back to top.</a>
+          </div>}
         </div>
-      </Container>
+      </div>
     </>
   )
 }
@@ -182,6 +182,8 @@ const Guest = () => {
   const { filterBy, ascending, page, videos, homeLoading, reachedEnd } = useSelector((state) => state.home)
 
   const loader = useRef(null);
+  const [showModal, setShowModal] = useState(false)
+  const [searchForm, setSearchForm] = useState("")
 
   useEffect(() => {
     dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd))
@@ -222,26 +224,67 @@ const Guest = () => {
   return (
     <>
       <NavBar />
-      <Container>
+      <Container fluid>
         <div className="home-div">
-          <h2>Log in to get started.</h2>
-          <FilterOptions
-            filtered={filterBy}
-            ascending={ascending}
-            setFilterOption={setFilterOption}
-            setOrderOption={setOrderOption}
-          />
-          <hr className="home-filter-break" />
-          <Row className="justify-content-md-left">
-            <VideoGrid videos={videos} />
-          </Row>
-          <div ref={loader} className="home-footer">
-            {homeLoading && <HomeSpinner />}
-            {reachedEnd && <div className="home-content-end">
-              <hr className="home-footer-break" />
-              <h5>You've reached the end of the page.</h5>
-              <a href="#top">Back to top.</a>
-            </div>}
+          <div className="container-padding">
+            <Row>
+              <Col xs={12} md={3}>
+                <Sidebar />
+              </Col>
+              <Col xs={12} md={9}>
+                <div className="home-searchbar-refine">
+                  <Row>
+                    <Col xs={4}>
+                      <Button
+                        onClick={() => setShowModal(true)}
+                        className="sidebar-button">Refine by</Button>
+                    </Col>
+                    <Col xs={8}>
+                      <div className="home-searchbar">
+
+                        <InputGroup className="mb-3">
+                          <FormControl
+                            placeholder="Search for videos..."
+                            aria-label="searchbar"
+                            aria-describedby="searchbar-label"
+                            value={searchForm}
+                            onChange={
+                              e => setSearchForm(e.target.value)
+                            }
+                          />
+                          <InputGroup.Append>
+                            <Button
+                              onClick={() => console.log(searchForm)}
+                              variant="outline-secondary"><FaSearch /></Button>
+                          </InputGroup.Append>
+                        </InputGroup>
+                      </div>
+                    </Col>
+                  </Row>
+
+                </div>
+
+                <FilterOptions
+                  filtered={filterBy}
+                  ascending={ascending}
+                  setFilterOption={setFilterOption}
+                  setOrderOption={setOrderOption}
+                />
+                <hr className="home-filter-break" />
+                <Row className="justify-content-md-left">
+                  <VideoGrid videos={videos} />
+                </Row>
+                <div ref={loader} className="home-footer">
+                  {homeLoading && <HomeSpinner />}
+                  {reachedEnd && <div className="home-content-end">
+                    <hr className="home-footer-break" />
+                    <h5>You've reached the end of the page.</h5>
+                    <a href="#top">Back to top.</a>
+                  </div>}
+                </div>
+              </Col>
+            </Row>
+            <SidebarModal show={showModal} handleClose={() => setShowModal(false)} />
           </div>
         </div>
       </Container>

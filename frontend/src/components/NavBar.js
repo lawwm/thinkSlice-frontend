@@ -6,7 +6,7 @@ import { resetProfile } from "../store/profile/action";
 
 import { useHistory } from 'react-router-dom'
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar, InputGroup, FormControl } from "react-bootstrap";
 import "./components.css";
 
 const NavBar = () => {
@@ -122,6 +122,7 @@ const NavBar = () => {
                     >
                       Categories
                     </NavLink>
+
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
