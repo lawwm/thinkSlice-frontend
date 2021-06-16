@@ -579,7 +579,7 @@ button.alert-close {
   padding-right: 20px;
 }
 
-.background-red {
+.background-sidebar {
   display: none;
 }
 
@@ -630,7 +630,8 @@ button.alert-close {
   margin-top: 15px;
   background-color: rgb(216, 216, 216);
   color: rgb(66, 66, 66);
-  width: 150px;
+  max-width: 150px;
+  width: 100%;
   padding: 7px 20px 7px 20px;
   border: 0px;
   margin-bottom: 7px;
@@ -652,7 +653,7 @@ button.alert-close {
     padding-right: 50px;
   }
 
-  .background-red {
+  .background-sidebar {
     display: none;
   }
 }
@@ -664,7 +665,7 @@ button.alert-close {
     padding-right: 100px;
   }
 
-  .background-red {
+  .background-sidebar {
     display: block;
     padding-left: 0px;
   }
@@ -680,7 +681,7 @@ button.alert-close {
     padding-left: 100px;
     padding-right: 100px;
   }
-  .background-red {
+  .background-sidebar {
     display: block;
     padding-left: 50px;
   }
@@ -693,7 +694,7 @@ button.alert-close {
     padding-right: 150px;
   }
 
-  .background-red {
+  .background-sidebar {
     display: block;
     padding-left: 100px;
   }

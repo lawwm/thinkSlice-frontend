@@ -179,15 +179,16 @@ const Member = () => {
 
 const Guest = () => {
   const dispatch = useDispatch();
-  const { filterBy, ascending, page, videos, homeLoading, reachedEnd } = useSelector((state) => state.home)
+  const { filterBy, ascending, page, subject, location, availability, review, videos, homeLoading, reachedEnd } = useSelector((state) => state.home)
 
   const loader = useRef(null);
+  const firstLoad = useRef(null)
   const [showModal, setShowModal] = useState(false)
   const [searchForm, setSearchForm] = useState("")
 
   useEffect(() => {
-    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd))
-  }, [dispatch, page, ascending, filterBy, reachedEnd])
+    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review))
+  }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review])
 
   useEffect(() => {
     let options = {
@@ -198,20 +199,20 @@ const Guest = () => {
       const target = entities[0];
       if (target.isIntersecting) {
         if (!reachedEnd) {
-          // console.log("Just saw the footer man!")
           dispatch(changePage())
         }
       }
     }
+
     const observer = new IntersectionObserver(handleObserver, options);
     if (loader.current) {
-      observer.observe(loader.current)
+      observer.observe(loader.current);
     }
 
     return () => {
       observer.disconnect()
     }
-  }, [dispatch, reachedEnd])
+  }, [dispatch, reachedEnd, homeLoading])
 
   const setFilterOption = (input) => {
     dispatch(changeFilter(input))
@@ -229,7 +230,12 @@ const Guest = () => {
           <div className="container-padding">
             <Row>
               <Col xs={12} md={3}>
-                <Sidebar />
+                <Sidebar
+                  selectedSubject={subject}
+                  selectedLocation={location}
+                  selectedAvailability={availability}
+                  selectedReview={review}
+                />
               </Col>
               <Col xs={12} md={9}>
                 <div className="home-searchbar-refine">
@@ -274,14 +280,17 @@ const Guest = () => {
                 <Row className="justify-content-md-left">
                   <VideoGrid videos={videos} />
                 </Row>
-                <div ref={loader} className="home-footer">
-                  {homeLoading && <HomeSpinner />}
+                {homeLoading && <div className="home-footer">
+                  <HomeSpinner />
+                </div>}
+
+                {!homeLoading && <div ref={loader} className="home-footer">
                   {reachedEnd && <div className="home-content-end">
                     <hr className="home-footer-break" />
                     <h5>You've reached the end of the page.</h5>
                     <a href="#top">Back to top.</a>
                   </div>}
-                </div>
+                </div>}
               </Col>
             </Row>
             <SidebarModal show={showModal} handleClose={() => setShowModal(false)} />

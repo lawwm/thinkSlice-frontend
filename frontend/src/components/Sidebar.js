@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Nav, Row, Col, Form, Button } from "react-bootstrap"
 import { StarDisplay } from "./StarRating"
-
+import { changeAvailable, changeLocation, changeSubject, changeReview } from "../store/home/action"
 const moreSubjects = [
   "Arts",
   "Biology",
@@ -40,35 +41,84 @@ const locations = [
 const rating = [5, 4, 3, 2, 1]
 
 export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailability, selectedReview }) => {
+  const dispatch = useDispatch();
   const [showMore, setShowMore] = useState(false)
-  const [isAvailable, setIsAvailable] = useState(true)
-  const toggleAvailable = () => {
-    console.log(!isAvailable)
-    setIsAvailable(prev => !prev)
-  }
+
   return (
     <>
-      <div className="background-red">
+      <div className="background-sidebar">
         <Form>
           <div className="sidebar-header">Refine by:</div>
           <hr />
           <div className="sidebar-category">Availability</div>
-          <Form.Check
-            type="switch"
-            id="custom-switch"
-            label="Select available"
-            checked={isAvailable}
-            onChange={() => toggleAvailable()}
-          />
+          <div className="sidebar-radio">
+            <Form.Check
+              type="radio"
+              label="Available"
+              value={"True"}
+              id="only-available"
+              checked={selectedAvailability === "True"}
+              onChange={
+                (e) => {
+                  console.log(e.target.value)
+                  dispatch(changeAvailable(e.target.value))
+                }
+              }
+            />
+          </div>
+          <div className="sidebar-radio">
+            <Form.Check
+              type="radio"
+              label="Unavailable"
+              value={"False"}
+              id="only-unavailable"
+              checked={selectedAvailability === "False"}
+              onChange={
+                (e) => {
+                  console.log(e.target.value)
+                  dispatch(changeAvailable(e.target.value))
+                }
+              }
+            />
+          </div>
+          <div className="sidebar-radio">
+            <Form.Check
+              type="radio"
+              label="Both"
+              value={''}
+              id="both-available-unavailable"
+              checked={selectedAvailability === ''}
+              onChange={
+                (e) => {
+                  console.log(e.target.value)
+                  dispatch(changeAvailable(e.target.value))
+                }
+              }
+            />
+          </div>
           <hr />
           <div className="sidebar-category">Subject</div>
+          <div className="sidebar-radio">
+            <Form.Check
+              type="radio"
+              label="Any subject"
+              id={'checkbox-any-subject'}
+              value={''}
+              checked={selectedSubject === ''}
+              onChange={
+                (e) => {
+                  console.log(e.target.value)
+                  dispatch(changeSubject(e.target.value))
+                }
+              }
+            />
+          </div>
           {!showMore
             ? (
               subjects.map((subject, index) => {
                 return (
                   <div className="sidebar-radio" key={index}>
                     <Form.Check
-                      key={index}
                       type="radio"
                       label={subject}
                       id={`checkbox-${subject}`}
@@ -77,6 +127,7 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                       onChange={
                         (e) => {
                           console.log(e.target.value)
+                          dispatch(changeSubject(e.target.value))
                         }
                       }
                     />
@@ -100,6 +151,7 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                       onChange={
                         (e) => {
                           console.log(e.target.value)
+                          dispatch(changeSubject(e.target.value))
                         }
                       }
                     />
@@ -118,6 +170,21 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
           }
           <hr />
           <div className="sidebar-category">Location</div>
+          <div className="sidebar-radio">
+            <Form.Check
+              type="radio"
+              label="Any location"
+              value={''}
+              id='any-location'
+              checked={selectedLocation === ''}
+              onChange={
+                (e) => {
+                  console.log(e.target.value)
+                  dispatch(changeLocation(e.target.value))
+                }
+              }
+            />
+          </div>
           {locations.map((location, index) => {
             return (
               <div className="sidebar-radio" key={index}>
@@ -127,10 +194,11 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                   label={location}
                   id={`checkbox-${location}`}
                   value={location}
-                  checked={location === selectedLocation}
+                  checked={selectedLocation === location}
                   onChange={
                     (e) => {
                       console.log(e.target.value)
+                      dispatch(changeLocation(e.target.value))
                     }
                   }
                 />
@@ -142,14 +210,34 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
           <div className="sidebar-category">Avg. Student Review</div>
           {
             rating.map((rate, index) => {
-              return (<div
-                onClick={() => console.log(rate)}
-                className="sidebar-review"
-                key={index}>
-                <StarDisplay num={rate} size={18} /> & up
-              </div>)
+              return (
+                <div
+                  onClick={() => {
+                    console.log(rate)
+                    dispatch(changeReview(rate))
+                  }
+                  }
+                  className="sidebar-review"
+                  key={index}>
+                  <StarDisplay num={rate} size={18} selected={rate === selectedReview} /> & up
+                </div>
+              )
             })
           }
+          <div className="sidebar-radio">
+            <Form.Check
+              type="checkbox"
+              label="Select none"
+              value={''}
+              checked={selectedReview === ''}
+              onChange={
+                (e) => {
+                  console.log(e.target.value)
+                  dispatch(changeReview(e.target.value))
+                }
+              }
+            />
+          </div>
         </Form>
       </div>
     </>

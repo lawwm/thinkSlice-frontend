@@ -9,6 +9,10 @@ import {
   CHANGE_FILTER,
   CHANGE_ASCENDING,
   CHANGE_PAGE,
+  CHANGE_AVAILABLE,
+  CHANGE_SUBJECT,
+  CHANGE_LOCATION,
+  CHANGE_REVIEW,
   HOME_LOADING,
   COMMENT_LOADING,
   COMMENT_LOADED,
@@ -41,12 +45,15 @@ const initialState = {
   reachedEnd: false,
   filterBy: "recent",
   ascending: false,
-  page: 0,
+  page: 1,
+  subject: '',
+  location: '',
+  availability: '',
+  review: '',
   comments: [],
 }
 //set initial page to zero so initial loadhomevideo action before 
 //bottom div is observed is negated 
-
 
 export const home = (state = initialState, action) => {
   const { type, payload } = action;
@@ -79,7 +86,7 @@ export const home = (state = initialState, action) => {
     case HOMEPAGE_LOAD_FAIL:
       return {
         ...state,
-        videoLoading: false
+        homeLoading: false
       }
     case UPLOAD_STARTED:
       return {
@@ -102,7 +109,7 @@ export const home = (state = initialState, action) => {
         filterBy: payload,
         videos: [],
         reachedEnd: false,
-        page: 0
+        page: 1
       }
     case CHANGE_ASCENDING:
       return {
@@ -110,12 +117,44 @@ export const home = (state = initialState, action) => {
         ascending: payload,
         videos: [],
         reachedEnd: false,
-        page: 0
+        page: 1
       }
     case CHANGE_PAGE:
       return {
         ...state,
         page: state.page + 1
+      }
+    case CHANGE_AVAILABLE:
+      return {
+        ...state,
+        availability: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1
+      }
+    case CHANGE_SUBJECT:
+      return {
+        ...state,
+        subject: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1
+      }
+    case CHANGE_LOCATION:
+      return {
+        ...state,
+        location: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1
+      }
+    case CHANGE_REVIEW:
+      return {
+        ...state,
+        review: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1
       }
     case COMMENT_LOADING:
       return {

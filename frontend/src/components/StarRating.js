@@ -1,18 +1,24 @@
 import React, { Fragment } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 
-export const StarDisplay = ({ num, size = 25 }) => {
+export const StarDisplay = ({ num, size = 25, selected = true }) => {
   return (
     <>
       {[...Array(num)].map((i, index) => (
         <Fragment key={index}>
-          <FaStar data-testid="filled" role="img" color={"#ff4400"} className="star-display" size={size} />
+          {selected
+            ? <FaStar data-testid="filled" role="img" color={"#ff4400"} className="star-display" size={size} />
+            : <FaStar data-testid="filled" role="img" color={"#ffb295"} className="star-display" size={size} />
+          }
         </Fragment>
 
       ))}
       {[...Array(5 - num)].map((i, index) => (
         <Fragment key={index}>
-          <FaRegStar data-testid="hollow" role="img" color={"#ff4400"} className="star-display" size={size} />
+          {selected
+            ? <FaRegStar data-testid="hollow" role="img" color={"#ff4400"} className="star-display" size={size} />
+            : <FaRegStar data-testid="hollow" role="img" color={"#ffb295"} className="star-display" size={size} />
+          }
         </Fragment>
       ))}
     </>
