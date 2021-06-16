@@ -8,11 +8,13 @@ import { AuthNavBar } from "../../components/AuthNavBar"
 import { Container, Col, Row, Dropdown, Button, InputGroup, FormControl } from "react-bootstrap";
 import "../styles.css";
 
-import { changeFilter, changeAscending, changePage, loadHomeVideos } from "../../store/home/action"
+import { changeFilter, changeAscending, changePage, loadHomeVideos, searchVideos, clearSearchVideos } from "../../store/home/action"
 import Thumbnail from "../../components/Thumbnail"
 import { Sidebar } from "../../components/Sidebar"
 import { SidebarModal } from "../../components/SidebarModal.js";
 import { FaSearch } from "react-icons/fa";
+import { BsFillXCircleFill } from "react-icons/bs";
+
 
 const HomeSpinner = () => {
   return (
@@ -179,16 +181,15 @@ const Member = () => {
 
 const Guest = () => {
   const dispatch = useDispatch();
-  const { filterBy, ascending, page, subject, location, availability, review, videos, homeLoading, reachedEnd } = useSelector((state) => state.home)
+  const { filterBy, ascending, page, subject, location, availability, review, videos, homeLoading, reachedEnd, searchQuery } = useSelector((state) => state.home)
 
   const loader = useRef(null);
-  const firstLoad = useRef(null)
   const [showModal, setShowModal] = useState(false)
   const [searchForm, setSearchForm] = useState("")
 
   useEffect(() => {
-    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review))
-  }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review])
+    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+  }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review, searchQuery])
 
   useEffect(() => {
     let options = {
@@ -220,6 +221,18 @@ const Guest = () => {
 
   const setOrderOption = (input) => {
     dispatch(changeAscending(input))
+  }
+
+  const submitSearch = () => {
+    dispatch(searchVideos(searchForm))
+    setSearchForm("")
+  }
+
+  const enterSubmitSearch = (keycode) => {
+    if (keycode === 13) {
+      dispatch(searchVideos(searchForm))
+      setSearchForm("")
+    }
   }
 
   return (
@@ -257,17 +270,32 @@ const Guest = () => {
                             onChange={
                               e => setSearchForm(e.target.value)
                             }
+                            onKeyPress={(e) => enterSubmitSearch(e.charCode)}
                           />
                           <InputGroup.Append>
                             <Button
-                              onClick={() => console.log(searchForm)}
+                              onClick={() => submitSearch()}
                               variant="outline-secondary"><FaSearch /></Button>
                           </InputGroup.Append>
                         </InputGroup>
                       </div>
                     </Col>
                   </Row>
-
+                  <Row>
+                    {(searchQuery !== '') &&
+                      <div className="home-searchbar">
+                        <Col>
+                          <Button
+                            className="home-clearsearch-btn"
+                            onClick={() => dispatch(clearSearchVideos())}
+                          >
+                            <span>{searchQuery} &nbsp;</span>
+                            <span ><BsFillXCircleFill /></span>
+                          </Button>
+                        </Col>
+                      </div>
+                    }
+                  </Row>
                 </div>
 
                 <FilterOptions
@@ -293,7 +321,14 @@ const Guest = () => {
                 </div>}
               </Col>
             </Row>
-            <SidebarModal show={showModal} handleClose={() => setShowModal(false)} />
+            <SidebarModal
+              show={showModal}
+              handleClose={() => setShowModal(false)}
+              selectedSubject={subject}
+              selectedLocation={location}
+              selectedAvailability={availability}
+              selectedReview={review}
+            />
           </div>
         </div>
       </Container>

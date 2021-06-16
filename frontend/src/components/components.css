@@ -646,6 +646,21 @@ button.alert-close {
   box-shadow: none;
 }
 
+.home-modal-filter-footer {
+  margin: auto;
+}
+
+.home-modal-filter-btn {
+  background-color: rgb(255, 84, 22);
+  margin-left: 5px;
+  /* border: #f40 ; */
+}
+
+.home-modal-filter-btn:hover,
+.home-modal-filter-btn:focus {
+  background-color: rgb(197, 53, 0);
+}
+
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
   .container-padding {

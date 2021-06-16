@@ -13,6 +13,9 @@ import {
   CHANGE_SUBJECT,
   CHANGE_LOCATION,
   CHANGE_REVIEW,
+  SEARCH_VIDEO,
+  CLEAR_SEARCH_VIDEO,
+  CLEAR_VIDEO_PAGE,
   HOME_LOADING,
   COMMENT_LOADING,
   COMMENT_LOADED,
@@ -29,7 +32,9 @@ import {
   SET_COMMENTREPLY_LOADING_ID,
   REMOVE_COMMENTREPLY_LOADING_ID,
   SET_REPLY_LOADING_ID,
-  REMOVE_REPLY_LOADING_ID
+  REMOVE_REPLY_LOADING_ID,
+
+
 } from "./actionTypes.js"
 
 const initialState = {
@@ -50,6 +55,7 @@ const initialState = {
   location: '',
   availability: '',
   review: '',
+  searchQuery: '',
   comments: [],
 }
 //set initial page to zero so initial loadhomevideo action before 
@@ -66,6 +72,27 @@ export const home = (state = initialState, action) => {
         ...state,
         videos: newVideos.concat(payload),
         homeLoading: false
+      }
+    case SEARCH_VIDEO:
+      return {
+        ...state,
+        searchQuery: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1
+      }
+    case CLEAR_SEARCH_VIDEO:
+      return {
+        ...state,
+        searchQuery: '',
+        videos: [],
+        reachedEnd: false,
+        page: 1
+      }
+    case CLEAR_VIDEO_PAGE:
+      return {
+        ...state,
+        videos: [],
       }
     case VIDEO_LOADED:
       return {
@@ -130,7 +157,7 @@ export const home = (state = initialState, action) => {
         availability: payload,
         videos: [],
         reachedEnd: false,
-        page: 1
+        page: 1,
       }
     case CHANGE_SUBJECT:
       return {
@@ -138,7 +165,7 @@ export const home = (state = initialState, action) => {
         subject: payload,
         videos: [],
         reachedEnd: false,
-        page: 1
+        page: 1,
       }
     case CHANGE_LOCATION:
       return {
@@ -146,7 +173,7 @@ export const home = (state = initialState, action) => {
         location: payload,
         videos: [],
         reachedEnd: false,
-        page: 1
+        page: 1,
       }
     case CHANGE_REVIEW:
       return {
@@ -154,7 +181,7 @@ export const home = (state = initialState, action) => {
         review: payload,
         videos: [],
         reachedEnd: false,
-        page: 1
+        page: 1,
       }
     case COMMENT_LOADING:
       return {

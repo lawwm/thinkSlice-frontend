@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Nav, Row, Col, Form, Button } from "react-bootstrap"
 import { StarDisplay } from "./StarRating"
 import { changeAvailable, changeLocation, changeSubject, changeReview } from "../store/home/action"
+import "./components.css"
+
 const moreSubjects = [
   "Arts",
   "Biology",
@@ -60,7 +62,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               checked={selectedAvailability === "True"}
               onChange={
                 (e) => {
-                  console.log(e.target.value)
                   dispatch(changeAvailable(e.target.value))
                 }
               }
@@ -75,7 +76,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               checked={selectedAvailability === "False"}
               onChange={
                 (e) => {
-                  console.log(e.target.value)
                   dispatch(changeAvailable(e.target.value))
                 }
               }
@@ -90,7 +90,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               checked={selectedAvailability === ''}
               onChange={
                 (e) => {
-                  console.log(e.target.value)
                   dispatch(changeAvailable(e.target.value))
                 }
               }
@@ -107,7 +106,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               checked={selectedSubject === ''}
               onChange={
                 (e) => {
-                  console.log(e.target.value)
                   dispatch(changeSubject(e.target.value))
                 }
               }
@@ -229,6 +227,7 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               type="checkbox"
               label="Select none"
               value={''}
+              id="select-none-review"
               checked={selectedReview === ''}
               onChange={
                 (e) => {

@@ -18,6 +18,8 @@ import {
   CHANGE_SUBJECT,
   CHANGE_LOCATION,
   CHANGE_REVIEW,
+  SEARCH_VIDEO,
+  CLEAR_SEARCH_VIDEO,
   COMMENT_LOADING,
   COMMENT_LOADED,
   GET_COMMENTS,
@@ -33,7 +35,8 @@ import {
   SET_COMMENTREPLY_LOADING_ID,
   SET_REPLY_LOADING_ID,
   REMOVE_COMMENTREPLY_LOADING_ID,
-  REMOVE_REPLY_LOADING_ID
+  REMOVE_REPLY_LOADING_ID,
+
 } from "./actionTypes"
 import { format, formatDistance } from 'date-fns'
 import { setAlert } from '../components/action';
@@ -112,15 +115,33 @@ export const changeReview = (review) => async (dispatch) => {
   })
 }
 
-
-
 export const clearVideos = () => async (dispatch) => {
   dispatch({
     type: CLEAR_VIDEO_PAGE
   })
 }
 
-export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, reachedEnd = false, availability, subject, location, review) => async (dispatch) => {
+export const searchVideos = (searchQuery) => async (dispatch) => {
+  try {
+    if (searchQuery === "") {
+      throw new Error("You need to enter a field for search.")
+    }
+    dispatch({
+      type: SEARCH_VIDEO,
+      payload: searchQuery
+    })
+  } catch (err) {
+    dispatch(setAlert(err.message, "danger"))
+  }
+}
+
+export const clearSearchVideos = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_SEARCH_VIDEO
+  })
+}
+
+export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, reachedEnd = false, availability, subject, location, review, searchQuery) => async (dispatch) => {
   try {
     //zero and below are invalid queries
     if (num <= 0) {
@@ -164,10 +185,17 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
     }
 
     // GET video arrays
-    const res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.LIST_VIDEOS
-      + queryString);
-    let data = res.data
+    let res
+    if (searchQuery === "") {
+      res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.LIST_VIDEOS
+        + queryString);
+    } else {
+      res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.SEARCH_VIDEOS
+        + queryString + "&name=" + searchQuery);
+    }
 
+    let data = res.data
+    console.log(data)
     //Set reached end to true if no data found
     if (data.length === 0) {
       dispatch({
