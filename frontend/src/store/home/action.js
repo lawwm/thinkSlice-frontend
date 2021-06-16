@@ -195,7 +195,6 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
     }
 
     let data = res.data
-    console.log(data)
     //Set reached end to true if no data found
     if (data.length === 0) {
       dispatch({

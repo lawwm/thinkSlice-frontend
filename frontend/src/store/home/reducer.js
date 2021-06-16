@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash"
 import {
   HOMEPAGE_LOADED,
   HOMEPAGE_LOAD_FAIL,
@@ -33,8 +34,6 @@ import {
   REMOVE_COMMENTREPLY_LOADING_ID,
   SET_REPLY_LOADING_ID,
   REMOVE_REPLY_LOADING_ID,
-
-
 } from "./actionTypes.js"
 
 const initialState = {
@@ -68,9 +67,13 @@ export const home = (state = initialState, action) => {
     case HOMEPAGE_LOADED:
       let payloadId = payload.map(video => video.id)
       let newVideos = state.videos.filter(val => !payloadId.includes(val.id))
+      newVideos = newVideos.concat(payload)
+      if (!isEmpty(state.currentVideo)) {
+        newVideos = newVideos.filter(video => video.id !== state.currentVideo.id)
+      }
       return {
         ...state,
-        videos: newVideos.concat(payload),
+        videos: newVideos,
         homeLoading: false
       }
     case SEARCH_VIDEO:
@@ -95,9 +98,17 @@ export const home = (state = initialState, action) => {
         videos: [],
       }
     case VIDEO_LOADED:
+      let newVideoArray = [...state.videos]
+      if (!isEmpty(state.currentVideo)) {
+        console.log(newVideoArray)
+        console.log(payload)
+        newVideoArray = newVideoArray.filter(video => video.id !== payload.id)
+        newVideoArray.push(state.currentVideo)
+      }
       return {
         ...state,
         currentVideo: payload,
+        videos: newVideoArray,
         videoLoading: false
       }
     case VIDEO_LOADING:

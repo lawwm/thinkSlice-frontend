@@ -71,6 +71,12 @@ nav a:hover,
   cursor: pointer;
 }
 
+.thumbnail-image {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
 .thumbnail-subject-info {
   background-color: rgba(0, 0, 0, 0.4);
   position: absolute;

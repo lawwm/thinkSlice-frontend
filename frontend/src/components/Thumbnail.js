@@ -59,7 +59,10 @@ const Thumbnail = ({ title, username, views, date, subject, playback_id, imageSr
           </div>}
         <Media>
           <div className="thumbnail-photo" onClick={() => history.push('/profile/' + profileId)}>
-            <Image src={imageSrc} alt="profile picture" fluid />
+            <Image
+              className="thumbnail-image"
+              src={imageSrc}
+              alt="profile picture" fluid />
           </div>
 
           <Media.Body onClick={() => history.push('/watch/' + videoId)}>
