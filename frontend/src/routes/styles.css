@@ -9,7 +9,7 @@ input[type='password'] {
   width: 500px;
 } */
 
-input[type='file'] {
+/* input[type='file'] {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -25,7 +25,7 @@ textarea[type='textarea'] {
   width: 500px;
   height: 170px;
   resize: none;
-}
+} */
 
 p {
   font-size: 24px;
@@ -35,8 +35,8 @@ p {
 /* auth page */
 .login-form-div {
   margin-top: 86px;
-  min-width: 500px;
-  width: 540px;
+  /* min-width: 500px;
+  width: 540px; */
 }
 
 .login-button {
@@ -46,7 +46,7 @@ p {
 
 .register-form-div {
   margin-top: 86px;
-  width: 540px;
+  /* width: 540px; */
 }
 
 .register-button {
@@ -76,7 +76,6 @@ p {
   border: none;
   transition: 0.3s;
   float: right;
-  margin-right: 40px;
 }
 
 /* .btn-custom {
