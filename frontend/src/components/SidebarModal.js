@@ -4,25 +4,7 @@ import { StarDisplay } from "./StarRating"
 import { useDispatch } from "react-redux";
 import { changeAvailable, changeLocation, changeSubject, changeReview } from "../store/home/action"
 import "./components.css"
-
-
-const subjects = [
-  "Arts",
-  "Biology",
-  "Business",
-  "Chemistry",
-  "Computing",
-  "Cooking",
-  "Crafting",
-  "Health",
-  "Humanities",
-  "Language",
-  "Math",
-  "Music",
-  "Physics",
-  "Sports",
-  "Visual Arts",
-];
+import { subjects } from "./CheckboxGroup";
 
 const locations = [
   'Central',
@@ -138,6 +120,7 @@ export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocat
             {subjects.map((subject, index) => {
               return (
                 <Form.Check
+                  key={index}
                   type="radio"
                   label={subject}
                   id={`modal-checkbox-${subject}`}

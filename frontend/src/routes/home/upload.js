@@ -50,7 +50,6 @@ const Upload = () => {
             try {
                 const res = await axios.post('/api/videos/assets')
                 url_id = res.data.id
-                console.log(res.data)
                 return res.data.url
             } catch (err) {
                 setProgressState(0)

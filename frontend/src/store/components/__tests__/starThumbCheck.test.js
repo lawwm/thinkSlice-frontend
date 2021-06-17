@@ -121,18 +121,9 @@ describe('thumbnail', () => {
 
     it('delete button dispatches delete action', async () => {
       act(() => {
-        userEvent.click(screen.getByRole('img', { name: '' }))
+        userEvent.click(screen.getByRole('img', { name: 'delete' }))
       })
       expect(await screen.findByRole('button', { name: 'Delete' })).toBeInTheDocument()
-
-      // act(() => {
-      //   userEvent.click(screen.getByRole('button', { name: 'Delete' }))
-      // })
-
-      // // waitFor(() => expect(screen.queryByText(/physics/i)).not.toBeInTheDocument())
-
-      // // const deleteButton = await screen.findByRole('button', { name: 'Delete' })
-      // // userEvent.click(deleteButton)
     })
   })
 })

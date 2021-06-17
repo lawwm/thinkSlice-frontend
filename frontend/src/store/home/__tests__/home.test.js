@@ -97,13 +97,13 @@ describe('Home page', () => {
 
     it('renders', async () => {
       await waitFor(() => {
-        expect(screen.getByText(/log in to get started./i)).toBeInTheDocument()
+        expect(screen.getByText(/refine by:/i)).toBeInTheDocument()
       })
     })
 
     it('set filter and order options', async () => {
       await waitFor(() => {
-        expect(screen.getByText(/log in to get started./i)).toBeInTheDocument()
+        expect(screen.getByText(/refine by:/i)).toBeInTheDocument()
       })
       userEvent.click(screen.getByText(/sort by/i))
       userEvent.click(screen.getByText(/popular/i))
@@ -209,13 +209,13 @@ describe('Home page', () => {
 
     it('renders', async () => {
       await waitFor(() => {
-        expect(screen.getByText(/welcome, registered user./i)).toBeInTheDocument()
+        expect(screen.getByText(/refine by:/i)).toBeInTheDocument()
       })
     })
 
     it('set filter and order options', async () => {
       await waitFor(() => {
-        expect(screen.getByText(/welcome, registered user./i)).toBeInTheDocument()
+        expect(screen.getByText(/refine by:/i)).toBeInTheDocument()
       })
       userEvent.click(screen.getByText(/sort by/i))
       userEvent.click(screen.getByText(/popular/i))

@@ -87,12 +87,12 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
             <div
               onClick={handleEditShow}
               className="thumbnail-subject-edit">
-              <FaEdit role="img" alt="delete" size={18} />
+              <FaEdit role="img" aria-label="edit" alt="edit" size={18} />
             </div>
             <div
               onClick={handleDeleteShow}
               className="thumbnail-subject-delete">
-              <FaTrashAlt role="img" alt="delete" size={18} />
+              <FaTrashAlt role="img" aria-label="delete" alt="delete" size={18} />
             </div>
           </>}
         <Media>

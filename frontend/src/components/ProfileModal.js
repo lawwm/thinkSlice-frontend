@@ -270,11 +270,11 @@ const ProfileModal = ({ userId }) => {
                       <Form.Label>Availability</Form.Label>
                       <Form.Control
                         as="select"
+                        aria-label="Available"
                         name="is_available"
                         className="modal-input"
                         defaultValue={profileBasic.available ? "available" : "unavailable"}
                         onChange={(e) => {
-                          console.log(e.target.value)
                           onChangeBasic(e);
                         }}
                       >

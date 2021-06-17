@@ -97,7 +97,6 @@ const Profile = () => {
                     <h2>Videos</h2>
                     <Row className="justify-content-md-left">
                       {profile.basic.video.map((videoRow) => {
-                        console.log(videoRow)
                         return (
                           <div key={videoRow.id} className="home-video-row">
                             <Col md={"auto"} >

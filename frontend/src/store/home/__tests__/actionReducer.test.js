@@ -6,6 +6,7 @@ import { fakeLocalStorage } from "../../../util/storage"
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { home } from "../reducer"
+import { reduceRight } from "lodash"
 
 //yarn run test -- --coverage --watchAll=false
 const middlewares = [thunk]
@@ -111,7 +112,7 @@ describe('home actions calling APIs should dispatch correctly', () => {
     it('successful home video load dispatches correct actions', () => {
       const store = mockStore({})
       return store.dispatch(actions.loadHomeVideos("recent", false, 1, false)).then(() => {
-        expect(store.getActions()[0].type).toEqual(types.VIDEO_LOADING)
+        expect(store.getActions()[0].type).toEqual(types.HOME_LOADING)
         expect(store.getActions()[1].type).toEqual(types.HOMEPAGE_LOADED)
       })
     })
@@ -119,7 +120,7 @@ describe('home actions calling APIs should dispatch correctly', () => {
     it('failed home video load dispatches error actions', () => {
       const store = mockStore({})
       return store.dispatch(actions.loadHomeVideos("recent", false, 3, false)).then(() => {
-        expect(store.getActions()[0].type).toEqual(types.VIDEO_LOADING)
+        expect(store.getActions()[0].type).toEqual(types.HOME_LOADING)
         expect(store.getActions()[1].type).toEqual(types.HOMEPAGE_LOAD_FAIL)
       })
     })
@@ -127,7 +128,7 @@ describe('home actions calling APIs should dispatch correctly', () => {
     it('reached end home video load dispatches end actions', () => {
       const store = mockStore({})
       return store.dispatch(actions.loadHomeVideos("popular", true, 2, false)).then(() => {
-        expect(store.getActions()[0].type).toEqual(types.VIDEO_LOADING)
+        expect(store.getActions()[0].type).toEqual(types.HOME_LOADING)
         expect(store.getActions()[1].type).toEqual(types.REACHED_END)
         expect(store.getActions()[2].type).toEqual(types.HOMEPAGE_LOAD_FAIL)
       })
@@ -441,6 +442,28 @@ describe('home actions calling APIs should dispatch correctly', () => {
   })
 })
 
+const initialReducerState = {
+  videos: [],
+  homeLoading: true,
+  videoLoading: true,
+  commentLoading: true,
+  commentLoadingId: [],
+  commentReplyLoadingId: [],
+  replyLoadingId: [],
+  currentVideo: {},
+  isUploading: false,
+  reachedEnd: false,
+  filterBy: "recent",
+  ascending: false,
+  page: 1,
+  subject: '',
+  location: '',
+  availability: '',
+  review: '',
+  searchQuery: '',
+  comments: [],
+}
+
 describe('home page reducers should work', () => {
   it('HOMEPAGE_LOADED reducers should work', () => {
     expect(
@@ -488,6 +511,7 @@ describe('home page reducers should work', () => {
         }]
       })
     ).toEqual({
+      ...initialReducerState,
       videos: [{
         "id": 2,
         "video_title": "Learn physics",
@@ -529,18 +553,6 @@ describe('home page reducers should work', () => {
         }
       }],
       homeLoading: false,
-      videoLoading: true,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      currentVideo: {},
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
@@ -590,6 +602,7 @@ describe('home page reducers should work', () => {
         }
       })
     ).toEqual({
+      ...initialReducerState,
       currentVideo: {
         "id": 2,
         "video_title": "Learn physics",
@@ -630,19 +643,8 @@ describe('home page reducers should work', () => {
           "user": 26
         }
       },
-      homeLoading: true,
       videoLoading: false,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
       videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
@@ -652,20 +654,8 @@ describe('home page reducers should work', () => {
         type: types.VIDEO_LOADING
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
+      ...initialReducerState,
       videoLoading: true,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
@@ -675,20 +665,8 @@ describe('home page reducers should work', () => {
         type: types.HOME_LOADING
       })
     ).toEqual({
-      currentVideo: {},
+      ...initialReducerState,
       homeLoading: true,
-      videoLoading: true,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
@@ -698,20 +676,8 @@ describe('home page reducers should work', () => {
         type: types.HOMEPAGE_LOAD_FAIL
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: false,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
+      ...initialReducerState,
+      homeLoading: false,
     })
   })
 
@@ -721,20 +687,8 @@ describe('home page reducers should work', () => {
         type: types.UPLOAD_STARTED
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
+      ...initialReducerState,
       isUploading: true,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
@@ -744,20 +698,8 @@ describe('home page reducers should work', () => {
         type: types.UPLOAD_ENDED
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
+      ...initialReducerState,
       isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
@@ -767,20 +709,8 @@ describe('home page reducers should work', () => {
         type: types.REACHED_END
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
+      ...initialReducerState,
       reachedEnd: true,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
@@ -791,20 +721,11 @@ describe('home page reducers should work', () => {
         payload: 'popular'
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
+      ...initialReducerState,
+      filterBy: 'popular',
       videos: [],
-      isUploading: false,
       reachedEnd: false,
-      filterBy: "popular",
-      ascending: false,
-      page: 0,
-      comments: [],
+      page: 1
     })
   })
 
@@ -815,20 +736,11 @@ describe('home page reducers should work', () => {
         payload: true
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
+      ...initialReducerState,
       videos: [],
-      isUploading: false,
       reachedEnd: false,
-      filterBy: "recent",
       ascending: true,
-      page: 0,
-      comments: [],
+      page: 1,
     })
   })
 
@@ -839,20 +751,8 @@ describe('home page reducers should work', () => {
         payload: true
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 1,
-      comments: [],
+      ...initialReducerState,
+      page: 2,
     })
   })
 
@@ -862,20 +762,8 @@ describe('home page reducers should work', () => {
         type: types.COMMENT_LOADING,
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
+      ...initialReducerState,
       commentLoading: true,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
@@ -885,20 +773,8 @@ describe('home page reducers should work', () => {
         type: types.COMMENT_LOADED,
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
+      ...initialReducerState,
       commentLoading: false,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
@@ -924,19 +800,8 @@ describe('home page reducers should work', () => {
         ]
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
+      ...initialReducerState,
       commentLoading: false,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
       comments: [{
         "id": 13,
         "username": "Pearsauce",
@@ -978,19 +843,9 @@ describe('home page reducers should work', () => {
 
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
+      ...initialReducerState,
+      page: 1,
       commentLoading: false,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
       comments: [{
         "id": 13,
         "username": "Pearsauce",
@@ -1016,20 +871,8 @@ describe('home page reducers should work', () => {
         payload: 2
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: true,
+      ...initialReducerState,
       commentLoadingId: [2],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
@@ -1037,58 +880,23 @@ describe('home page reducers should work', () => {
   it('REMOVE_COMMENT_LOADING_ID reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: true,
+        ...initialReducerState,
         commentLoadingId: [2, 3, 4],
-        commentReplyLoadingId: [],
-        replyLoadingId: [],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
-        comments: [],
       }, {
         type: types.REMOVE_COMMENT_LOADING_ID,
         payload: 2
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: true,
+      ...initialReducerState,
       commentLoadingId: [3, 4],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
   it('EDIT_COMMENT reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: false,
+        ...initialReducerState,
         commentLoadingId: [13],
-        commentReplyLoadingId: [],
-        replyLoadingId: [],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
         comments: [{
           "id": 13,
           "username": "Pearsauce",
@@ -1123,19 +931,8 @@ describe('home page reducers should work', () => {
         }
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: false,
+      ...initialReducerState,
       commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
       comments: [{
         "id": 13,
         "username": "Pearsauce",
@@ -1157,19 +954,8 @@ describe('home page reducers should work', () => {
   it('DELETE_COMMENT reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: false,
+        ...initialReducerState,
         commentLoadingId: [13],
-        commentReplyLoadingId: [],
-        replyLoadingId: [],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
         comments: [{
           "id": 13,
           "username": "Pearsauce",
@@ -1190,19 +976,8 @@ describe('home page reducers should work', () => {
         payload: 13
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: false,
+      ...initialReducerState,
       commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
       comments: [],
     })
   })
@@ -1211,175 +986,68 @@ describe('home page reducers should work', () => {
   it('SET_COMMENTREPLY_LOADING_ID reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: false,
-        commentLoadingId: [],
+        ...initialReducerState,
         commentReplyLoadingId: [],
-        replyLoadingId: [],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
-        comments: [],
       }, {
         type: types.SET_COMMENTREPLY_LOADING_ID,
         payload: 13
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: false,
-      commentLoadingId: [],
+      ...initialReducerState,
       commentReplyLoadingId: [13],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
   it('SET_REPLY_LOADING_ID reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: false,
-        commentLoadingId: [],
-        commentReplyLoadingId: [],
+        ...initialReducerState,
         replyLoadingId: [],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
-        comments: [],
       }, {
         type: types.SET_REPLY_LOADING_ID,
         payload: 13
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: false,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
+      ...initialReducerState,
       replyLoadingId: [13],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
   it('REMOVE_COMMENTREPLY_LOADING_ID reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: false,
-        commentLoadingId: [],
+        ...initialReducerState,
         commentReplyLoadingId: [13, 14, 15],
-        replyLoadingId: [],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
-        comments: [],
       }, {
         type: types.REMOVE_COMMENTREPLY_LOADING_ID,
         payload: 13
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: false,
-      commentLoadingId: [],
+      ...initialReducerState,
       commentReplyLoadingId: [14, 15],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
   it('REMOVE_REPLY_LOADING_ID reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: false,
-        commentLoadingId: [],
-        commentReplyLoadingId: [],
+        ...initialReducerState,
         replyLoadingId: [13, 14, 15],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
-        comments: [],
       }, {
         type: types.REMOVE_REPLY_LOADING_ID,
         payload: 13
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: false,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
+      ...initialReducerState,
       replyLoadingId: [14, 15],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
-      comments: [],
     })
   })
 
   it('GET_REPLIES reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: false,
-        commentLoadingId: [],
+        ...initialReducerState,
         commentReplyLoadingId: [13],
-        replyLoadingId: [],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
         comments: [{
           "id": 13,
           "username": "Pearsauce",
@@ -1417,19 +1085,8 @@ describe('home page reducers should work', () => {
         }
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: false,
-      commentLoadingId: [],
+      ...initialReducerState,
       commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
       comments: [{
         "id": 13,
         "username": "Pearsauce",
@@ -1464,19 +1121,8 @@ describe('home page reducers should work', () => {
   it('CREATE_REPLIES reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: false,
+        ...initialReducerState,
         commentLoadingId: [13],
-        commentReplyLoadingId: [],
-        replyLoadingId: [],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
         comments: [{
           "id": 13,
           "username": "Pearsauce",
@@ -1514,19 +1160,8 @@ describe('home page reducers should work', () => {
         }
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: false,
+      ...initialReducerState,
       commentLoadingId: [],
-      commentReplyLoadingId: [],
-      replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
       comments: [{
         "id": 13,
         "username": "Pearsauce",
@@ -1561,19 +1196,8 @@ describe('home page reducers should work', () => {
   it('EDIT_REPLIES reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: false,
-        commentLoadingId: [],
-        commentReplyLoadingId: [],
+        ...initialReducerState,
         replyLoadingId: [49],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
         comments: [{
           "id": 13,
           "username": "Pearsauce",
@@ -1625,19 +1249,8 @@ describe('home page reducers should work', () => {
         }
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: false,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
+      ...initialReducerState,
       replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
       comments: [{
         "id": 13,
         "username": "Pearsauce",
@@ -1672,19 +1285,8 @@ describe('home page reducers should work', () => {
   it('DELETE_REPLIES reducers should work', () => {
     expect(
       home({
-        currentVideo: {},
-        homeLoading: true,
-        videoLoading: true,
-        commentLoading: false,
-        commentLoadingId: [],
-        commentReplyLoadingId: [],
+        ...initialReducerState,
         replyLoadingId: [49],
-        videos: [],
-        isUploading: false,
-        reachedEnd: false,
-        filterBy: "recent",
-        ascending: false,
-        page: 0,
         comments: [{
           "id": 13,
           "username": "Pearsauce",
@@ -1736,19 +1338,8 @@ describe('home page reducers should work', () => {
         }
       })
     ).toEqual({
-      currentVideo: {},
-      homeLoading: true,
-      videoLoading: true,
-      commentLoading: false,
-      commentLoadingId: [],
-      commentReplyLoadingId: [],
+      ...initialReducerState,
       replyLoadingId: [],
-      videos: [],
-      isUploading: false,
-      reachedEnd: false,
-      filterBy: "recent",
-      ascending: false,
-      page: 0,
       comments: [{
         "id": 13,
         "username": "Pearsauce",
