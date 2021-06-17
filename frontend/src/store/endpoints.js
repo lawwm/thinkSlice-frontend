@@ -28,7 +28,11 @@ export const ENDPOINTS = {
     //COMMENTS
     GET_ADD_COMMENT: '/comments',
     EDIT_DELETE_COMMENT: '',
-    GET_ADD_REPLY: '/replies'
+    GET_ADD_REPLY: '/replies',
+
+    //CHAT
+    ACCESS_CHAT_ROOM: '',
+    CREATE_CHAT_ROOM: '/create'
 }
 
 export const DOMAINS = {
@@ -36,5 +40,6 @@ export const DOMAINS = {
     PROFILE: "/api/profiles",
     REVIEWS: "api/reviews",
     VIDEO: "/api/videos",
-    COMMENTS: "/api/comments"
+    COMMENTS: "/api/comments",
+    CHAT: "/api/chat"
 }

@@ -6,8 +6,9 @@ import { auth } from "./auth/reducer.js"
 import { component } from "./components/reducer.js"
 import { profile } from "./profile/reducer.js"
 import { home } from "./home/reducer.js"
+import { chat } from "./chat/reducer.js"
 
-export const rootReducer = combineReducers({ auth, component, profile, home })
+export const rootReducer = combineReducers({ auth, component, profile, home, chat })
 
 // const middlewares = [thunk]
 // const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares)))
