@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
-import { Container, Col, Row, ProgressBar, Spinner } from "react-bootstrap";
+import { Container, Col, Row, ProgressBar, Spinner, Form } from "react-bootstrap";
 
 import NavBar from "../../components/NavBar.js";
 import * as UpChunk from '@mux/upchunk'
@@ -11,6 +11,24 @@ import "../styles.css";
 import { setAlert } from "../../store/components/action"
 import { startUpload, endUpload, setVideoLoading } from "../../store/home/action.js";
 import { getProfile } from "../../store/profile/action"
+
+const subjects = [
+    "Arts",
+    "Biology",
+    "Business",
+    "Chemistry",
+    "Computing",
+    "Cooking",
+    "Crafting",
+    "Health",
+    "Humanities",
+    "Language",
+    "Math",
+    "Music",
+    "Physics",
+    "Sports",
+    "Visual Arts",
+];
 
 const Upload = () => {
     const dispatch = useDispatch()
@@ -101,7 +119,6 @@ const Upload = () => {
 
     const [fileName, setFileName] = useState("")
     const [file, setFile] = useState(null)
-    const [metadata, setMetadata] = React.useState(null);
 
     const onChange = (e) => {
         setVideoData({
@@ -117,25 +134,25 @@ const Upload = () => {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        //validate fields
+        // validate fields
+        const existingSubjects = profile.basic.video.map(video => video.subject)
+        if (existingSubjects.includes(videoData.subject)) {
+            dispatch(setAlert("You have already uploaded a video for this subject", "danger"))
+        }
         if (videoData.title === '' || videoData.subject === '' || videoData.description === '') {
             //console.log("Your fields are not validated")
             dispatch(setAlert("There are empty fields remaining", "danger"))
-        } else if (file === null || metadata === null) {
+        } else if (file === null || videoData.duration === null) {
             dispatch(setAlert("You have not uploaded any files", "danger"))
-        } else if (metadata.duration > 60) {
+        } else if (videoData.duration > 60) {
             dispatch(setAlert("Your video file exceeds 60 seconds", "danger"))
-            // } else if (metadata.duration < 10) {
+            // } else if (vid.duration < 10) {
             //     dispatch(setAlert("Your video file is too short", "danger"))
         } else if (!profile.basic.is_tutor) {
             dispatch(setAlert("Only tutors are authorized to upload videos", "danger"))
         } else {
-            setVideoData({
-                ...videoData,
-                duration: metadata.duration
-            })
             dispatch(setAlert("Uploading video... do not leave page", "success"))
-            //console.log("beginning uploading file")
+            console.log("beginning uploading file")
             dispatch(startUpload())
             uploadFile(file)
         }
@@ -153,7 +170,7 @@ const Upload = () => {
                                 <h2>Create a video.</h2>
                                 <form id="uploadbanner" encType="multipart/form-data" onSubmit={e => onSubmit(e)}>
 
-                                    <div className="form-group row">
+                                    {/* <div className="form-group row">
                                         <input
                                             type="text"
                                             name="video_title"
@@ -185,7 +202,52 @@ const Upload = () => {
                                             value={videoData.video_description}
                                             required
                                         />
-                                    </div>
+                                    </div> */}
+                                    <Row>
+                                        <Col xs={12} md={8} xl={7}>
+                                            <Form.Group controlId="formBasicEmail">
+                                                <Form.Control
+                                                    type="text"
+                                                    name="video_title"
+                                                    className="form-control"
+                                                    placeholder="Title"
+                                                    onChange={(e) => onChange(e)}
+                                                    value={videoData.video_title}
+                                                    required
+                                                />
+                                            </Form.Group>
+
+                                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                                <Form.Control
+                                                    type="text"
+                                                    name="subject"
+                                                    className="form-control"
+                                                    placeholder="Subject"
+                                                    onChange={(e) => onChange(e)}
+                                                    value={videoData.subject}
+                                                    as="select">
+                                                    <option value="Subject">Subject</option>
+                                                    {subjects.map((subject, index) => {
+                                                        return (
+                                                            <option key={index} value={subject}>{subject}</option>
+                                                        )
+                                                    })}
+                                                </Form.Control>
+                                            </Form.Group>
+
+                                            <Form.Group controlId="exampleForm.ControlTextarea1">
+                                                <Form.Control
+                                                    placeholder="Description"
+                                                    as="textarea"
+                                                    name="video_description"
+                                                    className="form-control"
+                                                    onChange={(e) => onChange(e)}
+                                                    value={videoData.video_description}
+                                                    required
+                                                    rows={4} />
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
                                     <div className='upload-layout'>
                                         <div>
                                             <label htmlFor="file-upload" className='custom-file-upload btn btn-danger' >
@@ -228,11 +290,15 @@ const Upload = () => {
                                         width="250"
                                         className="upload-video-helper"
                                         onLoadedMetadata={e => {
-                                            setMetadata({
-                                                videoHeight: e.target.videoHeight,
-                                                videoWidth: e.target.videoWidth,
+                                            // setMetadata({
+                                            //     videoHeight: e.target.videoHeight,
+                                            //     videoWidth: e.target.videoWidth,
+                                            //     duration: e.target.duration
+                                            // });
+                                            setVideoData({
+                                                ...videoData,
                                                 duration: e.target.duration
-                                            });
+                                            })
                                         }}
                                     >
                                         <source src={URL.createObjectURL(file)}

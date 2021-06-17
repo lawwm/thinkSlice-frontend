@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Nav, Row, Col, Form, Button } from "react-bootstrap"
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Form, Button } from "react-bootstrap"
 import { StarDisplay } from "./StarRating"
 import { changeAvailable, changeLocation, changeSubject, changeReview } from "../store/home/action"
 import "./components.css"

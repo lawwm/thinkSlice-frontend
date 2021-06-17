@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Modal, Button, Form, Col, Row } from "react-bootstrap"
+import React, { useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap"
 import { StarDisplay } from "./StarRating"
 import { useDispatch } from "react-redux";
 import { changeAvailable, changeLocation, changeSubject, changeReview } from "../store/home/action"
