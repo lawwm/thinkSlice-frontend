@@ -453,7 +453,7 @@ const Member = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd })
           <Container>
             <video
               id="my-player"
-              className="video-js vjs-theme-sea"
+              className="video-js vjs-theme-forest"
               controls
               preload="auto"
               width="100%"
@@ -497,7 +497,6 @@ const Member = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd })
                       )}
                       <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
                     </Row>
-
                   </div>
                 </Media.Body>
               </Media>

@@ -61,6 +61,31 @@ export const getProfile = (userId) => async (dispatch) => {
   }
 };
 
+export const editVideo = (videoId, videoData, closeModalFunction, stopLoading) => async (dispatch) => {
+  try {
+    if (videoId === undefined || videoId === "" || videoData === undefined) {
+      throw new Error("No video id provided")
+    }
+
+    const { video_title, subject, video_description } = videoData
+    const body = JSON.stringify({ video_title, subject, video_description })
+    const res = await axios.patch(DOMAINS.VIDEO + "/" + videoId, body, config)
+
+    dispatch({
+      type: actionTypes.PROFILE_EDIT_VIDEO,
+      payload: res.data
+    })
+    // console.log(videoId)
+    dispatch(setAlert("Video has successfully been edited", "success"));
+    closeModalFunction()
+    stopLoading()
+  } catch (err) {
+    dispatch(setAlert(err.message, "danger"));
+    closeModalFunction()
+    stopLoading()
+  }
+}
+
 export const deleteVideo = (videoId, closeModalFunction, stopLoading) => async (dispatch) => {
   try {
     if (videoId === undefined || videoId === "") {

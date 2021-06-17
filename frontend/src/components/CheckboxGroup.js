@@ -2,7 +2,7 @@ import React from "react";
 
 import { Form } from "react-bootstrap";
 
-const subjects = [
+export const subjects = [
   "Arts",
   "Biology",
   "Business",

@@ -169,40 +169,6 @@ const Upload = () => {
                             <div className="upload-div">
                                 <h2>Create a video.</h2>
                                 <form id="uploadbanner" encType="multipart/form-data" onSubmit={e => onSubmit(e)}>
-
-                                    {/* <div className="form-group row">
-                                        <input
-                                            type="text"
-                                            name="video_title"
-                                            className="form-control"
-                                            placeholder="Title"
-                                            onChange={(e) => onChange(e)}
-                                            value={videoData.video_title}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-group row">
-                                        <input
-                                            type="text"
-                                            name="subject"
-                                            className="form-control"
-                                            placeholder="Subject"
-                                            onChange={(e) => onChange(e)}
-                                            value={videoData.subject}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-group row">
-                                        <textarea
-                                            type="textarea"
-                                            name="video_description"
-                                            className="form-control"
-                                            placeholder="Description"
-                                            onChange={(e) => onChange(e)}
-                                            value={videoData.video_description}
-                                            required
-                                        />
-                                    </div> */}
                                     <Row>
                                         <Col xs={12} md={8} xl={7}>
                                             <Form.Group controlId="formBasicEmail">

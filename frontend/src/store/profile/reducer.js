@@ -34,6 +34,26 @@ export const profile = (state = initialState, action) => {
       return {
         ...state, profileComponentLoading: false
       }
+    case actionTypes.PROFILE_EDIT_VIDEO:
+      const videoArray = [...state.profile.basic.video]
+      const indexVideo = videoArray.findIndex(video => video.id === payload.id);
+      videoArray[indexVideo] = {
+        ...videoArray[indexVideo],
+        video_title: payload.video_title,
+        video_description: payload.video_description,
+        subject: payload.subject
+      }
+      console.log(videoArray)
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          basic: {
+            ...state.profile.basic,
+            video: videoArray
+          }
+        }
+      }
     case actionTypes.PROFILE_DELETE_VIDEO:
       return {
         ...state,
