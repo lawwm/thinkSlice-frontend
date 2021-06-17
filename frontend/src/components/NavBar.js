@@ -30,10 +30,6 @@ const NavBar = () => {
   }, [])
 
   const handleClick = e => {
-    // console.log(domNode)
-    // if (domNode == undefined) {
-    //   console.log(domNode)
-    //   return
     if (node.current.contains(e.target)) {
       // inside click
       return;
@@ -67,10 +63,10 @@ const NavBar = () => {
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
-                      to="/categories"
+                      to="/guide"
                       onClick={() => setExpanded(false)}
                     >
-                      Categories
+                      Guide
                     </NavLink>
                     <NavLink
                       className="nav-default"
@@ -117,11 +113,12 @@ const NavBar = () => {
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
-                      to="/categories"
+                      to="/guide"
                       onClick={() => setExpanded(false)}
                     >
-                      Categories
+                      Guide
                     </NavLink>
+
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"

@@ -15,6 +15,11 @@ describe('Watch page', () => {
         Object.defineProperty(window, 'localStorage', {
           value: fakeLocalStorage,
         });
+        global.IntersectionObserver = class IntersectionObserver {
+          observe = jest.fn()
+          disconnect = jest.fn()
+          unobserve = jest.fn()
+        };
         window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
         window.HTMLMediaElement.prototype.play = () => { /* do nothing */ };
         window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
@@ -122,6 +127,11 @@ describe('Watch page', () => {
         Object.defineProperty(window, 'localStorage', {
           value: fakeLocalStorage,
         });
+        global.IntersectionObserver = class IntersectionObserver {
+          observe = jest.fn()
+          disconnect = jest.fn()
+          unobserve = jest.fn()
+        };
         window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
         window.HTMLMediaElement.prototype.play = () => { /* do nothing */ };
         window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };

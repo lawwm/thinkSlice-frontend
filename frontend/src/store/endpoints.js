@@ -18,6 +18,7 @@ export const ENDPOINTS = {
 
     //VIDEO
     LIST_VIDEOS: '',
+    SEARCH_VIDEOS: '/search',
 
     //REVIEWS
     TUTOR: '/tutors',

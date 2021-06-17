@@ -2,6 +2,7 @@ import axios from 'axios'
 import { ENDPOINTS, DOMAINS } from "../endpoints"
 import {
   HOMEPAGE_LOADED,
+  HOME_LOADING,
   HOMEPAGE_LOAD_FAIL,
   VIDEO_LOADED,
   VIDEO_LOADING,
@@ -13,6 +14,12 @@ import {
   CHANGE_FILTER,
   CHANGE_ASCENDING,
   CHANGE_PAGE,
+  CHANGE_AVAILABLE,
+  CHANGE_SUBJECT,
+  CHANGE_LOCATION,
+  CHANGE_REVIEW,
+  SEARCH_VIDEO,
+  CLEAR_SEARCH_VIDEO,
   COMMENT_LOADING,
   COMMENT_LOADED,
   GET_COMMENTS,
@@ -28,7 +35,8 @@ import {
   SET_COMMENTREPLY_LOADING_ID,
   SET_REPLY_LOADING_ID,
   REMOVE_COMMENTREPLY_LOADING_ID,
-  REMOVE_REPLY_LOADING_ID
+  REMOVE_REPLY_LOADING_ID,
+
 } from "./actionTypes"
 import { format, formatDistance } from 'date-fns'
 import { setAlert } from '../components/action';
@@ -78,13 +86,62 @@ export const changePage = (page) => async (dispatch) => {
   })
 }
 
+export const changeAvailable = (available) => async (dispatch) => {
+
+  dispatch({
+    type: CHANGE_AVAILABLE,
+    payload: available
+  })
+}
+
+export const changeSubject = (subject) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_SUBJECT,
+    payload: subject
+  })
+}
+
+export const changeLocation = (location) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_LOCATION,
+    payload: location
+  })
+}
+
+export const changeReview = (review) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_REVIEW,
+    payload: review
+  })
+}
+
 export const clearVideos = () => async (dispatch) => {
   dispatch({
     type: CLEAR_VIDEO_PAGE
   })
 }
 
-export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, reachedEnd = false) => async (dispatch) => {
+export const searchVideos = (searchQuery) => async (dispatch) => {
+  try {
+    if (searchQuery === "") {
+      throw new Error("You need to enter a field for search.")
+    }
+    dispatch({
+      type: SEARCH_VIDEO,
+      payload: searchQuery
+    })
+  } catch (err) {
+    dispatch(setAlert(err.message, "danger"))
+  }
+}
+
+export const clearSearchVideos = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_SEARCH_VIDEO
+  })
+}
+
+export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, reachedEnd = false, availability, subject, location, review, searchQuery) => async (dispatch) => {
   try {
     //zero and below are invalid queries
     if (num <= 0) {
@@ -96,7 +153,9 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
     if (reachedEnd) {
       return
     }
-    dispatch(setVideoLoading())
+    dispatch({
+      type: HOME_LOADING
+    })
 
     //field manipulation
     let filterBy
@@ -107,11 +166,35 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
     }
     let order = ascending ? "true" : "false"
 
-    // GET video arrays
-    const res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.LIST_VIDEOS
-      + "?n=" + num + "&filter_by=" + filterBy + "&ascending=" + order);
-    let data = res.data
+    // Query filter parameters
+    let queryString = "?n=" + num + "&filter_by=" + filterBy + "&ascending=" + order
+    if (availability !== '') {
+      queryString += '&available=' + availability
+    }
 
+    if (subject !== '') {
+      queryString += '&subject=' + subject
+    }
+
+    if (location !== '') {
+      queryString += '&location=' + location
+    }
+
+    if (review !== '') {
+      queryString += '&star_lower_limit=' + review
+    }
+
+    // GET video arrays
+    let res
+    if (searchQuery === "") {
+      res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.LIST_VIDEOS
+        + queryString);
+    } else {
+      res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.SEARCH_VIDEOS
+        + queryString + "&name=" + searchQuery);
+    }
+
+    let data = res.data
     //Set reached end to true if no data found
     if (data.length === 0) {
       dispatch({

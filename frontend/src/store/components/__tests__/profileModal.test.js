@@ -319,6 +319,9 @@ describe("Profile modal", () => {
       userEvent.selectOptions(screen.getByRole('combobox', { name: "" }), ['1'])
       expect(screen.getByDisplayValue(/tutor/i)).toBeInTheDocument()
 
+      userEvent.selectOptions(screen.getByRole('combobox', { name: "Available" }), ['unavailable'])
+      expect(screen.getByDisplayValue(/unavailable/i)).toBeInTheDocument()
+
       //change page
       userEvent.click(screen.queryByText(/page 3/i))
 
