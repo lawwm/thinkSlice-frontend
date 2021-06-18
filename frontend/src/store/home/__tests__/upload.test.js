@@ -113,7 +113,7 @@ describe('Upload page', () => {
       })
       userEvent.type(screen.getByPlaceholderText(/title/i), "Test video")
       expect(screen.getByPlaceholderText(/title/i)).toHaveValue("Test video")
-      userEvent.type(screen.getByPlaceholderText(/subject/i), "Math")
+      userEvent.selectOptions(screen.getByRole('combobox', { name: "" }), ['Math'])
       expect(screen.getByPlaceholderText(/subject/i)).toHaveValue("Math")
       userEvent.type(screen.getByPlaceholderText(/description/i), "Test description")
       expect(screen.getByPlaceholderText(/description/i)).toHaveValue("Test description")

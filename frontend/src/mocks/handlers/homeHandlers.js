@@ -2,6 +2,65 @@
 import { rest } from 'msw'
 import { DOMAINS, ENDPOINTS } from "../../store/endpoints"
 export const homeHandlers = [
+  //GET search homepage
+  rest.get('http://localhost' + DOMAINS.VIDEO + ENDPOINTS.SEARCH_VIDEOS, (req, res, ctx) => {
+    const page = req.url.searchParams.get('n')
+    if (page === "1") {
+      return res(
+        ctx.status(200),
+        ctx.json([{
+          "id": 2,
+          "video_title": "Learn physics",
+          "video_description": "Quantum physics is a popular phrase used nowadays, but what is it about? Learn the  basics of quantum physics today!",
+          "subject": "Physics",
+          "views": 404,
+          "likes": 1,
+          "num_of_comments": 6,
+          "asset_id": "HcDHzBMgnn39HOx02Mv9qcO1HONggk6lJwxVwjHQwjhQ",
+          "playback_id": "kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM",
+          "duration": 0,
+          "policy": "public",
+          "created_at": 1622812186,
+          "creator_profile": {
+            "id": 25,
+            "profile_pic": "https://thinkslice-project.s3.amazonaws.com/user-images/427ed110edb63dbe449c5a8aaefa4ca9_pe9mMiy.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=GO4eGWFHtMlaiEBVVlbvvivVgbg%3D&Expires=1623653343",
+            "username": "jimijam",
+            "user_bio": "Hi, welcome to my profile! Cool profilez",
+            "is_tutor": true,
+            "is_student": true,
+            "tutor_whatsapp": 12345678,
+            "tutor_telegram": "@jimijam",
+            "aggregate_star": null,
+            "location": "east",
+            "duration_classes": [
+              3,
+              8
+            ],
+            "subjects": [
+              "Biology",
+              "Math",
+              "Sports",
+              "Visual Arts"
+            ],
+            "total_tutor_reviews": 0,
+            "qualifications": "P6 tutor",
+            "user": 26
+          }
+        }]
+        )
+      )
+    } else if (page === "2") {
+      return res(
+        ctx.status(200),
+        ctx.json([])
+      )
+    } else {
+      //GET load homepage (error)
+      return res(
+        ctx.status(400),
+      )
+    }
+  }),
   //GET load homepage 
   rest.get('http://localhost' + DOMAINS.VIDEO + ENDPOINTS.LIST_VIDEOS, (req, res, ctx) => {
     const page = req.url.searchParams.get('n')

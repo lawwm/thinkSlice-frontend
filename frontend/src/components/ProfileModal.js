@@ -57,8 +57,19 @@ const ProfileModal = ({ userId }) => {
 
   const onChangeBasic = (e) => {
     let updatedValue = e.target.value;
-    // console.log(e.target.value)
     switch (updatedValue) {
+      case "available":
+        setProfileBasic({
+          ...profileBasic,
+          available: true
+        });
+        break;
+      case "unavailable":
+        setProfileBasic({
+          ...profileBasic,
+          available: false
+        });
+        break;
       case "0":
         setProfileBasic({
           ...profileBasic,
@@ -94,18 +105,6 @@ const ProfileModal = ({ userId }) => {
         });
         break;
     }
-    // console.log("hello world")
-    // if (updatedValue === "0" || updatedValue === "false") {
-    //   updatedValue = JSON.parse(updatedValue);
-    //   setProfileBasic({
-    //     ...profileBasic,
-    //     is_tutor: updatedValue,
-    //     is_student: !updatedValue,
-    //   });
-    //   return;
-    // }
-
-
   };
 
   const onChangeDetailed = (e) => {
@@ -142,7 +141,7 @@ const ProfileModal = ({ userId }) => {
     }
   };
 
-  const { username, user_bio, is_tutor } = profileBasic;
+  const { username, user_bio, is_tutor, is_student, available } = profileBasic;
   const {
     tutor_whatsapp,
     tutor_telegram,
@@ -266,10 +265,29 @@ const ProfileModal = ({ userId }) => {
                         <option value="3">Both</option>
                       </Form.Control>
                     </Form.Group>
+
+                    <Form.Group>
+                      <Form.Label>Availability</Form.Label>
+                      <Form.Control
+                        as="select"
+                        aria-label="Available"
+                        name="is_available"
+                        className="modal-input"
+                        defaultValue={profileBasic.available ? "available" : "unavailable"}
+                        onChange={(e) => {
+                          onChangeBasic(e);
+                        }}
+                      >
+                        <option value="available">Available</option>
+                        <option value="unavailable">Unavailable</option>
+                      </Form.Control>
+                    </Form.Group>
                     <div>
                       Helpful tip: Select your role as a student and/or tutor. Tutors get
                       to upload videos and display additional information on their profiles.
-                    </div></>)}
+                      Set whether you are currently available as well.
+                    </div>
+                  </>)}
                 {selectPage === "3" && (
                   <>
                     <Form.Group>
@@ -444,6 +462,31 @@ const ProfileModal = ({ userId }) => {
                     <h4>Tutor details</h4>
                     <table>
                       <tbody>
+                        <tr>
+                          <td>Available</td>
+                          <td className="table-data">
+                            {(is_tutor && is_student)
+                              ?
+                              available
+                                ? "User is looking for students/teachers"
+                                : "User is not looking for students/teachers"
+
+                              : is_tutor
+                                ?
+                                available
+                                  ? "User is looking for students"
+                                  : "User is not looking for students"
+
+                                : is_student
+                                  ?
+                                  available
+                                    ? "User is looking for a teacher"
+                                    : "User is not looking for a teacher"
+
+                                  : "User is neither a tutor or student"
+                            }
+                          </td>
+                        </tr>
                         <tr>
                           <td>Rating</td>
                           <td className="table-data">

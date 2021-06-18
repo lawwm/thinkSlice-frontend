@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash"
 import {
   HOMEPAGE_LOADED,
   HOMEPAGE_LOAD_FAIL,
@@ -9,6 +10,13 @@ import {
   CHANGE_FILTER,
   CHANGE_ASCENDING,
   CHANGE_PAGE,
+  CHANGE_AVAILABLE,
+  CHANGE_SUBJECT,
+  CHANGE_LOCATION,
+  CHANGE_REVIEW,
+  SEARCH_VIDEO,
+  CLEAR_SEARCH_VIDEO,
+  CLEAR_VIDEO_PAGE,
   HOME_LOADING,
   COMMENT_LOADING,
   COMMENT_LOADED,
@@ -25,7 +33,7 @@ import {
   SET_COMMENTREPLY_LOADING_ID,
   REMOVE_COMMENTREPLY_LOADING_ID,
   SET_REPLY_LOADING_ID,
-  REMOVE_REPLY_LOADING_ID
+  REMOVE_REPLY_LOADING_ID,
 } from "./actionTypes.js"
 
 const initialState = {
@@ -41,12 +49,16 @@ const initialState = {
   reachedEnd: false,
   filterBy: "recent",
   ascending: false,
-  page: 0,
+  page: 1,
+  subject: '',
+  location: '',
+  availability: '',
+  review: '',
+  searchQuery: '',
   comments: [],
 }
 //set initial page to zero so initial loadhomevideo action before 
 //bottom div is observed is negated 
-
 
 export const home = (state = initialState, action) => {
   const { type, payload } = action;
@@ -55,15 +67,48 @@ export const home = (state = initialState, action) => {
     case HOMEPAGE_LOADED:
       let payloadId = payload.map(video => video.id)
       let newVideos = state.videos.filter(val => !payloadId.includes(val.id))
+      newVideos = newVideos.concat(payload)
+      if (!isEmpty(state.currentVideo)) {
+        newVideos = newVideos.filter(video => video.id !== state.currentVideo.id)
+      }
       return {
         ...state,
-        videos: newVideos.concat(payload),
+        videos: newVideos,
         homeLoading: false
       }
+    case SEARCH_VIDEO:
+      return {
+        ...state,
+        searchQuery: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1
+      }
+    case CLEAR_SEARCH_VIDEO:
+      return {
+        ...state,
+        searchQuery: '',
+        videos: [],
+        reachedEnd: false,
+        page: 1
+      }
+    case CLEAR_VIDEO_PAGE:
+      return {
+        ...state,
+        videos: [],
+      }
     case VIDEO_LOADED:
+      let newVideoArray = [...state.videos]
+      if (!isEmpty(state.currentVideo)) {
+        console.log(newVideoArray)
+        console.log(payload)
+        newVideoArray = newVideoArray.filter(video => video.id !== payload.id)
+        newVideoArray.push(state.currentVideo)
+      }
       return {
         ...state,
         currentVideo: payload,
+        videos: newVideoArray,
         videoLoading: false
       }
     case VIDEO_LOADING:
@@ -79,7 +124,7 @@ export const home = (state = initialState, action) => {
     case HOMEPAGE_LOAD_FAIL:
       return {
         ...state,
-        videoLoading: false
+        homeLoading: false
       }
     case UPLOAD_STARTED:
       return {
@@ -102,7 +147,7 @@ export const home = (state = initialState, action) => {
         filterBy: payload,
         videos: [],
         reachedEnd: false,
-        page: 0
+        page: 1
       }
     case CHANGE_ASCENDING:
       return {
@@ -110,12 +155,44 @@ export const home = (state = initialState, action) => {
         ascending: payload,
         videos: [],
         reachedEnd: false,
-        page: 0
+        page: 1
       }
     case CHANGE_PAGE:
       return {
         ...state,
         page: state.page + 1
+      }
+    case CHANGE_AVAILABLE:
+      return {
+        ...state,
+        availability: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1,
+      }
+    case CHANGE_SUBJECT:
+      return {
+        ...state,
+        subject: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1,
+      }
+    case CHANGE_LOCATION:
+      return {
+        ...state,
+        location: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1,
+      }
+    case CHANGE_REVIEW:
+      return {
+        ...state,
+        review: payload,
+        videos: [],
+        reachedEnd: false,
+        page: 1,
       }
     case COMMENT_LOADING:
       return {

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../store/auth/action";
 import LoadingSpinner from "../../components/LoadingSpinner";
 // import NavBar from "../../components/NavBar";
-import { Container, Col, Row, Spinner } from "react-bootstrap";
+import { Container, Col, Row, Spinner, Form } from "react-bootstrap";
 import "../styles.css";
 
 const Register = () => {
@@ -49,11 +49,52 @@ const Register = () => {
         <>
           <Container>
             <Row>
-              <Col>
+              <Col xs={12} md={8} xl={6}>
                 <form onSubmit={(e) => onSubmit(e)}>
                   <div className="register-form-div">
                     <h2>Register here.</h2>
-                    <div className="form-group row">
+                    <Form.Group>
+                      <Form.Control
+                        type="text"
+                        name="username"
+                        aria-label="username"
+                        className="form-control"
+                        placeholder="Username"
+                        onChange={(e) => onChange(e)}
+                        value={username}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Control
+                        type="text"
+                        name="email"
+                        className="form-control"
+                        placeholder="Email"
+                        onChange={(e) => onChange(e)}
+                        value={email}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Control
+                        type="password"
+                        name="password"
+                        className="form-control"
+                        placeholder="Password"
+                        onChange={(e) => onChange(e)}
+                        value={password}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Control
+                        type="password"
+                        name="confirmPassword"
+                        className="form-control"
+                        placeholder="Confirm Password"
+                        onChange={(e) => onChange(e)}
+                        value={confirmPassword}
+                      />
+                    </Form.Group>
+                    {/* <div className="form-group row">
                       <input
                         type="text"
                         name="username"
@@ -93,7 +134,7 @@ const Register = () => {
                         onChange={(e) => onChange(e)}
                         value={confirmPassword}
                       />
-                    </div>
+                    </div> */}
                     <br />
                     <a
                       href="# "

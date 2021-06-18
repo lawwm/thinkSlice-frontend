@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/auth/action.js";
 
 import LoadingSpinner from "../../components/LoadingSpinner";
-import { Container, Col, Row, Spinner } from "react-bootstrap";
+import { Container, Col, Row, Spinner, Form } from "react-bootstrap";
 import "../styles.css";
 
 const Login = () => {
@@ -47,16 +47,14 @@ const Login = () => {
       {loading && <LoadingSpinner />}
       {!loading && (
         <>
-
           <Container>
-
             <Row>
-              <Col>
+              <Col xs={12} md={7} xl={6}>
                 <form onSubmit={(e) => onSubmit(e)}>
                   <div className="login-form-div">
                     <h2>Log in to start learning.</h2>
-                    <div className="form-group row">
-                      <input
+                    <Form.Group>
+                      <Form.Control
                         type="text"
                         name="username"
                         className="form-control"
@@ -64,17 +62,16 @@ const Login = () => {
                         onChange={(e) => onChange(e)}
                         value={username}
                       />
-                    </div>
-                    <div className="form-group row">
-                      <input
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Control
                         type="password"
                         name="password"
                         className="form-control"
                         placeholder="Password"
                         onChange={(e) => onChange(e)}
-                        value={password}
-                      />
-                    </div>
+                        value={password} />
+                    </Form.Group>
                     <br />
 
                     <a
@@ -101,7 +98,6 @@ const Login = () => {
                   </div>
                 </form>
               </Col>
-              <Col></Col>
             </Row>
           </Container>
         </>

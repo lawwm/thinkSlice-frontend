@@ -5,20 +5,30 @@ import { useHistory } from "react-router-dom";
 import { Row, Col, Container, Media, Form, Button } from 'react-bootstrap';
 // import NavBar from "../../components/NavBar.js";
 import { useParams } from 'react-router-dom';
-import { loadWatchVideos, loadHomeVideos, getComments, addComments } from "../../store/home/action"
+import { loadWatchVideos, loadHomeVideos, getComments, addComments, changePage } from "../../store/home/action"
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import { AuthNavBar } from "../../components/AuthNavBar"
 import { truncate } from "lodash"
 import { FaAngleUp, FaAngleDown } from "react-icons/fa";
 import Thumbnail from "../../components/Thumbnail"
-
+import { StarDisplay } from '../../components/StarRating';
 import videojs from '@mux/videojs-kit';
 import '@mux/videojs-kit/dist/index.css';
 import "../styles.css";
 
 import "../../fonts/css/videojs.css"
 import { CommentPost } from "../../components/Comment.js"
+
+const HomeSpinner = () => {
+  return (
+    <>
+      <div className="home-spinner-child">
+        <LoadingSpinner />
+      </div>
+    </>
+  )
+}
 
 export const Comment = ({ totalComments, videoId }) => {
   const [showComment, setShowComment] = useState(false)
@@ -207,18 +217,14 @@ const BrowseMoreVideos = () => {
 }
 
 const VideoGrid = ({ videos }) => {
-  const { homeLoading } = useSelector((state) => state.home)
-
   return (
     <>
-      {homeLoading && <LoadingSpinner />}
-      {!homeLoading &&
+      {
         <div className="video-reco-div">
           <Row className="justify-content-md-left">
-
-            <Col md={"auto"} >
+            {videos.length !== 0 && <Col md={"auto"} >
               <BrowseMoreVideos />
-            </Col>
+            </Col>}
             {videos.map((videoRow) => {
               return (
                 <div key={videoRow.id} className="home-video-row">
@@ -246,10 +252,12 @@ const VideoGrid = ({ videos }) => {
   )
 }
 
-const Guest = ({ currentVideo, videoLoading, videos }) => {
+const Guest = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd }) => {
   const playerRef = useRef();
   const history = useHistory()
   const videoRef = useRef()
+  const dispatch = useDispatch()
+  const loader = useRef()
 
   useEffect(() => {
     if (playerRef.current !== undefined) {
@@ -274,6 +282,30 @@ const Guest = ({ currentVideo, videoLoading, videos }) => {
     }
   }, [currentVideo]);
 
+  useEffect(() => {
+    let options = {
+      threshold: 0.5
+    }
+
+    const handleObserver = (entities) => {
+      const target = entities[0];
+      if (target.isIntersecting) {
+        if (!reachedEnd) {
+          dispatch(changePage())
+        }
+      }
+    }
+
+    const observer = new IntersectionObserver(handleObserver, options);
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [dispatch, reachedEnd, homeLoading])
+
   return (
     <>
       {videoLoading && <LoadingSpinner />}
@@ -282,7 +314,7 @@ const Guest = ({ currentVideo, videoLoading, videos }) => {
           <Container>
             <video
               id="my-player"
-              className="video-js vjs-theme-sea"
+              className="video-js vjs-theme-forest"
               controls
               preload="auto"
               width="100%"
@@ -316,7 +348,14 @@ const Guest = ({ currentVideo, videoLoading, videos }) => {
                       <Col>{currentVideo.creator_profile.username}</Col>
                     </Row>
                     <Row>
-                      <Col>{currentVideo.creator_profile.aggregate_star + " stars"}</Col>
+                      {currentVideo.creator_profile.aggregate_star !== null && (
+                        <Col>
+                          <StarDisplay
+                            num={currentVideo.creator_profile.aggregate_star}
+                            size={18}
+                          />
+                        </Col>
+                      )}
                       <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
                     </Row>
 
@@ -333,6 +372,17 @@ const Guest = ({ currentVideo, videoLoading, videos }) => {
               </Row>
             </div>
             <VideoGrid videos={videos} />
+            {homeLoading && <div className="home-footer">
+              <HomeSpinner />
+            </div>}
+
+            {!homeLoading && <div ref={loader} className="home-footer">
+              {reachedEnd && <div className="home-content-end">
+                <hr className="home-footer-break" />
+                <h5>You've reached the end of the page.</h5>
+                <a href="#top">Back to top.</a>
+              </div>}
+            </div>}
           </Container>
         </>
         )
@@ -341,10 +391,12 @@ const Guest = ({ currentVideo, videoLoading, videos }) => {
   )
 }
 
-const Member = ({ currentVideo, videoLoading, videos }) => {
+const Member = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd }) => {
   const playerRef = useRef();
   const history = useHistory()
   const videoRef = useRef()
+  const dispatch = useDispatch()
+  const loader = useRef()
 
   useEffect(() => {
     if (playerRef.current !== undefined) {
@@ -369,6 +421,29 @@ const Member = ({ currentVideo, videoLoading, videos }) => {
     }
   }, [currentVideo]);
 
+  useEffect(() => {
+    let options = {
+      threshold: 0.5
+    }
+
+    const handleObserver = (entities) => {
+      const target = entities[0];
+      if (target.isIntersecting) {
+        if (!reachedEnd) {
+          dispatch(changePage())
+        }
+      }
+    }
+
+    const observer = new IntersectionObserver(handleObserver, options);
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [dispatch, reachedEnd, homeLoading, videoLoading])
 
   return (
     <>
@@ -378,7 +453,7 @@ const Member = ({ currentVideo, videoLoading, videos }) => {
           <Container>
             <video
               id="my-player"
-              className="video-js vjs-theme-sea"
+              className="video-js vjs-theme-forest"
               controls
               preload="auto"
               width="100%"
@@ -412,10 +487,16 @@ const Member = ({ currentVideo, videoLoading, videos }) => {
                       <Col>{currentVideo.creator_profile.username}</Col>
                     </Row>
                     <Row>
-                      <Col>{currentVideo.creator_profile.aggregate_star + " stars"}</Col>
+                      {currentVideo.creator_profile.aggregate_star !== null && (
+                        <Col>
+                          <StarDisplay
+                            num={currentVideo.creator_profile.aggregate_star}
+                            size={18}
+                          />
+                        </Col>
+                      )}
                       <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
                     </Row>
-
                   </div>
                 </Media.Body>
               </Media>
@@ -429,6 +510,17 @@ const Member = ({ currentVideo, videoLoading, videos }) => {
               </Row>
             </div>
             <VideoGrid videos={videos} />
+            {homeLoading && <div className="home-footer">
+              <HomeSpinner />
+            </div>}
+
+            {!homeLoading && <div ref={loader} className="home-footer">
+              {reachedEnd && <div className="home-content-end">
+                <hr className="home-footer-break" />
+                <h5>You've reached the end of the page.</h5>
+                <a href="#top">Back to top.</a>
+              </div>}
+            </div>}
           </Container>
         </>
         )
@@ -441,14 +533,15 @@ const Member = ({ currentVideo, videoLoading, videos }) => {
 const WatchPage = () => {
   const { videoId } = useParams();
   const dispatch = useDispatch();
-  const { currentVideo, videoLoading, videos } = useSelector((state) => state.home)
+  const { currentVideo, homeLoading, videoLoading, videos, filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery } = useSelector((state) => state.home)
+
   useEffect(() => {
     dispatch(loadWatchVideos(videoId))
   }, [dispatch, videoId])
 
   useEffect(() => {
-    dispatch(loadHomeVideos())
-  }, [dispatch])
+    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+  }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review, searchQuery])
 
   useEffect(() => {
     dispatch(getComments(videoId))
@@ -460,10 +553,14 @@ const WatchPage = () => {
         member={<Member
           currentVideo={currentVideo}
           videoLoading={videoLoading}
+          homeLoading={homeLoading}
+          reachedEnd={reachedEnd}
           videos={videos} />}
         guest={<Guest
           currentVideo={currentVideo}
           videoLoading={videoLoading}
+          homeLoading={homeLoading}
+          reachedEnd={reachedEnd}
           videos={videos} />}
       />
     </>
