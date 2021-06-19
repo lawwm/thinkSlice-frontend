@@ -79,6 +79,14 @@ const NavBar = () => {
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
+                      to="/chat"
+                      onClick={() => setExpanded(false)}
+                    >
+                      Chat
+                    </NavLink>
+                    <NavLink
+                      className="nav-default"
+                      activeClassName="nav-active"
                       to="/login"
                       onClick={() => {
                         dispatch(resetProfile());

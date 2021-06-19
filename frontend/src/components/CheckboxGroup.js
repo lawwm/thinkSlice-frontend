@@ -10,6 +10,7 @@ export const subjects = [
   "Computing",
   "Cooking",
   "Crafting",
+  "Engineering",
   "Health",
   "Humanities",
   "Language",

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import setAuthToken from "./util/setAuthToken";
 import { loadUser } from "./store/auth/action";
+import WebSocketInstance from "./websocket";
 
 //React router
 import { BrowserRouter } from "react-router-dom";

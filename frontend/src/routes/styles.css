@@ -710,3 +710,9 @@ p {
 }
 
 /* alert */
+
+/* chat */
+
+.chat-box {
+  border: 4px, solid, rgb(87, 87, 87);
+}

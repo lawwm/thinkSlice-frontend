@@ -11,7 +11,8 @@ export const PATHS = {
     PROFILE_PAGE: '/profile/:user_id',
     REVIEW_PAGE: '/profile/reviews/:user_id',
     UPLOAD_PAGE: '/upload',
-    WATCH_PAGE: '/watch/:videoId'
+    WATCH_PAGE: '/watch/:videoId',
+    CHAT_PAGE: '/chat/:room_id',
 }
 
 const Home = React.lazy(() => import("./home/home"))
@@ -22,6 +23,7 @@ const Profile = React.lazy(() => import("./profile/profile"))
 const Review = React.lazy(() => import("./profile/review"))
 const Upload = React.lazy(() => import("./home/upload"))
 const WatchPage = React.lazy(() => import("./home/watch"))
+const Chat = React.lazy(() => import("./chat/chat"))
 
 const Routes = () => {
     return (
@@ -35,6 +37,7 @@ const Routes = () => {
                     <Route exact path={PATHS.REGISTER_PAGE} component={Register} />
                     <Route exact path={PATHS.PROFILE_PAGE} component={Profile} />
                     <Route exact path={PATHS.REVIEW_PAGE} component={Review} />
+                    <Route exact path={PATHS.CHAT_PAGE} component={Chat}/>
 
                     <PrivateRoute exact path={PATHS.UPLOAD_PAGE} component={Upload} />
                     <Route exact path={PATHS.WATCH_PAGE} component={WatchPage} />

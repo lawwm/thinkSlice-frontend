@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 
-import { getProfile, toggleDetailedView, changePicture } from "../../store/profile/action.js";
+import {
+  getProfile,
+  toggleDetailedView,
+  changePicture,
+} from "../../store/profile/action.js";
+import { startChat } from "../../store/chat/action.js";
 
 import NotFound from "../errorpages/notFound";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
@@ -14,28 +19,33 @@ import "../styles.css";
 const Profile = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { profile, profileLoading, profileComponentLoading } = useSelector((state) => state.profile);
+  const { profile, profileLoading, profileComponentLoading } = useSelector(
+    (state) => state.profile
+  );
+  const { activeChat, chatComponentLoading } = useSelector(
+    (state) => state.chat
+  );
+
   const { user_id } = useParams();
-  const currentViewer = localStorage.getItem("user")
+  const currentViewer = localStorage.getItem("user");
 
   useEffect(() => {
     dispatch(getProfile(user_id));
   }, [user_id, dispatch]);
 
   const [pictureModal, setPictureModal] = useState(false);
-
   const [imageFile, setImageFile] = useState(null);
-  const [imageURL, setImageURL] = useState(null)
+  const [imageURL, setImageURL] = useState(null);
 
   const onUploadChange = (file) => {
     setImageFile(file);
-    URL.revokeObjectURL(imageURL)
-    setImageURL(URL.createObjectURL(file))
+    URL.revokeObjectURL(imageURL);
+    setImageURL(URL.createObjectURL(file));
   };
 
   const uploadProfilePicture = (e) => {
     e.preventDefault();
-    dispatch(changePicture(imageFile, () => setPictureModal(false)))
+    dispatch(changePicture(imageFile, () => setPictureModal(false)));
   };
   return (
     <>
@@ -49,19 +59,30 @@ const Profile = () => {
                   <Col className="mr-auto p-2 col-example" xs={8}>
                     <div className="username-tag-div">
                       <h2>{profile.basic.username}</h2>
-                      {profile.basic.is_tutor && <button className="btn profile-tag" disabled>
-                        Tutor
-                      </button>}
-                      {profile.basic.is_student && <button className="btn profile-tag" disabled>
-                        Student
-                      </button>}
+                      {profile.basic.is_tutor && (
+                        <button className="btn profile-tag" disabled>
+                          Tutor
+                        </button>
+                      )}
+                      {profile.basic.is_student && (
+                        <button className="btn profile-tag" disabled>
+                          Student
+                        </button>
+                      )}
                     </div>
                     <p>{profile.basic.user_bio}</p>
                   </Col>
                   <Col>
                     <div
-                      onClick={() => setPictureModal(true && (currentViewer === user_id))}
-                      className={(currentViewer === user_id) ? "profile-pic-container circle" : "circle"}>
+                      onClick={() =>
+                        setPictureModal(true && currentViewer === user_id)
+                      }
+                      className={
+                        currentViewer === user_id
+                          ? "profile-pic-container circle"
+                          : "circle"
+                      }
+                    >
                       <img
                         src={profile.basic.profile_pic}
                         alt="profile_pic"
@@ -74,7 +95,6 @@ const Profile = () => {
                     </div>
                   </Col>
                   <Row>
-
                     <button
                       className="btn profile-button"
                       onClick={() => dispatch(toggleDetailedView(true))}
@@ -83,10 +103,32 @@ const Profile = () => {
                     </button>
                     <button
                       className="btn profile-button"
-                      onClick={() => history.push("/profile/reviews/" + user_id)}
+                      onClick={() =>
+                        history.push("/profile/reviews/" + user_id)
+                      }
                     >
                       Reviews
                     </button>
+                    {currentViewer && currentViewer !== user_id && (
+                      <button
+                        className="btn profile-button"
+                        onClick={() =>
+                          dispatch(startChat(user_id)).then(() =>
+                            history.push("/chat/" + activeChat.chatroom)
+                          )
+                        }
+                      >
+                        {chatComponentLoading ? (
+                          <Spinner
+                            size="sm"
+                            animation="border"
+                            variant="light"
+                          />
+                        ) : (
+                          "Chat"
+                        )}
+                      </button>
+                    )}
                   </Row>
                 </Row>
                 <br />
@@ -99,7 +141,7 @@ const Profile = () => {
                       {profile.basic.video.map((videoRow) => {
                         return (
                           <div key={videoRow.id} className="home-video-row">
-                            <Col md={"auto"} >
+                            <Col md={"auto"}>
                               <Thumbnail
                                 title={videoRow.video_title}
                                 username={profile.basic.username}
@@ -111,11 +153,11 @@ const Profile = () => {
                                 imageSrc={profile.basic.profile_pic}
                                 videoId={videoRow.id}
                                 profileId={videoRow.creator_profile.user}
-                                deleteButton={(currentViewer === user_id)}
+                                deleteButton={currentViewer === user_id}
                               />
                             </Col>
                           </div>
-                        )
+                        );
                       })}
                     </Row>
                   </div>
@@ -130,27 +172,51 @@ const Profile = () => {
 
             <ProfileModal userId={user_id} />
 
-            <Modal show={pictureModal} onHide={() => setPictureModal(false)} className="modal-style" size="lg">
+            <Modal
+              show={pictureModal}
+              onHide={() => setPictureModal(false)}
+              className="modal-style"
+              size="lg"
+            >
               <Modal.Header>
                 <Modal.Title>Change your profile picture.</Modal.Title>
               </Modal.Header>
-              <form id="uploadbanner" encType="multipart/form-data" onSubmit={(e) => { uploadProfilePicture(e) }} >
+              <form
+                id="uploadbanner"
+                encType="multipart/form-data"
+                onSubmit={(e) => {
+                  uploadProfilePicture(e);
+                }}
+              >
                 <Modal.Body>
-                  <div className='profile-upload-layout'>
+                  <div className="profile-upload-layout">
                     <div>Upload your picture here.</div>
 
-                    <div >
-                      <img alt="Preview" className="image-preview" src={imageURL} />
+                    <div>
+                      <img
+                        alt="Preview"
+                        className="image-preview"
+                        src={imageURL}
+                      />
                     </div>
                     <div>
-                      <label htmlFor="file-upload" className='custom-file-upload btn btn-danger' >
+                      <label
+                        htmlFor="file-upload"
+                        className="custom-file-upload btn btn-danger"
+                      >
                         Select File
                       </label>
-                      <input id="file-upload" name='file-upload' type="file" onChange={(e) => onUploadChange(e.target.files[0])} />
+                      <input
+                        id="file-upload"
+                        name="file-upload"
+                        type="file"
+                        onChange={(e) => onUploadChange(e.target.files[0])}
+                      />
                     </div>
-                    <div className="profile-pic-upload-note">Note: Image should be less than 100kb</div>
+                    <div className="profile-pic-upload-note">
+                      Note: Image should be less than 100kb
+                    </div>
                   </div>
-
                 </Modal.Body>
                 <Modal.Footer>
                   <Button
@@ -166,13 +232,14 @@ const Profile = () => {
                     variant="danger"
                     className="btn-modal btn-danger profile-pic-upload-btn"
                     onSubmit={(e) => {
-                      uploadProfilePicture(e)
+                      uploadProfilePicture(e);
                     }}
                   >
-                    {profileComponentLoading
-                      ? <Spinner size="sm" animation="border" variant="light" />
-                      : "Upload"
-                    }
+                    {profileComponentLoading ? (
+                      <Spinner size="sm" animation="border" variant="light" />
+                    ) : (
+                      "Upload"
+                    )}
                   </Button>
                 </Modal.Footer>
               </form>
