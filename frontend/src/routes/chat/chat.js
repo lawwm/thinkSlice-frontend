@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
 
-import Sidebar from "../../components/Sidebar";
-import { Col, Row, Container } from "react-bootstrap";
 import "../styles.css";
 
 class Chat extends React.Component {
