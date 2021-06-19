@@ -11,6 +11,18 @@ import thunk from 'redux-thunk'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
+const initialProfileState = {
+  profile: null,
+  profileLoading: true,
+  profileComponentLoading: false,
+  reviewLoading: true,
+  reviewPostLoading: false,
+  detailedMode: false,
+  editMode: false,
+  reviewsGiven: [],
+  reviewsReceived: [],
+};
+
 describe('profile actions without API calls should dispatch correctly', () => {
   it('profile component dispatch loading action', () => {
     const expectedActionOne = {
@@ -107,6 +119,69 @@ describe('profile actions calling API should dispatch correctly', () => {
         expect(store.getActions()[1].type).toEqual(types.PROFILE_ERROR)
       })
     })
+  })
+
+  describe('edit profile actions dispatch correctly', () => {
+    const expectedActionOne = {
+      type: types.PROFILE_LOADING,
+    }
+
+    it('get profile succeeds', () => {
+      const store = mockStore({})
+      return store.dispatch(actions.getProfile(1)).then(() => {
+        expect(store.getActions()[0]).toEqual(expectedActionOne)
+        expect(store.getActions()[1].type).toEqual(types.PROFILE_LOADED)
+      })
+    })
+
+    it('get profile fails', () => {
+      const store = mockStore({})
+      return store.dispatch(actions.getProfile(0)).then(() => {
+        expect(store.getActions()[0]).toEqual(expectedActionOne)
+        expect(store.getActions()[1].type).toEqual(types.PROFILE_ERROR)
+      })
+    })
+  })
+
+  describe('edit profile video dispatch correctly', () => {
+    const editData = {
+      video_title: "Edit video",
+      video_description: "Edit video description",
+      subject: "Biology"
+    }
+    const closeModal = jest.fn(() => 6)
+    const stopLoading = jest.fn(() => 6)
+    it("edit video succeeds", () => {
+      const expectedActionOne = {
+        type: types.PROFILE_EDIT_VIDEO,
+        payload: {
+          video_title: "Edit video",
+          video_description: "Edit video description",
+          subject: "Biology"
+        }
+      }
+      const store = mockStore({})
+      return store.dispatch(actions.editVideo(1, editData, closeModal, stopLoading)).then(() => {
+        expect(store.getActions()[0]).toEqual(expectedActionOne)
+        expect(store.getActions()[1].type).toEqual(componentTypes.SET_ALERT)
+      })
+    })
+
+    it("edit video fails", () => {
+      const store = mockStore({})
+      return store.dispatch(actions.editVideo(0, editData, closeModal, stopLoading)).then(() => {
+        expect(store.getActions()[0].type).toEqual(componentTypes.SET_ALERT)
+      })
+    })
+
+    it("No video id provided", () => {
+      const store = mockStore({})
+      return store.dispatch(actions.editVideo("", undefined, closeModal, stopLoading)).then(() => {
+        expect(store.getActions()[0].type).toEqual(componentTypes.SET_ALERT)
+        expect(store.getActions()[0].payload.msg).toEqual("No video id provided")
+      })
+    })
+
   })
 
   describe('delete profile video dispatch correctly', () => {
@@ -426,30 +501,15 @@ describe('profile reducers should work', () => {
         type: types.PROFILE_LOADING,
       })
     ).toEqual({
-      profile: null,
+      ...initialProfileState,
       profileLoading: true,
-      profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
   it('PROFILE_LOADED case should work', () => {
     expect(
       profile({
-        profile: null,
-        profileLoading: false,
-        profileComponentLoading: false,
-        reviewLoading: true,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: [],
+        ...initialProfileState,
       }, {
         type: types.PROFILE_LOADED,
         payload: {
@@ -485,6 +545,7 @@ describe('profile reducers should work', () => {
         }
       })
     ).toEqual({
+      ...initialProfileState,
       profile: {
         basic: {
           id: 3,
@@ -517,55 +578,41 @@ describe('profile reducers should work', () => {
         }
       },
       profileLoading: false,
-      profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
   it('PROFILE_COMPONENT_LOADING case should work', () => {
     expect(
-      profile(undefined, {
+      profile({
+        ...initialProfileState,
+        profileComponentLoading: false,
+      }, {
         type: types.PROFILE_COMPONENT_LOADING,
       })
     ).toEqual({
-      profile: null,
-      profileLoading: true,
+      ...initialProfileState,
       profileComponentLoading: true,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
   it('PROFILE_COMPONENT_LOADED case should work', () => {
     expect(
-      profile(undefined, {
+      profile({
+        ...initialProfileState,
+        profileComponentLoading: true,
+      }, {
         type: types.PROFILE_COMPONENT_LOADED,
       })
     ).toEqual({
-      profile: null,
-      profileLoading: true,
+      ...initialProfileState,
       profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
-  it('PROFILE_DELETE_VIDEO case should work', () => {
+  it('PROFILE_EDIT_VIDEO case should work', () => {
     expect(
       profile({
+        ...initialProfileState,
         profile: {
           basic: {
             id: 3,
@@ -611,19 +658,122 @@ describe('profile reducers should work', () => {
             qualifications: "P6 tutor"
           }
         },
-        profileLoading: false,
-        profileComponentLoading: false,
-        reviewLoading: true,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: [],
+
+      }, {
+        type: types.PROFILE_EDIT_VIDEO,
+        payload: {
+          id: 1,
+          video_title: "edited",
+          video_description: "edited",
+          subject: "edited subject"
+        }
+      })
+    ).toEqual({
+      ...initialProfileState,
+      profile: {
+        basic: {
+          id: 3,
+          profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
+          username: "Applesauce",
+          user_bio: "Hi, welcome to my profile!",
+          is_tutor: true,
+          is_student: false,
+          user: 3,
+          video: [{
+            "id": 1,
+            "video_title": "edited",
+            "video_description": "edited",
+            "subject": "edited subject",
+            "views": 30,
+            "likes": 0,
+            "num_of_comments": 4,
+            "asset_id": "rTlMQEuMQAUV2VnTUc202QL56FPqQOgmXTu9348BNEWg",
+            "playback_id": "yuV6wIzNXSnX7eZL8uyRTaJjxWPU9fLBV6I7LTKfh02k",
+            "duration": 0.0,
+            "policy": "public",
+            "created_at": 1622792907,
+            "creator_profile": 2
+          }]
+        },
+        detailed: {
+          tutor_whatsapp: 12345678,
+          tutor_telegram: "@jimijam",
+          aggregate_star: null,
+          location: "South",
+          duration_classes: [
+            5,
+            8
+          ],
+          subjects: [
+            "Math",
+            "Cooking",
+            "Biology",
+            "Business",
+            "Computing"
+          ],
+          total_tutor_reviews: 0,
+          qualifications: "P6 tutor"
+        }
+      },
+    })
+  })
+
+  it('PROFILE_DELETE_VIDEO case should work', () => {
+    expect(
+      profile({
+        ...initialProfileState,
+        profile: {
+          basic: {
+            id: 3,
+            profile_pic: "https://thinkslice-project.s3.amazonaws.com/user-images/",
+            username: "Applesauce",
+            user_bio: "Hi, welcome to my profile!",
+            is_tutor: true,
+            is_student: false,
+            user: 3,
+            video: [{
+              "id": 1,
+              "video_title": "Milestone 1 Video (Snippet)",
+              "video_description": "Testing upload function",
+              "subject": "Science",
+              "views": 30,
+              "likes": 0,
+              "num_of_comments": 4,
+              "asset_id": "rTlMQEuMQAUV2VnTUc202QL56FPqQOgmXTu9348BNEWg",
+              "playback_id": "yuV6wIzNXSnX7eZL8uyRTaJjxWPU9fLBV6I7LTKfh02k",
+              "duration": 0.0,
+              "policy": "public",
+              "created_at": 1622792907,
+              "creator_profile": 2
+            }]
+          },
+          detailed: {
+            tutor_whatsapp: 12345678,
+            tutor_telegram: "@jimijam",
+            aggregate_star: null,
+            location: "South",
+            duration_classes: [
+              5,
+              8
+            ],
+            subjects: [
+              "Math",
+              "Cooking",
+              "Biology",
+              "Business",
+              "Computing"
+            ],
+            total_tutor_reviews: 0,
+            qualifications: "P6 tutor"
+          }
+        },
+
       }, {
         type: types.PROFILE_DELETE_VIDEO,
         payload: 1
       })
     ).toEqual({
+      ...initialProfileState,
       profile: {
         basic: {
           id: 3,
@@ -655,58 +805,43 @@ describe('profile reducers should work', () => {
           qualifications: "P6 tutor"
         }
       },
-      profileLoading: false,
-      profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
   it('PROFILE_DETAILED_VIEW case should work', () => {
     expect(
-      profile(undefined, {
+      profile({
+        ...initialProfileState,
+        detailedMode: false,
+      }, {
         type: types.PROFILE_DETAILED_VIEW,
         payload: true
       })
     ).toEqual({
-      profile: null,
-      profileLoading: true,
-      profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
+      ...initialProfileState,
       detailedMode: true,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
   it('PROFILE_EDIT_MODE case should work', () => {
     expect(
-      profile(undefined, {
+      profile({
+        ...initialProfileState,
+        editMode: false,
+      }, {
         type: types.PROFILE_EDIT_MODE,
         payload: true
       })
     ).toEqual({
-      profile: null,
-      profileLoading: true,
-      profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
+      ...initialProfileState,
       editMode: true,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
   it('PROFILE_PIC_EDIT case should work', () => {
     expect(
       profile({
+        ...initialProfileState,
         profile: {
           basic: {
             id: 3,
@@ -738,19 +873,12 @@ describe('profile reducers should work', () => {
             qualifications: "P6 tutor"
           }
         },
-        profileLoading: false,
-        profileComponentLoading: false,
-        reviewLoading: true,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: [],
       }, {
         type: types.PROFILE_PIC_EDIT,
         payload: "fake video"
       })
     ).toEqual({
+      ...initialProfileState,
       profile: {
         basic: {
           id: 3,
@@ -782,20 +910,13 @@ describe('profile reducers should work', () => {
           qualifications: "P6 tutor"
         }
       },
-      profileLoading: false,
-      profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
   it('PROFILE_UPDATED case should work', () => {
     expect(
       profile({
+        ...initialProfileState,
         profile: {
           basic: {
             id: 3,
@@ -828,13 +949,6 @@ describe('profile reducers should work', () => {
           }
         },
         profileLoading: true,
-        profileComponentLoading: false,
-        reviewLoading: true,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: [],
       }, {
         type: types.PROFILE_UPDATED,
         payload: {
@@ -870,6 +984,8 @@ describe('profile reducers should work', () => {
         }
       })
     ).toEqual({
+      ...initialProfileState,
+      profileLoading: false,
       profile: {
         basic: {
           id: 3,
@@ -901,27 +1017,14 @@ describe('profile reducers should work', () => {
           qualifications: "P6 tutor"
         }
       },
-      profileLoading: false,
-      profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
   it('REVIEWS_LOADED case should work', () => {
     expect(
       profile({
-        profile: null,
-        profileLoading: true,
-        profileComponentLoading: false,
+        ...initialProfileState,
         reviewLoading: true,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
         reviewsGiven: [],
         reviewsReceived: [],
       }, {
@@ -962,13 +1065,8 @@ describe('profile reducers should work', () => {
         }
       })
     ).toEqual({
-      profile: null,
-      profileLoading: true,
-      profileComponentLoading: false,
+      ...initialProfileState,
       reviewLoading: false,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
       reviewsGiven: [{
         "id": 52,
         "creator_details": {
@@ -1006,105 +1104,79 @@ describe('profile reducers should work', () => {
 
   it('SET_REVIEW_LOADING case should work', () => {
     expect(
-      profile(undefined, {
+      profile({
+        ...initialProfileState,
+        reviewLoading: false,
+      }, {
         type: types.SET_REVIEW_LOADING,
       }))
       .toEqual({
-        profile: null,
-        profileLoading: true,
-        profileComponentLoading: false,
+        ...initialProfileState,
         reviewLoading: true,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: []
       })
   })
 
   it('SET_REVIEW_POST_LOADING case should work', () => {
     expect(
-      profile(undefined, {
+      profile({
+        ...initialProfileState,
+        reviewPostLoading: false
+      }, {
         type: types.SET_REVIEW_POST_LOADING,
       }))
       .toEqual({
-        profile: null,
-        profileLoading: true,
-        profileComponentLoading: false,
-        reviewLoading: true,
+        ...initialProfileState,
         reviewPostLoading: true,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: []
       })
   })
 
   it('STOP_REVIEW_LOADING case should work', () => {
     expect(
-      profile(undefined, {
+      profile({
+        ...initialProfileState,
+        reviewLoading: true,
+      }, {
         type: types.STOP_REVIEW_LOADING,
       }))
       .toEqual({
-        profile: null,
-        profileLoading: true,
-        profileComponentLoading: false,
+        ...initialProfileState,
         reviewLoading: false,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: []
       })
   })
 
   it('STOP_REVIEW_POST_LOADING case should work', () => {
     expect(
-      profile(undefined, {
+      profile({
+        ...initialProfileState,
+        reviewPostLoading: true,
+      }, {
         type: types.STOP_REVIEW_POST_LOADING,
       }))
       .toEqual({
-        profile: null,
-        profileLoading: true,
-        profileComponentLoading: false,
-        reviewLoading: true,
+        ...initialProfileState,
         reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: []
       })
   })
 
   it('PROFILE_UPDATE_ERROR case should work', () => {
     expect(
-      profile(undefined, {
+      profile({
+        ...initialProfileState,
+        profileLoading: true,
+      }, {
         type: types.PROFILE_UPDATE_ERROR,
       }))
       .toEqual({
-        profile: null,
+        ...initialProfileState,
         profileLoading: false,
-        profileComponentLoading: false,
-        reviewLoading: true,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: []
       })
   })
 
   it('CREATE_REVIEW case should work', () => {
     expect(
       profile({
-        profile: null,
-        profileLoading: false,
-        profileComponentLoading: false,
+        ...initialProfileState,
         reviewLoading: true,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
         reviewsReceived: []
       }, {
         type: types.CREATE_REVIEW,
@@ -1126,14 +1198,8 @@ describe('profile reducers should work', () => {
         },
       }))
       .toEqual({
-        profile: null,
-        profileLoading: false,
-        profileComponentLoading: false,
+        ...initialProfileState,
         reviewLoading: false,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
         reviewsReceived: [{
           "id": 53,
           "creator_details": {
@@ -1156,13 +1222,8 @@ describe('profile reducers should work', () => {
   it('EDIT_REVIEW case should work', () => {
     expect(
       profile({
-        profile: null,
-        profileLoading: false,
-        profileComponentLoading: false,
-        reviewLoading: false,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
+        ...initialProfileState,
+        reviewPostLoading: true,
         reviewsGiven: [{
           "id": 53,
           "creator_details": {
@@ -1213,13 +1274,8 @@ describe('profile reducers should work', () => {
         }
       }))
       .toEqual({
-        profile: null,
-        profileLoading: false,
-        profileComponentLoading: false,
-        reviewLoading: false,
+        ...initialProfileState,
         reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
         reviewsGiven: [{
           "id": 53,
           "creator_details": {
@@ -1258,13 +1314,8 @@ describe('profile reducers should work', () => {
   it('DELETE_REVIEW case should work', () => {
     expect(
       profile({
-        profile: null,
-        profileLoading: false,
-        profileComponentLoading: false,
-        reviewLoading: false,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
+        ...initialProfileState,
+        reviewPostLoading: true,
         reviewsGiven: [{
           "id": 53,
           "creator_details": {
@@ -1302,13 +1353,8 @@ describe('profile reducers should work', () => {
         payload: 53,
       }))
       .toEqual({
-        profile: null,
-        profileLoading: false,
-        profileComponentLoading: false,
-        reviewLoading: false,
+        ...initialProfileState,
         reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
         reviewsGiven: [],
         reviewsReceived: []
       })

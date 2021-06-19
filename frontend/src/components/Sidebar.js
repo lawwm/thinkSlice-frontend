@@ -124,13 +124,11 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                       checked={subject === selectedSubject}
                       onChange={
                         (e) => {
-                          console.log(e.target.value)
                           dispatch(changeSubject(e.target.value))
                         }
                       }
                     />
                   </div>
-
                 )
               })
             )
@@ -148,7 +146,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                       checked={subject === selectedSubject}
                       onChange={
                         (e) => {
-                          console.log(e.target.value)
                           dispatch(changeSubject(e.target.value))
                         }
                       }
@@ -177,7 +174,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               checked={selectedLocation === ''}
               onChange={
                 (e) => {
-                  console.log(e.target.value)
                   dispatch(changeLocation(e.target.value))
                 }
               }
@@ -195,7 +191,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                   checked={selectedLocation === location}
                   onChange={
                     (e) => {
-                      console.log(e.target.value)
                       dispatch(changeLocation(e.target.value))
                     }
                   }
@@ -211,7 +206,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               return (
                 <div
                   onClick={() => {
-                    console.log(rate)
                     dispatch(changeReview(rate))
                   }
                   }
@@ -231,7 +225,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               checked={selectedReview === ''}
               onChange={
                 (e) => {
-                  console.log(e.target.value)
                   dispatch(changeReview(e.target.value))
                 }
               }

@@ -77,6 +77,25 @@ export const profileHandlers = [
       ctx.status(400),
     )
   }),
+  //EDIT user video 
+  rest.patch('http://localhost' + DOMAINS.VIDEO + "/" + 1, (req, res, ctx) => {
+    return res(
+      // Respond with a 200 status code
+      ctx.json({
+        video_title: "Edit video",
+        video_description: "Edit video description",
+        subject: "Biology"
+      }),
+      ctx.status(200),
+    )
+  }),
+  //EDIT user video error
+  rest.patch('http://localhost' + DOMAINS.VIDEO + "/" + 0, (req, res, ctx) => {
+    return res(
+      // Respond with a 200 status code
+      ctx.status(400),
+    )
+  }),
   //DELETE user video 
   rest.delete('http://localhost' + DOMAINS.VIDEO + "/" + 1, (req, res, ctx) => {
     return res(

@@ -100,8 +100,6 @@ export const home = (state = initialState, action) => {
     case VIDEO_LOADED:
       let newVideoArray = [...state.videos]
       if (!isEmpty(state.currentVideo)) {
-        console.log(newVideoArray)
-        console.log(payload)
         newVideoArray = newVideoArray.filter(video => video.id !== payload.id)
         newVideoArray.push(state.currentVideo)
       }

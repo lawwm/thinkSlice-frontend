@@ -46,12 +46,85 @@ describe('home actions without API calls should dispatch correctly', () => {
     })
   })
 
+  it('change available dispatches correctly', () => {
+    const expectedActionOne = {
+      type: types.CHANGE_AVAILABLE,
+      payload: true
+    }
+    const store = mockStore({})
+    return store.dispatch(actions.changeAvailable(true)).then(() => {
+      expect(store.getActions()[0]).toEqual(expectedActionOne)
+    })
+  })
+
+  it('change subject dispatches correctly', () => {
+    const expectedActionOne = {
+      type: types.CHANGE_SUBJECT,
+      payload: "Biology"
+    }
+    const store = mockStore({})
+    return store.dispatch(actions.changeSubject("Biology")).then(() => {
+      expect(store.getActions()[0]).toEqual(expectedActionOne)
+    })
+  })
+
+  it('change location dispatches correctly', () => {
+    const expectedActionOne = {
+      type: types.CHANGE_LOCATION,
+      payload: "Central"
+    }
+    const store = mockStore({})
+    return store.dispatch(actions.changeLocation("Central")).then(() => {
+      expect(store.getActions()[0]).toEqual(expectedActionOne)
+    })
+  })
+
+  it('change review dispatches correctly', () => {
+    const expectedActionOne = {
+      type: types.CHANGE_REVIEW,
+      payload: 4
+    }
+    const store = mockStore({})
+    return store.dispatch(actions.changeReview(4)).then(() => {
+      expect(store.getActions()[0]).toEqual(expectedActionOne)
+    })
+  })
+
+
   it('clear videos dispatches correctly', () => {
     const expectedActionOne = {
       type: types.CLEAR_VIDEO_PAGE,
     }
     const store = mockStore({})
     return store.dispatch(actions.clearVideos()).then(() => {
+      expect(store.getActions()[0]).toEqual(expectedActionOne)
+    })
+  })
+
+  it('search video dispatches correctly', () => {
+    const expectedActionOne = {
+      type: types.SEARCH_VIDEO,
+      payload: "sauce"
+    }
+    const store = mockStore({})
+    return store.dispatch(actions.searchVideos("sauce")).then(() => {
+      expect(store.getActions()[0]).toEqual(expectedActionOne)
+    })
+  })
+
+  it('search video does not dispatch without query', () => {
+    const store = mockStore({})
+    return store.dispatch(actions.searchVideos("")).then(() => {
+      expect(store.getActions()[0].type).toEqual(componentTypes.SET_ALERT)
+    })
+  })
+
+  it('clear search videos dispatches correctly', () => {
+    const expectedActionOne = {
+      type: types.CLEAR_SEARCH_VIDEO,
+    }
+    const store = mockStore({})
+    return store.dispatch(actions.clearSearchVideos()).then(() => {
       expect(store.getActions()[0]).toEqual(expectedActionOne)
     })
   })
@@ -556,6 +629,61 @@ describe('home page reducers should work', () => {
     })
   })
 
+  it('SEARCH_VIDEO reducers should work', () => {
+    expect(
+      home({
+        ...initialReducerState,
+        videos: [{ fakeVideo: 123 }],
+        page: 3,
+        reachedEnd: true,
+        searchQuery: ""
+      }, {
+        type: types.SEARCH_VIDEO,
+        payload: "sauce"
+      })
+    ).toEqual({
+      ...initialReducerState,
+      searchQuery: "sauce",
+      videos: [],
+      reachedEnd: false,
+      page: 1
+    })
+  })
+
+  it('CLEAR_SEARCH_VIDEO reducers should work', () => {
+    expect(
+      home({
+        ...initialReducerState,
+        videos: [{ fakeVideo: 123 }],
+        page: 3,
+        reachedEnd: true,
+        searchQuery: "sauce"
+      }, {
+        type: types.CLEAR_SEARCH_VIDEO,
+      })
+    ).toEqual({
+      ...initialReducerState,
+      searchQuery: "",
+      videos: [],
+      reachedEnd: false,
+      page: 1
+    })
+  })
+
+  it('CLEAR_VIDEO_PAGE reducers should work', () => {
+    expect(
+      home({
+        ...initialReducerState,
+        videos: [{ fakeVideo: 123 }],
+      }, {
+        type: types.CLEAR_VIDEO_PAGE,
+      })
+    ).toEqual({
+      ...initialReducerState,
+      videos: [],
+    })
+  })
+
   it('VIDEO_LOADED reducers should work', () => {
     expect(
       home(undefined, {
@@ -755,6 +883,92 @@ describe('home page reducers should work', () => {
       page: 2,
     })
   })
+
+  it('CHANGE_AVAILABLE reducers should work', () => {
+    expect(
+      home({
+        ...initialReducerState,
+        availability: false,
+        videos: [1],
+        reachedEnd: true,
+        page: 4,
+      }, {
+        type: types.CHANGE_AVAILABLE,
+        payload: true
+      })
+    ).toEqual({
+      ...initialReducerState,
+      availability: true,
+      videos: [],
+      reachedEnd: false,
+      page: 1,
+    })
+  })
+
+  it('CHANGE_SUBJECT reducers should work', () => {
+    expect(
+      home({
+        ...initialReducerState,
+        subject: "",
+        videos: [1],
+        reachedEnd: true,
+        page: 4,
+      }, {
+        type: types.CHANGE_SUBJECT,
+        payload: "Biology"
+      })
+    ).toEqual({
+      ...initialReducerState,
+      subject: "Biology",
+      videos: [],
+      reachedEnd: false,
+      page: 1,
+    })
+  })
+
+  it('CHANGE_LOCATION reducers should work', () => {
+    expect(
+      home({
+        ...initialReducerState,
+        location: "",
+        videos: [1],
+        reachedEnd: true,
+        page: 4,
+      }, {
+        type: types.CHANGE_LOCATION,
+        payload: "Central"
+      })
+    ).toEqual({
+      ...initialReducerState,
+      location: "Central",
+      videos: [],
+      reachedEnd: false,
+      page: 1,
+    })
+  })
+
+  it('CHANGE_REVIEW reducers should work', () => {
+    expect(
+      home({
+        ...initialReducerState,
+        review: 1,
+        videos: [1],
+        reachedEnd: true,
+        page: 4,
+      }, {
+        type: types.CHANGE_REVIEW,
+        payload: 2
+      })
+    ).toEqual({
+      ...initialReducerState,
+      review: 2,
+      videos: [],
+      reachedEnd: false,
+      page: 1,
+    })
+  })
+
+
 
   it('COMMENT_LOADING reducers should work', () => {
     expect(

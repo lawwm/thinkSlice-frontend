@@ -117,6 +117,41 @@ describe('Home page', () => {
       })
       expect(screen.getByText('Filter: popular in ascending order')).toBeInTheDocument()
     })
+
+    it('checkbox radio', () => {
+      //Availability
+      expect(screen.getByRole("radio", { name: "Available" })).toBeInTheDocument()
+      userEvent.click(screen.getByRole("radio", { name: "Available" }))
+      expect(screen.getByRole("radio", { name: "Available" })).toBeChecked()
+      userEvent.click(screen.getByRole("radio", { name: "Unavailable" }))
+      expect(screen.getByRole("radio", { name: "Unavailable" })).toBeChecked()
+      userEvent.click(screen.getByLabelText("Both"))
+      expect(screen.getByLabelText("Both")).toBeChecked()
+
+      //Subject
+      userEvent.click(screen.getByRole("radio", { name: "Any subject" }))
+      expect(screen.getByRole("radio", { name: "Any subject" })).toBeChecked()
+      userEvent.click(screen.getByRole("radio", { name: "Biology" }))
+      expect(screen.getByRole("radio", { name: "Biology" })).toBeChecked()
+
+      //Show and hide subjects
+      expect(screen.queryByRole("radio", { name: "Health" })).not.toBeInTheDocument()
+      userEvent.click(screen.getByText(/show more/i))
+      userEvent.click(screen.getByRole("radio", { name: "Health" }))
+      expect(screen.getByRole("radio", { name: "Health" })).toBeChecked()
+      userEvent.click(screen.getByText(/hide/i))
+      expect(screen.queryByRole("radio", { name: "Health" })).not.toBeInTheDocument()
+
+      //Locations
+      userEvent.click(screen.getByRole("radio", { name: "Central" }))
+      expect(screen.getByRole("radio", { name: "Central" })).toBeChecked()
+      userEvent.click(screen.getByRole("radio", { name: "Any location" }))
+      expect(screen.getByRole("radio", { name: "Any location" })).toBeChecked()
+
+      //Reviews
+      userEvent.click(screen.getByRole("checkbox", { name: "Select none" }))
+      expect(screen.getByRole("checkbox", { name: "Select none" })).toBeChecked()
+    })
   })
 
 

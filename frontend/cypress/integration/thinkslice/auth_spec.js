@@ -1,3 +1,4 @@
+//yarn run cypress open
 const loginData = {
   username: 'jimijam',
   password: 'password'
