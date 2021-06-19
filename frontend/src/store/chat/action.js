@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { ENDPOINTS, DOMAINS } from "../endpoints";
+import { DOMAINS } from "../endpoints";
 
 export const addMessage = (message) => async (dispatch) => {
   dispatch({
