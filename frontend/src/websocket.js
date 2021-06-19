@@ -3,7 +3,7 @@ class WebSocketService {
   callbacks = {};
 
   static getInstance() {
-    if (!WebSocketService.instance) {
+    if (WebSocketService.instance === null) {
       WebSocketService.instance = new WebSocketService();
     }
     return WebSocketService.instance;

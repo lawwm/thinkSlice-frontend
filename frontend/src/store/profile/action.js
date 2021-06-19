@@ -76,7 +76,7 @@ export const editVideo = (videoId, videoData, closeModalFunction, stopLoading) =
       payload: res.data
     })
     // console.log(videoId)
-    dispatch(setAlert("Video has successfully been edited", "success"));
+    dispatch(setAlert("Video has been successfully edited", "success"));
     closeModalFunction()
     stopLoading()
   } catch (err) {
@@ -98,7 +98,7 @@ export const deleteVideo = (videoId, closeModalFunction, stopLoading) => async (
       payload: videoId
     })
     // console.log(videoId)
-    dispatch(setAlert("Video has successfully been deleted", "success"));
+    dispatch(setAlert("Video has been successfully deleted", "success"));
     closeModalFunction()
     stopLoading()
   } catch (err) {

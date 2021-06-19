@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
-import * as chatActions from "../../store/chat/actions.js";
+import * as chatActions from "../../store/chat/action.js";
 
 import Sidebar from "../../components/Sidebar";
 import { Col, Row, Container } from "react-bootstrap";
@@ -12,10 +12,11 @@ class Chat extends React.Component {
 
   initialiseChat() {
     const room_id = this.props.match.params.room_id;
+    
     this.waitForSocketConnection(() => {
       WebSocketInstance.fetchMessages(this.props.user, room_id); 
     });
-    WebSocketInstance.connect(room_id);    
+    WebSocketInstance.connect(room_id);
   }
 
   constructor(props) {
@@ -39,6 +40,19 @@ class Chat extends React.Component {
         component.waitForSocketConnection(callback);
       }
     }, 100);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.room_id !== prevProps.match.params.room_id) {
+      WebSocketInstance.disconnect();
+      this.waitForSocketConnection(() => {
+        WebSocketInstance.fetchMessages(
+          this.props.username,
+          this.props.match.params.room_id
+        );
+      });
+      WebSocketInstance.connect(this.props.match.params.room_id);
+    }
   }
 
   messageChangeHandler = (event) => {
@@ -80,7 +94,7 @@ class Chat extends React.Component {
   };
 
   renderMessages = (messages) => {
-    const currentUser = this.props.username;
+    const currentUser = parseInt(this.props.user);
     return messages.map((message, i, arr) => (
       <li
         key={message.id}
@@ -90,7 +104,7 @@ class Chat extends React.Component {
         <p>
           {message.content}
           <br />
-          <h6>{this.renderTimestamp(message.timestamp)}</h6>
+          <small>{this.renderTimestamp(message.timestamp)}</small>
         </p>
       </li>
     ));
@@ -140,7 +154,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => {
   return {
     addMessage: message => dispatch(chatActions.addMessage(message)),
-    setMessages: messages => dispatch(chatActions.setMessages(messages))
+    setMessages: messages => dispatch(chatActions.setMessages(messages)),
   };
 };
 

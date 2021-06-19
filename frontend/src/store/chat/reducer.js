@@ -3,20 +3,43 @@ import * as actionTypes from "./actionTypes";
 const initialState = {
   messages: [],
   chats: [],
+  chatsLoading: true,
+  chatComponentLoading: false,
+  activeChat: null,
+};
+
+const addMessage = (state, action) => {
+  return { ...state, messages: state.messages.concat(action.message) };
+};
+
+const setMessages = (state, action) => {
+  return { ...state, messages: action.messages.reverse() };
 };
 
 export const chat = (state = initialState, action) => {
-  const { type, payload } = action;
-
   switch (action.type) {
     case actionTypes.ADD_MESSAGE:
-      return { ...state, messages: [...state.messages, action.message] };
+      return addMessage(state, action);
 
     case actionTypes.SET_MESSAGES:
-      return { ...state, messages: action.messages.reverse() };
+      return setMessages(state, action);
 
-    case actionTypes.GET_CHATS_SUCCESS:
-      return { ...state, chats: action.chats };
+    case actionTypes.START_CHAT:
+      return { ...state, chatComponentLoading: true };
+
+    case actionTypes.START_CHAT_SUCCESS:
+      return {
+        ...state,
+        chatComponentLoading: false,
+        activeChat: action.chat,
+      };
+
+    case actionTypes.START_CHAT_FAIL:
+      return {
+        ...state,
+        chatComponentLoading: false,
+        activeChat: null,
+      };
 
     default:
       return state;

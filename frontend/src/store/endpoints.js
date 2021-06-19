@@ -32,8 +32,8 @@ export const ENDPOINTS = {
     GET_ADD_REPLY: '/replies',
 
     //CHAT
-    ACCESS_CHAT_ROOM: '',
-    CREATE_CHAT_ROOM: '/create'
+    ACCESS_CHAT_ROOM: '/handle/',
+    CREATE_CHAT_ROOM: ''
 }
 
 export const DOMAINS = {
