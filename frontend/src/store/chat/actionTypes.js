@@ -6,3 +6,4 @@ export const START_CHAT_FAIL = "START_CHAT_FAIL";
 export const LOAD_CHATS = "LOAD_CHATS";
 export const GET_CHATS_SUCCESS = "GET_CHATS_SUCCESS";
 export const GET_CHATS_FAIL = "GET_CHATS_FAIL";
+export const RESET_CHAT = "RESET_CHAT";

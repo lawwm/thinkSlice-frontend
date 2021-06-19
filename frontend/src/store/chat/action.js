@@ -33,6 +33,12 @@ export const startChat = (userId) => async (dispatch) => {
   }
 };
 
+export const resetChats = () => async (dispatch) => {
+    dispatch({
+      type: actionTypes.RESET_CHAT,
+    });
+};
+
 export const loadChats = (userId) => async (dispatch) => {
   try {
   } catch (err) {

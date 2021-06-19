@@ -10,9 +10,9 @@ class Chat extends React.Component {
 
   initialiseChat() {
     const room_id = this.props.match.params.room_id;
-    
+
     this.waitForSocketConnection(() => {
-      WebSocketInstance.fetchMessages(this.props.user, room_id); 
+      WebSocketInstance.fetchMessages(this.props.user, room_id);
     });
     WebSocketInstance.connect(room_id);
   }
@@ -51,6 +51,11 @@ class Chat extends React.Component {
       });
       WebSocketInstance.connect(this.props.match.params.room_id);
     }
+  }
+
+  componentWillUnmount() {
+    const { resetChats } = this.props;
+    resetChats();
   }
 
   messageChangeHandler = (event) => {
@@ -149,10 +154,11 @@ const mapStateToProps = (state) => ({
   messages: state.chat.messages,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    addMessage: message => dispatch(chatActions.addMessage(message)),
-    setMessages: messages => dispatch(chatActions.setMessages(messages)),
+    addMessage: (message) => dispatch(chatActions.addMessage(message)),
+    setMessages: (messages) => dispatch(chatActions.setMessages(messages)),
+    resetChats: () => dispatch(chatActions.resetChats()),
   };
 };
 

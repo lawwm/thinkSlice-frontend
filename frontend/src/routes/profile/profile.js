@@ -33,6 +33,12 @@ const Profile = () => {
     dispatch(getProfile(user_id));
   }, [user_id, dispatch]);
 
+  useEffect(() => {
+    if (activeChat) {
+      history.push("/chat/" + activeChat.chatroom);
+    }
+  });
+
   const [pictureModal, setPictureModal] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imageURL, setImageURL] = useState(null);
@@ -112,11 +118,8 @@ const Profile = () => {
                     {currentViewer && currentViewer !== user_id && (
                       <button
                         className="btn profile-button"
-                        onClick={() =>
-                          dispatch(startChat(user_id)).then(() =>
-                            history.push("/chat/" + activeChat.chatroom)
-                          )
-                        }
+                        onClick={() => dispatch(startChat(user_id))}
+                        disabled={chatComponentLoading}
                       >
                         {chatComponentLoading ? (
                           <Spinner

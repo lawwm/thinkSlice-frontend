@@ -34,6 +34,7 @@ export const chat = (state = initialState, action) => {
         activeChat: action.chat,
       };
 
+    case actionTypes.RESET_CHAT:
     case actionTypes.START_CHAT_FAIL:
       return {
         ...state,
