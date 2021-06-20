@@ -30,7 +30,7 @@ describe('Authentication', () => {
     cy.contains('Submit').click()
 
     //Alert show login successful, navbar shows profile
-    cy.contains('Profile')
+    cy.contains('Profile', { timeout: 10000 })
   })
 
   it('can logout', () => {
