@@ -56,6 +56,7 @@ class Chat extends React.Component {
   componentWillUnmount() {
     const { resetChats } = this.props;
     resetChats();
+    WebSocketInstance.disconnect();
   }
 
   messageChangeHandler = (event) => {
