@@ -16,11 +16,11 @@ class WebSocketService {
   connect(chatUrl) {
     var SOCKET_URL;
     if (process.env.NODE_ENV === "development") {
-      SOCKET_URL = "127.0.0.1:8000";
+      SOCKET_URL = "ws://127.0.0.1:8000";
     } else if (process.env.NODE_ENV === "production") {
-      SOCKET_URL = "thinkslice.herokuapp.com";
+      SOCKET_URL = "wss://thinkslice.herokuapp.com";
     }
-    const path = `ws://${SOCKET_URL}/ws/chat/${chatUrl}/`;
+    const path = `${SOCKET_URL}/ws/chat/${chatUrl}/`;
     this.socketRef = new WebSocket(path);
     this.socketRef.onopen = () => {
       console.log("WebSocket open");
