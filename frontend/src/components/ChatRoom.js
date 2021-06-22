@@ -1,7 +1,6 @@
 import React from "react";
 
 import { Media, Card, Image } from "react-bootstrap";
-import Joe_Biden from "../images/Joe_Biden.jpg";
 import "./components.css";
 
 const ChatRoom = ({profilePic, username }) => {
