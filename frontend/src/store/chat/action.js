@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { DOMAINS } from "../endpoints";
+import { DOMAINS, ENDPOINTS } from "../endpoints";
 
 export const addMessage = (message) => async (dispatch) => {
   dispatch({
@@ -34,16 +34,43 @@ export const startChat = (userId) => async (dispatch) => {
 };
 
 export const resetChats = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.RESET_CHAT,
+  });
+};
+
+export const getChat = (roomId) => async (dispatch) => {
+  try {
     dispatch({
-      type: actionTypes.RESET_CHAT,
+      type: actionTypes.GET_CHAT,
     });
+    const res = await axios.get(
+      DOMAINS.CHAT + ENDPOINTS.ACCESS_CHATROOM + "/" + roomId
+    );
+    dispatch({
+      type: actionTypes.GET_CHAT_SUCCESS,
+      chat: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: actionTypes.GET_CHAT_FAIL,
+    });
+  }
 };
 
 export const loadChats = (userId) => async (dispatch) => {
   try {
+    dispatch({
+      type: actionTypes.LOADING_CHATS,
+    });
+    const res = await axios.get(DOMAINS.CHAT + "/" + userId);
+    dispatch({
+      type: actionTypes.LOAD_CHATS_SUCCESS,
+      chats: res.data,
+    });
   } catch (err) {
     dispatch({
-      type: actionTypes.GET_CHATS_FAIL,
+      type: actionTypes.LOAD_CHATS_FAIL,
     });
   }
 };

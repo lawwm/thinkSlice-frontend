@@ -12,6 +12,7 @@ export const PATHS = {
     REVIEW_PAGE: '/profile/reviews/:user_id',
     UPLOAD_PAGE: '/upload',
     WATCH_PAGE: '/watch/:videoId',
+    ALL_CHATS_PAGE: '/chat',
     CHAT_PAGE: '/chat/:room_id',
 }
 
@@ -37,6 +38,7 @@ const Routes = () => {
                     <Route exact path={PATHS.REGISTER_PAGE} component={Register} />
                     <Route exact path={PATHS.PROFILE_PAGE} component={Profile} />
                     <Route exact path={PATHS.REVIEW_PAGE} component={Review} />
+                    <Route exact path={PATHS.ALL_CHATS_PAGE} component={Chat}/>
                     <Route exact path={PATHS.CHAT_PAGE} component={Chat}/>
 
                     <PrivateRoute exact path={PATHS.UPLOAD_PAGE} component={Upload} />

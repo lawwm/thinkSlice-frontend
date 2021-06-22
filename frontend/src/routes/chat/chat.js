@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
 
+import { Container, Col, Row, Form, Button } from "react-bootstrap";
+import LoadingSpinner from "../../components/LoadingSpinner.js";
+import ChatRoom from "../../components/ChatRoom.js";
 import "../styles.css";
 
 class Chat extends React.Component {
@@ -23,7 +26,9 @@ class Chat extends React.Component {
       this.props.setMessages.bind(this),
       this.props.addMessage.bind(this)
     );
-    this.initialiseChat();
+    if (this.props.match.params.room_id) {
+      this.initialiseChat();
+    }
   }
 
   waitForSocketConnection(callback) {
@@ -38,6 +43,15 @@ class Chat extends React.Component {
         component.waitForSocketConnection(callback);
       }
     }, 100);
+  }
+
+  componentDidMount() {
+    const { loadChats, getChat, user, activeChat } = this.props;
+    loadChats(user);
+    const roomId = this.props.match.params.room_id;
+    if (roomId && !activeChat) {
+      getChat(roomId);
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -56,7 +70,9 @@ class Chat extends React.Component {
   componentWillUnmount() {
     const { resetChats } = this.props;
     resetChats();
-    WebSocketInstance.disconnect();
+    if (this.props.match.params.room_id) {
+      WebSocketInstance.disconnect();
+    }
   }
 
   messageChangeHandler = (event) => {
@@ -82,15 +98,28 @@ class Chat extends React.Component {
     if (timeDiff < 1) {
       // less than one minute ago
       prefix = "just now...";
+    } else if (timeDiff === 1) {
+      // one minute ago
+      prefix = `1 minute ago`;
     } else if (timeDiff < 60 && timeDiff > 1) {
       // less than sixty minutes ago
       prefix = `${timeDiff} minutes ago`;
     } else if (timeDiff < 24 * 60 && timeDiff > 60) {
       // less than 24 hours ago
-      prefix = `${Math.round(timeDiff / 60)} hours ago`;
+      const rounded = Math.round(timeDiff / 60);
+      if (rounded === 1) {
+        prefix = `1 hour ago`;
+      } else {
+        prefix = `${rounded} hours ago`;
+      }
     } else if (timeDiff < 31 * 24 * 60 && timeDiff > 24 * 60) {
       // less than 7 days ago
-      prefix = `${Math.round(timeDiff / (60 * 24))} days ago`;
+      const rounded = Math.round(timeDiff / (60 * 24));
+      if (rounded === 1) {
+        prefix = `1 day ago`;
+      } else {
+        prefix = `${rounded} days ago`;
+      }
     } else {
       prefix = `${new Date(timestamp)}`;
     }
@@ -100,59 +129,86 @@ class Chat extends React.Component {
   renderMessages = (messages) => {
     const currentUser = parseInt(this.props.user);
     return messages.map((message, i, arr) => (
-      <li
+      <div
         key={message.id}
-        style={{ marginBottom: arr.length - 1 === i ? "300px" : "15px" }}
-        className={message.author === currentUser ? "sent" : "replies"}
+        style={{ marginBottom: arr.length - 1 === i ? "150px" : "15px" }}
+        className={
+          "message " + (message.author === currentUser ? "sent" : "replies")
+        }
       >
-        <p>
-          {message.content}
-          <br />
-          <small>{this.renderTimestamp(message.timestamp)}</small>
-        </p>
-      </li>
+        {message.content}
+        <br />
+        <small>{this.renderTimestamp(message.timestamp)}</small>
+      </div>
+    ));
+  };
+
+  renderChatRooms = (chats) => {
+    return chats.map((chat) => (
+      <ChatRoom profilePic={chat.recipientPic} username={chat.recipientName} />
     ));
   };
 
   render() {
     return (
       <>
-        <div className="messages">
-          <ul id="chat-log">
-            {this.props.messages && this.renderMessages(this.props.messages)}
-            <div
-              style={{ float: "left", clear: "both" }}
-              ref={(el) => {
-                this.messagesEnd = el;
-              }}
-            />
-          </ul>
-        </div>
-        <div className="message-input">
-          <form onSubmit={this.sendMessageHandler}>
-            <div className="wrap">
-              <input
-                onChange={this.messageChangeHandler}
-                value={this.state.message}
-                required
-                id="chat-message-input"
-                type="text"
-                placeholder="Write your message..."
-              />
-              <button id="chat-message-submit" className="submit">
-                <i className="fa fa-paper-plane" aria-hidden="true" />
-              </button>
+        {this.props.chatsLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <Container fluid>
+            <div className="container-padding">
+              <Row>
+                <Col>
+                  <div>
+                    {this.props.chats.length > 0 ? (
+                      this.renderChatRooms(this.props.chats)
+                    ) : (
+                      <p>You have not started any chats previously.</p>
+                    )}
+                  </div>
+                </Col>
+                <Col xs={7}>
+                  <div className="chat-box">
+                    {this.props.chatComponentLoading ? (
+                      <LoadingSpinner />
+                    ) : (
+                      <>
+                        {this.props.activeChat &&
+                          this.renderMessages(this.props.messages)}
+                      </>
+                    )}
+                  </div>
+                  <div>
+                    {this.props.activeChat && (
+                      <Form onSubmit={(e) => this.sendMessageHandler(e)}>
+                        <Form.Control
+                          onChange={(e) => this.messageChangeHandler(e)}
+                          value={this.state.message}
+                          required
+                          className="message-input"
+                          placeholder="Write your message..."
+                        />
+                        <Button type="submit">Send</Button>
+                      </Form>
+                    )}
+                  </div>
+                </Col>
+              </Row>
             </div>
-          </form>
-        </div>
+          </Container>
+        )}
       </>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  user: state.auth.user,
+  user: localStorage.getItem("user"),
   messages: state.chat.messages,
+  activeChat: state.chat.activeChat,
+  chats: state.chat.chats,
+  chatComponentLoading: state.chat.chatComponentLoading,
+  chatsLoading: state.chat.chatsLoading,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -160,6 +216,8 @@ const mapDispatchToProps = (dispatch) => {
     addMessage: (message) => dispatch(chatActions.addMessage(message)),
     setMessages: (messages) => dispatch(chatActions.setMessages(messages)),
     resetChats: () => dispatch(chatActions.resetChats()),
+    getChat: (roomId) => dispatch(chatActions.getChat(roomId)),
+    loadChats: (userId) => dispatch(chatActions.loadChats(userId)),
   };
 };
 
