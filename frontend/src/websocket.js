@@ -32,7 +32,8 @@ class WebSocketService {
       console.log(e.message);
     };
     this.socketRef.onclose = () => {
-      console.log("WebSocket closed unexpectedly");
+      console.log("WebSocket closed, let's reopen");
+      this.connect(chatUrl);
     };
   }
 

@@ -714,5 +714,31 @@ p {
 /* chat */
 
 .chat-box {
-  border: 4px, solid, rgb(87, 87, 87);
+  display: flex;
+  flex-direction: column;
+  background-color: lightgrey;
+  padding: 20px;
+  overflow-y: scroll;
+  height: 80vh;
+}
+
+.message {
+  padding: 8px 20px;
+  list-style: none;
+  border-radius: 20px;
+  min-width: none;
+  max-width: 75%;
+}
+
+.sent {
+  background-color: #ff6600;
+  border-bottom-right-radius: 0px;
+  margin-left: auto;
+  color: white;
+}
+
+.replies {
+  background-color: #fcfcfc;
+  border-bottom-left-radius: 0px;
+  margin-right: auto;
 }
