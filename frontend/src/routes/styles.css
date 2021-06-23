@@ -722,6 +722,15 @@ p {
   height: 80vh;
 }
 
+.chatroom {
+  padding: 0px;
+}
+
+.chatroom:active,
+.chatroom:hover {
+  filter:brightness(90%);
+}
+
 .message {
   padding: 8px 20px;
   list-style: none;

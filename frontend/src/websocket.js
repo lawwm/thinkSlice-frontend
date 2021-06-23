@@ -55,11 +55,12 @@ class WebSocketService {
     }
   }
 
-  fetchMessages(user, chatId) {
+  fetchMessages(user, chatId, page) {
     this.sendMessage({
       command: "fetch_messages",
       user: user,
-      chatId: chatId
+      chatId: chatId,
+      page: page,
     });
   }
 

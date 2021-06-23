@@ -15,7 +15,7 @@ const addMessage = (state, action) => {
 const setMessages = (state, action) => {
   return {
     ...state,
-    messages: action.messages.reverse(),
+    messages: action.messages.reverse().concat(state.messages),
     chatComponentLoading: false,
   };
 };

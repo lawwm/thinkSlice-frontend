@@ -351,7 +351,7 @@ const Guest = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd }) 
                       {currentVideo.creator_profile.aggregate_star !== null && (
                         <Col>
                           <StarDisplay
-                            num={currentVideo.creator_profile.aggregate_star}
+                            num={parseInt(currentVideo.creator_profile.aggregate_star)}
                             size={18}
                           />
                         </Col>
@@ -490,7 +490,7 @@ const Member = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd })
                       {currentVideo.creator_profile.aggregate_star !== null && (
                         <Col>
                           <StarDisplay
-                            num={currentVideo.creator_profile.aggregate_star}
+                            num={parseInt(currentVideo.creator_profile.aggregate_star)}
                             size={18}
                           />
                         </Col>

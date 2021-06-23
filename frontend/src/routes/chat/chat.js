@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
 
-import { Container, Col, Row, Form, Button } from "react-bootstrap";
+import { Container, Col, Row, Form, Button, Nav } from "react-bootstrap";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ChatRoom from "../../components/ChatRoom.js";
 import "../styles.css";
@@ -12,12 +12,11 @@ class Chat extends React.Component {
   state = { message: "" };
 
   initialiseChat() {
-    const room_id = this.props.match.params.room_id;
-
+    const { activeChat } = this.props;
     this.waitForSocketConnection(() => {
-      WebSocketInstance.fetchMessages(this.props.user, room_id);
+      WebSocketInstance.fetchMessages(this.props.user, activeChat.chatroom);
     });
-    WebSocketInstance.connect(room_id);
+    WebSocketInstance.connect(activeChat.chatroom);
   }
 
   constructor(props) {
@@ -26,7 +25,7 @@ class Chat extends React.Component {
       this.props.setMessages.bind(this),
       this.props.addMessage.bind(this)
     );
-    if (this.props.match.params.room_id) {
+    if (this.props.activeChat) {
       this.initialiseChat();
     }
   }
@@ -46,31 +45,33 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-    const { loadChats, getChat, user, activeChat } = this.props;
+    const { loadChats, user } = this.props;
     loadChats(user);
-    const roomId = this.props.match.params.room_id;
-    if (roomId && !activeChat) {
-      getChat(roomId);
-    }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.match.params.room_id !== prevProps.match.params.room_id) {
-      WebSocketInstance.disconnect();
-      this.waitForSocketConnection(() => {
-        WebSocketInstance.fetchMessages(
-          this.props.username,
-          this.props.match.params.room_id
-        );
-      });
-      WebSocketInstance.connect(this.props.match.params.room_id);
+    if (this.props.activeChat !== prevProps.activeChat) {
+      if (prevProps.activeChat) {
+        WebSocketInstance.disconnect();
+      }
+
+      if (this.props.activeChat) {
+        this.waitForSocketConnection(() => {
+          WebSocketInstance.fetchMessages(
+            this.props.username,
+            this.props.activeChat.chatroom,
+            0
+          );
+        });
+        WebSocketInstance.connect(this.props.activeChat.chatroom);
+      }
     }
   }
 
   componentWillUnmount() {
     const { resetChats } = this.props;
     resetChats();
-    if (this.props.match.params.room_id) {
+    if (this.props.activeChat) {
       WebSocketInstance.disconnect();
     }
   }
@@ -84,10 +85,19 @@ class Chat extends React.Component {
     const messageObject = {
       from: parseInt(this.props.user),
       content: this.state.message,
-      chatId: parseInt(this.props.match.params.room_id),
+      chatId: parseInt(this.props.activeChat.chatroom),
     };
     WebSocketInstance.newChatMessage(messageObject);
     this.setState({ message: "" });
+  };
+
+  fetchMessagesHandler = (page) => {
+    console.log(page);
+    WebSocketInstance.fetchMessages(
+      this.props.user,
+      this.props.activeChat.chatroom,
+      page
+    );
   };
 
   renderTimestamp = (timestamp) => {
@@ -144,9 +154,30 @@ class Chat extends React.Component {
   };
 
   renderChatRooms = (chats) => {
-    return chats.map((chat) => (
-      <ChatRoom profilePic={chat.recipientPic} username={chat.recipientName} />
-    ));
+    const { activeChat, getChat } = this.props;
+    return chats.map((chat) => {
+      const isActive = activeChat && chat.chatroom === activeChat.chatroom;
+      return (
+        <Nav.Item>
+          <Nav.Link
+            className="chatroom"
+            eventKey={chat.id}
+            onSelect={() => {
+              getChat(chat.chatroom);
+            }}
+            disabled={isActive}
+          >
+            <ChatRoom
+              profilePic={
+                "https://thinkslice-project.s3.amazonaws.com/" +
+                chat.recipientPic
+              }
+              username={chat.recipientName}
+            />
+          </Nav.Link>
+        </Nav.Item>
+      );
+    });
   };
 
   render() {
@@ -159,13 +190,13 @@ class Chat extends React.Component {
             <div className="container-padding">
               <Row>
                 <Col>
-                  <div>
+                  <Nav className="flex-column">
                     {this.props.chats.length > 0 ? (
                       this.renderChatRooms(this.props.chats)
                     ) : (
                       <p>You have not started any chats previously.</p>
                     )}
-                  </div>
+                  </Nav>
                 </Col>
                 <Col xs={7}>
                   <div className="chat-box">
@@ -179,7 +210,7 @@ class Chat extends React.Component {
                     )}
                   </div>
                   <div>
-                    {this.props.activeChat && (
+                    {this.props.activeChat && !this.props.chatComponentLoading && (
                       <Form onSubmit={(e) => this.sendMessageHandler(e)}>
                         <Form.Control
                           onChange={(e) => this.messageChangeHandler(e)}
