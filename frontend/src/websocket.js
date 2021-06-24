@@ -53,14 +53,16 @@ class WebSocketService {
     if (command === "new_message") {
       this.callbacks[command](parsedData.message);
     }
+    if (command === "more_messages") {
+      this.callbacks[command](parsedData.messages);
+    }
   }
 
-  fetchMessages(user, chatId, page) {
+  fetchMessages(user, chatId) {
     this.sendMessage({
       command: "fetch_messages",
       user: user,
       chatId: chatId,
-      page: page,
     });
   }
 
@@ -73,9 +75,19 @@ class WebSocketService {
     });
   }
 
-  addCallbacks(messagesCallback, newMessageCallback) {
+  loadMoreMessages(user, chatId, page) {
+    this.sendMessage({
+      command: "more_messages",
+      user: user,
+      chatId: chatId,
+      page: page,
+    });
+  }
+
+  addCallbacks(messagesCallback, newMessageCallback, moreMessagesCallback) {
     this.callbacks["messages"] = messagesCallback;
     this.callbacks["new_message"] = newMessageCallback;
+    this.callbacks["more_messages"] = moreMessagesCallback;
   }
 
   sendMessage(data) {

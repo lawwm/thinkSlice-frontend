@@ -1,15 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
+import axios from "axios";
+import { DOMAINS } from "../../store/endpoints.js";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
+import { InView } from "react-intersection-observer";
 
 import { Container, Col, Row, Form, Button, Nav } from "react-bootstrap";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ChatRoom from "../../components/ChatRoom.js";
+import AlwaysScrollToBottom from "../../components/AlwaysScrollToBottom.js";
 import "../styles.css";
 
 class Chat extends React.Component {
-  state = { message: "" };
+  state = { message: "", page: 0 };
 
   initialiseChat() {
     const { activeChat } = this.props;
@@ -23,7 +27,8 @@ class Chat extends React.Component {
     super(props);
     WebSocketInstance.addCallbacks(
       this.props.setMessages.bind(this),
-      this.props.addMessage.bind(this)
+      this.props.addMessage.bind(this),
+      this.props.loadMoreMessages.bind(this)
     );
     if (this.props.activeChat) {
       this.initialiseChat();
@@ -53,14 +58,14 @@ class Chat extends React.Component {
     if (this.props.activeChat !== prevProps.activeChat) {
       if (prevProps.activeChat) {
         WebSocketInstance.disconnect();
+        this.setState({ page: 0 });
       }
 
       if (this.props.activeChat) {
         this.waitForSocketConnection(() => {
           WebSocketInstance.fetchMessages(
             this.props.username,
-            this.props.activeChat.chatroom,
-            0
+            this.props.activeChat.chatroom
           );
         });
         WebSocketInstance.connect(this.props.activeChat.chatroom);
@@ -82,6 +87,9 @@ class Chat extends React.Component {
 
   sendMessageHandler = (e) => {
     e.preventDefault();
+    if (this.props.messages.length === 0) {
+      axios.patch(DOMAINS.CHAT + "/" + this.props.activeChat.recipient);
+    }
     const messageObject = {
       from: parseInt(this.props.user),
       content: this.state.message,
@@ -89,15 +97,6 @@ class Chat extends React.Component {
     };
     WebSocketInstance.newChatMessage(messageObject);
     this.setState({ message: "" });
-  };
-
-  fetchMessagesHandler = (page) => {
-    console.log(page);
-    WebSocketInstance.fetchMessages(
-      this.props.user,
-      this.props.activeChat.chatroom,
-      page
-    );
   };
 
   renderTimestamp = (timestamp) => {
@@ -158,7 +157,7 @@ class Chat extends React.Component {
     return chats.map((chat) => {
       const isActive = activeChat && chat.chatroom === activeChat.chatroom;
       return (
-        <Nav.Item>
+        <Nav.Item key={chat.id}>
           <Nav.Link
             className="chatroom"
             eventKey={chat.id}
@@ -199,16 +198,35 @@ class Chat extends React.Component {
                   </Nav>
                 </Col>
                 <Col xs={7}>
-                  <div className="chat-box">
+                  <ul className="chat-box">
                     {this.props.chatComponentLoading ? (
                       <LoadingSpinner />
                     ) : (
                       <>
+                        {" "}
+                        {this.props.messages.length > 15 && (
+                          <InView
+                            as="div"
+                            threshold={1}
+                            trackVisibility={true}
+                            delay={100}
+                            onChange={(inView, entry) => {
+                              const { user, activeChat } = this.props;
+                              WebSocketInstance.loadMoreMessages(
+                                parseInt(user),
+                                activeChat.chatroom,
+                                this.state.page + 1
+                              );
+                              this.setState({ page: this.state.page + 1 });
+                            }}
+                          ><div className="chat-top"></div></InView>
+                        )}
                         {this.props.activeChat &&
                           this.renderMessages(this.props.messages)}
+                        {this.state.page === 0 && <AlwaysScrollToBottom />}
                       </>
                     )}
-                  </div>
+                  </ul>
                   <div>
                     {this.props.activeChat && !this.props.chatComponentLoading && (
                       <Form onSubmit={(e) => this.sendMessageHandler(e)}>
@@ -246,6 +264,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (message) => dispatch(chatActions.addMessage(message)),
     setMessages: (messages) => dispatch(chatActions.setMessages(messages)),
+    loadMoreMessages: (messages) =>
+      dispatch(chatActions.loadMoreMessages(messages)),
     resetChats: () => dispatch(chatActions.resetChats()),
     getChat: (roomId) => dispatch(chatActions.getChat(roomId)),
     loadChats: (userId) => dispatch(chatActions.loadChats(userId)),

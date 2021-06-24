@@ -15,9 +15,21 @@ const addMessage = (state, action) => {
 const setMessages = (state, action) => {
   return {
     ...state,
-    messages: action.messages.reverse().concat(state.messages),
+    messages: action.messages.reverse(),
     chatComponentLoading: false,
   };
+};
+
+const loadMoreMessages = (state, action) => {
+  console.log(action.messages)
+  if (action.messages) {
+    return {
+    ...state,
+    messages: action.messages.reverse().concat(state.messages),
+    };
+  } else {
+    return state;
+  }
 };
 
 export const chat = (state = initialState, action) => {
@@ -27,6 +39,9 @@ export const chat = (state = initialState, action) => {
 
     case actionTypes.SET_MESSAGES:
       return setMessages(state, action);
+
+    case actionTypes.LOAD_MORE_MESSAGES:
+      return loadMoreMessages(state, action);
 
     case actionTypes.GET_CHAT:
     case actionTypes.START_CHAT:
@@ -39,7 +54,7 @@ export const chat = (state = initialState, action) => {
         activeChat: action.chat,
       };
 
-    case actionTypes.LOADING_CHATS:
+    case actionTypes.LOAD_CHATS:
       return { ...state, chatsLoading: true };
 
     case actionTypes.LOAD_CHATS_SUCCESS:

@@ -719,7 +719,7 @@ p {
   background-color: lightgrey;
   padding: 20px;
   overflow-y: scroll;
-  height: 80vh;
+  height: 75vh;
 }
 
 .chatroom {
@@ -750,4 +750,8 @@ p {
   background-color: #fcfcfc;
   border-bottom-left-radius: 0px;
   margin-right: auto;
+}
+
+.chat-top {
+  height: 200px;
 }
