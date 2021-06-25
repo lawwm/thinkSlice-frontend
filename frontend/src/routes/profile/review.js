@@ -153,8 +153,13 @@ const Review = () => {
                 </div>
               </Col>
               <Col>
-                <div className="profile-picture circle align-self-center ml-3">
-                  <Image src={profile.basic.profile_pic} alt="profile_pic" fluid />
+                <div className="circle align-self-center ml-3">
+                  <Image
+                    className="profile-pic"
+                    src={profile.basic.profile_pic}
+                    alt="profile_pic"
+                    onClick={() => history.push("/profile/" + user_id)}
+                    fluid="true" />
                 </div>
               </Col>
             </Row>

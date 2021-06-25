@@ -218,6 +218,10 @@ export const home = (state = initialState, action) => {
     case ADD_COMMENT:
       return {
         ...state,
+        currentVideo: {
+          ...state.currentVideo,
+          num_of_comments: state.currentVideo.num_of_comments + 1
+        },
         comments: state.comments.concat([{ ...payload, replies: [] }]),
         commentLoading: false
       }
@@ -248,8 +252,14 @@ export const home = (state = initialState, action) => {
         commentLoadingId: state.commentLoadingId.filter(loadingId => loadingId !== id)
       }
     case DELETE_COMMENT:
+      const comment = state.comments.filter(comment => comment.id === payload)
+      const replyNum = comment[0].replies.length
       return {
         ...state,
+        currentVideo: {
+          ...state.currentVideo,
+          num_of_comments: state.currentVideo.num_of_comments - 1 - replyNum
+        },
         comments: state.comments.filter(comment => comment.id !== payload),
         commentLoadingId: state.commentLoadingId.filter(loadingId => loadingId !== payload)
       }
@@ -297,6 +307,10 @@ export const home = (state = initialState, action) => {
       }
       return {
         ...state,
+        currentVideo: {
+          ...state.currentVideo,
+          num_of_comments: state.currentVideo.num_of_comments + 1
+        },
         comments: commentArray,
         commentLoadingId: state.commentLoadingId.filter(loadingId => loadingId !== payload.id)
       }
@@ -326,6 +340,10 @@ export const home = (state = initialState, action) => {
       newCommentArrayDelete[commentIndexDelete].replies = newCommentArrayDelete[commentIndexDelete].replies.filter(reply => reply.id !== payload.replyId)
       return {
         ...state,
+        currentVideo: {
+          ...state.currentVideo,
+          num_of_comments: state.currentVideo.num_of_comments - 1
+        },
         comments: newCommentArrayDelete,
         replyLoadingId: state.replyLoadingId.filter(loadingId => loadingId !== payload.replyId)
       }
