@@ -4,21 +4,20 @@ import axios from "axios";
 import { DOMAINS } from "../../store/endpoints.js";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
-import { InView } from "react-intersection-observer";
 
 import { Container, Col, Row, Form, Button, Nav } from "react-bootstrap";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ChatRoom from "../../components/ChatRoom.js";
-import AlwaysScrollToBottom from "../../components/AlwaysScrollToBottom.js";
+import ChatBox from "../../components/ChatBox.js";
 import "../styles.css";
 
 class Chat extends React.Component {
-  state = { message: "", page: 0 };
+  state = { message: "" };
 
   initialiseChat() {
     const { activeChat } = this.props;
     this.waitForSocketConnection(() => {
-      WebSocketInstance.fetchMessages(this.props.user, activeChat.chatroom);
+      WebSocketInstance.fetchMessages(activeChat.chatroom);
     });
     WebSocketInstance.connect(activeChat.chatroom);
   }
@@ -28,7 +27,7 @@ class Chat extends React.Component {
     WebSocketInstance.addCallbacks(
       this.props.setMessages.bind(this),
       this.props.addMessage.bind(this),
-      this.props.loadMoreMessages.bind(this)
+      this.props.setMoreMessages.bind(this)
     );
     if (this.props.activeChat) {
       this.initialiseChat();
@@ -58,15 +57,11 @@ class Chat extends React.Component {
     if (this.props.activeChat !== prevProps.activeChat) {
       if (prevProps.activeChat) {
         WebSocketInstance.disconnect();
-        this.setState({ page: 0 });
       }
 
       if (this.props.activeChat) {
         this.waitForSocketConnection(() => {
-          WebSocketInstance.fetchMessages(
-            this.props.username,
-            this.props.activeChat.chatroom
-          );
+          WebSocketInstance.fetchMessages(this.props.activeChat.chatroom);
         });
         WebSocketInstance.connect(this.props.activeChat.chatroom);
       }
@@ -97,59 +92,6 @@ class Chat extends React.Component {
     };
     WebSocketInstance.newChatMessage(messageObject);
     this.setState({ message: "" });
-  };
-
-  renderTimestamp = (timestamp) => {
-    let prefix = "";
-    const timeDiff = Math.round(
-      (new Date().getTime() - new Date(timestamp).getTime()) / 60000
-    );
-    if (timeDiff < 1) {
-      // less than one minute ago
-      prefix = "just now...";
-    } else if (timeDiff === 1) {
-      // one minute ago
-      prefix = `1 minute ago`;
-    } else if (timeDiff < 60 && timeDiff > 1) {
-      // less than sixty minutes ago
-      prefix = `${timeDiff} minutes ago`;
-    } else if (timeDiff < 24 * 60 && timeDiff > 60) {
-      // less than 24 hours ago
-      const rounded = Math.round(timeDiff / 60);
-      if (rounded === 1) {
-        prefix = `1 hour ago`;
-      } else {
-        prefix = `${rounded} hours ago`;
-      }
-    } else if (timeDiff < 31 * 24 * 60 && timeDiff > 24 * 60) {
-      // less than 7 days ago
-      const rounded = Math.round(timeDiff / (60 * 24));
-      if (rounded === 1) {
-        prefix = `1 day ago`;
-      } else {
-        prefix = `${rounded} days ago`;
-      }
-    } else {
-      prefix = `${new Date(timestamp)}`;
-    }
-    return prefix;
-  };
-
-  renderMessages = (messages) => {
-    const currentUser = parseInt(this.props.user);
-    return messages.map((message, i, arr) => (
-      <div
-        key={message.id}
-        style={{ marginBottom: arr.length - 1 === i ? "150px" : "15px" }}
-        className={
-          "message " + (message.author === currentUser ? "sent" : "replies")
-        }
-      >
-        {message.content}
-        <br />
-        <small>{this.renderTimestamp(message.timestamp)}</small>
-      </div>
-    ));
   };
 
   renderChatRooms = (chats) => {
@@ -198,35 +140,7 @@ class Chat extends React.Component {
                   </Nav>
                 </Col>
                 <Col xs={7}>
-                  <ul className="chat-box">
-                    {this.props.chatComponentLoading ? (
-                      <LoadingSpinner />
-                    ) : (
-                      <>
-                        {" "}
-                        {this.props.messages.length > 15 && (
-                          <InView
-                            as="div"
-                            threshold={1}
-                            trackVisibility={true}
-                            delay={100}
-                            onChange={(inView, entry) => {
-                              const { user, activeChat } = this.props;
-                              WebSocketInstance.loadMoreMessages(
-                                parseInt(user),
-                                activeChat.chatroom,
-                                this.state.page + 1
-                              );
-                              this.setState({ page: this.state.page + 1 });
-                            }}
-                          ><div className="chat-top"></div></InView>
-                        )}
-                        {this.props.activeChat &&
-                          this.renderMessages(this.props.messages)}
-                        {this.state.page === 0 && <AlwaysScrollToBottom />}
-                      </>
-                    )}
-                  </ul>
+                  <ChatBox />
                   <div>
                     {this.props.activeChat && !this.props.chatComponentLoading && (
                       <Form onSubmit={(e) => this.sendMessageHandler(e)}>
@@ -264,8 +178,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (message) => dispatch(chatActions.addMessage(message)),
     setMessages: (messages) => dispatch(chatActions.setMessages(messages)),
-    loadMoreMessages: (messages) =>
-      dispatch(chatActions.loadMoreMessages(messages)),
+    setMoreMessages: (messages) =>
+      dispatch(chatActions.setMoreMessages(messages)),
     resetChats: () => dispatch(chatActions.resetChats()),
     getChat: (roomId) => dispatch(chatActions.getChat(roomId)),
     loadChats: (userId) => dispatch(chatActions.loadChats(userId)),

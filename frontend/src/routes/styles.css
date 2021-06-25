@@ -714,12 +714,16 @@ p {
 /* chat */
 
 .chat-box {
-  display: flex;
-  flex-direction: column;
-  background-color: lightgrey;
-  padding: 20px;
   overflow-y: scroll;
   height: 75vh;
+  background-color: lightgrey;
+  padding: 20px;
+}
+
+.conversation {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
 }
 
 .chatroom {
@@ -750,8 +754,4 @@ p {
   background-color: #fcfcfc;
   border-bottom-left-radius: 0px;
   margin-right: auto;
-}
-
-.chat-top {
-  height: 200px;
 }

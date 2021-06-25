@@ -58,10 +58,9 @@ class WebSocketService {
     }
   }
 
-  fetchMessages(user, chatId) {
+  fetchMessages(chatId) {
     this.sendMessage({
       command: "fetch_messages",
-      user: user,
       chatId: chatId,
     });
   }
@@ -75,10 +74,9 @@ class WebSocketService {
     });
   }
 
-  loadMoreMessages(user, chatId, page) {
+  loadMoreMessages(chatId, page) {
     this.sendMessage({
       command: "more_messages",
-      user: user,
       chatId: chatId,
       page: page,
     });

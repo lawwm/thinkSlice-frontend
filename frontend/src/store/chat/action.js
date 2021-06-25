@@ -17,10 +17,15 @@ export const setMessages = (messages) => async (dispatch) => {
   });
 };
 
-export const loadMoreMessages = (messages) => async(dispatch) => {
-  console.log(messages)
+export const loadMoreMessages = () => async(dispatch) => {
   dispatch({
     type: actionTypes.LOAD_MORE_MESSAGES,
+  })
+}
+
+export const setMoreMessages = (messages) => async(dispatch) => {
+  dispatch({
+    type: actionTypes.SET_MORE_MESSAGES,
     messages: messages,
   })
 }
