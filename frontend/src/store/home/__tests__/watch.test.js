@@ -247,7 +247,7 @@ describe('Watch page', () => {
             initialState: {
               auth: {
                 token: null,
-                isAuthenticated: false,
+                isAuthenticated: true,
                 loading: false,
                 user: null,
                 username: null,
