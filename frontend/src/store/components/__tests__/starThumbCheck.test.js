@@ -16,7 +16,7 @@ describe('star display', () => {
       history = createMemoryHistory()
       render(
         <Router history={history}>
-          <StarDisplay num={starRating} />
+          <StarDisplay num={parseInt(starRating)} />
         </Router>
       )
     })

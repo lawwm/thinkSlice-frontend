@@ -714,12 +714,25 @@ p {
 /* chat */
 
 .chat-box {
-  display: flex;
-  flex-direction: column;
+  overflow-y: scroll;
+  height: 75vh;
   background-color: lightgrey;
   padding: 20px;
-  overflow-y: scroll;
-  height: 80vh;
+}
+
+.conversation {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+}
+
+.chatroom {
+  padding: 0px;
+}
+
+.chatroom:active,
+.chatroom:hover {
+  filter:brightness(90%);
 }
 
 .message {

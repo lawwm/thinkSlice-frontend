@@ -35,7 +35,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (activeChat) {
-      history.push("/chat/" + activeChat.chatroom);
+      history.push("/chat");
     }
   });
 

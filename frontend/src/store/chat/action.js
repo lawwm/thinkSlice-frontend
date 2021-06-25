@@ -10,11 +10,25 @@ export const addMessage = (message) => async (dispatch) => {
 };
 
 export const setMessages = (messages) => async (dispatch) => {
+  console.log(messages)
   dispatch({
     type: actionTypes.SET_MESSAGES,
     messages: messages,
   });
 };
+
+export const loadMoreMessages = () => async(dispatch) => {
+  dispatch({
+    type: actionTypes.LOAD_MORE_MESSAGES,
+  })
+}
+
+export const setMoreMessages = (messages) => async(dispatch) => {
+  dispatch({
+    type: actionTypes.SET_MORE_MESSAGES,
+    messages: messages,
+  })
+}
 
 export const startChat = (userId) => async (dispatch) => {
   try {
@@ -61,7 +75,7 @@ export const getChat = (roomId) => async (dispatch) => {
 export const loadChats = (userId) => async (dispatch) => {
   try {
     dispatch({
-      type: actionTypes.LOADING_CHATS,
+      type: actionTypes.LOAD_CHATS,
     });
     const res = await axios.get(DOMAINS.CHAT + "/" + userId);
     dispatch({

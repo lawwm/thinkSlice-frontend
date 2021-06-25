@@ -6,6 +6,8 @@ const initialState = {
   chatsLoading: true,
   chatComponentLoading: false,
   activeChat: null,
+  page: 0,
+  reachedEnd: false,
 };
 
 const addMessage = (state, action) => {
@@ -20,6 +22,19 @@ const setMessages = (state, action) => {
   };
 };
 
+const setMoreMessages = (state, action) => {
+  if (action.messages.length > 0) {
+    return {
+      ...state,
+      messages: action.messages.reverse().concat(state.messages),
+      chatComponentLoading: false,
+      page: state.page + 1,
+    };
+  } else {
+    return { ...state, reachedEnd: true, chatComponentLoading: false, };
+  }
+};
+
 export const chat = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_MESSAGE:
@@ -27,6 +42,12 @@ export const chat = (state = initialState, action) => {
 
     case actionTypes.SET_MESSAGES:
       return setMessages(state, action);
+
+    case actionTypes.LOAD_MORE_MESSAGES:
+      return { ...state, chatComponentLoading: true };
+
+    case actionTypes.SET_MORE_MESSAGES:
+      return setMoreMessages(state, action);
 
     case actionTypes.GET_CHAT:
     case actionTypes.START_CHAT:
@@ -37,9 +58,11 @@ export const chat = (state = initialState, action) => {
       return {
         ...state,
         activeChat: action.chat,
+        reachedEnd: false,
+        page: 0,
       };
 
-    case actionTypes.LOADING_CHATS:
+    case actionTypes.LOAD_CHATS:
       return { ...state, chatsLoading: true };
 
     case actionTypes.LOAD_CHATS_SUCCESS:
