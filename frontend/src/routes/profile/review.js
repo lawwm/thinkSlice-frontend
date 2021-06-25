@@ -5,6 +5,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import ReviewPost from "../../components/ReviewPost";
 // import { getReviews } from "../../store/profile/action";
 import "../styles.css";
+import { setAlert } from "../../store/components/action";
 
 import {
   Container,
@@ -61,6 +62,9 @@ const Review = () => {
   const { profile, profileLoading, reviewsGiven, reviewsReceived, reviewLoading } = useSelector(
     (state) => state.profile
   );
+  const { isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
 
   const viewerId = localStorage.getItem("user");
 
@@ -85,7 +89,13 @@ const Review = () => {
   //Create Review Modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    if (!isAuthenticated) {
+      dispatch(setAlert("You have to be a registered user to post a review", "danger"))
+    } else {
+      setShow(true)
+    }
+  };
 
   const [formData, setFormData] = useState({
     review_title: "",
