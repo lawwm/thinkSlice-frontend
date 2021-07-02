@@ -32,8 +32,11 @@ export const loadUser = (token) => async (dispatch) => {
 export const register =
   ({ username, email, password, confirmPassword }) =>
     async (dispatch) => {
-      //convert to json for post
 
+      // Check regex
+      let reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
+
+      //Start checks
       if (confirmPassword !== password) {
         dispatch({
           type: actionTypes.REGISTER_FAIL,
@@ -42,6 +45,16 @@ export const register =
           type: actionTypes.AUTH_BUTTON_LOADED,
         });
         dispatch(setAlert("Passwords must match", "danger"));
+      } else if (!reg.test(password)) {
+
+        dispatch({
+          type: actionTypes.REGISTER_FAIL,
+        });
+        dispatch({
+          type: actionTypes.AUTH_BUTTON_LOADED,
+        });
+        dispatch(setAlert("Password must contain at least 1 lowercase, uppercase, numeric, special character, and be longer than 8 characters", "danger", 10000));
+
       } else {
         const body = JSON.stringify({ username, email, password });
 
