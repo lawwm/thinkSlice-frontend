@@ -469,6 +469,23 @@ p {
   text-align: right;
 }
 
+.video-student-likes {
+  display: flex;
+  align-items: center;
+  float: right;
+  cursor: pointer;
+}
+
+.video-student-likes-unauth {
+  display: flex;
+  align-items: center;
+  float: right;
+}
+
+.video-student-likecount {
+  margin-left: 3px;
+}
+
 .video-description-div {
   margin-bottom: 20px;
 }
