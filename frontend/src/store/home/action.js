@@ -36,8 +36,6 @@ import {
   SET_REPLY_LOADING_ID,
   REMOVE_COMMENTREPLY_LOADING_ID,
   REMOVE_REPLY_LOADING_ID,
-  ADD_LIKE,
-  REMOVE_LIKE,
 
 } from "./actionTypes"
 import { format, formatDistance } from 'date-fns'

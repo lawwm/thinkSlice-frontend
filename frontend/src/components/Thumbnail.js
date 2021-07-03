@@ -82,20 +82,23 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
           <div className="thumbnail-subject-duration">
             {date}
           </div>
+          <div className="thumbnail-subject-profile-div">
+            {deleteButton &&
+              <>
+                <div
+                  onClick={handleEditShow}
+                  className="thumbnail-subject-edit">
+                  <FaEdit role="img" aria-label="edit" alt="edit" size={18} />
+                </div>
+                <div
+                  onClick={handleDeleteShow}
+                  className="thumbnail-subject-delete">
+                  <FaTrashAlt role="img" aria-label="delete" alt="delete" size={18} />
+                </div>
+              </>}
+          </div>
         </div>
-        {deleteButton &&
-          <>
-            <div
-              onClick={handleEditShow}
-              className="thumbnail-subject-edit">
-              <FaEdit role="img" aria-label="edit" alt="edit" size={18} />
-            </div>
-            <div
-              onClick={handleDeleteShow}
-              className="thumbnail-subject-delete">
-              <FaTrashAlt role="img" aria-label="delete" alt="delete" size={18} />
-            </div>
-          </>}
+
         <Media>
           <div className="thumbnail-photo" onClick={() => history.push('/profile/' + profileId)}>
             <Image
