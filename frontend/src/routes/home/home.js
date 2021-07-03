@@ -87,21 +87,19 @@ export const VideoGrid = ({ videos }) => {
     <>
       {videos.map((videoRow) => {
         return (
-          <div key={videoRow.id} className="home-video-row">
-            <Col md={"auto"} >
-              <Thumbnail
-                title={videoRow.video_title}
-                username={videoRow.creator_profile.username}
-                views={videoRow.views}
-                subject={videoRow.subject}
-                date={videoRow.created_at}
-                playback_id={videoRow.playback_id}
-                imageSrc={videoRow.creator_profile.profile_pic}
-                videoId={videoRow.id}
-                profileId={videoRow.creator_profile.user}
-              />
-            </Col>
-          </div>
+          <Col key={videoRow.id} xs={12} sm={6} xl={4} className="home-video-row">
+            <Thumbnail
+              title={videoRow.video_title}
+              username={videoRow.creator_profile.username}
+              views={videoRow.views}
+              subject={videoRow.subject}
+              date={videoRow.created_at}
+              playback_id={videoRow.playback_id}
+              imageSrc={videoRow.creator_profile.profile_pic}
+              videoId={videoRow.id}
+              profileId={videoRow.creator_profile.user}
+            />
+          </Col>
         )
       })}
     </>
