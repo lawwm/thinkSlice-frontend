@@ -8,10 +8,11 @@ const initialState = {
   activeChat: null,
   page: 0,
   reachedEnd: false,
+  unreadChats: [],
 };
 
 const addMessage = (state, action) => {
-  return { ...state, messages: state.messages.concat(action.message) };
+  return { ...state, messages: [...state.messages, action.message] };
 };
 
 const setMessages = (state, action) => {
@@ -31,7 +32,7 @@ const setMoreMessages = (state, action) => {
       page: state.page + 1,
     };
   } else {
-    return { ...state, reachedEnd: true, chatComponentLoading: false, };
+    return { ...state, reachedEnd: true, chatComponentLoading: false };
   }
 };
 
@@ -49,18 +50,37 @@ export const chat = (state = initialState, action) => {
     case actionTypes.SET_MORE_MESSAGES:
       return setMoreMessages(state, action);
 
+    case actionTypes.NEW_MESSAGE:
+      if (!state.unreadChats.find((element) => element === action.chat)) {
+        return { ...state, unreadChats: [...state.unreadChats, action.chat] };
+      } else {
+        return state;
+      }
+
     case actionTypes.GET_CHAT:
     case actionTypes.START_CHAT:
       return { ...state, chatComponentLoading: true };
 
     case actionTypes.GET_CHAT_SUCCESS:
     case actionTypes.START_CHAT_SUCCESS:
-      return {
-        ...state,
-        activeChat: action.chat,
-        reachedEnd: false,
-        page: 0,
-      };
+      const chatroom = action.chat.chatroom;
+      localStorage.setItem("activeChat", chatroom);
+      if (state.unreadChats.indexOf(chatroom) > -1) {
+        return {
+          ...state,
+          unreadChats: state.unreadChats.splice(chatroom, 1),
+          activeChat: action.chat,
+          reachedEnd: false,
+          page: 0,
+        };
+      } else {
+        return {
+          ...state,
+          activeChat: action.chat,
+          reachedEnd: false,
+          page: 0,
+        };
+      }
 
     case actionTypes.LOAD_CHATS:
       return { ...state, chatsLoading: true };
@@ -73,15 +93,17 @@ export const chat = (state = initialState, action) => {
       };
 
     case actionTypes.GET_CHAT_FAIL:
+      localStorage.removeItem("activeChat");
       return {
         ...state,
         activeChat: null,
         chatComponentLoading: false,
       };
 
-    case actionTypes.RESET_CHAT:
+    case actionTypes.RESET_CHATS:
     case actionTypes.START_CHAT_FAIL:
     case actionTypes.LOAD_CHATS_FAIL:
+      localStorage.removeItem("activeChat");
       return {
         ...state,
         messages: [],
