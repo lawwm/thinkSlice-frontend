@@ -114,9 +114,9 @@ describe('thumbnail', () => {
     it('thumbnail becomes gif when hovering', () => {
       userEvent.hover(screen.getByAltText("video thumbnail"))
       const image = screen.getByAltText("video thumbnail")
-      expect(image).toHaveAttribute('src', "https://image.mux.com/kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM/animated.gif");
+      expect(image).toHaveAttribute('src', "https://image.mux.com/kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM/animated.gif?width=600&height=300");
       userEvent.unhover(screen.getByAltText("video thumbnail"))
-      expect(screen.getByAltText("video thumbnail")).toHaveAttribute('src', "https://image.mux.com/kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM/thumbnail.jpg");
+      expect(screen.getByAltText("video thumbnail")).toHaveAttribute('src', "https://image.mux.com/kGCiZbuXRxBbe6yIUQFIWaG5EplDTyInrca01DX1GrvM/thumbnail.jpg?width=600&height=300&fit_mode=crop");
     })
 
     it('delete button dispatches delete action', async () => {

@@ -339,8 +339,8 @@ describe('Register page', () => {
       const registerData = {
         username: "",
         email: "",
-        password: "password",
-        confirmPassword: "password"
+        password: "Eclipsethe5un@",
+        confirmPassword: "Eclipsethe5un@"
       }
       const expectedActionOne = {
         type: types.AUTH_BUTTON_LOADING

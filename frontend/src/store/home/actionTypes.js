@@ -34,4 +34,5 @@ export const GET_REPLIES = "GET_REPLIES"
 export const CREATE_REPLIES = "CREATE_REPLIES"
 export const EDIT_REPLIES = "EDIT_REPLIES"
 export const DELETE_REPLIES = "DELETE_REPLIES"
-
+export const ADD_LIKE = "ADD_LIKE"
+export const REMOVE_LIKE = "REMOVE_LIKE"

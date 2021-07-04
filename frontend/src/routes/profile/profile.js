@@ -8,13 +8,69 @@ import {
   changePicture,
 } from "../../store/profile/action.js";
 import { startChat } from "../../store/chat/action.js";
-
+import { profileLikedVideos } from "../../store/profile/action.js";
 import NotFound from "../errorpages/notFound";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ProfileModal from "../../components/ProfileModal.js";
 import Thumbnail from "../../components/Thumbnail.js";
-import { Container, Col, Row, Modal, Button, Spinner } from "react-bootstrap";
+import { Container, Col, Row, Modal, Button, Spinner, ButtonGroup } from "react-bootstrap";
 import "../styles.css";
+
+const ShowVideoModal = ({ userId, setLikedModal }) => {
+  const dispatch = useDispatch();
+
+  const { profileLikes } = useSelector(
+    (state) => state.profile
+  );
+
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+
+    dispatch(profileLikedVideos(userId, () => setLoading(false)))
+
+  }, [dispatch, userId, profileLikes])
+
+  return (
+    <>
+      <Modal.Header>
+        <Modal.Title>User's liked videos</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Row className="justify-content-md-left">
+          {profileLikes.map((video) => {
+            return (
+              <Col key={video.id} xs={12} sm={6} xl={4} className="home-video-row">
+                <Thumbnail
+                  title={video.video_title}
+                  username={video.creator_profile.username}
+                  views={video.views}
+                  subject={video.subject}
+                  date={video.created_at}
+                  playback_id={video.playback_id}
+                  imageSrc={video.creator_profile.profile_pic}
+                  videoId={video.id}
+                  profileId={video.creator_profile.user}
+                />
+              </Col>
+            );
+          })}
+        </Row>
+        {
+          loading && <LoadingSpinner />
+        }
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="dark"
+          className="btn-modal-grey"
+          onClick={() => setLikedModal(false)}
+        >
+          Go back
+        </Button>
+      </Modal.Footer>
+    </>
+  )
+}
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -53,6 +109,9 @@ const Profile = () => {
     e.preventDefault();
     dispatch(changePicture(imageFile, () => setPictureModal(false)));
   };
+
+  const [likedModal, setLikedModal] = useState(false);
+
   return (
     <>
       {profileLoading && <LoadingSpinner />}
@@ -61,8 +120,8 @@ const Profile = () => {
           <>
             <Container>
               <div className="profile-div">
-                <Row className="margin-left">
-                  <Col className="mr-auto p-2 col-example" xs={8}>
+                <Row>
+                  <Col xs={{ span: 8, offset: 0 }} md={{ span: 8, offset: 1 }}>
                     <div className="username-tag-div">
                       <h2>{profile.basic.username}</h2>
                       {profile.basic.is_tutor && (
@@ -78,7 +137,7 @@ const Profile = () => {
                     </div>
                     <p>{profile.basic.user_bio}</p>
                   </Col>
-                  <Col>
+                  <Col xs={12} md={3}>
                     <div
                       onClick={() =>
                         setPictureModal(true && currentViewer === user_id)
@@ -100,71 +159,94 @@ const Profile = () => {
                       </div>
                     </div>
                   </Col>
-                  <Row>
-                    <button
-                      className="btn profile-button"
-                      onClick={() => dispatch(toggleDetailedView(true))}
-                    >
-                      Details
-                    </button>
-                    <button
-                      className="btn profile-button"
-                      onClick={() =>
-                        history.push("/profile/reviews/" + user_id)
-                      }
-                    >
-                      Reviews
-                    </button>
-                    {currentViewer && currentViewer !== user_id && (
-                      <button
-                        className="btn profile-button"
-                        onClick={() => dispatch(startChat(user_id))}
-                        disabled={chatComponentLoading}
+                  <Col xs={{ span: 12, offset: 0 }} md={{ span: 11, offset: 1 }}>
+                    <ButtonGroup className="profile-button" size="lg">
+                      <Button
+                        variant="secondary"
+                        onClick={() => dispatch(toggleDetailedView(true))}
                       >
-                        {chatComponentLoading ? (
-                          <Spinner
-                            size="sm"
-                            animation="border"
-                            variant="light"
-                          />
-                        ) : (
-                          "Chat"
-                        )}
-                      </button>
-                    )}
-                  </Row>
+                        Details
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() =>
+                          history.push("/profile/reviews/" + user_id)
+                        }
+                      >
+                        Reviews
+                      </Button>
+                      {currentViewer && currentViewer !== user_id && (
+                        <Button
+                          variant="secondary"
+                          onClick={() => dispatch(startChat(user_id))}
+                          disabled={chatComponentLoading}
+                        >
+                          {chatComponentLoading ? (
+                            <Spinner
+                              size="sm"
+                              animation="border"
+                              variant="light"
+                            />
+                          ) : (
+                            "Chat"
+                          )}
+                        </Button>
+                      )}
+                    </ButtonGroup>
+                  </Col>
                 </Row>
+
                 <br />
                 <hr></hr>
                 <br />
-                <Row className="margin-left">
-                  <div>
+                <Row>
+                  <Container>
                     <h2>Videos</h2>
                     <Row className="justify-content-md-left">
                       {profile.basic.video.map((videoRow) => {
                         return (
-                          <div key={videoRow.id} className="home-video-row">
-                            <Col md={"auto"}>
-                              <Thumbnail
-                                title={videoRow.video_title}
-                                username={profile.basic.username}
-                                videoDescription={videoRow.video_description}
-                                views={videoRow.views}
-                                subject={videoRow.subject}
-                                date={videoRow.created_at}
-                                playback_id={videoRow.playback_id}
-                                imageSrc={profile.basic.profile_pic}
-                                videoId={videoRow.id}
-                                profileId={videoRow.creator_profile.user}
-                                deleteButton={currentViewer === user_id}
-                              />
-                            </Col>
-                          </div>
+                          <Col key={videoRow.id} xs={12} md={6} xl={4} className="home-video-row">
+                            <Thumbnail
+                              title={videoRow.video_title}
+                              username={profile.basic.username}
+                              videoDescription={videoRow.video_description}
+                              views={videoRow.views}
+                              subject={videoRow.subject}
+                              date={videoRow.created_at}
+                              playback_id={videoRow.playback_id}
+                              imageSrc={profile.basic.profile_pic}
+                              videoId={videoRow.id}
+                              profileId={videoRow.creator_profile.user}
+                              deleteButton={currentViewer === user_id}
+                            />
+                          </Col>
                         );
                       })}
                     </Row>
-                  </div>
+                  </Container>
                 </Row>
+                <br />
+                <hr></hr>
+                <br />
+                <Row>
+                  <Container>
+                    <h2>Liked videos</h2>
+                    <div>
+                      <Button
+                        variant="secondary"
+                        size="lg"
+                        onClick={() =>
+                          setLikedModal(true)
+                        }
+                      >
+                        View
+                      </Button>
+                    </div>
+                  </Container>
+                </Row>
+                <br />
+                <hr></hr>
+                <br />
                 <Row className="margin-left-less">
                   <Col>{/* <Thumbnail className="remove-margin" /> */}</Col>
                   <Col></Col>
@@ -174,6 +256,13 @@ const Profile = () => {
             </Container>
 
             <ProfileModal userId={user_id} />
+
+            <Modal
+              show={likedModal}
+              onHide={() => setLikedModal(false)}
+              size="lg">
+              <ShowVideoModal userId={user_id} setLikedModal={(x) => setLikedModal(x)} />
+            </Modal>
 
             <Modal
               show={pictureModal}
@@ -250,9 +339,12 @@ const Profile = () => {
           </>
         ) : (
           <NotFound />
-        ))}
+        ))
+      }
     </>
   );
 };
+
+
 
 export default Profile;

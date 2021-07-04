@@ -143,7 +143,7 @@ const Review = () => {
     <>
       {profileLoading && <LoadingSpinner />}
       {!profileLoading && (
-        <Container>
+        <Container fluid="md">
           <div className="review-div">
             <Row className="review-header-div">
               <Col className="align-self-center" xs={8}>
