@@ -11,6 +11,19 @@ import thunk from 'redux-thunk'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
+const initialReducerState = {
+  profile: null,
+  profileLoading: true,
+  profileComponentLoading: false,
+  reviewLoading: true,
+  reviewPostLoading: false,
+  detailedMode: false,
+  editMode: false,
+  reviewsGiven: [],
+  reviewsReceived: [],
+  profileLikes: []
+};
+
 describe('profile actions without API calls should dispatch correctly', () => {
   it('profile component dispatch loading action', () => {
     const expectedActionOne = {
@@ -426,15 +439,8 @@ describe('profile reducers should work', () => {
         type: types.PROFILE_LOADING,
       })
     ).toEqual({
-      profile: null,
+      ...initialReducerState,
       profileLoading: true,
-      profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
@@ -533,15 +539,8 @@ describe('profile reducers should work', () => {
         type: types.PROFILE_COMPONENT_LOADING,
       })
     ).toEqual({
-      profile: null,
-      profileLoading: true,
+      ...initialReducerState,
       profileComponentLoading: true,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
@@ -551,15 +550,8 @@ describe('profile reducers should work', () => {
         type: types.PROFILE_COMPONENT_LOADED,
       })
     ).toEqual({
-      profile: null,
-      profileLoading: true,
+      ...initialReducerState,
       profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
@@ -673,15 +665,8 @@ describe('profile reducers should work', () => {
         payload: true
       })
     ).toEqual({
-      profile: null,
-      profileLoading: true,
-      profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
+      ...initialReducerState,
       detailedMode: true,
-      editMode: false,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
@@ -692,15 +677,8 @@ describe('profile reducers should work', () => {
         payload: true
       })
     ).toEqual({
-      profile: null,
-      profileLoading: true,
-      profileComponentLoading: false,
-      reviewLoading: true,
-      reviewPostLoading: false,
-      detailedMode: false,
+      ...initialReducerState,
       editMode: true,
-      reviewsGiven: [],
-      reviewsReceived: [],
     })
   })
 
@@ -1010,15 +988,8 @@ describe('profile reducers should work', () => {
         type: types.SET_REVIEW_LOADING,
       }))
       .toEqual({
-        profile: null,
-        profileLoading: true,
-        profileComponentLoading: false,
+        ...initialReducerState,
         reviewLoading: true,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: []
       })
   })
 
@@ -1028,15 +999,8 @@ describe('profile reducers should work', () => {
         type: types.SET_REVIEW_POST_LOADING,
       }))
       .toEqual({
-        profile: null,
-        profileLoading: true,
-        profileComponentLoading: false,
-        reviewLoading: true,
+        ...initialReducerState,
         reviewPostLoading: true,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: []
       })
   })
 
@@ -1046,15 +1010,8 @@ describe('profile reducers should work', () => {
         type: types.STOP_REVIEW_LOADING,
       }))
       .toEqual({
-        profile: null,
-        profileLoading: true,
-        profileComponentLoading: false,
+        ...initialReducerState,
         reviewLoading: false,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: []
       })
   })
 
@@ -1064,15 +1021,8 @@ describe('profile reducers should work', () => {
         type: types.STOP_REVIEW_POST_LOADING,
       }))
       .toEqual({
-        profile: null,
-        profileLoading: true,
-        profileComponentLoading: false,
-        reviewLoading: true,
+        ...initialReducerState,
         reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: []
       })
   })
 
@@ -1082,15 +1032,8 @@ describe('profile reducers should work', () => {
         type: types.PROFILE_UPDATE_ERROR,
       }))
       .toEqual({
-        profile: null,
+        ...initialReducerState,
         profileLoading: false,
-        profileComponentLoading: false,
-        reviewLoading: true,
-        reviewPostLoading: false,
-        detailedMode: false,
-        editMode: false,
-        reviewsGiven: [],
-        reviewsReceived: []
       })
   })
 

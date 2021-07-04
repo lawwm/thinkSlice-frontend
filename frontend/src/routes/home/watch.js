@@ -2,16 +2,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useHistory } from "react-router-dom";
 
-import { Row, Col, Container, Media, Form, Button } from 'react-bootstrap';
+import { Row, Col, Container, Media, Form, Button, Spinner } from 'react-bootstrap';
 // import NavBar from "../../components/NavBar.js";
 import { useParams } from 'react-router-dom';
-import { loadWatchVideos, loadHomeVideos, getComments, addComments, changePage } from "../../store/home/action"
+import { loadWatchVideos, loadHomeVideos, getComments, addComments, changePage, addLike, removeLike } from "../../store/home/action"
 import { setAlert } from '../../store/components/action';
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import { AuthNavBar } from "../../components/AuthNavBar"
 import { truncate } from "lodash"
-import { FaAngleUp, FaAngleDown } from "react-icons/fa";
+import { FaAngleUp, FaAngleDown, FaRegHeart, FaHeart } from "react-icons/fa";
 import Thumbnail from "../../components/Thumbnail"
 import { StarDisplay } from '../../components/StarRating';
 import videojs from '@mux/videojs-kit';
@@ -232,32 +232,72 @@ const VideoGrid = ({ videos }) => {
       {
         <div className="video-reco-div">
           <Row className="justify-content-md-left">
-            {videos.length !== 0 && <Col md={"auto"} >
+            {videos.length !== 0 && <Col sm={12} md={6} xl={4} className="home-video-row" >
               <BrowseMoreVideos />
             </Col>}
             {videos.map((videoRow) => {
               return (
-                <div key={videoRow.id} className="home-video-row">
-                  <Col md={"auto"} >
-                    <Thumbnail
-                      title={videoRow.video_title}
-                      username={videoRow.creator_profile.username}
-                      views={videoRow.views}
-                      subject={videoRow.subject}
-                      date={videoRow.created_at}
-                      playback_id={videoRow.playback_id}
-                      imageSrc={videoRow.creator_profile.profile_pic}
-                      videoId={videoRow.id}
-                      profileId={videoRow.creator_profile.user}
-                    />
-                  </Col>
-                </div>
+                <Col key={videoRow.id} sm={12} md={6} xl={4} className="home-video-row">
+                  <Thumbnail
+                    title={videoRow.video_title}
+                    username={videoRow.creator_profile.username}
+                    views={videoRow.views}
+                    subject={videoRow.subject}
+                    date={videoRow.created_at}
+                    playback_id={videoRow.playback_id}
+                    imageSrc={videoRow.creator_profile.profile_pic}
+                    videoId={videoRow.id}
+                    profileId={videoRow.creator_profile.user}
+                  />
+                </Col>
               )
             })}
 
           </Row>
         </div>
       }
+    </>
+  )
+}
+
+const LikeCount = ({ currentVideo }) => {
+  const dispatch = useDispatch()
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false)
+  const [hasUserLiked, setHasUserLiked] = useState(currentVideo.hasUserLiked)
+  const [likes, setLikes] = useState(currentVideo.likes)
+
+  return (
+    <>
+      {isAuthenticated && <Row>
+        {loading
+          ? (<Col className="video-student-likes-unauth">
+            <Spinner size="sm" animation="border" variant="dark" />
+          </Col>)
+          :
+          (
+            <>{
+              hasUserLiked
+                ? (
+                  <Col md={2} onClick={() => dispatch(removeLike(currentVideo.id, (x) => setLoading(x), (y) => setHasUserLiked(y), (z) => setLikes(prev => prev - 1)))} className="video-student-likes">
+                    <FaHeart color={"#ff4400"} size={18} /> <span className="video-student-likecount">{likes === 1 ? likes + " Like" : likes + " Likes"}</span>
+                  </Col>
+                )
+                : (
+                  <Col md={2} onClick={() => dispatch(addLike(currentVideo.id, (x) => setLoading(x), (y) => setHasUserLiked(y), () => setLikes(prev => prev + 1)))} className="video-student-likes">
+                    <FaRegHeart size={18} /> <span className="video-student-likecount">{likes + " Likes"}</span>
+                  </Col>
+                )
+            }
+
+            </>)
+        }
+      </Row>}
+      {!isAuthenticated && <Row>
+        <Col md={2} className="video-student-likes-unauth">
+          <FaRegHeart size={18} /> <span className="video-student-likecount">{likes + " Likes"}</span>
+        </Col>
+      </Row>}
     </>
   )
 }
@@ -290,7 +330,7 @@ const Guest = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd }) 
         player.dispose();
       };
     }
-  }, [currentVideo]);
+  }, [currentVideo.playback_id]);
 
   useEffect(() => {
     let options = {
@@ -341,7 +381,6 @@ const Guest = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd }) 
                 <Col md={4}>{currentVideo.views + " views | " + currentVideo.subject}</Col>
                 <Col md={{ span: 4, offset: 4 }} className="video-date">{"Upload date: " + currentVideo.created_at}</Col>
               </Row>
-
             </div>
             <hr />
             <div>
@@ -368,7 +407,7 @@ const Guest = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd }) 
                       )}
                       <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
                     </Row>
-
+                    <LikeCount currentVideo={currentVideo} />
                   </div>
                 </Media.Body>
               </Media>
@@ -429,7 +468,7 @@ const Member = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd })
         player.dispose();
       };
     }
-  }, [currentVideo]);
+  }, [currentVideo.playback_id]);
 
   useEffect(() => {
     let options = {
@@ -481,6 +520,7 @@ const Member = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd })
                 <Col md={4}>{currentVideo.views + " views | " + currentVideo.subject}</Col>
                 <Col md={{ span: 4, offset: 4 }} className="video-date">{"Upload date: " + currentVideo.created_at}</Col>
               </Row>
+
             </div>
             <hr />
             <div>
@@ -507,6 +547,7 @@ const Member = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd })
                       )}
                       <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
                     </Row>
+                    <LikeCount currentVideo={currentVideo} />
                   </div>
                 </Media.Body>
               </Media>

@@ -134,11 +134,6 @@ p {
   margin-top: 36px;
 }
 
-.profile-button {
-  border-radius: 4px;
-  float: right;
-}
-
 .btn-custom:hover,
 .btn-circle:hover,
 .btn-modal:hover {
@@ -227,7 +222,6 @@ p {
   object-fit: cover;
 }
 
-.profile-button,
 .profile-tag {
   background-color: #787878;
   color: white;
@@ -238,6 +232,31 @@ p {
   width: 175px;
   height: 50px;
 }
+
+.profile-button {
+  margin-top: 2vh;
+}
+
+/* .profile-button {
+  background-color: #787878;
+  color: white;
+  border-radius: 10px;
+  margin-left: 0px;
+  margin-top: 3px;
+  font-size: 20px;
+  width: 175px;
+  height: 50px;
+}
+
+.profile-button-detail {
+  background-color: #787878;
+  color: white;
+  border-radius: 10px;
+  margin-top: 3px;
+  font-size: 20px;
+  width: 175px;
+  height: 50px;
+} */
 
 .username-tag-div {
   display: flex;
@@ -469,6 +488,23 @@ p {
   text-align: right;
 }
 
+.video-student-likes {
+  display: flex;
+  align-items: center;
+  float: right;
+  cursor: pointer;
+}
+
+.video-student-likes-unauth {
+  display: flex;
+  align-items: center;
+  float: right;
+}
+
+.video-student-likecount {
+  margin-left: 3px;
+}
+
 .video-description-div {
   margin-bottom: 20px;
 }
@@ -558,8 +594,8 @@ p {
 }
 
 .browse-more-vid {
-  width: 339px;
-  height: 250px;
+  width: 100%;
+  height: 100%;
   position: relative;
   background-color: #ff7a4a;
   border-radius: 1%;
@@ -661,7 +697,7 @@ p {
 }
 
 .home-video-row {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .home-content-end {

@@ -265,6 +265,36 @@ export const endUpload = () => async (dispatch) => {
   })
 }
 
+export const addLike = (videoId, loading, hasUserLiked, likes) => async (dispatch) => {
+  loading(true)
+  try {
+    await axios.post(DOMAINS.VIDEO + ENDPOINTS.LIKE_VIDEOS + '/' + videoId)
+    hasUserLiked(true)
+    likes()
+    loading(false)
+    dispatch(setAlert("You have liked this video", "success"))
+  } catch (err) {
+    hasUserLiked(true)
+    likes()
+    loading(false)
+  }
+}
+
+export const removeLike = (videoId, loading, hasUserLiked, likes) => async (dispatch) => {
+  loading(true)
+  try {
+    await axios.delete(DOMAINS.VIDEO + ENDPOINTS.LIKE_VIDEOS + '/' + videoId)
+    hasUserLiked(false)
+    likes()
+    loading(false)
+  } catch (err) {
+    hasUserLiked(false)
+    likes()
+    loading(false)
+  }
+}
+
+
 export const commentsLoading = () => async (dispatch) => {
   dispatch({
     type: COMMENT_LOADING

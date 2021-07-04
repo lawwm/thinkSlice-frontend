@@ -34,6 +34,8 @@ import {
   REMOVE_COMMENTREPLY_LOADING_ID,
   SET_REPLY_LOADING_ID,
   REMOVE_REPLY_LOADING_ID,
+  ADD_LIKE,
+  REMOVE_LIKE,
 } from "./actionTypes.js"
 
 const initialState = {
@@ -185,6 +187,24 @@ export const home = (state = initialState, action) => {
         videos: [],
         reachedEnd: false,
         page: 1,
+      }
+    case ADD_LIKE:
+      return {
+        ...state,
+        currentVideo: {
+          ...state.currentVideo,
+          hasUserLiked: !state.currentVideo.hasUserLiked,
+          likes: state.currentVideo.likes + 1
+        }
+      }
+    case REMOVE_LIKE:
+      return {
+        ...state,
+        currentVideo: {
+          ...state.currentVideo,
+          hasUserLiked: !state.currentVideo.hasUserLiked,
+          likes: state.currentVideo.likes - 1
+        }
       }
     case CHANGE_REVIEW:
       return {

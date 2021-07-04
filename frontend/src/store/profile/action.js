@@ -196,20 +196,6 @@ export const updateProfile = (userId, profile) => async (dispatch) => {
 };
 
 export const deleteProfile = (userId) => async (dispatch) => {
-  // axios.delete(DOMAINS.PROFILE + "/" + userId).then(
-  //   (response) => {
-  //     dispatch({
-  //       type: actionTypes.PROFILE_DELETED,
-  //     });
-  //     dispatch(setAlert("Account deleted", "success"));
-  //   },
-  //   (err) => {
-  //     dispatch({
-  //       type: actionTypes.PROFILE_ERROR,
-  //     });
-  //     dispatch(setAlert("Account deletion failed, please try again", "danger"));
-  //   }
-  // );
   try {
     await axios.delete(DOMAINS.PROFILE + "/" + userId)
     dispatch({
@@ -228,6 +214,26 @@ export const resetProfile = () => async (dispatch) => {
   dispatch({
     type: actionTypes.PROFILE_RESET,
   });
+};
+
+export const profileLikedVideos = (id, loading) => async (dispatch) => {
+  try {
+    const res = await axios.get(DOMAINS.VIDEO + ENDPOINTS.LIKE_VIDEOS + '/' + id)
+    const resData = res.data.map(data => data.videoDetails)
+    const resDataTime = resData.map(data => {
+      return {
+        ...data,
+        created_at: convertUnixToTimeElapsed(data.created_at)
+      }
+    })
+    dispatch({
+      type: actionTypes.PROFILE_LIKED,
+      payload: resDataTime
+    })
+    loading()
+  } catch (err) {
+    dispatch(setAlert(err.message, "danger"));
+  }
 };
 
 export const setReviewLoading = () => async (dispatch) => {

@@ -11,11 +11,11 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const [urlFormat, setUrlFormat] = useState("/thumbnail.jpg")
+  const [urlFormat, setUrlFormat] = useState("/thumbnail.jpg?width=600&height=300&fit_mode=crop")
   const animateThumbnail = (shouldAnimate) => {
     shouldAnimate
-      ? setUrlFormat("/animated.gif")
-      : setUrlFormat("/thumbnail.jpg")
+      ? setUrlFormat("/animated.gif?width=600&height=300")
+      : setUrlFormat("/thumbnail.jpg?width=600&height=300&fit_mode=crop")
   }
 
   const { profile } = useSelector((state) => state.profile)
@@ -63,38 +63,42 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
   return (
     <>
       <div className="thumbnail-div" >
-        <Image
-          width={337}
-          height={192}
-          src={"https://image.mux.com/" + playback_id + urlFormat}
-          onClick={() => {
-            dispatch(setVideoLoading())
-            history.push('/watch/' + videoId)
-          }
-          }
-          onMouseEnter={() => animateThumbnail(true)}
-          onMouseLeave={() => animateThumbnail(false)}
-          alt="video thumbnail">
-        </Image>
-        <div className="thumbnail-subject-info">
-          {subject}
+        <div className="thumbnail-image-div">
+          <Image
+            src={"https://image.mux.com/" + playback_id + urlFormat}
+            onClick={() => {
+              dispatch(setVideoLoading())
+              history.push('/watch/' + videoId)
+            }
+            }
+            onMouseEnter={() => animateThumbnail(true)}
+            onMouseLeave={() => animateThumbnail(false)}
+            alt="video thumbnail"
+            fluid>
+          </Image>
+          <div className="thumbnail-subject-info">
+            {subject}
+          </div>
+          <div className="thumbnail-subject-duration">
+            {date}
+          </div>
+          <div className="thumbnail-subject-profile-div">
+            {deleteButton &&
+              <>
+                <div
+                  onClick={handleEditShow}
+                  className="thumbnail-subject-edit">
+                  <FaEdit role="img" aria-label="edit" alt="edit" size={18} />
+                </div>
+                <div
+                  onClick={handleDeleteShow}
+                  className="thumbnail-subject-delete">
+                  <FaTrashAlt role="img" aria-label="delete" alt="delete" size={18} />
+                </div>
+              </>}
+          </div>
         </div>
-        <div className="thumbnail-subject-duration">
-          {date}
-        </div>
-        {deleteButton &&
-          <>
-            <div
-              onClick={handleEditShow}
-              className="thumbnail-subject-edit">
-              <FaEdit role="img" aria-label="edit" alt="edit" size={18} />
-            </div>
-            <div
-              onClick={handleDeleteShow}
-              className="thumbnail-subject-delete">
-              <FaTrashAlt role="img" aria-label="delete" alt="delete" size={18} />
-            </div>
-          </>}
+
         <Media>
           <div className="thumbnail-photo" onClick={() => history.push('/profile/' + profileId)}>
             <Image
