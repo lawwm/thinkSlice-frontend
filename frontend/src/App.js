@@ -29,7 +29,10 @@ const App = () => {
     setAuthToken(token);
 
     store.dispatch(loadUser(token));
-    store.dispatch(loadChats(localStorage.getItem("user")));
+    if (token) {
+      store.dispatch(loadChats(localStorage.getItem("user")));
+    }
+
     WebSocketInstance.addCallbacks(
       (messages) => store.dispatch(setMessages(messages)),
       (message, chatId) => store.dispatch(addMessage(message, chatId)),

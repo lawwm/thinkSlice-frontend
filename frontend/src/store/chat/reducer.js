@@ -108,6 +108,7 @@ export const chat = (state = initialState, action) => {
         ...state,
         messages: [],
         chats: [],
+        unreadChats: [],
         chatComponentLoading: false,
         activeChat: null,
       };
