@@ -5,6 +5,7 @@ import { DOMAINS, ENDPOINTS } from "../endpoints";
 
 import setAuthToken from "../../util/setAuthToken";
 import { setAlert } from "../../store/components/action";
+import { loadChats } from "../chat/action";
 const config = {
   headers: {
     "Content-Type": "application/json",
@@ -113,6 +114,7 @@ export const login =
           payload: res.data,
         });
         dispatch(setAlert("Login successful", "success"));
+        dispatch(loadChats(localStorage.getItem('user')));
 
       } catch (err) {
         dispatch({

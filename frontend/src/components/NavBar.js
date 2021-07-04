@@ -3,8 +3,9 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/auth/action";
 import { resetProfile } from "../store/profile/action";
+import { resetChats } from "../store/chat/action";
 
-import { useHistory } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import "./components.css";
@@ -13,12 +14,13 @@ const NavBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const node = useRef()
+  const node = useRef();
 
   const { loading, isAuthenticated, user } = useSelector((state) => state.auth);
+  const { unreadChats } = useSelector((state) => state.chat);
   // const { profile } = useSelector((state) => state.profile);
 
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     // add when mounted
@@ -27,15 +29,15 @@ const NavBar = () => {
     return () => {
       document.removeEventListener("mousedown", handleClick);
     };
-  }, [])
+  }, []);
 
-  const handleClick = e => {
+  const handleClick = (e) => {
     if (node.current.contains(e.target)) {
       // inside click
       return;
     }
     // outside click
-    setExpanded(false)
+    setExpanded(false);
   };
 
   return (
@@ -45,10 +47,27 @@ const NavBar = () => {
       {!loading &&
         (isAuthenticated ? (
           <>
-            <Navbar expanded={expanded} collapseOnSelect={true} expand="lg" className="navbar fixed-top">
+            <Navbar
+              expanded={expanded}
+              collapseOnSelect={true}
+              expand="lg"
+              className="navbar fixed-top"
+            >
               <Container>
-                <Navbar.Brand onClick={() => history.push('/')} className="mr-auto">ThinkSlice</Navbar.Brand>
-                <Navbar.Toggle onClick={() => setExpanded((prevExpanded) => (prevExpanded = !prevExpanded))} aria-controls="responsive-navbar-nav" />
+                <Navbar.Brand
+                  onClick={() => history.push("/")}
+                  className="mr-auto"
+                >
+                  ThinkSlice
+                </Navbar.Brand>
+                <Navbar.Toggle
+                  onClick={() =>
+                    setExpanded(
+                      (prevExpanded) => (prevExpanded = !prevExpanded)
+                    )
+                  }
+                  aria-controls="responsive-navbar-nav"
+                />
                 <Navbar.Collapse aria-label="trial" id="responsive-navbar-nav">
                   <Nav className="ml-auto">
                     <NavLink
@@ -82,6 +101,7 @@ const NavBar = () => {
                       to="/chat"
                       onClick={() => setExpanded(false)}
                     >
+                      {unreadChats.length > 0 && <span className="dot"></span>}
                       Chat
                     </NavLink>
                     <NavLink
@@ -91,7 +111,8 @@ const NavBar = () => {
                       onClick={() => {
                         dispatch(resetProfile());
                         dispatch(logout());
-                        setExpanded(false)
+                        dispatch(resetChats());
+                        setExpanded(false);
                       }}
                     >
                       Logout{" "}
@@ -103,10 +124,27 @@ const NavBar = () => {
           </>
         ) : (
           <>
-            <Navbar expanded={expanded} collapseOnSelect={true} expand="lg" className="navbar fixed-top">
+            <Navbar
+              expanded={expanded}
+              collapseOnSelect={true}
+              expand="lg"
+              className="navbar fixed-top"
+            >
               <Container>
-                <Navbar.Brand onClick={() => history.push('/')} className="mr-auto">ThinkSlice</Navbar.Brand>
-                <Navbar.Toggle onClick={() => setExpanded((prevExpanded) => (prevExpanded = !prevExpanded))} aria-controls="responsive-navbar-nav" />
+                <Navbar.Brand
+                  onClick={() => history.push("/")}
+                  className="mr-auto"
+                >
+                  ThinkSlice
+                </Navbar.Brand>
+                <Navbar.Toggle
+                  onClick={() =>
+                    setExpanded(
+                      (prevExpanded) => (prevExpanded = !prevExpanded)
+                    )
+                  }
+                  aria-controls="responsive-navbar-nav"
+                />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="ml-auto">
                     <NavLink

@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "react-infinite-scroller": "^1.2.4",
     "react-intersection-observer": "^8.32.0"
   }
 }

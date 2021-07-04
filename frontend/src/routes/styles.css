@@ -777,6 +777,7 @@ p {
   border-radius: 20px;
   min-width: none;
   max-width: 75%;
+  word-wrap: break-word;
 }
 
 .sent {
