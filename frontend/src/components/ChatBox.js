@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreMessages } from "../store/chat/action.js";
 import WebSocketInstance from "../websocket.js";
@@ -13,6 +13,7 @@ const ChatBox = () => {
   const { chatComponentLoading, activeChat, reachedEnd, page, messages } =
     useSelector((state) => state.chat);
   const user = localStorage.getItem("user");
+  const [messageCount, setMessCount] = useState(messages.length);
 
   useEffect(() => {
     if (page > 0 && lastMessage.current) {
@@ -31,6 +32,7 @@ const ChatBox = () => {
         if (activeChat && !reachedEnd) {
           dispatch(loadMoreMessages());
           WebSocketInstance.loadMoreMessages(activeChat.chatroom, page + 1);
+          setMessCount(messages.length);
         }
       }
     };
@@ -43,7 +45,7 @@ const ChatBox = () => {
     return () => {
       observer.disconnect();
     };
-  }, [dispatch, reachedEnd, chatComponentLoading, activeChat, page]);
+  }, [dispatch, reachedEnd, chatComponentLoading, activeChat, page, messages]);
 
   const renderTimestamp = (timestamp) => {
     let prefix = "";
@@ -87,7 +89,7 @@ const ChatBox = () => {
         key={message.id}
         style={{ marginBottom: arr.length - 1 === i ? "150px" : "15px" }}
         className={"message " + (message.author === user ? "sent" : "replies")}
-        ref={lastMessage}
+        ref={i === messages.length - messageCount - 1 ? lastMessage : null}
       >
         {message.content}
         <br />
@@ -99,7 +101,9 @@ const ChatBox = () => {
   return (
     <>
       <div className="chat-box">
-        {!chatComponentLoading && <div ref={loader} className="chat-end"></div>}
+        {!chatComponentLoading && messages.length >= 20 && (
+          <div ref={loader} className="chat-end"></div>
+        )}
         {chatComponentLoading && activeChat && <LoadingSpinner />}
         {chatComponentLoading && !activeChat ? (
           <LoadingSpinner />

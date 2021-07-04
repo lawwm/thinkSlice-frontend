@@ -10,6 +10,8 @@ import {
     AUTH_BUTTON_LOADING
 } from "./actionTypes.js";
 
+import WebSocketInstance from "../../websocket.js";
+
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
@@ -32,6 +34,7 @@ export const auth = (state = initialState, action) => {
                 username: localStorage.getItem('username')
             }
         case REGISTER_SUCCESS:
+            WebSocketInstance.connect();
             localStorage.setItem('user', payload.user.id);
             return {
                 ...state,
@@ -42,6 +45,7 @@ export const auth = (state = initialState, action) => {
                 username: payload.user.username
             }
         case LOGIN_SUCCESS:
+            WebSocketInstance.connect();
             localStorage.setItem('user', payload.user.id);
             localStorage.setItem('username', payload.user.username);
             return {
@@ -62,13 +66,17 @@ export const auth = (state = initialState, action) => {
                 ...state,
                 authLoading: false
             }
-        case AUTH_ERROR:
         case LOGOUT:
+        case AUTH_ERROR:
         case REGISTER_FAIL:
         case LOGIN_FAIL:
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('userId');
+            localStorage.removeItem('activeChat');
+            if (type === LOGOUT) {
+                WebSocketInstance.disconnect();
+            }
             return {
                 ...state,
                 token: null,

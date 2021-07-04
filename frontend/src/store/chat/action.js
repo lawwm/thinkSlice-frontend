@@ -2,33 +2,38 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { DOMAINS, ENDPOINTS } from "../endpoints";
 
-export const addMessage = (message) => async (dispatch) => {
-  dispatch({
-    type: actionTypes.ADD_MESSAGE,
-    message: message,
-  });
+export const addMessage = (message, chatId) => async (dispatch) => {
+  const activeChat = localStorage.getItem("activeChat");
+  if (activeChat !== chatId) {
+    dispatch({ type: actionTypes.NEW_MESSAGE, chat: chatId });
+  } else {
+    dispatch({
+      type: actionTypes.ADD_MESSAGE,
+      message: message,
+    });
+  }
 };
 
 export const setMessages = (messages) => async (dispatch) => {
-  console.log(messages)
+  console.log(messages);
   dispatch({
     type: actionTypes.SET_MESSAGES,
     messages: messages,
   });
 };
 
-export const loadMoreMessages = () => async(dispatch) => {
+export const loadMoreMessages = () => async (dispatch) => {
   dispatch({
     type: actionTypes.LOAD_MORE_MESSAGES,
-  })
-}
+  });
+};
 
-export const setMoreMessages = (messages) => async(dispatch) => {
+export const setMoreMessages = (messages) => async (dispatch) => {
   dispatch({
     type: actionTypes.SET_MORE_MESSAGES,
     messages: messages,
-  })
-}
+  });
+};
 
 export const startChat = (userId) => async (dispatch) => {
   try {
@@ -49,7 +54,7 @@ export const startChat = (userId) => async (dispatch) => {
 
 export const resetChats = () => async (dispatch) => {
   dispatch({
-    type: actionTypes.RESET_CHAT,
+    type: actionTypes.RESET_CHATS,
   });
 };
 

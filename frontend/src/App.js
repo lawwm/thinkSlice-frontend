@@ -12,15 +12,45 @@ import configureStore from "./store/store.js";
 
 import "./App.css";
 import NavBar from "./components/NavBar";
-import Alert from "./components/Alert"
+import Alert from "./components/Alert";
+import {
+  addMessage,
+  loadChats,
+  setMessages,
+  setMoreMessages,
+} from "./store/chat/action";
+import WebSocketInstance from "./websocket";
 
 const App = () => {
-  const store = configureStore()
+  const store = configureStore();
 
   useEffect(() => {
-    setAuthToken(localStorage.getItem("token"));
-    store.dispatch(loadUser(localStorage.getItem("token")));
+    const token = localStorage.getItem("token");
+    setAuthToken(token);
+
+    store.dispatch(loadUser(token));
+    if (token) {
+      store.dispatch(loadChats(localStorage.getItem("user")));
+    }
+
+    WebSocketInstance.addCallbacks(
+      (messages) => store.dispatch(setMessages(messages)),
+      (message, chatId) => store.dispatch(addMessage(message, chatId)),
+      (messages) => store.dispatch(setMoreMessages(messages))
+    );
   }, [store]);
+
+  useEffect(() => {
+    if (WebSocketInstance.state() === 0 && localStorage.getItem("token")) {
+      return WebSocketInstance.connect();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (WebSocketInstance.state() > 0) {
+      return () => WebSocketInstance.disconnect();
+    }
+  }, []);
 
   return (
     <Provider store={store} className="App">
