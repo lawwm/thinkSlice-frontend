@@ -10,6 +10,7 @@ const initialState = {
   editMode: false,
   reviewsGiven: [],
   reviewsReceived: [],
+  profileLikes: []
 };
 
 export const profile = (state = initialState, action) => {
@@ -83,6 +84,12 @@ export const profile = (state = initialState, action) => {
       }
     case actionTypes.PROFILE_UPDATED:
       return { ...state, profile: payload, profileLoading: false };
+
+    case actionTypes.PROFILE_LIKED:
+      return {
+        ...state,
+        profileLikes: payload
+      }
 
     case actionTypes.REVIEWS_LOADED:
       return {

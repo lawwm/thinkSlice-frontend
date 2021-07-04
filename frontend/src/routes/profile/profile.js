@@ -8,13 +8,73 @@ import {
   changePicture,
 } from "../../store/profile/action.js";
 import { startChat } from "../../store/chat/action.js";
-
+import { profileLikedVideos } from "../../store/profile/action.js";
 import NotFound from "../errorpages/notFound";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ProfileModal from "../../components/ProfileModal.js";
 import Thumbnail from "../../components/Thumbnail.js";
 import { Container, Col, Row, Modal, Button, Spinner } from "react-bootstrap";
 import "../styles.css";
+
+const ShowVideoModal = ({ userId, setLikedModal }) => {
+  const dispatch = useDispatch();
+
+  const { profileLikes } = useSelector(
+    (state) => state.profile
+  );
+
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    if (profileLikes.length === 0) {
+      dispatch(profileLikedVideos(userId, () => setLoading(false)))
+    } else {
+      setLoading(false)
+    }
+  }, [dispatch, userId, profileLikes])
+
+  return (
+    <>
+      <Modal.Header>
+        <Modal.Title>User's liked videos</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {
+          loading && <LoadingSpinner />
+        }
+        {!loading &&
+          <Row className="justify-content-md-left">
+            {profileLikes.map((video) => {
+              return (
+                <Col key={video.id} xs={12} sm={6} xl={4} className="home-video-row">
+                  <Thumbnail
+                    title={video.video_title}
+                    username={video.creator_profile.username}
+                    views={video.views}
+                    subject={video.subject}
+                    date={video.created_at}
+                    playback_id={video.playback_id}
+                    imageSrc={video.creator_profile.profile_pic}
+                    videoId={video.id}
+                    profileId={video.creator_profile.user}
+                  />
+                </Col>
+              );
+            })}
+          </Row>
+        }
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="dark"
+          className="btn-modal-grey"
+          onClick={() => setLikedModal(false)}
+        >
+          Go back
+        </Button>
+      </Modal.Footer>
+    </>
+  )
+}
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -53,6 +113,9 @@ const Profile = () => {
     e.preventDefault();
     dispatch(changePicture(imageFile, () => setPictureModal(false)));
   };
+
+  const [likedModal, setLikedModal] = useState(false);
+
   return (
     <>
       {profileLoading && <LoadingSpinner />}
@@ -163,6 +226,25 @@ const Profile = () => {
                     </Row>
                   </div>
                 </Row>
+                <br />
+                <hr></hr>
+                <br />
+                <Row className="margin-left">
+                  <h2>Liked videos</h2>
+                  <div>
+                    <button
+                      className="btn profile-button"
+                      onClick={() =>
+                        setLikedModal(true)
+                      }
+                    >
+                      View
+                    </button>
+                  </div>
+                </Row>
+                <br />
+                <hr></hr>
+                <br />
                 <Row className="margin-left-less">
                   <Col>{/* <Thumbnail className="remove-margin" /> */}</Col>
                   <Col></Col>
@@ -172,6 +254,13 @@ const Profile = () => {
             </Container>
 
             <ProfileModal userId={user_id} />
+
+            <Modal
+              show={likedModal}
+              onHide={() => setLikedModal(false)}
+              size="lg">
+              <ShowVideoModal userId={user_id} setLikedModal={(x) => setLikedModal(x)} />
+            </Modal>
 
             <Modal
               show={pictureModal}
@@ -252,5 +341,7 @@ const Profile = () => {
     </>
   );
 };
+
+
 
 export default Profile;
