@@ -13,7 +13,7 @@ import NotFound from "../errorpages/notFound";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ProfileModal from "../../components/ProfileModal.js";
 import Thumbnail from "../../components/Thumbnail.js";
-import { Container, Col, Row, Modal, Button, Spinner } from "react-bootstrap";
+import { Container, Col, Row, Modal, Button, Spinner, ButtonGroup } from "react-bootstrap";
 import "../styles.css";
 
 const ShowVideoModal = ({ userId, setLikedModal }) => {
@@ -25,11 +25,9 @@ const ShowVideoModal = ({ userId, setLikedModal }) => {
 
   const [loading, setLoading] = useState(true)
   useEffect(() => {
-    if (profileLikes.length === 0) {
-      dispatch(profileLikedVideos(userId, () => setLoading(false)))
-    } else {
-      setLoading(false)
-    }
+
+    dispatch(profileLikedVideos(userId, () => setLoading(false)))
+
   }, [dispatch, userId, profileLikes])
 
   return (
@@ -38,29 +36,27 @@ const ShowVideoModal = ({ userId, setLikedModal }) => {
         <Modal.Title>User's liked videos</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <Row className="justify-content-md-left">
+          {profileLikes.map((video) => {
+            return (
+              <Col key={video.id} xs={12} sm={6} xl={4} className="home-video-row">
+                <Thumbnail
+                  title={video.video_title}
+                  username={video.creator_profile.username}
+                  views={video.views}
+                  subject={video.subject}
+                  date={video.created_at}
+                  playback_id={video.playback_id}
+                  imageSrc={video.creator_profile.profile_pic}
+                  videoId={video.id}
+                  profileId={video.creator_profile.user}
+                />
+              </Col>
+            );
+          })}
+        </Row>
         {
           loading && <LoadingSpinner />
-        }
-        {!loading &&
-          <Row className="justify-content-md-left">
-            {profileLikes.map((video) => {
-              return (
-                <Col key={video.id} xs={12} sm={6} xl={4} className="home-video-row">
-                  <Thumbnail
-                    title={video.video_title}
-                    username={video.creator_profile.username}
-                    views={video.views}
-                    subject={video.subject}
-                    date={video.created_at}
-                    playback_id={video.playback_id}
-                    imageSrc={video.creator_profile.profile_pic}
-                    videoId={video.id}
-                    profileId={video.creator_profile.user}
-                  />
-                </Col>
-              );
-            })}
-          </Row>
         }
       </Modal.Body>
       <Modal.Footer>
@@ -124,8 +120,8 @@ const Profile = () => {
           <>
             <Container>
               <div className="profile-div">
-                <Row className="margin-left">
-                  <Col className="mr-auto p-2 col-example" xs={8}>
+                <Row>
+                  <Col xs={{ span: 8, offset: 0 }} md={{ span: 8, offset: 1 }}>
                     <div className="username-tag-div">
                       <h2>{profile.basic.username}</h2>
                       {profile.basic.is_tutor && (
@@ -141,7 +137,7 @@ const Profile = () => {
                     </div>
                     <p>{profile.basic.user_bio}</p>
                   </Col>
-                  <Col>
+                  <Col xs={12} md={3}>
                     <div
                       onClick={() =>
                         setPictureModal(true && currentViewer === user_id)
@@ -163,45 +159,48 @@ const Profile = () => {
                       </div>
                     </div>
                   </Col>
-                  <Row>
-                    <button
-                      className="btn profile-button"
-                      onClick={() => dispatch(toggleDetailedView(true))}
-                    >
-                      Details
-                    </button>
-                    <button
-                      className="btn profile-button"
-                      onClick={() =>
-                        history.push("/profile/reviews/" + user_id)
-                      }
-                    >
-                      Reviews
-                    </button>
-                    {currentViewer && currentViewer !== user_id && (
-                      <button
-                        className="btn profile-button"
-                        onClick={() => dispatch(startChat(user_id))}
-                        disabled={chatComponentLoading}
+                  <Col xs={{ span: 12, offset: 0 }} md={{ span: 11, offset: 1 }}>
+                    <ButtonGroup className="profile-button" size="lg">
+                      <Button
+                        variant="secondary"
+                        onClick={() => dispatch(toggleDetailedView(true))}
                       >
-                        {chatComponentLoading ? (
-                          <Spinner
-                            size="sm"
-                            animation="border"
-                            variant="light"
-                          />
-                        ) : (
-                          "Chat"
-                        )}
-                      </button>
-                    )}
-                  </Row>
+                        Details
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() =>
+                          history.push("/profile/reviews/" + user_id)
+                        }
+                      >
+                        Reviews
+                      </Button>
+                      {currentViewer && currentViewer !== user_id && (
+                        <Button
+                          variant="secondary"
+                          onClick={() => dispatch(startChat(user_id))}
+                          disabled={chatComponentLoading}
+                        >
+                          {chatComponentLoading ? (
+                            <Spinner
+                              size="sm"
+                              animation="border"
+                              variant="light"
+                            />
+                          ) : (
+                            "Chat"
+                          )}
+                        </Button>
+                      )}
+                    </ButtonGroup>
+                  </Col>
                 </Row>
+
                 <br />
                 <hr></hr>
                 <br />
-                <Row className="margin-left">
-                  <div>
+                <Row>
+                  <Container>
                     <h2>Videos</h2>
                     <Row className="justify-content-md-left">
                       {profile.basic.video.map((videoRow) => {
@@ -224,23 +223,26 @@ const Profile = () => {
                         );
                       })}
                     </Row>
-                  </div>
+                  </Container>
                 </Row>
                 <br />
                 <hr></hr>
                 <br />
-                <Row className="margin-left">
-                  <h2>Liked videos</h2>
-                  <div>
-                    <button
-                      className="btn profile-button"
-                      onClick={() =>
-                        setLikedModal(true)
-                      }
-                    >
-                      View
-                    </button>
-                  </div>
+                <Row>
+                  <Container>
+                    <h2>Liked videos</h2>
+                    <div>
+                      <Button
+                        variant="secondary"
+                        size="lg"
+                        onClick={() =>
+                          setLikedModal(true)
+                        }
+                      >
+                        View
+                      </Button>
+                    </div>
+                  </Container>
                 </Row>
                 <br />
                 <hr></hr>
@@ -337,7 +339,8 @@ const Profile = () => {
           </>
         ) : (
           <NotFound />
-        ))}
+        ))
+      }
     </>
   );
 };

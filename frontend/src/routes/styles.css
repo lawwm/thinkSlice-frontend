@@ -134,11 +134,6 @@ p {
   margin-top: 36px;
 }
 
-.profile-button {
-  border-radius: 4px;
-  float: right;
-}
-
 .btn-custom:hover,
 .btn-circle:hover,
 .btn-modal:hover {
@@ -227,7 +222,6 @@ p {
   object-fit: cover;
 }
 
-.profile-button,
 .profile-tag {
   background-color: #787878;
   color: white;
@@ -238,6 +232,31 @@ p {
   width: 175px;
   height: 50px;
 }
+
+.profile-button {
+  margin-top: 2vh;
+}
+
+/* .profile-button {
+  background-color: #787878;
+  color: white;
+  border-radius: 10px;
+  margin-left: 0px;
+  margin-top: 3px;
+  font-size: 20px;
+  width: 175px;
+  height: 50px;
+}
+
+.profile-button-detail {
+  background-color: #787878;
+  color: white;
+  border-radius: 10px;
+  margin-top: 3px;
+  font-size: 20px;
+  width: 175px;
+  height: 50px;
+} */
 
 .username-tag-div {
   display: flex;

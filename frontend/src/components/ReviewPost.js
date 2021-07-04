@@ -69,7 +69,7 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
           className="thumbnail-photo mr-3"
           onClick={() => history.push("/profile/" + profileId)}
         >
-          <Image src={reviewPic} alt="profile picture" fluid />
+          <Image className="thumbnail-image" src={reviewPic} alt="profile picture" fluid />
         </div>
         <Media.Body className="align-self-center">
           <h5>{username}</h5>
