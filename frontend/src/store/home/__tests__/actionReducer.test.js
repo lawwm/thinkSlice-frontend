@@ -823,7 +823,15 @@ describe('home page reducers should work', () => {
 
   it('ADD_COMMENTS reducers should work', () => {
     expect(
-      home(undefined, {
+      home({
+        ...initialReducerState,
+        page: 1,
+        commentLoading: false,
+        comments: [],
+        currentVideo: {
+          num_of_comments: 9
+        }
+      }, {
         type: types.ADD_COMMENT,
         payload:
         {
@@ -861,6 +869,9 @@ describe('home page reducers should work', () => {
         "parent_comment": null,
         "replies": []
       }],
+      currentVideo: {
+        num_of_comments: 10
+      }
     })
   })
 
@@ -969,8 +980,11 @@ describe('home page reducers should work', () => {
           "commented_video": 2,
           "user_commenting": 1,
           "parent_comment": null,
-          "replies": []
+          "replies": [1, 2, 3]
         }],
+        currentVideo: {
+          num_of_comments: 9
+        }
       }, {
         type: types.DELETE_COMMENT,
         payload: 13
@@ -979,6 +993,9 @@ describe('home page reducers should work', () => {
       ...initialReducerState,
       commentLoadingId: [],
       comments: [],
+      currentVideo: {
+        num_of_comments: 5
+      }
     })
   })
 
@@ -1138,6 +1155,9 @@ describe('home page reducers should work', () => {
           "parent_comment": null,
           "replies": []
         }],
+        currentVideo: {
+          num_of_comments: 9
+        }
       }, {
         type: types.CREATE_REPLIES,
         payload:
@@ -1161,6 +1181,9 @@ describe('home page reducers should work', () => {
       })
     ).toEqual({
       ...initialReducerState,
+      currentVideo: {
+        num_of_comments: 10
+      },
       commentLoadingId: [],
       comments: [{
         "id": 13,
@@ -1287,6 +1310,9 @@ describe('home page reducers should work', () => {
       home({
         ...initialReducerState,
         replyLoadingId: [49],
+        currentVideo: {
+          num_of_comments: 9
+        },
         comments: [{
           "id": 13,
           "username": "Pearsauce",
@@ -1340,6 +1366,9 @@ describe('home page reducers should work', () => {
     ).toEqual({
       ...initialReducerState,
       replyLoadingId: [],
+      currentVideo: {
+        num_of_comments: 8
+      },
       comments: [{
         "id": 13,
         "username": "Pearsauce",

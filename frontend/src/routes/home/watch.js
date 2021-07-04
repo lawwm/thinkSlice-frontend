@@ -6,6 +6,7 @@ import { Row, Col, Container, Media, Form, Button } from 'react-bootstrap';
 // import NavBar from "../../components/NavBar.js";
 import { useParams } from 'react-router-dom';
 import { loadWatchVideos, loadHomeVideos, getComments, addComments, changePage } from "../../store/home/action"
+import { setAlert } from '../../store/components/action';
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import { AuthNavBar } from "../../components/AuthNavBar"
@@ -36,10 +37,19 @@ export const Comment = ({ totalComments, videoId }) => {
   const dispatch = useDispatch()
 
   const { commentLoading, comments } = useSelector((state) => state.home);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const [commentForm, setCommentForm] = useState({
     comment: ""
   })
+
+  const commentIfAuth = () => {
+    if (isAuthenticated) {
+      setShowAddComment(true)
+    } else {
+      dispatch(setAlert("You need to be a registered user to comment", "danger"))
+    }
+  }
 
   const onCommentChange = (e) => {
     setCommentForm({
@@ -99,7 +109,7 @@ export const Comment = ({ totalComments, videoId }) => {
 
                         </div>)
                         : (<div
-                          onClick={() => setShowAddComment(true)}
+                          onClick={() => commentIfAuth()}
                           className="video-add-comment-button"> Comment on this video?</div>
                         )}
                     </Media.Body>
