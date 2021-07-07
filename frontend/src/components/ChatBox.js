@@ -10,8 +10,14 @@ const ChatBox = () => {
   const loader = useRef();
   const lastMessage = useRef();
   const dispatch = useDispatch();
-  const { chatComponentLoading, activeChat, reachedEnd, page, messages } =
-    useSelector((state) => state.chat);
+  const { chatComponentLoading, activeChat, chats } = useSelector(
+    (state) => state.chat
+  );
+  let currentChat = chats.find((chat) => chat.chatroom === activeChat);
+  if (!currentChat) {
+    currentChat = { page: 0, messages: [], reachedEnd: true };
+  }
+  const { page, messages, reachedEnd } = currentChat;
   const user = localStorage.getItem("user");
   const [messageCount, setMessCount] = useState(messages.length);
 
@@ -31,7 +37,7 @@ const ChatBox = () => {
       if (target.isIntersecting) {
         if (activeChat && !reachedEnd) {
           dispatch(loadMoreMessages());
-          WebSocketInstance.loadMoreMessages(activeChat.chatroom, page + 1);
+          WebSocketInstance.loadMoreMessages(activeChat, page + 1);
           setMessCount(messages.length);
         }
       }
@@ -104,10 +110,8 @@ const ChatBox = () => {
         {!chatComponentLoading && messages.length >= 20 && (
           <div ref={loader} className="chat-end"></div>
         )}
-        {chatComponentLoading && activeChat && <LoadingSpinner />}
-        {chatComponentLoading && !activeChat ? (
-          <LoadingSpinner />
-        ) : (
+        {chatComponentLoading && <LoadingSpinner />}
+        {activeChat && (
           <ul className="conversation">
             {activeChat && renderMessages(messages, parseInt(user))}
             {page === 0 && !chatComponentLoading && <AlwaysScrollToBottom />}

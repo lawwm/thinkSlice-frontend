@@ -7,28 +7,32 @@ import {
   toggleDetailedView,
   changePicture,
 } from "../../store/profile/action.js";
-import { startChat } from "../../store/chat/action.js";
 import { profileLikedVideos } from "../../store/profile/action.js";
 import NotFound from "../errorpages/notFound";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ProfileModal from "../../components/ProfileModal.js";
 import Thumbnail from "../../components/Thumbnail.js";
-import { Container, Col, Row, Modal, Button, Spinner, ButtonGroup } from "react-bootstrap";
+import {
+  Container,
+  Col,
+  Row,
+  Modal,
+  Button,
+  Spinner,
+  ButtonGroup,
+} from "react-bootstrap";
 import "../styles.css";
+import { setActive, startChat } from "../../store/chat/action.js";
 
 const ShowVideoModal = ({ userId, setLikedModal }) => {
   const dispatch = useDispatch();
 
-  const { profileLikes } = useSelector(
-    (state) => state.profile
-  );
+  const { profileLikes } = useSelector((state) => state.profile);
 
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-
-    dispatch(profileLikedVideos(userId, () => setLoading(false)))
-
-  }, [dispatch, userId, profileLikes])
+    dispatch(profileLikedVideos(userId, () => setLoading(false)));
+  }, [dispatch, userId, profileLikes]);
 
   return (
     <>
@@ -39,7 +43,13 @@ const ShowVideoModal = ({ userId, setLikedModal }) => {
         <Row className="justify-content-md-left">
           {profileLikes.map((video) => {
             return (
-              <Col key={video.id} xs={12} sm={6} xl={4} className="home-video-row">
+              <Col
+                key={video.id}
+                xs={12}
+                sm={6}
+                xl={4}
+                className="home-video-row"
+              >
                 <Thumbnail
                   title={video.video_title}
                   username={video.creator_profile.username}
@@ -55,9 +65,7 @@ const ShowVideoModal = ({ userId, setLikedModal }) => {
             );
           })}
         </Row>
-        {
-          loading && <LoadingSpinner />
-        }
+        {loading && <LoadingSpinner />}
       </Modal.Body>
       <Modal.Footer>
         <Button
@@ -69,8 +77,8 @@ const ShowVideoModal = ({ userId, setLikedModal }) => {
         </Button>
       </Modal.Footer>
     </>
-  )
-}
+  );
+};
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -78,19 +86,21 @@ const Profile = () => {
   const { profile, profileLoading, profileComponentLoading } = useSelector(
     (state) => state.profile
   );
-  const { activeChat, chatComponentLoading } = useSelector(
+  const { activeChat, chatComponentLoading, chats } = useSelector(
     (state) => state.chat
   );
 
   const { user_id } = useParams();
   const currentViewer = localStorage.getItem("user");
 
+  const [startingChat, setStartingChat] = useState(false);
+
   useEffect(() => {
     dispatch(getProfile(user_id));
   }, [user_id, dispatch]);
 
   useEffect(() => {
-    if (activeChat) {
+    if (startingChat && activeChat) {
       history.push("/chat");
     }
   });
@@ -159,7 +169,10 @@ const Profile = () => {
                       </div>
                     </div>
                   </Col>
-                  <Col xs={{ span: 12, offset: 0 }} md={{ span: 11, offset: 1 }}>
+                  <Col
+                    xs={{ span: 12, offset: 0 }}
+                    md={{ span: 11, offset: 1 }}
+                  >
                     <ButtonGroup className="profile-button" size="lg">
                       <Button
                         variant="secondary"
@@ -178,7 +191,17 @@ const Profile = () => {
                       {currentViewer && currentViewer !== user_id && (
                         <Button
                           variant="secondary"
-                          onClick={() => dispatch(startChat(user_id))}
+                          onClick={() => {
+                            setStartingChat(true);
+                            const alreadyExists = chats.find(
+                              (chat) => chat.recipientId === parseInt(user_id)
+                            );
+                            if (alreadyExists) {
+                              dispatch(setActive(alreadyExists.chatroom));
+                            } else {
+                              dispatch(startChat(user_id));
+                            }
+                          }}
                           disabled={chatComponentLoading}
                         >
                           {chatComponentLoading ? (
@@ -205,7 +228,13 @@ const Profile = () => {
                     <Row className="justify-content-md-left">
                       {profile.basic.video.map((videoRow) => {
                         return (
-                          <Col key={videoRow.id} xs={12} md={6} xl={4} className="home-video-row">
+                          <Col
+                            key={videoRow.id}
+                            xs={12}
+                            md={6}
+                            xl={4}
+                            className="home-video-row"
+                          >
                             <Thumbnail
                               title={videoRow.video_title}
                               username={profile.basic.username}
@@ -235,9 +264,7 @@ const Profile = () => {
                       <Button
                         variant="secondary"
                         size="lg"
-                        onClick={() =>
-                          setLikedModal(true)
-                        }
+                        onClick={() => setLikedModal(true)}
                       >
                         View
                       </Button>
@@ -260,8 +287,12 @@ const Profile = () => {
             <Modal
               show={likedModal}
               onHide={() => setLikedModal(false)}
-              size="lg">
-              <ShowVideoModal userId={user_id} setLikedModal={(x) => setLikedModal(x)} />
+              size="lg"
+            >
+              <ShowVideoModal
+                userId={user_id}
+                setLikedModal={(x) => setLikedModal(x)}
+              />
             </Modal>
 
             <Modal
@@ -339,12 +370,9 @@ const Profile = () => {
           </>
         ) : (
           <NotFound />
-        ))
-      }
+        ))}
     </>
   );
 };
-
-
 
 export default Profile;
