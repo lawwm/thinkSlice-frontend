@@ -1,43 +1,70 @@
 import * as actionTypes from "./actionTypes";
 
 const initialState = {
-  messages: [],
+  isChatOpen: false,
   chats: [],
-  chatsLoading: true,
+  chatsLoaded: false,
+  messagesLoaded: [],
+  chatLoading: true,
   chatComponentLoading: false,
   activeChat: null,
-  page: 0,
-  reachedEnd: false,
   unreadChats: [],
 };
 
-const addMessage = (state, action) => {
-  return { ...state, messages: [...state.messages, action.message] };
+const addMessage = (state=initialState, action) => {
+  const chatToAdd = state.chats.find(
+    (chat) => chat.chatroom === action.chatroom
+  );
+  const chatIndex = state.chats.indexOf(chatToAdd);
+  const updateChats = state.chats;
+  updateChats[chatIndex].messages = [...chatToAdd.messages, action.message];
+  return { ...state, chats: updateChats };
 };
 
 const setMessages = (state, action) => {
+  const chatToSet = state.chats.find(
+    (chat) => chat.chatroom === action.chatroom
+  );
+  const chatIndex = state.chats.indexOf(chatToSet);
+  const updateChats = state.chats;
+  updateChats[chatIndex].messages = action.messages.reverse();
   return {
     ...state,
-    messages: action.messages.reverse(),
-    chatComponentLoading: false,
+    chats: updateChats,
+    messagesLoaded: state.messagesLoaded.concat(action.chatroom),
   };
 };
 
 const setMoreMessages = (state, action) => {
+  const chatToAdd = state.chats.find(
+    (chat) => chat.chatroom === action.chatroom
+  );
+  const chatIndex = state.chats.indexOf(chatToAdd);
+  const updateChats = state.chats;
+
   if (action.messages.length > 0) {
-    return {
-      ...state,
-      messages: action.messages.reverse().concat(state.messages),
-      chatComponentLoading: false,
-      page: state.page + 1,
+    updateChats[chatIndex] = {
+      ...chatToAdd,
+      messages: action.messages.reverse().concat(chatToAdd.messages),
+      page: chatToAdd.page + 1,
     };
   } else {
-    return { ...state, reachedEnd: true, chatComponentLoading: false };
+    updateChats[chatIndex] = {
+      ...chatToAdd,
+      reachedEnd: true,
+    };
   }
+  return { ...state, chats: updateChats, chatComponentLoading: false };
 };
 
 export const chat = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.CHAT_OPEN:
+      return { ...state, isChatOpen: true };
+
+    case actionTypes.CHAT_CLOSED:
+      return { ...state, isChatOpen: false };
+
     case actionTypes.ADD_MESSAGE:
       return addMessage(state, action);
 
@@ -51,54 +78,65 @@ export const chat = (state = initialState, action) => {
       return setMoreMessages(state, action);
 
     case actionTypes.NEW_MESSAGE:
-      if (!state.unreadChats.find((element) => element === action.chat)) {
-        return { ...state, unreadChats: [...state.unreadChats, action.chat] };
+      if (!state.unreadChats.find((chat) => chat === action.chatroom)) {
+        return {
+          ...state,
+          unreadChats: [...state.unreadChats, action.chatroom],
+        };
       } else {
         return state;
       }
 
-    case actionTypes.GET_CHAT:
-    case actionTypes.START_CHAT:
-      return { ...state, chatComponentLoading: true };
-
-    case actionTypes.GET_CHAT_SUCCESS:
-    case actionTypes.START_CHAT_SUCCESS:
-      const chatroom = action.chat.chatroom;
+    case actionTypes.SET_ACTIVE:
+      const chatroom = action.chatroom;
       localStorage.setItem("activeChat", chatroom);
-      if (state.unreadChats.indexOf(chatroom) > -1) {
+      const wasUnread = state.unreadChats.indexOf(chatroom);
+      const updateUnread = state.unreadChats;
+      updateUnread.splice(wasUnread, 1);
+      if (wasUnread > -1) {
         return {
           ...state,
-          unreadChats: state.unreadChats.splice(chatroom, 1),
-          activeChat: action.chat,
-          reachedEnd: false,
-          page: 0,
+          activeChat: chatroom,
+          unreadChats: updateUnread,
+          chatComponentLoading: false,
         };
       } else {
         return {
           ...state,
-          activeChat: action.chat,
-          reachedEnd: false,
-          page: 0,
+          activeChat: chatroom,
+          chatComponentLoading: false,
         };
       }
 
-    case actionTypes.LOAD_CHATS:
-      return { ...state, chatsLoading: true };
+    case actionTypes.START_CHAT:
+      return { ...state, chatComponentLoading: true };
+
+    case actionTypes.START_CHAT_SUCCESS:
+      const newChatroom = action.chat.chatroom;
+      localStorage.setItem("activeChat", newChatroom);
+      return {
+        ...state,
+        chats: [...state.chats, action.chat],
+        activeChat: newChatroom,
+      };
+
+    case actionTypes.NEW_CHAT_SESSION:
+      const newChat = { ...action.chat, messages: [action.message], reachedEnd: false, page: 0, };
+      return { ...state, chats: [...state.chats, newChat] };
 
     case actionTypes.LOAD_CHATS_SUCCESS:
+      let loadedChats = [];
+      for (const chat of action.chats) {
+        loadedChats = [...loadedChats, { ...chat, messages: [], reachedEnd: false, page: 0 }];
+      }
       return {
         ...state,
-        chats: action.chats,
-        chatsLoading: false,
+        chats: loadedChats,
+        chatsLoaded: true,
       };
 
-    case actionTypes.GET_CHAT_FAIL:
-      localStorage.removeItem("activeChat");
-      return {
-        ...state,
-        activeChat: null,
-        chatComponentLoading: false,
-      };
+    case actionTypes.LOADED_ALL_CHAT_MESSAGES:
+      return { ...state, chatLoading: false };
 
     case actionTypes.RESET_CHATS:
     case actionTypes.START_CHAT_FAIL:
@@ -106,9 +144,11 @@ export const chat = (state = initialState, action) => {
       localStorage.removeItem("activeChat");
       return {
         ...state,
-        messages: [],
         chats: [],
         unreadChats: [],
+        chatsLoaded: false,
+        messagesLoaded: [],
+        chatLoading: true,
         chatComponentLoading: false,
         activeChat: null,
       };

@@ -35,21 +35,13 @@ const App = () => {
 
     WebSocketInstance.addCallbacks(
       (messages) => store.dispatch(setMessages(messages)),
-      (message, chatId) => store.dispatch(addMessage(message, chatId)),
+      (message) => store.dispatch(addMessage(message)),
       (messages) => store.dispatch(setMoreMessages(messages))
     );
   }, [store]);
 
   useEffect(() => {
-    if (WebSocketInstance.state() === 0 && localStorage.getItem("token")) {
-      return WebSocketInstance.connect();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (WebSocketInstance.state() > 0) {
-      return () => WebSocketInstance.disconnect();
-    }
+    WebSocketInstance.connect();
   }, []);
 
   return (

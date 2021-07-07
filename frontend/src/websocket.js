@@ -22,6 +22,7 @@ class WebSocketService {
     }
     const path = `${SOCKET_URL}/ws/chat`;
     this.socketRef = new WebSocket(path);
+    const component = this;
 
     this.socketRef.onopen = () => {
       console.log("WebSocket open");
@@ -33,12 +34,11 @@ class WebSocketService {
       console.log(e.message);
     };
     this.socketRef.onclose = () => {
-      console.log("WebSocket closed");
+      console.log("WebSocket closed. Reconnect will be attempted in 1 second.");
+      setTimeout(function () {
+        component.connect();
+      }, 1000);
     };
-  }
-
-  disconnect() {
-    this.socketRef.close();
   }
 
   socketNewMessage(data) {
@@ -51,40 +51,42 @@ class WebSocketService {
 
     const command = parsedData.command;
     if (command === "messages") {
-      this.callbacks[command](parsedData.messages);
+      this.callbacks[command](parsedData);
     }
     if (command === "new_message") {
       const user = parseInt(localStorage.getItem("user"));
       if (parsedData.recipient === user || parsedData.message.author === user) {
-        this.callbacks[command](parsedData.message, parsedData.chatId);
+        this.callbacks[command](parsedData);
       }
     }
     if (command === "more_messages") {
-      this.callbacks[command](parsedData.messages);
+      this.callbacks[command](parsedData);
     }
   }
 
-  fetchMessages(chatId) {
+  fetchMessages(chatroom) {
     this.sendMessage({
       command: "fetch_messages",
-      chatId: chatId,
+      chatroom: chatroom,
     });
   }
 
   newChatMessage(message) {
-    this.sendMessage({
+    let newMessage = {
       command: "new_message",
       from: message.from,
       to: message.to,
       message: message.content,
-      chatId: message.chatId,
-    });
+      chatroom: message.chatroom,
+      isFirst: message.isFirst,
+    };
+    this.sendMessage(newMessage);
   }
 
-  loadMoreMessages(chatId, page) {
+  loadMoreMessages(chatroom, page) {
     this.sendMessage({
       command: "more_messages",
-      chatId: chatId,
+      chatroom: chatroom,
       page: page,
     });
   }

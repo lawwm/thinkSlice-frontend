@@ -1,24 +1,60 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { DOMAINS, ENDPOINTS } from "../endpoints";
+import { DOMAINS } from "../endpoints";
 
-export const addMessage = (message, chatId) => async (dispatch) => {
-  const activeChat = localStorage.getItem("activeChat");
-  if (activeChat !== chatId) {
-    dispatch({ type: actionTypes.NEW_MESSAGE, chat: chatId });
+export const openChat = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.CHAT_OPEN,
+  });
+};
+
+export const closeChat = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.CHAT_CLOSED,
+  });
+};
+
+export const addMessage = (message) => async (dispatch, getState) => {
+  const chat = getState().chat;
+  const user = localStorage.getItem("user");
+
+  // If the user is not on the chat page or in another chatroom, display a notification.
+  if (!chat.isChatOpen || chat.activeChat !== message.chatroom) {
+    dispatch({
+      type: actionTypes.NEW_MESSAGE,
+      chatroom: message.chatroom,
+    });
+  }
+
+  // Open new chat for the first message received from a new user.
+  if (message.chat && message.recipient === parseInt(user)) {
+    dispatch({
+      type: actionTypes.NEW_CHAT_SESSION,
+      message: message.message,
+      chat: message.chat,
+    });
+
   } else {
+    // Add new message to relevant chat.
     dispatch({
       type: actionTypes.ADD_MESSAGE,
-      message: message,
+      message: message.message,
+      chatroom: message.chatroom,
     });
   }
 };
 
 export const setMessages = (messages) => async (dispatch) => {
-  console.log(messages);
   dispatch({
     type: actionTypes.SET_MESSAGES,
-    messages: messages,
+    messages: messages.messages,
+    chatroom: messages.chatroom,
+  });
+};
+
+export const loadedAllChatMessages = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.LOADED_ALL_CHAT_MESSAGES,
   });
 };
 
@@ -31,7 +67,8 @@ export const loadMoreMessages = () => async (dispatch) => {
 export const setMoreMessages = (messages) => async (dispatch) => {
   dispatch({
     type: actionTypes.SET_MORE_MESSAGES,
-    messages: messages,
+    messages: messages.messages,
+    chatroom: messages.chatroom,
   });
 };
 
@@ -58,30 +95,15 @@ export const resetChats = () => async (dispatch) => {
   });
 };
 
-export const getChat = (roomId) => async (dispatch) => {
-  try {
-    dispatch({
-      type: actionTypes.GET_CHAT,
-    });
-    const res = await axios.get(
-      DOMAINS.CHAT + ENDPOINTS.ACCESS_CHATROOM + "/" + roomId
-    );
-    dispatch({
-      type: actionTypes.GET_CHAT_SUCCESS,
-      chat: res.data,
-    });
-  } catch (err) {
-    dispatch({
-      type: actionTypes.GET_CHAT_FAIL,
-    });
-  }
+export const setActive = (chatroom) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SET_ACTIVE,
+    chatroom: chatroom,
+  });
 };
 
 export const loadChats = (userId) => async (dispatch) => {
   try {
-    dispatch({
-      type: actionTypes.LOAD_CHATS,
-    });
     const res = await axios.get(DOMAINS.CHAT + "/" + userId);
     dispatch({
       type: actionTypes.LOAD_CHATS_SUCCESS,

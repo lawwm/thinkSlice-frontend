@@ -74,9 +74,6 @@ export const auth = (state = initialState, action) => {
             localStorage.removeItem('user');
             localStorage.removeItem('userId');
             localStorage.removeItem('activeChat');
-            if (type === LOGOUT) {
-                WebSocketInstance.disconnect();
-            }
             return {
                 ...state,
                 token: null,

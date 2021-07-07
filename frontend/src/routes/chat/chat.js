@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import WebSocketInstance from "../../websocket.js";
 import axios from "axios";
 import { DOMAINS } from "../../store/endpoints.js";
-import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
 
 import { Container, Col, Row, Form, Button, Nav } from "react-bootstrap";
@@ -14,13 +14,13 @@ import "../styles.css";
 const Chat = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { activeChat, chats, messages, chatsLoading, chatComponentLoading } =
+  const { activeChat, chats, chatsLoaded, chatLoading, messagesLoaded } =
     useSelector((state) => state.chat);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    const activeChat = localStorage.getItem("activeChat");
+  useEffect(() => dispatch(chatActions.openChat()), [dispatch]);
 
+  useEffect(() => {
     const waitForSocketConnection = (callback) => {
       setTimeout(function () {
         if (WebSocketInstance.state() === 1) {
@@ -34,15 +34,30 @@ const Chat = () => {
       }, 100);
     };
 
-    if (activeChat) {
-      dispatch(chatActions.getChat(activeChat));
+    if (messagesLoaded.length === 0) {
       waitForSocketConnection(() => {
-        WebSocketInstance.fetchMessages(activeChat);
+        chats.forEach((chat) => {
+          WebSocketInstance.fetchMessages(chat.chatroom);
+        });
       });
     }
-  }, [dispatch]);
+  }, [chats, messagesLoaded]);
 
-  useEffect(() => () => localStorage.removeItem("activeChat"), []);
+  useEffect(() => {
+    if (chatsLoaded && messagesLoaded.length === chats.length) {
+      dispatch(chatActions.loadedAllChatMessages());
+    }
+  }, [dispatch, chatsLoaded, messagesLoaded, chats]);
+
+  useEffect(() => {
+    const activeChat = localStorage.getItem("activeChat");
+
+    if (activeChat && chatsLoaded) {
+      dispatch(chatActions.setActive(parseInt(activeChat)));
+    }
+  }, [dispatch, chatsLoaded, chats]);
+
+  useEffect(() => () => dispatch(chatActions.closeChat()), [dispatch]);
 
   const messageChangeHandler = (event) => {
     setMessage(event.target.value);
@@ -50,30 +65,40 @@ const Chat = () => {
 
   const sendMessageHandler = (e) => {
     e.preventDefault();
-    if (messages.length === 0) {
-      axios.patch(DOMAINS.CHAT + "/" + activeChat.recipient);
-    }
-    const messageObject = {
+    const currentChat = chats.find((chat) => chat.chatroom === activeChat);
+
+    let messageObject = {
       from: parseInt(user),
-      to: parseInt(activeChat.recipientId),
+      to: parseInt(currentChat.recipientId),
       content: message,
-      chatId: parseInt(activeChat.chatroom),
+      chatroom: parseInt(currentChat.chatroom),
+      isFirst: false,
     };
-    WebSocketInstance.newChatMessage(messageObject);
+
+    if (currentChat.messages.length === 0) {
+      axios.patch(DOMAINS.CHAT + "/" + currentChat.recipientId).then((res) => {
+        WebSocketInstance.newChatMessage({
+          ...messageObject,
+          isFirst: true,
+        });
+        console.log(res);
+      });
+    } else {
+      WebSocketInstance.newChatMessage(messageObject);
+    }
     setMessage("");
   };
 
   const renderChatRooms = (chats) => {
     return chats.map((chat) => {
-      const isActive = activeChat && chat.chatroom === activeChat.chatroom;
+      const isActive = chat.chatroom === activeChat;
       return (
         <Nav.Item key={chat.id}>
           <Nav.Link
             className="chatroom"
             eventKey={chat.id}
             onSelect={() => {
-              dispatch(chatActions.getChat(chat.chatroom));
-              WebSocketInstance.fetchMessages(chat.chatroom);
+              dispatch(chatActions.setActive(chat.chatroom));
             }}
             disabled={isActive}
           >
@@ -93,7 +118,7 @@ const Chat = () => {
 
   return (
     <>
-      {chatsLoading ? (
+      {chatLoading ? (
         <LoadingSpinner />
       ) : (
         <Container fluid>
@@ -111,7 +136,7 @@ const Chat = () => {
               <Col xs={7}>
                 <ChatBox />
                 <div>
-                  {activeChat && !chatComponentLoading && (
+                  {activeChat && (
                     <Form onSubmit={(e) => sendMessageHandler(e)}>
                       <Form.Control
                         onChange={(e) => messageChangeHandler(e)}
