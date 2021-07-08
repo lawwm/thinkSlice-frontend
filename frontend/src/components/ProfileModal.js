@@ -34,10 +34,11 @@ const ProfileModal = ({ userId }) => {
 
   const [profileBasic, setProfileBasic] = useState(profile.basic);
   const [profileDetails, setProfileDetails] = useState(profile.detailed);
-  const [showTutorOptions, setShowTutorOptions] = useState(profile.basic.is_tutor);
+  const [showTutorOptions, setShowTutorOptions] = useState(
+    profile.basic.is_tutor
+  );
 
-
-  const [selectPage, setSelectPage] = useState("1")
+  const [selectPage, setSelectPage] = useState("1");
 
   const handleSelectPage = (eventKey) => {
     setSelectPage(eventKey);
@@ -45,15 +46,15 @@ const ProfileModal = ({ userId }) => {
 
   const setTutorDropdownDefault = (isStudent, isTutor) => {
     if (!isStudent && !isTutor) {
-      return "0"
+      return "0";
     } else if (!isStudent && isTutor) {
-      return "1"
+      return "1";
     } else if (isStudent && !isTutor) {
-      return "2"
+      return "2";
     } else {
-      return "3"
+      return "3";
     }
-  }
+  };
 
   const onChangeBasic = (e) => {
     let updatedValue = e.target.value;
@@ -61,13 +62,13 @@ const ProfileModal = ({ userId }) => {
       case "available":
         setProfileBasic({
           ...profileBasic,
-          available: true
+          available: true,
         });
         break;
       case "unavailable":
         setProfileBasic({
           ...profileBasic,
-          available: false
+          available: false,
         });
         break;
       case "0":
@@ -154,7 +155,7 @@ const ProfileModal = ({ userId }) => {
   } = profileDetails;
 
   const onSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (duration_classes[0] > duration_classes[1]) {
       dispatch(
         setAlert(
@@ -186,18 +187,28 @@ const ProfileModal = ({ userId }) => {
     return result;
   };
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   return (
     <>
       {editMode && (
-        <Modal backdrop="static" show={detailedMode} size="lg" centered className="modal-style">
+        <Modal
+          backdrop="static"
+          show={detailedMode}
+          size="lg"
+          centered
+          className="modal-style"
+        >
           <div>
             <Modal.Header>
               <h3>Editing profile details</h3>
             </Modal.Header>
             <Form onSubmit={(e) => onSubmit(e)}>
               <Modal.Body>
-                {selectPage === "1" &&
-                  (<>
+                {selectPage === "1" && (
+                  <>
                     <h4>User info</h4>
                     <Form.Group>
                       <Form.Label>Username</Form.Label>
@@ -221,8 +232,6 @@ const ProfileModal = ({ userId }) => {
                       />
                     </Form.Group>
 
-
-
                     <h4>Contact info</h4>
                     <Form.Group>
                       <Form.Label>Whatsapp</Form.Label>
@@ -243,17 +252,21 @@ const ProfileModal = ({ userId }) => {
                         onChange={(e) => onChangeDetailed(e)}
                       />
                     </Form.Group>
-                  </>)
-                }
-                {selectPage === "2" &&
-                  (<><h4>User details</h4>
+                  </>
+                )}
+                {selectPage === "2" && (
+                  <>
+                    <h4>User details</h4>
                     <Form.Group>
                       <Form.Label>Tutor/Student</Form.Label>
                       <Form.Control
                         as="select"
                         name="is_tutor"
                         className="modal-input"
-                        defaultValue={setTutorDropdownDefault(profileBasic.is_student, profileBasic.is_tutor)}
+                        defaultValue={setTutorDropdownDefault(
+                          profileBasic.is_student,
+                          profileBasic.is_tutor
+                        )}
                         onChange={(e) => {
                           onChangeBasic(e);
                           setShowTutorOptions(e.target.value % 2 !== 0);
@@ -273,7 +286,9 @@ const ProfileModal = ({ userId }) => {
                         aria-label="Available"
                         name="is_available"
                         className="modal-input"
-                        defaultValue={profileBasic.available ? "available" : "unavailable"}
+                        defaultValue={
+                          profileBasic.available ? "available" : "unavailable"
+                        }
                         onChange={(e) => {
                           onChangeBasic(e);
                         }}
@@ -283,11 +298,13 @@ const ProfileModal = ({ userId }) => {
                       </Form.Control>
                     </Form.Group>
                     <div>
-                      Helpful tip: Select your role as a student and/or tutor. Tutors get
-                      to upload videos and display additional information on their profiles.
-                      Set whether you are currently available as well.
+                      Helpful tip: Select your role as a student and/or tutor.
+                      Tutors get to upload videos and display additional
+                      information on their profiles. Set whether you are
+                      currently available as well.
                     </div>
-                  </>)}
+                  </>
+                )}
                 {selectPage === "3" && (
                   <>
                     <Form.Group>
@@ -373,7 +390,11 @@ const ProfileModal = ({ userId }) => {
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link className="tabs profile-modal-page" eventKey="3" disabled={!showTutorOptions}>
+                    <Nav.Link
+                      className="tabs profile-modal-page"
+                      eventKey="3"
+                      disabled={!showTutorOptions}
+                    >
                       Page 3
                     </Nav.Link>
                   </Nav.Item>
@@ -439,7 +460,8 @@ const ProfileModal = ({ userId }) => {
                         />
                       </td>
                       <td className="table-data">
-                        {tutor_whatsapp || "User has not provided their Whatsapp"}
+                        {tutor_whatsapp ||
+                          "User has not provided their Whatsapp"}
                       </td>
                     </tr>
                     <tr>
@@ -451,7 +473,8 @@ const ProfileModal = ({ userId }) => {
                         />
                       </td>
                       <td className="table-data">
-                        {tutor_telegram || "User has not provided their Telegram"}
+                        {tutor_telegram ||
+                          "User has not provided their Telegram"}
                       </td>
                     </tr>
                   </tbody>
@@ -465,26 +488,19 @@ const ProfileModal = ({ userId }) => {
                         <tr>
                           <td>Available</td>
                           <td className="table-data">
-                            {(is_tutor && is_student)
-                              ?
-                              available
+                            {is_tutor && is_student
+                              ? available
                                 ? "User is looking for students/teachers"
                                 : "User is not looking for students/teachers"
-
                               : is_tutor
-                                ?
-                                available
-                                  ? "User is looking for students"
-                                  : "User is not looking for students"
-
-                                : is_student
-                                  ?
-                                  available
-                                    ? "User is looking for a teacher"
-                                    : "User is not looking for a teacher"
-
-                                  : "User is neither a tutor or student"
-                            }
+                              ? available
+                                ? "User is looking for students"
+                                : "User is not looking for students"
+                              : is_student
+                              ? available
+                                ? "User is looking for a teacher"
+                                : "User is not looking for a teacher"
+                              : "User is neither a tutor or student"}
                           </td>
                         </tr>
                         <tr>
@@ -495,7 +511,9 @@ const ProfileModal = ({ userId }) => {
                             ) : (
                               <>
                                 <StarDisplay num={parseInt(aggregate_star)} />
-                                <span className="add-margin-left">({total_tutor_reviews} reviews)</span>
+                                <span className="add-margin-left">
+                                  ({total_tutor_reviews} reviews)
+                                </span>
                               </>
                             )}
                           </td>
@@ -503,7 +521,7 @@ const ProfileModal = ({ userId }) => {
                         <tr>
                           <td>Location</td>
                           <td className="table-data">
-                            {location || "User has not provided their location"}
+                            {capitalizeFirstLetter(location) || "User has not provided their location"}
                           </td>
                         </tr>
                         <tr>
@@ -519,8 +537,8 @@ const ProfileModal = ({ userId }) => {
                             {duration_classes[0] === 0
                               ? "User has not provided the duration of their lessons"
                               : duration_classes[0] === duration_classes[1]
-                                ? duration_classes[0] + " hrs"
-                                : duration_classes[0] +
+                              ? duration_classes[0] + " hrs"
+                              : duration_classes[0] +
                                 " - " +
                                 duration_classes[1] +
                                 " hrs"}
