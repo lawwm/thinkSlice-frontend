@@ -188,7 +188,11 @@ const ProfileModal = ({ userId }) => {
   };
 
   const capitalizeFirstLetter = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    if (string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    } else {
+      return string;
+    }
   };
 
   return (
@@ -521,7 +525,8 @@ const ProfileModal = ({ userId }) => {
                         <tr>
                           <td>Location</td>
                           <td className="table-data">
-                            {capitalizeFirstLetter(location) || "User has not provided their location"}
+                            {capitalizeFirstLetter(location) ||
+                              "User has not provided their location"}
                           </td>
                         </tr>
                         <tr>
