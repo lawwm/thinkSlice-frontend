@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { DOMAINS } from "../endpoints";
+import { DOMAINS, ENDPOINTS } from "../endpoints";
 
 export const openChat = () => async (dispatch) => {
   dispatch({
@@ -16,7 +16,17 @@ export const closeChat = () => async (dispatch) => {
 
 export const addMessage = (message) => async (dispatch, getState) => {
   const chat = getState().chat;
-  const user = localStorage.getItem("user");
+  const user = parseInt(localStorage.getItem("user"));
+
+  //Update unread messages if the user is in the chatroom
+  if (
+    chat.isChatOpen &&
+    chat.activeChat === message.chatroom &&
+    message.author !== user
+  ) {
+    const chatId = chat.chats.find((chat) => chat.chatroom === message.chatroom).id;
+    axios.patch(DOMAINS.CHAT + ENDPOINTS.UPDATE_UNREAD + "/" + chatId);
+  }
 
   // If the user is not on the chat page or in another chatroom, display a notification.
   if (!chat.isChatOpen || chat.activeChat !== message.chatroom) {
@@ -27,13 +37,12 @@ export const addMessage = (message) => async (dispatch, getState) => {
   }
 
   // Open new chat for the first message received from a new user.
-  if (message.chat && message.recipient === parseInt(user)) {
+  if (message.chat && message.recipient === user) {
     dispatch({
       type: actionTypes.NEW_CHAT_SESSION,
       message: message.message,
       chat: message.chat,
     });
-
   } else {
     // Add new message to relevant chat.
     dispatch({
@@ -95,7 +104,14 @@ export const resetChats = () => async (dispatch) => {
   });
 };
 
-export const setActive = (chatroom) => async (dispatch) => {
+export const setActive = (chatroom) => async (dispatch, getState) => {
+  if (getState().chat.unreadChats.includes(chatroom)) {
+    const chatId = getState().chat.chats.find(
+      (chat) => chat.chatroom === chatroom
+    ).id;
+    axios.patch(DOMAINS.CHAT + ENDPOINTS.UPDATE_UNREAD + "/" + chatId);
+  }
+
   dispatch({
     type: actionTypes.SET_ACTIVE,
     chatroom: chatroom,

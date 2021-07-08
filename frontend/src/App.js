@@ -41,7 +41,9 @@ const App = () => {
   }, [store]);
 
   useEffect(() => {
-    WebSocketInstance.connect();
+    if (WebSocketInstance.state() === 0) {
+      WebSocketInstance.connect();
+    }
   }, []);
 
   return (

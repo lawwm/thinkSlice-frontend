@@ -14,8 +14,13 @@ import "../styles.css";
 const Chat = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { activeChat, chats, chatsLoaded, chatLoading, messagesLoaded } =
-    useSelector((state) => state.chat);
+  const {
+    activeChat,
+    chats,
+    chatsLoaded,
+    chatLoading,
+    messagesLoaded,
+  } = useSelector((state) => state.chat);
   const [message, setMessage] = useState("");
 
   useEffect(() => dispatch(chatActions.openChat()), [dispatch]);
@@ -41,7 +46,7 @@ const Chat = () => {
         });
       });
     }
-  }, [chats, messagesLoaded]);
+  }, [messagesLoaded, chats]);
 
   useEffect(() => {
     if (chatsLoaded && messagesLoaded.length === chats.length) {
@@ -55,7 +60,7 @@ const Chat = () => {
     if (activeChat && chatsLoaded) {
       dispatch(chatActions.setActive(parseInt(activeChat)));
     }
-  }, [dispatch, chatsLoaded, chats]);
+  }, [dispatch, chatsLoaded]);
 
   useEffect(() => () => dispatch(chatActions.closeChat()), [dispatch]);
 
@@ -81,7 +86,6 @@ const Chat = () => {
           ...messageObject,
           isFirst: true,
         });
-        console.log(res);
       });
     } else {
       WebSocketInstance.newChatMessage(messageObject);

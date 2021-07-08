@@ -47,8 +47,6 @@ class WebSocketService {
       return;
     }
 
-    console.log(parsedData);
-
     const command = parsedData.command;
     if (command === "messages") {
       this.callbacks[command](parsedData);

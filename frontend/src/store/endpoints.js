@@ -35,6 +35,7 @@ export const ENDPOINTS = {
   //CHAT
   ACCESS_CHAT: "/handle",
   ACCESS_CHATROOM: "/chatroom",
+  UPDATE_UNREAD: "/unread"
 };
 
 export const DOMAINS = {
