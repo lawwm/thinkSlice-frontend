@@ -74,14 +74,14 @@ const Chat = () => {
 
     let messageObject = {
       from: parseInt(user),
-      to: parseInt(currentChat.recipientId),
+      to: parseInt(currentChat.recipient),
       content: message,
       chatroom: parseInt(currentChat.chatroom),
       isFirst: false,
     };
 
     if (currentChat.messages.length === 0) {
-      axios.patch(DOMAINS.CHAT + "/" + currentChat.recipientId).then((res) => {
+      axios.patch(DOMAINS.CHAT + "/" + currentChat.recipient).then((res) => {
         WebSocketInstance.newChatMessage({
           ...messageObject,
           isFirst: true,
