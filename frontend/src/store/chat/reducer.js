@@ -66,7 +66,7 @@ export const chat = (state = initialState, action) => {
       return { ...state, isChatOpen: true };
 
     case actionTypes.CHAT_CLOSED:
-      return { ...state, isChatOpen: false };
+      return { ...state, isChatOpen: false, activeChat: null };
 
     case actionTypes.ADD_MESSAGE:
       return addMessage(state, action);
