@@ -342,7 +342,11 @@ const ProfileModal = ({ userId }) => {
                     </Form.Group>
                     <br />
                     <Form.Group>
-                      <Form.Label>Min Lesson duration (in hours)</Form.Label>
+                      <div>
+                        <Form.Label>{"Min Lesson duration (in hours):"}</Form.Label>&nbsp;
+                        <Form.Label >{duration_classes[0]}</Form.Label>
+                      </div>
+
                       <Form.Control
                         type="range"
                         name="0"
@@ -354,7 +358,11 @@ const ProfileModal = ({ userId }) => {
                       />
                     </Form.Group>
                     <Form.Group>
-                      <Form.Label>Max Lesson duration (in hours)</Form.Label>
+                      <div>
+                        <Form.Label>{"Max Lesson duration (in hours):"}</Form.Label>&nbsp;
+                        <Form.Label>{duration_classes[1]}</Form.Label>
+                      </div>
+
                       <Form.Control
                         type="range"
                         name="1"

@@ -326,6 +326,8 @@ const Guest = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd }) 
         player.load();
       });
 
+      player.aspectRatio('16:9');
+
       return () => {
         player.dispose();
       };
@@ -463,6 +465,8 @@ const Member = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd })
         player.src("https://stream.mux.com/" + currentVideo.playback_id + ".m3u8");
         player.load();
       });
+
+      player.aspectRatio('16:9');
 
       return () => {
         player.dispose();

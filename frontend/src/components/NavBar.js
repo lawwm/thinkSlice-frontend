@@ -82,14 +82,6 @@ const NavBar = () => {
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
-                      to="/guide"
-                      onClick={() => setExpanded(false)}
-                    >
-                      Guide
-                    </NavLink>
-                    <NavLink
-                      className="nav-default"
-                      activeClassName="nav-active"
                       to={"/profile/" + user}
                       onClick={() => setExpanded(false)}
                     >
@@ -156,15 +148,6 @@ const NavBar = () => {
                     >
                       Home
                     </NavLink>
-                    <NavLink
-                      className="nav-default"
-                      activeClassName="nav-active"
-                      to="/guide"
-                      onClick={() => setExpanded(false)}
-                    >
-                      Guide
-                    </NavLink>
-
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
