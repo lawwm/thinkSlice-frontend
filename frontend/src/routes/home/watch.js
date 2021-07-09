@@ -466,6 +466,8 @@ const Member = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd })
         player.load();
       });
 
+      player.aspectRatio('16:9');
+
       return () => {
         player.dispose();
       };

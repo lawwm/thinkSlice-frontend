@@ -65,8 +65,8 @@ describe('Navbar', () => {
       await userEvent.click(screen.getByText(/Home/i))
       expect(history.location.pathname).toBe("/")
 
-      await userEvent.click(screen.getByText(/guide/i))
-      expect(history.location.pathname).toBe("/guide")
+      // await userEvent.click(screen.getByText(/guide/i))
+      // expect(history.location.pathname).toBe("/guide")
 
       await userEvent.click(screen.getByText(/login/i))
       expect(history.location.pathname).toBe("/login")
@@ -113,8 +113,8 @@ describe('Navbar', () => {
       await userEvent.click(screen.getByText(/Upload/i))
       expect(history.location.pathname).toBe("/upload")
 
-      await userEvent.click(screen.getByText(/guide/i))
-      expect(history.location.pathname).toBe("/guide")
+      // await userEvent.click(screen.getByText(/guide/i))
+      // expect(history.location.pathname).toBe("/guide")
 
       //since profile is not loaded within
       await userEvent.click(screen.getByText(/profile/i))

@@ -6,7 +6,6 @@ import { fakeLocalStorage } from "../../../util/storage"
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { home } from "../reducer"
-import { reduceRight } from "lodash"
 
 //yarn run test -- --coverage --watchAll=false
 const middlewares = [thunk]
