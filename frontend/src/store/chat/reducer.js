@@ -118,9 +118,10 @@ export const chat = (state = initialState, action) => {
     case actionTypes.START_CHAT_SUCCESS:
       const newChatroom = action.chat.chatroom;
       localStorage.setItem("activeChat", newChatroom);
+      console.log(newChatroom);
       return {
         ...state,
-        chats: [...state.chats, action.chat],
+        chats: [action.chat].concat(state.chats),
         activeChat: newChatroom,
       };
 
@@ -131,7 +132,7 @@ export const chat = (state = initialState, action) => {
         reachedEnd: false,
         page: 0,
       };
-      return { ...state, chats: [...state.chats, newChat] };
+      return { ...state, chats: [newChat, ...state.chats] };
 
     case actionTypes.LOAD_CHATS_SUCCESS:
       let loadedChats = [];

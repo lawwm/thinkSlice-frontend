@@ -10,8 +10,6 @@ import {
     AUTH_BUTTON_LOADING
 } from "./actionTypes.js";
 
-import WebSocketInstance from "../../websocket.js";
-
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
@@ -34,7 +32,6 @@ export const auth = (state = initialState, action) => {
                 username: localStorage.getItem('username')
             }
         case REGISTER_SUCCESS:
-            WebSocketInstance.connect();
             localStorage.setItem('user', payload.user.id);
             return {
                 ...state,
@@ -45,7 +42,6 @@ export const auth = (state = initialState, action) => {
                 username: payload.user.username
             }
         case LOGIN_SUCCESS:
-            WebSocketInstance.connect();
             localStorage.setItem('user', payload.user.id);
             localStorage.setItem('username', payload.user.username);
             return {

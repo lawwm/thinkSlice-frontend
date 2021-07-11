@@ -107,7 +107,7 @@ class WebSocketService {
     if (this.socketRef) {
       return this.socketRef.readyState;
     } else {
-      return 0;
+      return 3;
     }
   }
 }

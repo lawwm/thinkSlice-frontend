@@ -19,7 +19,7 @@ const ChatBox = () => {
   }
   const { page, messages, reachedEnd } = currentChat;
   const user = localStorage.getItem("user");
-  const [messageCount, setMessCount] = useState(messages.length || 0);
+  const [messageCount, setMessCount] = useState(messages.length);
 
   useEffect(() => {
     if (page > 0 && lastMessage.current) {
