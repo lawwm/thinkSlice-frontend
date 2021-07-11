@@ -1,22 +1,26 @@
 @font-face {
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold', 'Arial';
   font-weight: 400;
-  src: url(../fonts/Inter-SemiBold.ttf) format("truetype");
+  src: url(../fonts/Inter-SemiBold.ttf) format('truetype'), local('Arial');
+  font-display: swap;
 }
 
 @font-face {
-  font-family: "Roboto medium";
-  src: url(../fonts//Roboto-Medium.ttf) format("truetype");
+  font-family: 'Roboto medium', 'Arial';
+  src: url(../fonts//Roboto-Medium.ttf) format('truetype'), local('Arial');
+  font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter UI regular";
-  src: url(../fonts//Inter-Regular.ttf) format("truetype");
+  font-family: 'Inter UI regular', 'Arial';
+  src: url(../fonts//Inter-Regular.ttf) format('truetype'), local('Arial');
+  font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter UI medium";
-  src: url(../fonts//Inter-Medium.ttf) format("truetype");
+  font-family: 'Inter UI medium', 'Arial';
+  src: url(../fonts//Inter-Medium.ttf) format('truetype'), local('Arial');
+  font-display: swap;
 }
 
 .navbar {
@@ -28,14 +32,14 @@
   color: #ff4400 !important;
   padding-left: 10px;
   font-size: 36px;
-  font-family: "Inter UI semi-bold" !important;
+  font-family: 'Inter UI semi-bold' !important;
   cursor: pointer;
 }
 
 .nav-default {
   color: black !important;
   font-size: 24px;
-  font-family: "Inter UI semi-bold" !important;
+  font-family: 'Inter UI semi-bold' !important;
   margin-left: 40px;
 }
 
@@ -44,7 +48,7 @@ nav a:hover,
   color: #ff4400 !important;
   font-size: 24px;
   margin-left: 40px;
-  font-family: "Inter UI semi-bold" !important;
+  font-family: 'Inter UI semi-bold' !important;
   text-decoration: underline !important;
 }
 
@@ -85,7 +89,7 @@ nav a:hover,
   position: absolute;
   height: 33px;
   width: 73px;
-  font-family: "Roboto";
+  font-family: 'Roboto';
   font-size: 14px;
   padding-top: 6px;
   color: rgba(255, 255, 255, 0.85);
@@ -101,7 +105,7 @@ nav a:hover,
   height: 33px;
   width: 140px;
 
-  font-family: "Roboto";
+  font-family: 'Roboto';
   font-size: 14px;
   padding-top: 6px;
   color: rgba(255, 255, 255, 0.85);
@@ -160,7 +164,7 @@ nav a:hover,
 }
 
 .thumbnail-title {
-  font-family: "Roboto medium";
+  font-family: 'Roboto medium';
   font-size: 19px;
   margin-bottom: 2px;
 }
@@ -169,7 +173,7 @@ nav a:hover,
   font-size: 14px;
   padding: 0px 6px 0px 0px;
   color: #808088;
-  font-family: "Roboto regular";
+  font-family: 'Roboto regular';
 }
 
 .thumbnail-line {
@@ -177,7 +181,7 @@ nav a:hover,
   border-left: solid #808088 thin;
   padding: 0px 2px 0px 8px;
   color: #808088;
-  font-family: "Roboto regular";
+  font-family: 'Roboto regular';
 }
 
 .btn-circle {
@@ -267,7 +271,7 @@ nav a:hover,
 .reviewer,
 .review-date {
   font-size: 18px;
-  font-family: "Inter UI regular";
+  font-family: 'Inter UI regular';
 }
 
 .review-div {
@@ -281,12 +285,12 @@ nav a:hover,
 
 .review-title {
   font-size: 24px;
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold';
 }
 
 .review-text {
   font-size: 18px;
-  font-family: "Inter UI regular";
+  font-family: 'Inter UI regular';
 }
 
 .review-edit-delete-div {
@@ -436,7 +440,7 @@ button.alert-close {
   -o-transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
   display: block;
-  content: "";
+  content: '';
   width: 10px;
   height: 10px;
   border: 1px solid #bdbdbd;
@@ -494,7 +498,7 @@ button.alert-close {
 .commenter,
 .comment-date {
   font-size: 20px;
-  font-family: "Inter UI regular";
+  font-family: 'Inter UI regular';
   background-color: #fcfcfc;
 }
 
@@ -508,7 +512,7 @@ button.alert-close {
 }
 
 .comment-name {
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold';
   font-size: 20px;
 }
 
@@ -538,12 +542,12 @@ button.alert-close {
 
 .comment-text {
   font-size: 16px;
-  font-family: "Inter UI regular";
+  font-family: 'Inter UI regular';
   margin-bottom: 5px;
 }
 
 .comment-button {
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold';
   background-color: #fcfcfc;
   font-size: 16px;
   border: 0px;
@@ -552,7 +556,7 @@ button.alert-close {
 }
 
 .delete-comment-button {
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold';
   background-color: #fcfcfc;
   font-size: 16px;
   border: 0px;
@@ -561,7 +565,7 @@ button.alert-close {
 }
 
 .delete-comment-button:hover {
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold';
   background-color: #fcfcfc;
   font-size: 16px;
   border: 0px;
@@ -580,7 +584,7 @@ button.alert-close {
 }
 
 .replies-button {
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold';
   background-color: #fcfcfc;
   color: #f40;
   font-size: 16px;
@@ -629,20 +633,20 @@ button.alert-close {
 
 .sidebar-header {
   font-size: 20px;
-  font-family: "Inter UI semi-bold";
+  font-family: 'Inter UI semi-bold';
   color: rgba(41, 41, 41, 0.911);
 }
 
 .sidebar-category {
   font-size: 17px;
-  font-family: "Inter UI medium";
+  font-family: 'Inter UI medium';
   margin-bottom: 8px;
   color: rgba(48, 48, 48, 0.911);
 }
 
 .sidebar-review {
   font-size: 16px;
-  font-family: "Inter UI regular";
+  font-family: 'Inter UI regular';
   margin-bottom: 7px;
   cursor: pointer;
 }

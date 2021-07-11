@@ -34,6 +34,13 @@ export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocat
     handleClose()
   }
 
+  const clearAll = () => {
+    dispatch(changeAvailable(''))
+    dispatch(changeSubject(''))
+    dispatch(changeLocation(''))
+    dispatch(changeReview(''))
+    handleClose()
+  }
 
   return (
     <>
@@ -219,6 +226,9 @@ export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocat
                 }
               />
             </div>
+            <Button
+              className="sidebar-showmore"
+              onClick={() => clearAll()}>Clear</Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>

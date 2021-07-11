@@ -46,6 +46,13 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
   const dispatch = useDispatch();
   const [showMore, setShowMore] = useState(false)
 
+  const clearAll = () => {
+    dispatch(changeAvailable(''))
+    dispatch(changeSubject(''))
+    dispatch(changeLocation(''))
+    dispatch(changeReview(''))
+  }
+
   return (
     <>
       <div className="background-sidebar">
@@ -124,7 +131,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                       checked={subject === selectedSubject}
                       onChange={
                         (e) => {
-                          console.log(e.target.value)
                           dispatch(changeSubject(e.target.value))
                         }
                       }
@@ -148,7 +154,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                       checked={subject === selectedSubject}
                       onChange={
                         (e) => {
-                          console.log(e.target.value)
                           dispatch(changeSubject(e.target.value))
                         }
                       }
@@ -177,7 +182,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               checked={selectedLocation === ''}
               onChange={
                 (e) => {
-                  console.log(e.target.value)
                   dispatch(changeLocation(e.target.value))
                 }
               }
@@ -195,7 +199,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                   checked={selectedLocation === location}
                   onChange={
                     (e) => {
-                      console.log(e.target.value)
                       dispatch(changeLocation(e.target.value))
                     }
                   }
@@ -211,7 +214,6 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               return (
                 <div
                   onClick={() => {
-                    console.log(rate)
                     dispatch(changeReview(rate))
                   }
                   }
@@ -231,12 +233,15 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               checked={selectedReview === ''}
               onChange={
                 (e) => {
-                  console.log(e.target.value)
                   dispatch(changeReview(e.target.value))
                 }
               }
             />
           </div>
+          <hr />
+          <Button
+            className="sidebar-showmore"
+            onClick={() => clearAll()}>Clear</Button>
         </Form>
       </div>
     </>

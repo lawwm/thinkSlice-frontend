@@ -239,7 +239,7 @@ const ProfileModal = ({ userId }) => {
                       <Form.Control
                         type="username"
                         name="tutor_telegram"
-                        defaultValue={tutor_telegram}
+                        value={tutor_telegram}
                         onChange={(e) => onChangeDetailed(e)}
                       />
                     </Form.Group>
@@ -253,7 +253,7 @@ const ProfileModal = ({ userId }) => {
                         as="select"
                         name="is_tutor"
                         className="modal-input"
-                        defaultValue={setTutorDropdownDefault(profileBasic.is_student, profileBasic.is_tutor)}
+                        value={setTutorDropdownDefault(profileBasic.is_student, profileBasic.is_tutor)}
                         onChange={(e) => {
                           onChangeBasic(e);
                           setShowTutorOptions(e.target.value % 2 !== 0);
@@ -273,7 +273,7 @@ const ProfileModal = ({ userId }) => {
                         aria-label="Available"
                         name="is_available"
                         className="modal-input"
-                        defaultValue={profileBasic.available ? "available" : "unavailable"}
+                        value={profileBasic.available ? "available" : "unavailable"}
                         onChange={(e) => {
                           onChangeBasic(e);
                         }}
