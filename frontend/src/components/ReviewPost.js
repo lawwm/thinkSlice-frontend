@@ -69,9 +69,9 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
           <Media>
             <div
               className="thumbnail-photo mr-3"
-              onClick={() => history.push("/profile/" + profileId)}
+              onClick={() => history.push(asTutor ? ("/profile/" + profileId) : ("/profile/" + reviewerId))}
             >
-              <Image className="thumbnail-image" src={asTutor ? profilePic : reviewPic} alt="profile picture" fluid />
+              <Image className="thumbnail-image" src={asTutor ? profilePic : reviewPic} alt="tutor profile picture" fluid />
             </div>
             <Media.Body className="align-self-center">
               <h5>{asTutor ? profileName : username}</h5>
@@ -89,9 +89,9 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
                 <Media>
                   <div
                     className="thumbnail-photo mr-3"
-                    onClick={() => history.push("/profile/" + profileId)}
+                    onClick={() => history.push(asTutor ? ("/profile/" + reviewerId) : ("/profile/" + profileId))}
                   >
-                    <Image className="thumbnail-image" src={asTutor ? reviewPic : profilePic} alt="profile picture" fluid />
+                    <Image className="thumbnail-image" src={asTutor ? reviewPic : profilePic} alt="student profile picture" fluid />
                   </div>
                   <Media.Body className="align-self-center">
                     {edited ? <span>Edited</span> : <span>Written</span>}
