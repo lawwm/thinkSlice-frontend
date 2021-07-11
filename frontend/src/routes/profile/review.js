@@ -28,7 +28,7 @@ import {
 
 import { StarChoice } from "../../components/StarRating";
 
-const MapReviews = ({ reviews, viewerId, profileId, asTutor }) => {
+const MapReviews = ({ reviews, viewerId, profileId, asTutor, profilePic, profileName }) => {
   return (
     <>
       {reviews.map((review, index) => {
@@ -48,6 +48,8 @@ const MapReviews = ({ reviews, viewerId, profileId, asTutor }) => {
               profileId={profileId}
               reviewerId={review.creator_details.user}
               asTutor={asTutor}
+              profilePic={profilePic}
+              profileName={profileName}
             />
           </Fragment>
         );
@@ -224,6 +226,8 @@ const Review = () => {
                     viewerId={viewerId}
                     profileId={profile.basic.user}
                     asTutor={true}
+                    profilePic={profile.basic.profile_pic}
+                    profileName={profile.basic.username}
                   />}
               </>)
             }
@@ -238,9 +242,14 @@ const Review = () => {
                     viewerId={viewerId}
                     profileId={profile.basic.user}
                     asTutor={false}
+                    profilePic={profile.basic.profile_pic}
+                    profileName={profile.basic.username}
                   />}
               </>)
             }
+            <div className="review-empty-space">
+
+            </div>
             {/* Modal set up below */}
             <Modal backdrop="static" size="xl" show={show} onHide={handleClose}>
               <Form onSubmit={(e) => onSubmit(e)}>

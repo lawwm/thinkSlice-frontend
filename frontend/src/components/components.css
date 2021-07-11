@@ -134,7 +134,8 @@ nav a:hover,
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 0px 10px 5px;
+  margin: 15px 0px 10px 0px;
+  cursor: pointer;
 }
 
 .thumbnail-body {
@@ -257,13 +258,21 @@ nav a:hover,
 }
 
 .review-div {
-  padding: 10px 30px 30px 30px;
+  padding: 0px;
 }
 
-.reviewer {
+.review-empty-space {
+  height: 100px;
+}
+
+.review-post-div {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+/* .reviewer {
   margin-left: 15px;
   margin-top: 10px;
-}
+} */
 
 .review-title {
   font-size: 24px;
@@ -695,6 +704,10 @@ button.alert-close {
 
   .background-sidebar {
     display: none;
+  }
+
+  .review-div {
+    padding: 10px 30px 30px 30px;
   }
 }
 
