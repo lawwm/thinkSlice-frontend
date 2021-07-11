@@ -12,7 +12,7 @@ import {
 } from "../store/profile/action.js";
 import update from "immutability-helper";
 
-import { Modal, Button, Form, Nav } from "react-bootstrap";
+import { Modal, Button, Form, Nav, Table } from "react-bootstrap";
 import { StarDisplay } from "./StarRating.js";
 import { CheckboxGroup } from "./CheckboxGroup.js";
 import whatsapp from "../images/Whatsapp.png";
@@ -436,7 +436,7 @@ const ProfileModal = ({ userId }) => {
             <Modal.Body>
               <div>
                 <h4>Contact info</h4>
-                <table>
+                <Table borderless>
                   <tbody>
                     <tr>
                       <td className="table-data-alt">
@@ -463,12 +463,12 @@ const ProfileModal = ({ userId }) => {
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </Table>
                 <br />
                 {is_tutor && (
                   <>
                     <h4>Tutor details</h4>
-                    <table>
+                    <Table borderless responsive>
                       <tbody>
                         <tr>
                           <td>Available</td>
@@ -542,7 +542,7 @@ const ProfileModal = ({ userId }) => {
                           </td>
                         </tr>
                       </tbody>
-                    </table>
+                    </Table>
                   </>
                 )}
               </div>

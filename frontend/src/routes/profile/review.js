@@ -17,6 +17,7 @@ import {
   Modal,
   Form,
   Spinner,
+  ButtonGroup
 } from "react-bootstrap";
 
 import {
@@ -151,15 +152,21 @@ const Review = () => {
                   <h2>
                     {profile.basic.username + "'s reviews"}
                   </h2>
-                  <Button
-                    className="btn-nav btn review-button"
-                    onClick={() => history.push("/profile/" + user_id)}
-                  >
-                    Return to user profile
-                  </Button>
-                  <Button className="btn review-button-alt" onClick={handleShow}>
-                    Post review
-                  </Button>
+                  <ButtonGroup className="review-header-div" aria-label="Basic example">
+                    <Button
+                      size="lg"
+                      variant="secondary"
+                      onClick={() => history.push("/profile/" + user_id)}
+                    >
+                      Back to profile
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="secondary"
+                      onClick={handleShow}>
+                      Post review
+                    </Button>
+                  </ButtonGroup>
                 </div>
               </Col>
               <Col>
@@ -183,13 +190,13 @@ const Review = () => {
               {profile.basic.is_tutor &&
                 (<Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsReceived">
-                    As tutor
+                    Reviews received
                   </Nav.Link>
                 </Nav.Item>)}
               {profile.basic.is_student &&
                 (<Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsGiven">
-                    As student
+                    Reviews given
                   </Nav.Link>
                 </Nav.Item>)}
             </Nav>
