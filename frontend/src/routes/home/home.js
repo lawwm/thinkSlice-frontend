@@ -128,7 +128,7 @@ const Guest = () => {
 
   useEffect(() => {
     let options = {
-      threshold: 0.5
+      threshold: 0.9
     }
 
     const handleObserver = (entities) => {

@@ -12,7 +12,7 @@ import {
 } from "../store/profile/action.js";
 import update from "immutability-helper";
 
-import { Modal, Button, Form, Nav } from "react-bootstrap";
+import { Modal, Button, Form, Nav, Table } from "react-bootstrap";
 import { StarDisplay } from "./StarRating.js";
 import { CheckboxGroup } from "./CheckboxGroup.js";
 import whatsapp from "../images/Whatsapp.png";
@@ -252,7 +252,7 @@ const ProfileModal = ({ userId }) => {
                       <Form.Control
                         type="username"
                         name="tutor_telegram"
-                        defaultValue={tutor_telegram}
+                        value={tutor_telegram}
                         onChange={(e) => onChangeDetailed(e)}
                       />
                     </Form.Group>
@@ -267,10 +267,7 @@ const ProfileModal = ({ userId }) => {
                         as="select"
                         name="is_tutor"
                         className="modal-input"
-                        defaultValue={setTutorDropdownDefault(
-                          profileBasic.is_student,
-                          profileBasic.is_tutor
-                        )}
+                        value={setTutorDropdownDefault(profileBasic.is_student, profileBasic.is_tutor)}
                         onChange={(e) => {
                           onChangeBasic(e);
                           setShowTutorOptions(e.target.value % 2 !== 0);
@@ -290,9 +287,7 @@ const ProfileModal = ({ userId }) => {
                         aria-label="Available"
                         name="is_available"
                         className="modal-input"
-                        defaultValue={
-                          profileBasic.available ? "available" : "unavailable"
-                        }
+                        value={profileBasic.available ? "available" : "unavailable"}
                         onChange={(e) => {
                           onChangeBasic(e);
                         }}
@@ -461,7 +456,7 @@ const ProfileModal = ({ userId }) => {
             <Modal.Body>
               <div>
                 <h4>Contact info</h4>
-                <table>
+                <Table borderless>
                   <tbody>
                     <tr>
                       <td className="table-data-alt">
@@ -490,12 +485,12 @@ const ProfileModal = ({ userId }) => {
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </Table>
                 <br />
                 {is_tutor && (
                   <>
                     <h4>Tutor details</h4>
-                    <table>
+                    <Table borderless responsive>
                       <tbody>
                         <tr>
                           <td>Available</td>
@@ -505,14 +500,14 @@ const ProfileModal = ({ userId }) => {
                                 ? "User is looking for students/teachers"
                                 : "User is not looking for students/teachers"
                               : is_tutor
-                              ? available
-                                ? "User is looking for students"
-                                : "User is not looking for students"
-                              : is_student
-                              ? available
-                                ? "User is looking for a teacher"
-                                : "User is not looking for a teacher"
-                              : "User is neither a tutor or student"}
+                                ? available
+                                  ? "User is looking for students"
+                                  : "User is not looking for students"
+                                : is_student
+                                  ? available
+                                    ? "User is looking for a teacher"
+                                    : "User is not looking for a teacher"
+                                  : "User is neither a tutor or student"}
                           </td>
                         </tr>
                         <tr>
@@ -550,8 +545,8 @@ const ProfileModal = ({ userId }) => {
                             {duration_classes[0] === 0
                               ? "User has not provided the duration of their lessons"
                               : duration_classes[0] === duration_classes[1]
-                              ? duration_classes[0] + " hrs"
-                              : duration_classes[0] +
+                                ? duration_classes[0] + " hrs"
+                                : duration_classes[0] +
                                 " - " +
                                 duration_classes[1] +
                                 " hrs"}
@@ -565,7 +560,7 @@ const ProfileModal = ({ userId }) => {
                           </td>
                         </tr>
                       </tbody>
-                    </table>
+                    </Table>
                   </>
                 )}
               </div>
