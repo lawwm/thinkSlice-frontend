@@ -42,7 +42,7 @@ describe('Review Post', () => {
 
       it('redirects to user profile when clicking on profile picture', () => {
         //Click on profile picture
-        userEvent.click(screen.getByAltText(/profile picture/i))
+        userEvent.click(screen.getByAltText(/tutor profile picture/i))
         expect(history.location.pathname).toBe("/profile/3")
       })
 

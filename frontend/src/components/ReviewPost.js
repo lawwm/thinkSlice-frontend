@@ -8,7 +8,7 @@ import "./components.css";
 import { FaRegEdit, FaTrashAlt } from "react-icons/fa";
 import { deleteReviews, editReviews } from "../store/profile/action"
 
-const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, dateReview, editedDateReview, starRating, edited, viewerId, profileId, reviewerId, asTutor }) => {
+const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, dateReview, editedDateReview, starRating, edited, viewerId, profileId, reviewerId, asTutor, profilePic, profileName }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -64,146 +64,166 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
 
   return (
     <Card>
-      <Media className="reviewer">
-        <div
-          className="thumbnail-photo mr-3"
-          onClick={() => history.push("/profile/" + profileId)}
-        >
-          <Image className="thumbnail-image" src={reviewPic} alt="profile picture" fluid />
-        </div>
-        <Media.Body className="align-self-center">
-          <h5>{username}</h5>
-        </Media.Body>
-      </Media>
-      <div className="review-div">
-        <Card.Title className="review-title"><StarDisplay num={Math.round(starRating)} /> {reviewTitle} </Card.Title>
-
-        <Card.Text className="review-text">
-          {reviewEssay}
-        </Card.Text>
-        <footer className="review-date">
-          <Row>
-            <Col md={6}>
-              {edited ? <span>Edited</span> : <span>Written</span>}
-              &nbsp;on {edited ? <span>{editedDateReview}</span> : <span>{dateReview}</span>}
-            </Col>
-            {asTutor && (viewerId === reviewerId.toString()) &&
-              <Col md={6}>
-                <div className="review-edit-delete-div">
-                  <button
-                    aria-label="show edit modal"
-                    onClick={handleEditShow}
-                    className="review-edit-delete-btn" >
-                    <FaRegEdit size={30} />
-                  </button>
-                  <button
-                    aria-label="show delete modal"
-                    onClick={handleDeleteShow}
-                    className="review-edit-delete-btn" >
-                    <FaTrashAlt size={30} />
-                  </button>
-                </div>
-              </Col>}
-            {!asTutor && (viewerId === profileId.toString()) &&
-              <Col md={6}>
-                <div className="review-edit-delete-div">
-                  <button
-                    aria-label="show edit modal"
-                    onClick={handleEditShow}
-                    className="review-edit-delete-btn" >
-                    <FaRegEdit size={30} />
-                  </button>
-                  <button
-                    aria-label="show delete modal"
-                    onClick={handleDeleteShow}
-                    className="review-edit-delete-btn" >
-                    <FaTrashAlt size={30} />
-                  </button>
-                </div>
-              </Col>}
-          </Row>
-        </footer>
-      </div>
-
-      {/* edit modal */}
-      <Modal backdrop="static" size="xl" show={editShow} onHide={handleEditClose}>
-        <Form onSubmit={(e) => onSubmit(e)}>
-          <Container>
-            <div className="create-review-modal">
-              <div className="create-review-header">
-                <h2>Edit Review</h2>
-                <div className="create-review-rating-div">
-                  <StarChoice rating={formData.star_rating} setRating={changeRating} />
-                </div>
-              </div>
-              <Form.Group controlId="formGroupEmail">
-                <Form.Control
-                  as='input'
-                  placeholder="Title"
-                  name="review_title"
-                  value={formData.review_title}
-                  onChange={(e) => onChange(e)}
-                />
-                <Form.Control
-                  className="create-review-textarea"
-                  rows={8}
-                  as='textarea'
-                  name="review_essay"
-                  placeholder="Description"
-                  value={formData.review_essay}
-                  onChange={(e) => onChange(e)}
-                />
-              </Form.Group>
+      <div className="review-post-div">
+        <Container fluid="md">
+          <Media>
+            <div
+              className="thumbnail-photo mr-3"
+              onClick={() => history.push(asTutor ? ("/profile/" + profileId) : ("/profile/" + reviewerId))}
+            >
+              <Image className="thumbnail-image" src={asTutor ? profilePic : reviewPic} alt="tutor profile picture" fluid />
             </div>
-            <Modal.Footer>
-              <Button
-                aria-label="close edit modal"
-                className="btn-review-alt-custom"
-                variant="secondary"
-                onClick={handleEditClose}>
-                Close
-              </Button>
-              <Button
-                aria-label="submit edit modal"
-                type="submit"
-                value="Submit"
-                className="btn-review-custom edit-review-btn"
-                variant="primary"
-              >
-                {reviewPostLoading
-                  ? <Spinner size="sm" animation="border" variant="light" />
-                  : <div>Submit</div>}
-              </Button>
-            </Modal.Footer>
-          </Container>
-        </Form>
-      </Modal>
+            <Media.Body className="align-self-center">
+              <h5>{asTutor ? profileName : username}</h5>
+            </Media.Body>
 
-      {/* delete modal */}
-      <Modal show={deleteShow} onHide={handleDeleteClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete review</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure about this? This action cannot be undone.</Modal.Body>
-        <Modal.Footer>
-          <Button
-            aria-label="close delete modal"
-            className="btn-review-alt-custom"
-            variant="secondary"
-            onClick={handleDeleteClose}>
-            Close
-          </Button>
-          <Button
-            aria-label="submit delete modal"
-            className="btn-review-custom edit-review-btn"
-            variant="primary"
-            onClick={onDelete}>
-            {reviewPostLoading
-              ? <Spinner size="sm" animation="border" variant="light" />
-              : <div>Delete</div>}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          </Media>
+          <Card.Title className="review-title"><StarDisplay num={Math.round(starRating)} /> {reviewTitle} </Card.Title>
+
+          <Card.Text className="review-text">
+            {reviewEssay}
+          </Card.Text>
+          <footer className="review-date">
+            <Row>
+              <Col md={6}>
+                <Media>
+                  <div
+                    className="thumbnail-photo mr-3"
+                    onClick={() => history.push(asTutor ? ("/profile/" + reviewerId) : ("/profile/" + profileId))}
+                  >
+                    <Image className="thumbnail-image" src={asTutor ? reviewPic : profilePic} alt="student profile picture" fluid />
+                  </div>
+                  <Media.Body className="align-self-center">
+                    {edited ? <span>Edited</span> : <span>Written</span>}
+                    &nbsp;on {edited ? <span>{editedDateReview}</span> : <span>{dateReview}</span>}
+                    &nbsp;by <b>{asTutor ? username : profileName}</b>
+                  </Media.Body>
+
+                </Media>
+
+              </Col>
+              {asTutor && (viewerId === reviewerId.toString()) &&
+                <Col md={6}>
+                  <div className="review-edit-delete-div">
+                    <div>
+                      <button
+                        aria-label="show edit modal"
+                        onClick={handleEditShow}
+                        className="review-edit-delete-btn" >
+                        <FaRegEdit size={30} />
+                      </button>
+                      <button
+                        aria-label="show delete modal"
+                        onClick={handleDeleteShow}
+                        className="review-edit-delete-btn" >
+                        <FaTrashAlt size={30} />
+                      </button>
+                    </div>
+                  </div>
+                </Col>}
+              {!asTutor && (viewerId === profileId.toString()) &&
+                <Col md={6}>
+                  <div className="review-edit-delete-div">
+                    <div>
+                      <button
+                        aria-label="show edit modal"
+                        onClick={handleEditShow}
+                        className="review-edit-delete-btn" >
+                        <FaRegEdit size={30} />
+                      </button>
+                      <button
+                        aria-label="show delete modal"
+                        onClick={handleDeleteShow}
+                        className="review-edit-delete-btn" >
+                        <FaTrashAlt size={30} />
+                      </button>
+                    </div>
+                  </div>
+                </Col>}
+            </Row>
+          </footer>
+        </Container>
+
+        {/* edit modal */}
+        <Modal backdrop="static" size="xl" show={editShow} onHide={handleEditClose}>
+          <Form onSubmit={(e) => onSubmit(e)}>
+            <Container>
+              <div className="create-review-modal">
+                <div className="create-review-header">
+                  <h2>Edit Review</h2>
+                  <div className="create-review-rating-div">
+                    <StarChoice rating={formData.star_rating} setRating={changeRating} />
+                  </div>
+                </div>
+                <Form.Group controlId="formGroupEmail">
+                  <Form.Control
+                    as='input'
+                    placeholder="Title"
+                    name="review_title"
+                    value={formData.review_title}
+                    onChange={(e) => onChange(e)}
+                  />
+                  <Form.Control
+                    className="create-review-textarea"
+                    rows={8}
+                    as='textarea'
+                    name="review_essay"
+                    placeholder="Description"
+                    value={formData.review_essay}
+                    onChange={(e) => onChange(e)}
+                  />
+                </Form.Group>
+              </div>
+              <Modal.Footer>
+                <Button
+                  aria-label="close edit modal"
+                  className="btn-review-alt-custom"
+                  variant="secondary"
+                  onClick={handleEditClose}>
+                  Close
+                </Button>
+                <Button
+                  aria-label="submit edit modal"
+                  type="submit"
+                  value="Submit"
+                  className="btn-review-custom edit-review-btn"
+                  variant="primary"
+                >
+                  {reviewPostLoading
+                    ? <Spinner size="sm" animation="border" variant="light" />
+                    : <div>Submit</div>}
+                </Button>
+              </Modal.Footer>
+            </Container>
+          </Form>
+        </Modal>
+
+        {/* delete modal */}
+        <Modal show={deleteShow} onHide={handleDeleteClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete review</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Are you sure about this? This action cannot be undone.</Modal.Body>
+          <Modal.Footer>
+            <Button
+              aria-label="close delete modal"
+              className="btn-review-alt-custom"
+              variant="secondary"
+              onClick={handleDeleteClose}>
+              Close
+            </Button>
+            <Button
+              aria-label="submit delete modal"
+              className="btn-review-custom edit-review-btn"
+              variant="primary"
+              onClick={onDelete}>
+              {reviewPostLoading
+                ? <Spinner size="sm" animation="border" variant="light" />
+                : <div>Delete</div>}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </Card>
   );
 };
