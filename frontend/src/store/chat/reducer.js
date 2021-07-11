@@ -11,13 +11,16 @@ const initialState = {
   unreadChats: [],
 };
 
-const addMessage = (state=initialState, action) => {
+const addMessage = (state = initialState, action) => {
   const chatToAdd = state.chats.find(
     (chat) => chat.chatroom === action.chatroom
   );
   const chatIndex = state.chats.indexOf(chatToAdd);
   const updateChats = state.chats;
   updateChats[chatIndex].messages = [...chatToAdd.messages, action.message];
+  if (state.chats.length > 1) {
+    updateChats.unshift(updateChats.splice(chatIndex, 1)[0]);
+  }
   return { ...state, chats: updateChats };
 };
 
@@ -63,7 +66,7 @@ export const chat = (state = initialState, action) => {
       return { ...state, isChatOpen: true };
 
     case actionTypes.CHAT_CLOSED:
-      return { ...state, isChatOpen: false };
+      return { ...state, isChatOpen: false, activeChat: null };
 
     case actionTypes.ADD_MESSAGE:
       return addMessage(state, action);
@@ -91,9 +94,10 @@ export const chat = (state = initialState, action) => {
       const chatroom = action.chatroom;
       localStorage.setItem("activeChat", chatroom);
       const wasUnread = state.unreadChats.indexOf(chatroom);
-      const updateUnread = state.unreadChats;
-      updateUnread.splice(wasUnread, 1);
+
       if (wasUnread > -1) {
+        const updateUnread = state.unreadChats;
+        updateUnread.splice(wasUnread, 1);
         return {
           ...state,
           activeChat: chatroom,
@@ -114,25 +118,40 @@ export const chat = (state = initialState, action) => {
     case actionTypes.START_CHAT_SUCCESS:
       const newChatroom = action.chat.chatroom;
       localStorage.setItem("activeChat", newChatroom);
+      console.log(newChatroom);
       return {
         ...state,
-        chats: [...state.chats, action.chat],
+        chats: [action.chat].concat(state.chats),
         activeChat: newChatroom,
       };
 
     case actionTypes.NEW_CHAT_SESSION:
-      const newChat = { ...action.chat, messages: [action.message], reachedEnd: false, page: 0, };
-      return { ...state, chats: [...state.chats, newChat] };
+      const newChat = {
+        ...action.chat,
+        messages: [action.message],
+        reachedEnd: false,
+        page: 0,
+      };
+      return { ...state, chats: [newChat, ...state.chats] };
 
     case actionTypes.LOAD_CHATS_SUCCESS:
       let loadedChats = [];
+      let hasUnread = [];
       for (const chat of action.chats) {
-        loadedChats = [...loadedChats, { ...chat, messages: [], reachedEnd: false, page: 0 }];
+        loadedChats = [
+          ...loadedChats,
+          { ...chat, messages: [], reachedEnd: false, page: 0 },
+        ];
+
+        if (chat.last_message_count < chat.new_message_count) {
+          hasUnread = [...hasUnread, chat.chatroom];
+        }
       }
       return {
         ...state,
         chats: loadedChats,
         chatsLoaded: true,
+        unreadChats: hasUnread,
       };
 
     case actionTypes.LOADED_ALL_CHAT_MESSAGES:

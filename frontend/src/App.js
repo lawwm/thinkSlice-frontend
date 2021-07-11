@@ -41,9 +41,11 @@ const App = () => {
   }, [store]);
 
   useEffect(() => {
-    WebSocketInstance.connect();
+    if (WebSocketInstance.state() === 3) {
+      WebSocketInstance.connect();
+    }
   }, []);
-
+  
   return (
     <Provider store={store} className="App">
       <Alert />

@@ -25,8 +25,8 @@ const ChatRoom = ({ profilePic, username, chatroom }) => {
           fluid
         />
         <Media.Body>
-          {hasUnread && <span className="dot"></span>}
           <h5>{username}</h5>
+          {hasUnread && <span className="dot"></span>}
         </Media.Body>
       </Media>
     </Card>

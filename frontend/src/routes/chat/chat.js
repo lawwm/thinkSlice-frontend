@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
-import axios from "axios";
-import { DOMAINS } from "../../store/endpoints.js";
 import * as chatActions from "../../store/chat/action.js";
 
 import { Container, Col, Row, Form, Button, Nav } from "react-bootstrap";
@@ -34,14 +32,14 @@ const Chat = () => {
       }, 100);
     };
 
-    if (messagesLoaded.length === 0) {
+    if (chats.length > 0 && messagesLoaded.length < 1) {
       waitForSocketConnection(() => {
         chats.forEach((chat) => {
           WebSocketInstance.fetchMessages(chat.chatroom);
         });
       });
     }
-  }, [chats, messagesLoaded]);
+  }, [messagesLoaded, chats]);
 
   useEffect(() => {
     if (chatsLoaded && messagesLoaded.length === chats.length) {
@@ -55,7 +53,7 @@ const Chat = () => {
     if (activeChat && chatsLoaded) {
       dispatch(chatActions.setActive(parseInt(activeChat)));
     }
-  }, [dispatch, chatsLoaded, chats]);
+  }, [dispatch, chatsLoaded]);
 
   useEffect(() => () => dispatch(chatActions.closeChat()), [dispatch]);
 
@@ -69,19 +67,16 @@ const Chat = () => {
 
     let messageObject = {
       from: parseInt(user),
-      to: parseInt(currentChat.recipientId),
+      to: parseInt(currentChat.recipient),
       content: message,
       chatroom: parseInt(currentChat.chatroom),
       isFirst: false,
     };
 
     if (currentChat.messages.length === 0) {
-      axios.patch(DOMAINS.CHAT + "/" + currentChat.recipientId).then((res) => {
-        WebSocketInstance.newChatMessage({
-          ...messageObject,
-          isFirst: true,
-        });
-        console.log(res);
+      WebSocketInstance.newChatMessage({
+        ...messageObject,
+        isFirst: true,
       });
     } else {
       WebSocketInstance.newChatMessage(messageObject);
