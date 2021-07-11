@@ -267,14 +267,7 @@ const ProfileModal = ({ userId }) => {
                         as="select"
                         name="is_tutor"
                         className="modal-input"
-<<<<<<< HEAD
                         value={setTutorDropdownDefault(profileBasic.is_student, profileBasic.is_tutor)}
-=======
-                        defaultValue={setTutorDropdownDefault(
-                          profileBasic.is_student,
-                          profileBasic.is_tutor
-                        )}
->>>>>>> origin/main
                         onChange={(e) => {
                           onChangeBasic(e);
                           setShowTutorOptions(e.target.value % 2 !== 0);
@@ -294,13 +287,7 @@ const ProfileModal = ({ userId }) => {
                         aria-label="Available"
                         name="is_available"
                         className="modal-input"
-<<<<<<< HEAD
                         value={profileBasic.available ? "available" : "unavailable"}
-=======
-                        defaultValue={
-                          profileBasic.available ? "available" : "unavailable"
-                        }
->>>>>>> origin/main
                         onChange={(e) => {
                           onChangeBasic(e);
                         }}
@@ -513,14 +500,14 @@ const ProfileModal = ({ userId }) => {
                                 ? "User is looking for students/teachers"
                                 : "User is not looking for students/teachers"
                               : is_tutor
-                              ? available
-                                ? "User is looking for students"
-                                : "User is not looking for students"
-                              : is_student
-                              ? available
-                                ? "User is looking for a teacher"
-                                : "User is not looking for a teacher"
-                              : "User is neither a tutor or student"}
+                                ? available
+                                  ? "User is looking for students"
+                                  : "User is not looking for students"
+                                : is_student
+                                  ? available
+                                    ? "User is looking for a teacher"
+                                    : "User is not looking for a teacher"
+                                  : "User is neither a tutor or student"}
                           </td>
                         </tr>
                         <tr>
@@ -558,8 +545,8 @@ const ProfileModal = ({ userId }) => {
                             {duration_classes[0] === 0
                               ? "User has not provided the duration of their lessons"
                               : duration_classes[0] === duration_classes[1]
-                              ? duration_classes[0] + " hrs"
-                              : duration_classes[0] +
+                                ? duration_classes[0] + " hrs"
+                                : duration_classes[0] +
                                 " - " +
                                 duration_classes[1] +
                                 " hrs"}
