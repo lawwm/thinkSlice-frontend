@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
-import axios from "axios";
-import { DOMAINS } from "../../store/endpoints.js";
 import * as chatActions from "../../store/chat/action.js";
 
 import { Container, Col, Row, Form, Button, Nav } from "react-bootstrap";
@@ -14,13 +12,8 @@ import "../styles.css";
 const Chat = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const {
-    activeChat,
-    chats,
-    chatsLoaded,
-    chatLoading,
-    messagesLoaded,
-  } = useSelector((state) => state.chat);
+  const { activeChat, chats, chatsLoaded, chatLoading, messagesLoaded } =
+    useSelector((state) => state.chat);
   const [message, setMessage] = useState("");
 
   useEffect(() => dispatch(chatActions.openChat()), [dispatch]);
@@ -39,7 +32,7 @@ const Chat = () => {
       }, 100);
     };
 
-    if (messagesLoaded.length === 0) {
+    if (chats.length > 0 && messagesLoaded.length < 1) {
       waitForSocketConnection(() => {
         chats.forEach((chat) => {
           WebSocketInstance.fetchMessages(chat.chatroom);
@@ -81,11 +74,9 @@ const Chat = () => {
     };
 
     if (currentChat.messages.length === 0) {
-      axios.patch(DOMAINS.CHAT + "/" + currentChat.recipient).then((res) => {
-        WebSocketInstance.newChatMessage({
-          ...messageObject,
-          isFirst: true,
-        });
+      WebSocketInstance.newChatMessage({
+        ...messageObject,
+        isFirst: true,
       });
     } else {
       WebSocketInstance.newChatMessage(messageObject);

@@ -41,11 +41,11 @@ const App = () => {
   }, [store]);
 
   useEffect(() => {
-    if (WebSocketInstance.state() === 0) {
+    if (WebSocketInstance.state() === 3) {
       WebSocketInstance.connect();
     }
   }, []);
-
+  
   return (
     <Provider store={store} className="App">
       <Alert />
