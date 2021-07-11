@@ -130,10 +130,10 @@ describe('review page', () => {
 
     it('should be able to return to user profile', async () => {
       await waitFor(() => {
-        expect(screen.getByText(/return to user profile/i)).toBeInTheDocument()
+        expect(screen.getByText(/back to profile/i)).toBeInTheDocument()
 
       })
-      userEvent.click(screen.getByText(/return to user profile/i))
+      userEvent.click(screen.getByText(/back to profile/i))
       expect(history.location.pathname).toEqual('/profile/1')
     })
 
@@ -162,7 +162,7 @@ describe('review page', () => {
       await waitFor(() => {
         expect(screen.getByText(/post review/i)).toBeInTheDocument()
       })
-      userEvent.click(screen.getByText(/as student/i))
+      userEvent.click(screen.getByText(/Reviews given/i))
       expect(screen.getByText(/tim/i)).toBeInTheDocument()
     })
   })
