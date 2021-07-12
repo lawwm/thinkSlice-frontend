@@ -696,6 +696,8 @@ button.alert-close {
 }
 
 /* Chat */
+
+/* dot to signify new chat messages */
 .dot {
   height: 10px;
   width: 10px;
@@ -706,31 +708,39 @@ button.alert-close {
   transform: translate(-50%, -50%);
 }
 
-.chat-photo {
+.chatroom-dot {
+  height: 10px;
+  width: 10px;
+  background-color: #ff4400;
   border-radius: 50%;
-  height: 50px;
-  width: 50px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-  cursor: pointer;
+  display: inline-block;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  margin-left: 3px;
+  margin-top: 20px;
+  position: absolute;
 }
+
+.dot-positioning {
+  position: relative;
+}
+
+/* chatroom */
 
 #recipient {
   display: inline-block;
   margin: 7px;
 }
 
-.hide-chat {
-  display: inline-block;
+.chatroom-div {
+  margin-left: 10px;
+  position: relative;
 }
 
-.chatroom-div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.chatroom-center {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* Small devices (landscape phones, 576px and up) */

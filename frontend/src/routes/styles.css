@@ -794,7 +794,11 @@ p {
   height: 75vh;
   background-color: lightgrey;
   padding: 20px;
-  border-radius: 6px 0px 0px 0px;
+  border-radius: 0px 0px 0px 0px;
+}
+
+.chatroom-group {
+  border-radius: 6px 6px 0px 0px;
 }
 
 .conversation {
@@ -805,11 +809,17 @@ p {
 
 .chatroom {
   padding: 0px;
+  cursor: pointer;
 }
 
 .chatroom:hover,
 .chatroom:active {
   filter: brightness(90%);
+}
+
+.chatroom-selected {
+  background-color: #e6e6e6;
+  padding: 0px;
 }
 
 .message {
@@ -842,6 +852,42 @@ p {
   border-radius: 0px 0px 6px 0px;
 }
 
+.hide-chat {
+  position: absolute;
+  color: #ffffff;
+  top: 5%;
+  right: 4%;
+  padding: 5px 5px 15px 15px;
+}
+
+.hide-chat:hover {
+  position: absolute;
+  color: #969696;
+  top: 5%;
+  right: 4%;
+  cursor: pointer;
+}
+
+.hide-chat-selected {
+  position: absolute;
+  color: #e6e6e6;
+  top: 5%;
+  right: 4%;
+  padding: 5px 5px 15px 15px;
+}
+
+.hide-chat-selected:hover {
+  position: absolute;
+  color: rgb(117, 117, 117);
+  top: 5%;
+  right: 4%;
+  cursor: pointer;
+}
+
+.chat-empty-space {
+  height: 10px;
+}
+
 @media (min-width: 768px) {
   .center-profile {
     float: left;
@@ -849,6 +895,18 @@ p {
 
   .center-profile-text {
     text-align: left;
+  }
+
+  .chat-box {
+    overflow-y: scroll;
+    height: 75vh;
+    background-color: lightgrey;
+    padding: 20px;
+    border-radius: 6px 6px 0px 0px;
+  }
+
+  .chatroom-group {
+    border-radius: 6px 6px 6px 6px;
   }
 }
 
