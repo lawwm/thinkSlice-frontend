@@ -149,7 +149,7 @@ const Review = () => {
         <Container fluid="md">
           <div className="review-div">
             <Row className="review-header-div">
-              <Col className="align-self-center" xs={8}>
+              <Col className="center-profile-text" xs={12} sm={8}>
                 <div>
                   <h2>
                     {profile.basic.username + "'s reviews"}
@@ -171,8 +171,8 @@ const Review = () => {
                   </ButtonGroup>
                 </div>
               </Col>
-              <Col>
-                <div className="circle align-self-center ml-3">
+              <Col xs={12} sm={4}>
+                <div className="circle center-profile">
                   <Image
                     className="profile-pic"
                     src={profile.basic.profile_pic}
@@ -192,13 +192,13 @@ const Review = () => {
               {profile.basic.is_tutor &&
                 (<Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsReceived">
-                    Reviews received
+                    <span className="review-word-span">Reviews received</span>
                   </Nav.Link>
                 </Nav.Item>)}
               {profile.basic.is_student &&
                 (<Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsGiven">
-                    Reviews given
+                    <span className="review-word-span">Reviews given</span>
                   </Nav.Link>
                 </Nav.Item>)}
             </Nav>
@@ -250,7 +250,7 @@ const Review = () => {
             <div className="review-empty-space">
 
             </div>
-            {/* Modal set up below */}
+            {/* Post Modal set up below */}
             <Modal backdrop="static" size="xl" show={show} onHide={handleClose}>
               <Form onSubmit={(e) => onSubmit(e)}>
                 <Container>
