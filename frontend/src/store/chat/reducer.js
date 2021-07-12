@@ -30,12 +30,16 @@ const setMessages = (state, action) => {
   );
   const chatIndex = state.chats.indexOf(chatToSet);
   const updateChats = state.chats;
-  updateChats[chatIndex].messages = action.messages.reverse();
-  return {
-    ...state,
-    chats: updateChats,
-    messagesLoaded: state.messagesLoaded.concat(action.chatroom),
-  };
+  if (chatIndex > -1) {
+    updateChats[chatIndex].messages = action.messages.reverse();
+    return {
+      ...state,
+      chats: updateChats,
+      messagesLoaded: state.messagesLoaded.concat(action.chatroom),
+    };
+  } else {
+    return state;
+  }
 };
 
 const setMoreMessages = (state, action) => {
@@ -118,21 +122,26 @@ export const chat = (state = initialState, action) => {
     case actionTypes.START_CHAT_SUCCESS:
       const newChatroom = action.chat.chatroom;
       localStorage.setItem("activeChat", newChatroom);
-      console.log(newChatroom);
+      const startedChat = {
+        ...action.chat,
+        messages: [],
+        reachedEnd: false,
+        page: 0,
+      };
       return {
         ...state,
-        chats: [action.chat].concat(state.chats),
+        chats: [startedChat].concat(state.chats),
         activeChat: newChatroom,
       };
 
     case actionTypes.NEW_CHAT_SESSION:
-      const newChat = {
+      const incomingChat = {
         ...action.chat,
         messages: [action.message],
         reachedEnd: false,
         page: 0,
       };
-      return { ...state, chats: [newChat, ...state.chats] };
+      return { ...state, chats: [incomingChat, ...state.chats] };
 
     case actionTypes.LOAD_CHATS_SUCCESS:
       let loadedChats = [];

@@ -25,8 +25,9 @@ const ChatRoom = ({ profilePic, username, chatroom }) => {
           fluid
         />
         <Media.Body>
-          <h5>{username}</h5>
-          {hasUnread && <span className="dot"></span>}
+          <h5 id="recipient">{username}</h5>
+          {hasUnread && <div className="dot"></div>}
+          <div className="hide-chat">✖</div>
         </Media.Body>
       </Media>
     </Card>

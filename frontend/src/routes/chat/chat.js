@@ -86,16 +86,15 @@ const Chat = () => {
 
   const renderChatRooms = (chats) => {
     return chats.map((chat) => {
-      const isActive = chat.chatroom === activeChat;
       return (
         <Nav.Item key={chat.id}>
           <Nav.Link
+            active="chatroom-active"
             className="chatroom"
             eventKey={chat.id}
             onSelect={() => {
               dispatch(chatActions.setActive(chat.chatroom));
             }}
-            disabled={isActive}
           >
             <ChatRoom
               profilePic={
