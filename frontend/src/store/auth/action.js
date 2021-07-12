@@ -99,6 +99,11 @@ export const login =
         dispatch({
           type: actionTypes.AUTH_BUTTON_LOADING,
         });
+
+        if (username === "" || password === "") {
+          throw new Error("Fields cannot be empty")
+        }
+
         const res = await axios.post(
           DOMAINS.AUTH + ENDPOINTS.LOGIN,
           body,

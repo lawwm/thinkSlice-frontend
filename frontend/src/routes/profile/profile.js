@@ -131,7 +131,7 @@ const Profile = () => {
             <Container>
               <div className="profile-div">
                 <Row>
-                  <Col xs={{ span: 8, offset: 0 }} md={{ span: 8, offset: 1 }}>
+                  <Col xs={{ span: 12, offset: 0 }} md={{ span: 8, offset: 1 }}>
                     <div className="username-tag-div">
                       <h2>{profile.basic.username}</h2>
                       {profile.basic.is_tutor && (
@@ -154,8 +154,8 @@ const Profile = () => {
                       }
                       className={
                         currentViewer === user_id
-                          ? "profile-pic-container circle"
-                          : "circle"
+                          ? "profile-pic-container circle center-profile"
+                          : "circle center-profile"
                       }
                     >
                       <img
@@ -172,6 +172,7 @@ const Profile = () => {
                   <Col
                     xs={{ span: 12, offset: 0 }}
                     md={{ span: 11, offset: 1 }}
+                    className="center-profile-text"
                   >
                     <ButtonGroup className="profile-button" size="lg">
                       <Button

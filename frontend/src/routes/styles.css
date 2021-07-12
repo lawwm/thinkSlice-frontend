@@ -134,6 +134,14 @@ p {
   margin-top: 36px;
 }
 
+.center-profile-text {
+  text-align: center;
+}
+
+.center-profile {
+  margin: 0 auto;
+}
+
 .btn-custom:hover,
 .btn-circle:hover,
 .btn-modal:hover {
@@ -275,6 +283,10 @@ p {
 /* review page */
 .review-div {
   margin-top: 36px;
+}
+
+.review-word-span {
+  white-space: normal;
 }
 
 .review-loading-div {
@@ -794,4 +806,20 @@ p {
   background-color: #fcfcfc;
   border-bottom-left-radius: 0px;
   margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .center-profile {
+    float: left;
+  }
+
+  .center-profile-text {
+    text-align: left;
+  }
+}
+
+@media (min-width: 365px) {
+  .review-word-span {
+    white-space: nowrap;
+  }
 }
