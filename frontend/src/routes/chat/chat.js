@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
 
-import { Container, Col, Row, Form, Button, Nav } from "react-bootstrap";
+import { Container, Col, Row, Form, Button, Nav, InputGroup } from "react-bootstrap";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ChatRoom from "../../components/ChatRoom.js";
 import ChatBox from "../../components/ChatBox.js";
@@ -118,7 +118,7 @@ const Chat = () => {
         <Container fluid>
           <div className="container-padding">
             <Row>
-              <Col>
+              <Col xs={12} sm={12} md={5} lg={4} xl={3}>
                 <Nav className="flex-column">
                   {chats.length > 0 ? (
                     renderChatRooms(chats)
@@ -127,25 +127,30 @@ const Chat = () => {
                   )}
                 </Nav>
               </Col>
-              <Col xs={7}>
+              <Col xs={12} sm={12} md={7} lg={8} xl={9}>
                 <ChatBox />
                 <div>
                   {activeChat && (
                     <Form onSubmit={(e) => sendMessageHandler(e)}>
-                      <Form.Control
-                        onChange={(e) => messageChangeHandler(e)}
-                        value={message}
-                        required
-                        className="message-input"
-                        placeholder="Write your message..."
-                      />
-                      <Button type="submit">Send</Button>
+                      <InputGroup>
+                        <Form.Control
+                          onChange={(e) => messageChangeHandler(e)}
+                          value={message}
+                          required
+                          className="message-input chat-sendbox"
+                          placeholder="Write your message..."
+                        />
+                        <InputGroup.Append>
+                          <Button className="chat-sendbutton" type="submit" variant="outline-secondary">Send</Button>
+                        </InputGroup.Append>
+                      </InputGroup>
                     </Form>
                   )}
                 </div>
               </Col>
             </Row>
           </div>
+          <div className="review-empty-space"></div>
         </Container>
       )}
     </>

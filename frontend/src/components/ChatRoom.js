@@ -18,12 +18,16 @@ const ChatRoom = ({ profilePic, username, chatroom }) => {
   return (
     <Card>
       <Media>
-        <Image
-          src={profilePic}
-          className="thumbnail-photo"
-          alt="profile picture"
-          fluid
-        />
+        <div
+          className="thumbnail-photo mr-3"
+        >
+          <Image
+            src={profilePic}
+            className="thumbnail-image"
+            alt="profile picture"
+            fluid
+          />
+        </div>
         <Media.Body>
           <h5 id="recipient">{username}</h5>
           {hasUnread && <div className="dot"></div>}
