@@ -26,7 +26,7 @@ import {
   createReviews,
 } from "../../store/profile/action";
 
-import { StarChoice } from "../../components/StarRating";
+import { StarChoice, StarDisplay } from "../../components/StarRating";
 
 const MapReviews = ({ reviews, viewerId, profileId, asTutor, profilePic, profileName }) => {
   return (
@@ -151,9 +151,18 @@ const Review = () => {
             <Row className="review-header-div">
               <Col className="center-profile-text" xs={12} sm={8}>
                 <div>
-                  <h2>
+                  <div className="review-username-title">
                     {profile.basic.username + "'s reviews"}
-                  </h2>
+                  </div>
+                  <div className="review-header-div">
+                    {
+                      profile.detailed.aggregate_star !== null &&
+                      <StarDisplay
+                        num={profile.detailed.aggregate_star}
+                        size={35}
+                      />
+                    }
+                  </div>
                   <ButtonGroup className="review-header-div" aria-label="Basic example">
                     <Button
                       size="lg"
