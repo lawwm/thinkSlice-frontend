@@ -9,7 +9,7 @@ input[type='password'] {
   width: 500px;
 } */
 
-input[type="file"] {
+input[type='file'] {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -473,7 +473,7 @@ p {
 
 .video-title {
   font-size: 35px;
-  font-family: "Inter";
+  font-family: 'Inter';
   font-weight: 400;
 }
 
@@ -551,7 +551,7 @@ p {
   background-color: #fcfcfc;
   color: rgb(87, 87, 87);
   font-weight: 600;
-  font-family: "Inter", "Calibri";
+  font-family: 'Inter', 'Calibri';
 }
 
 /* video comment  */
@@ -648,7 +648,7 @@ p {
 .browse-more-sentence {
   color: white;
   font-weight: 500;
-  font-family: "Roboto", "Arial";
+  font-family: 'Roboto', 'Arial';
   font-size: 28px;
   text-align: center;
 }
@@ -656,7 +656,7 @@ p {
 .browse-more-header {
   color: white;
   font-weight: 400;
-  font-family: "Inter", "Calibri";
+  font-family: 'Inter', 'Calibri';
   font-size: 13px;
   text-align: center;
   margin-bottom: 2px;
@@ -794,6 +794,11 @@ p {
   height: 75vh;
   background-color: lightgrey;
   padding: 20px;
+  border-radius: 0px 0px 0px 0px;
+}
+
+.chatroom-group {
+  border-radius: 6px 6px 0px 0px;
 }
 
 .conversation {
@@ -804,11 +809,17 @@ p {
 
 .chatroom {
   padding: 0px;
+  cursor: pointer;
 }
 
 .chatroom:hover,
 .chatroom:active {
   filter: brightness(90%);
+}
+
+.chatroom-selected {
+  background-color: #e6e6e6;
+  padding: 0px;
 }
 
 .message {
@@ -833,6 +844,50 @@ p {
   margin-right: auto;
 }
 
+.chat-sendbox {
+  border-radius: 0px 0px 0px 6px;
+}
+
+.chat-sendbutton {
+  border-radius: 0px 0px 6px 0px;
+}
+
+.hide-chat {
+  position: absolute;
+  color: #ffffff;
+  top: 5%;
+  right: 4%;
+  padding: 5px 5px 15px 15px;
+}
+
+.hide-chat:hover {
+  position: absolute;
+  color: #969696;
+  top: 5%;
+  right: 4%;
+  cursor: pointer;
+}
+
+.hide-chat-selected {
+  position: absolute;
+  color: #e6e6e6;
+  top: 5%;
+  right: 4%;
+  padding: 5px 5px 15px 15px;
+}
+
+.hide-chat-selected:hover {
+  position: absolute;
+  color: rgb(117, 117, 117);
+  top: 5%;
+  right: 4%;
+  cursor: pointer;
+}
+
+.chat-empty-space {
+  height: 10px;
+}
+
 @media (min-width: 768px) {
   .center-profile {
     float: left;
@@ -840,6 +895,18 @@ p {
 
   .center-profile-text {
     text-align: left;
+  }
+
+  .chat-box {
+    overflow-y: scroll;
+    height: 75vh;
+    background-color: lightgrey;
+    padding: 20px;
+    border-radius: 6px 6px 0px 0px;
+  }
+
+  .chatroom-group {
+    border-radius: 6px 6px 6px 6px;
   }
 }
 

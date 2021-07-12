@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Media, Card, Image } from "react-bootstrap";
+import { Media, Image, } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import "./components.css";
 
@@ -16,21 +16,28 @@ const ChatRoom = ({ profilePic, username, chatroom }) => {
   }
 
   return (
-    <Card>
-      <Media>
-        <Image
-          src={profilePic}
-          className="thumbnail-photo"
-          alt="profile picture"
-          fluid
-        />
-        <Media.Body>
-          <h5 id="recipient">{username}</h5>
-          {hasUnread && <div className="dot"></div>}
-          <div className="hide-chat">✖</div>
+    <>
+      <Media className="chatroom-div">
+        <div
+          className="thumbnail-photo mr-3"
+        >
+          <Image
+            src={profilePic}
+            className="thumbnail-image"
+            alt="profile picture"
+            fluid
+          />
+        </div>
+        <Media.Body >
+          <div className="chatroom-center">
+            <h5 id="recipient">{username}</h5>
+            {hasUnread && <span className="dot-positioning">
+              <div className="chatroom-dot" />
+            </span>}
+          </div>
         </Media.Body>
       </Media>
-    </Card>
+    </>
   );
 };
 

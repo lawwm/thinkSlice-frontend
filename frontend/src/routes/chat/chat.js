@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
 
-import { Container, Col, Row, Form, Button, Nav } from "react-bootstrap";
+import { Container, Col, Row, Form, Button, InputGroup, ListGroup } from "react-bootstrap";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ChatRoom from "../../components/ChatRoom.js";
 import ChatBox from "../../components/ChatBox.js";
@@ -87,13 +87,16 @@ const Chat = () => {
   const renderChatRooms = (chats) => {
     return chats.map((chat) => {
       return (
-        <Nav.Item key={chat.id}>
-          <Nav.Link
-            active="chatroom-active"
-            className="chatroom"
-            eventKey={chat.id}
-            onSelect={() => {
-              dispatch(chatActions.setActive(chat.chatroom));
+        <ListGroup.Item
+          key={chat.id}
+          className={(activeChat === chat.chatroom) ? "chatroom-selected" : "chatroom"}
+        >
+          <div
+            onClick={() => {
+              if (activeChat !== chat.chatroom) {
+                console.log("Choose chat")
+                dispatch(chatActions.setActive(chat.chatroom));
+              }
             }}
           >
             <ChatRoom
@@ -104,8 +107,11 @@ const Chat = () => {
               username={chat.recipientName}
               chatroom={chat.chatroom}
             />
-          </Nav.Link>
-        </Nav.Item>
+          </div>
+          <div
+            onClick={() => console.log("Close chat")}
+            className={(activeChat === chat.chatroom) ? "hide-chat-selected" : "hide-chat"}>✖</div>
+        </ListGroup.Item>
       );
     });
   };
@@ -118,34 +124,39 @@ const Chat = () => {
         <Container fluid>
           <div className="container-padding">
             <Row>
-              <Col>
-                <Nav className="flex-column">
+              <Col xs={12} sm={12} md={5} lg={4} xl={3}>
+                <ListGroup className="flex-column chatroom-group">
                   {chats.length > 0 ? (
                     renderChatRooms(chats)
                   ) : (
                     <p>You have not started any chats previously.</p>
                   )}
-                </Nav>
+                </ListGroup>
               </Col>
-              <Col xs={7}>
+              <Col xs={12} sm={12} md={7} lg={8} xl={9}>
                 <ChatBox />
                 <div>
                   {activeChat && (
                     <Form onSubmit={(e) => sendMessageHandler(e)}>
-                      <Form.Control
-                        onChange={(e) => messageChangeHandler(e)}
-                        value={message}
-                        required
-                        className="message-input"
-                        placeholder="Write your message..."
-                      />
-                      <Button type="submit">Send</Button>
+                      <InputGroup>
+                        <Form.Control
+                          onChange={(e) => messageChangeHandler(e)}
+                          value={message}
+                          required
+                          className="message-input chat-sendbox"
+                          placeholder="Write your message..."
+                        />
+                        <InputGroup.Append>
+                          <Button className="chat-sendbutton" type="submit" variant="outline-secondary">Send</Button>
+                        </InputGroup.Append>
+                      </InputGroup>
                     </Form>
                   )}
                 </div>
               </Col>
             </Row>
           </div>
+          <div className="chat-empty-space"></div>
         </Container>
       )}
     </>
