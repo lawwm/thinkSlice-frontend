@@ -301,6 +301,12 @@ p {
   border-radius: 5px;
 }
 
+.review-username-title {
+  font-size: 36px;
+  font-family: 'Inter', 'Calibri';
+  font-weight: 500;
+}
+
 .review-header-div {
   margin-bottom: 20px;
 }
@@ -500,6 +506,24 @@ p {
   text-align: right;
 }
 
+.video-student-chat {
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+  float: right;
+  cursor: pointer;
+  background-color: #ff6229;
+  border: #ff5315;
+}
+
+.video-student-chat:hover,
+.video-student-chat:disabled,
+.video-student-chat:active,
+.video-student-chat:active:after {
+  opacity: 1;
+  background-color: #ce400c;
+}
+
 .video-student-likes {
   display: flex;
   align-items: center;
@@ -518,6 +542,7 @@ p {
 }
 
 .video-description-div {
+  margin-top: 40px;
   margin-bottom: 20px;
 }
 

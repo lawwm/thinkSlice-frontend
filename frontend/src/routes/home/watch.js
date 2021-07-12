@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import { AuthNavBar } from "../../components/AuthNavBar"
 import { truncate } from "lodash"
-import { FaAngleUp, FaAngleDown, FaRegHeart, FaHeart } from "react-icons/fa";
+import { FaAngleUp, FaAngleDown, FaRegHeart, FaHeart, FaComment } from "react-icons/fa";
 import Thumbnail from "../../components/Thumbnail"
 import { StarDisplay } from '../../components/StarRating';
 import videojs from '@mux/videojs-kit';
@@ -386,33 +386,35 @@ const Guest = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd }) 
             </div>
             <hr />
             <div>
-              <Media>
-                <img
-                  alt="Creator"
-                  onClick={() => history.push('/profile/' + currentVideo.creator_profile.user)}
-                  className="video-profile-picture"
-                  src={currentVideo.creator_profile.profile_pic}
-                />
-                <Media.Body >
-                  <div className="video-name-reviews">
-                    <Row>
-                      <Col>{currentVideo.creator_profile.username}</Col>
-                    </Row>
-                    <Row>
-                      {currentVideo.creator_profile.aggregate_star !== null && (
-                        <Col>
-                          <StarDisplay
-                            num={parseInt(currentVideo.creator_profile.aggregate_star)}
-                            size={18}
-                          />
-                        </Col>
-                      )}
-                      <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
-                    </Row>
-                    <LikeCount currentVideo={currentVideo} />
-                  </div>
-                </Media.Body>
-              </Media>
+              <Row>
+                <Media>
+                  <img
+                    alt="Creator"
+                    onClick={() => history.push('/profile/' + currentVideo.creator_profile.user)}
+                    className="video-profile-picture"
+                    src={currentVideo.creator_profile.profile_pic}
+                  />
+                  <Media.Body >
+                    <div className="video-name-reviews">
+                      <Row>
+                        <Col>{currentVideo.creator_profile.username}</Col>
+                      </Row>
+                      <Row>
+                        {currentVideo.creator_profile.aggregate_star !== null && (
+                          <Col>
+                            <StarDisplay
+                              num={parseInt(currentVideo.creator_profile.aggregate_star)}
+                              size={18}
+                            />
+                          </Col>
+                        )}
+                        <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
+                      </Row>
+                      <LikeCount currentVideo={currentVideo} />
+                    </div>
+                  </Media.Body>
+                </Media>
+              </Row>
               <Row>
                 <Col>
                   <Description description={currentVideo.video_description} />
@@ -518,7 +520,11 @@ const Member = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd })
 
             <div className="video-header">
               <Row>
-                <Col className="video-title">{currentVideo.video_title}</Col>
+                <Col xs={12} className="video-title">{currentVideo.video_title}
+                  <Button variant="secondary" className="video-student-chat">
+                    Chat&nbsp;<FaComment />
+                  </Button>
+                </Col>
               </Row>
               <Row>
                 <Col md={4}>{currentVideo.views + " views | " + currentVideo.subject}</Col>
