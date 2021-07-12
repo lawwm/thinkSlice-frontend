@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
 
-import { Container, Col, Row, Form, Button, Nav, InputGroup, ListGroup } from "react-bootstrap";
+import { Container, Col, Row, Form, Button, InputGroup, ListGroup } from "react-bootstrap";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ChatRoom from "../../components/ChatRoom.js";
 import ChatBox from "../../components/ChatBox.js";
