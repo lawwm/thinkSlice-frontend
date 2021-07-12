@@ -15,7 +15,7 @@ const ChatBox = () => {
   );
   let currentChat = chats.find((chat) => chat.chatroom === activeChat);
   if (!currentChat) {
-    currentChat = { page: 0, messages: [], reachedEnd: true };
+    currentChat = {page: 0, messages: [], reachedEnd: true};
   }
   const { page, messages, reachedEnd } = currentChat;
   const user = localStorage.getItem("user");

@@ -9,7 +9,7 @@ input[type='password'] {
   width: 500px;
 } */
 
-input[type='file'] {
+input[type="file"] {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -467,7 +467,7 @@ p {
 
 .video-title {
   font-size: 35px;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 400;
 }
 
@@ -526,7 +526,7 @@ p {
   background-color: #fcfcfc;
   color: rgb(87, 87, 87);
   font-weight: 600;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
 }
 
 /* video comment  */
@@ -623,7 +623,7 @@ p {
 .browse-more-sentence {
   color: white;
   font-weight: 500;
-  font-family: 'Roboto', 'Arial';
+  font-family: "Roboto", "Arial";
   font-size: 28px;
   text-align: center;
 }
@@ -631,7 +631,7 @@ p {
 .browse-more-header {
   color: white;
   font-weight: 400;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   font-size: 13px;
   text-align: center;
   margin-bottom: 2px;
@@ -781,8 +781,8 @@ p {
   padding: 0px;
 }
 
-.chatroom:active,
-.chatroom:hover {
+.chatroom:hover,
+.chatroom:active {
   filter: brightness(90%);
 }
 
