@@ -6,6 +6,8 @@ import { DOMAINS, ENDPOINTS } from "../endpoints";
 import setAuthToken from "../../util/setAuthToken";
 import { setAlert } from "../../store/components/action";
 import { loadChats } from "../chat/action";
+import { NonFieldError } from "../../util/errorClasses";
+
 const config = {
   headers: {
     "Content-Type": "application/json",
@@ -101,7 +103,7 @@ export const login =
         });
 
         if (username === "" || password === "") {
-          throw new Error("Fields cannot be empty")
+          throw new NonFieldError("Fields cannot be empty")
         }
 
         const res = await axios.post(
@@ -128,7 +130,7 @@ export const login =
         dispatch({
           type: actionTypes.LOGIN_FAIL,
         });
-        dispatch(setAlert(err.message, "danger"));
+        dispatch(setAlert(err.response.data.non_field_errors[0], "danger"));
       }
     };
 

@@ -41,8 +41,13 @@ const Upload = () => {
 
     const userId = localStorage.getItem("user")
     useEffect(() => {
-        dispatch(getProfile(userId));
-    }, [dispatch, userId])
+        //if profile is already loaded for current user, do not call API
+        if (profile === null) {
+            dispatch(getProfile(userId));
+        } else if (userId !== profile.basic.user.toString()) {
+            dispatch(getProfile(userId));
+        }
+    }, [dispatch, userId, profile])
 
     const uploadFile = (videoFile) => {
         let url_id = ''
