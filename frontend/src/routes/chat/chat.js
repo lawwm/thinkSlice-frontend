@@ -153,6 +153,7 @@ const Chat = () => {
           <div className="container-padding">
             <Row>
               <Col xs={12} sm={12} md={5} lg={4} xl={3}>
+                <Form.Control placeholder={"Search chats..."}></Form.Control>
                 <div className="chatroom-list">
                   <ListGroup className="flex-column chatroom-group">
                     {chats.length > 0 ? (

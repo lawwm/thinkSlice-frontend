@@ -790,7 +790,7 @@ p {
 /* chat */
 .chatroom-list {
   overflow-y: scroll;
-  height: 80vh;
+  height: 75vh;
 }
 
 .chat-box {
