@@ -4,7 +4,7 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 export const StarDisplay = ({ num, size = 25, selected = true }) => {
   return (
     <>
-      {[...Array(num)].map((i, index) => (
+      {[...Array(Math.round(num))].map((i, index) => (
         <Fragment key={index}>
           {selected
             ? <FaStar data-testid="filled" role="img" color={"#ff4400"} className="star-display" size={size} />
@@ -13,7 +13,7 @@ export const StarDisplay = ({ num, size = 25, selected = true }) => {
         </Fragment>
 
       ))}
-      {[...Array(5 - num)].map((i, index) => (
+      {[...Array(5 - Math.round(num))].map((i, index) => (
         <Fragment key={index}>
           {selected
             ? <FaRegStar data-testid="hollow" role="img" color={"#ff4400"} className="star-display" size={size} />

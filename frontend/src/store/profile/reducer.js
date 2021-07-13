@@ -8,6 +8,7 @@ const initialState = {
   reviewPostLoading: false,
   detailedMode: false,
   editMode: false,
+  reviewUser: null,
   reviewsGiven: [],
   reviewsReceived: [],
   profileLikes: []
@@ -96,7 +97,8 @@ export const profile = (state = initialState, action) => {
         ...state,
         reviewsGiven: payload.reviewsGiven,
         reviewsReceived: payload.reviewsReceived,
-        reviewLoading: false
+        reviewLoading: false,
+        reviewUser: payload.reviewUser
       };
     case actionTypes.SET_REVIEW_LOADING:
       return {
