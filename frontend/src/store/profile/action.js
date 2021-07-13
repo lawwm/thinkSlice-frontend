@@ -5,6 +5,7 @@ import { setAlert } from "../components/action";
 import { DOMAINS, ENDPOINTS } from "../endpoints";
 import * as actionTypes from "./actionTypes";
 import { formatDistance } from 'date-fns'
+import { CustomError } from "../../util/errorClasses";
 
 const config = {
   headers: {
@@ -274,7 +275,7 @@ export const createReviews = ({ review_title, review_essay, star_rating, tutorId
       type: actionTypes.SET_REVIEW_LOADING,
     })
     if (review_title === "" || review_essay === "" || star_rating === 0) {
-      throw new Error("Fields are empty!")
+      throw new CustomError("Fields are empty!")
     }
     const body = JSON.stringify({ review_title, review_essay, star_rating })
 
@@ -289,7 +290,7 @@ export const createReviews = ({ review_title, review_essay, star_rating, tutorId
     closeModalFunction()
     clearFormData()
   } catch (err) {
-    dispatch(setAlert(err.message, "danger"));
+    dispatch(setAlert(err.response.data, "danger"));
     dispatch({
       type: actionTypes.STOP_REVIEW_LOADING,
     })

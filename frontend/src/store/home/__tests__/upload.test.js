@@ -59,13 +59,13 @@ describe('Upload page', () => {
             profile: {
               profile: {
                 basic: {
-                  id: 25,
+                  id: 1,
                   profile_pic: 'https://thinkslice-project.s3.amazonaws.com/user-images/427ed110edb63dbe449c5a8aaefa4ca9_pe9mMiy.jpg?AWSAccessKeyId=AKIA3EDWA4JQ57MY2PM5&Signature=4u3252HLVYmTiv3bVeNbSc4j898%3D&Expires=1623600402',
                   username: 'jimijam',
                   user_bio: 'Hi, welcome to my profile! Cool profilez',
                   is_tutor: true,
                   is_student: true,
-                  user: 26,
+                  user: 1,
                   video: []
                 },
                 detailed: {
