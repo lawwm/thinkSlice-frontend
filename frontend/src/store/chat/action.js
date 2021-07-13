@@ -29,7 +29,10 @@ export const addMessage = (message) => async (dispatch, getState) => {
   }
 
   // If the user is not on the chat page or in another chatroom, display a notification.
-  if (message.message.author !== user && (!isChatOpen || activeChat !== message.chatroom)) {
+  if (
+    message.message.author !== user &&
+    (!isChatOpen || activeChat !== message.chatroom)
+  ) {
     dispatch({
       type: actionTypes.NEW_MESSAGE,
       chatroom: message.chatroom,
@@ -132,4 +135,17 @@ export const loadChats = (userId) => async (dispatch) => {
       type: actionTypes.LOAD_CHATS_FAIL,
     });
   }
+};
+
+export const hideChat = (chat) => async (dispatch, getState) => {
+  axios.patch(DOMAINS.CHAT + ENDPOINTS.ACCESS_CHAT + "/" + chat.id);
+  const { chats, messagesLoaded } = getState().chat;
+  const chatIndex = chats.indexOf(chat);
+  const loadedIndex = messagesLoaded.indexOf(chat.chatroom);
+  dispatch({
+    type: actionTypes.HIDE_CHAT,
+    chatIndex: chatIndex,
+    loadedIndex: loadedIndex,
+    chatroom: chat.chatroom,
+  });
 };

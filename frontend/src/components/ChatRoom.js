@@ -2,11 +2,13 @@ import React from "react";
 
 import { Media, Image, } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import "./components.css";
 
-const ChatRoom = ({ profilePic, username, chatroom }) => {
+const ChatRoom = ({ profilePic, username, chatroom, userId }) => {
   const { unreadChats } = useSelector((state) => state.chat);
   var hasUnread = false;
+  const history = useHistory();
 
   for (const chat of unreadChats) {
     if (chat === chatroom) {
@@ -26,6 +28,7 @@ const ChatRoom = ({ profilePic, username, chatroom }) => {
             className="thumbnail-image"
             alt="profile picture"
             fluid
+            onClick={()=> history.push("/profile/" + userId)}
           />
         </div>
         <Media.Body >
