@@ -377,7 +377,7 @@ const Guest = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd }) 
             </video>
             <div className="video-header">
               <Row>
-                <Col className="video-title">{currentVideo.video_title}</Col>
+                <Col xs={12} className="video-title">{currentVideo.video_title}</Col>
               </Row>
               <Row>
                 <Col md={4}>{currentVideo.views + " views | " + currentVideo.subject}</Col>
@@ -386,35 +386,33 @@ const Guest = ({ currentVideo, videoLoading, videos, homeLoading, reachedEnd }) 
             </div>
             <hr />
             <div>
-              <Row>
-                <Media>
-                  <img
-                    alt="Creator"
-                    onClick={() => history.push('/profile/' + currentVideo.creator_profile.user)}
-                    className="video-profile-picture"
-                    src={currentVideo.creator_profile.profile_pic}
-                  />
-                  <Media.Body >
-                    <div className="video-name-reviews">
-                      <Row>
-                        <Col>{currentVideo.creator_profile.username}</Col>
-                      </Row>
-                      <Row>
-                        {currentVideo.creator_profile.aggregate_star !== null && (
-                          <Col>
-                            <StarDisplay
-                              num={parseInt(currentVideo.creator_profile.aggregate_star)}
-                              size={18}
-                            />
-                          </Col>
-                        )}
-                        <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
-                      </Row>
-                      <LikeCount currentVideo={currentVideo} />
-                    </div>
-                  </Media.Body>
-                </Media>
-              </Row>
+              <Media>
+                <img
+                  alt="Creator"
+                  className="video-profile-picture"
+                  onClick={() => history.push('/profile/' + currentVideo.creator_profile.user)}
+                  src={currentVideo.creator_profile.profile_pic}
+                />
+                <Media.Body >
+                  <div className="video-name-reviews">
+                    <Row>
+                      <Col>{currentVideo.creator_profile.username}</Col>
+                    </Row>
+                    <Row>
+                      {currentVideo.creator_profile.aggregate_star !== null && (
+                        <Col>
+                          <StarDisplay
+                            num={parseInt(currentVideo.creator_profile.aggregate_star)}
+                            size={18}
+                          />
+                        </Col>
+                      )}
+                      <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
+                    </Row>
+                    <LikeCount currentVideo={currentVideo} />
+                  </div>
+                </Media.Body>
+              </Media>
               <Row>
                 <Col>
                   <Description description={currentVideo.video_description} />

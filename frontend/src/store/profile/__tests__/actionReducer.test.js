@@ -19,6 +19,7 @@ const initialReducerState = {
   reviewPostLoading: false,
   detailedMode: false,
   editMode: false,
+  reviewUser: null,
   reviewsGiven: [],
   reviewsReceived: [],
   profileLikes: []
@@ -304,7 +305,7 @@ describe('profile actions calling API should dispatch correctly', () => {
     it('successful get review dispatch correct actions', () => {
       const store = mockStore({})
       return store.dispatch(actions.getReviews(1)).then(() => {
-        expect(store.getActions()[0].type).toEqual(types.PROFILE_LOADING)
+        expect(store.getActions()[0].type).toEqual(types.SET_REVIEW_LOADING)
         expect(store.getActions()[1].type).toEqual(types.REVIEWS_LOADED)
       })
     })
@@ -312,7 +313,7 @@ describe('profile actions calling API should dispatch correctly', () => {
     it('failed get review dispatch error actions', () => {
       const store = mockStore({})
       return store.dispatch(actions.getReviews(0)).then(() => {
-        expect(store.getActions()[0].type).toEqual(types.PROFILE_LOADING)
+        expect(store.getActions()[0].type).toEqual(types.SET_REVIEW_LOADING)
         expect(store.getActions()[1].type).toEqual(types.REVIEWS_ERROR)
       })
     })

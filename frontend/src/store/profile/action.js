@@ -251,7 +251,7 @@ export const stopReviewLoading = () => async (dispatch) => {
 export const getReviews = (userId) => async (dispatch) => {
   try {
     dispatch({
-      type: actionTypes.PROFILE_LOADING,
+      type: actionTypes.SET_REVIEW_LOADING,
     });
     const res = await axios.get(DOMAINS.REVIEWS + "/tutors/" + userId);
     const res2 = await axios.get(DOMAINS.REVIEWS + "/students/" + userId);
@@ -259,7 +259,7 @@ export const getReviews = (userId) => async (dispatch) => {
     // console.log(res2.data)
     dispatch({
       type: actionTypes.REVIEWS_LOADED,
-      payload: { reviewsGiven: res2.data, reviewsReceived: res.data },
+      payload: { reviewsGiven: res2.data, reviewsReceived: res.data, reviewUser: userId },
     });
   } catch (err) {
     dispatch({
