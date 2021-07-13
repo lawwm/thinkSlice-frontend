@@ -14,3 +14,4 @@ export const SET_MORE_MESSAGES = "SET_MORE_MESSAGES";
 export const RESET_CHATS = "RESET_CHATS";
 export const SET_ACTIVE = "SET_ACTIVE";
 export const NEW_MESSAGE = "NEW_MESSAGE";
+export const HIDE_CHAT = "HIDE_CHAT";

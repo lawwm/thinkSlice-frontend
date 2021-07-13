@@ -200,7 +200,7 @@ const Profile = () => {
                           onClick={() => {
                             setStartingChat(true);
                             const alreadyExists = chats.find(
-                              (chat) => chat.recipientId === parseInt(user_id)
+                              (chat) => chat.recipient === parseInt(user_id)
                             );
                             if (alreadyExists) {
                               dispatch(setActive(alreadyExists.chatroom));

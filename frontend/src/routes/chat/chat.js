@@ -1,9 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
 
-import { Container, Col, Row, Form, Button, InputGroup, ListGroup } from "react-bootstrap";
+import {
+  Container,
+  Col,
+  Row,
+  Form,
+  Button,
+  InputGroup,
+  ListGroup,
+} from "react-bootstrap";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ChatRoom from "../../components/ChatRoom.js";
 import ChatBox from "../../components/ChatBox.js";
@@ -12,9 +20,17 @@ import "../styles.css";
 const Chat = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { activeChat, chats, chatsLoaded, chatLoading, messagesLoaded } =
-    useSelector((state) => state.chat);
+  const {
+    activeChat,
+    chats,
+    chatsLoaded,
+    chatLoading,
+    messagesLoaded,
+    chatInitialised,
+  } = useSelector((state) => state.chat);
   const [message, setMessage] = useState("");
+  const prevChats = useRef();
+  prevChats.current = [];
 
   useEffect(() => dispatch(chatActions.openChat()), [dispatch]);
 
@@ -32,14 +48,15 @@ const Chat = () => {
       }, 100);
     };
 
-    if (chats.length > 0 && messagesLoaded.length < 1) {
+    if (!chatInitialised && prevChats.current.length < chats.length) {
       waitForSocketConnection(() => {
         chats.forEach((chat) => {
           WebSocketInstance.fetchMessages(chat.chatroom);
         });
       });
+      prevChats.current = chats;
     }
-  }, [messagesLoaded, chats]);
+  }, [chats, chatInitialised]);
 
   useEffect(() => {
     if (chatsLoaded && messagesLoaded.length === chats.length) {
@@ -89,12 +106,14 @@ const Chat = () => {
       return (
         <ListGroup.Item
           key={chat.id}
-          className={(activeChat === chat.chatroom) ? "chatroom-selected" : "chatroom"}
+          className={
+            activeChat === chat.chatroom ? "chatroom-selected" : "chatroom"
+          }
         >
           <div
             onClick={() => {
               if (activeChat !== chat.chatroom) {
-                console.log("Choose chat")
+                //console.log("Choose chat")
                 dispatch(chatActions.setActive(chat.chatroom));
               }
             }}
@@ -106,11 +125,20 @@ const Chat = () => {
               }
               username={chat.recipientName}
               chatroom={chat.chatroom}
+              userId={chat.recipient}
             />
           </div>
           <div
-            onClick={() => console.log("Close chat")}
-            className={(activeChat === chat.chatroom) ? "hide-chat-selected" : "hide-chat"}>✖</div>
+            onClick={() => {
+              console.log("Close chat");
+              dispatch(chatActions.hideChat(chat));
+            }}
+            className={
+              activeChat === chat.chatroom ? "hide-chat-selected" : "hide-chat"
+            }
+          >
+            ✖
+          </div>
         </ListGroup.Item>
       );
     });
@@ -125,13 +153,16 @@ const Chat = () => {
           <div className="container-padding">
             <Row>
               <Col xs={12} sm={12} md={5} lg={4} xl={3}>
-                <ListGroup className="flex-column chatroom-group">
-                  {chats.length > 0 ? (
-                    renderChatRooms(chats)
-                  ) : (
-                    <p>You have not started any chats previously.</p>
-                  )}
-                </ListGroup>
+                <Form.Control placeholder={"Search chats..."}></Form.Control>
+                <div className="chatroom-list">
+                  <ListGroup className="flex-column chatroom-group">
+                    {chats.length > 0 ? (
+                      renderChatRooms(chats)
+                    ) : (
+                      <p>You have not started any chats previously.</p>
+                    )}
+                  </ListGroup>
+                </div>
               </Col>
               <Col xs={12} sm={12} md={7} lg={8} xl={9}>
                 <ChatBox />
@@ -147,7 +178,13 @@ const Chat = () => {
                           placeholder="Write your message..."
                         />
                         <InputGroup.Append>
-                          <Button className="chat-sendbutton" type="submit" variant="outline-secondary">Send</Button>
+                          <Button
+                            className="chat-sendbutton"
+                            type="submit"
+                            variant="outline-secondary"
+                          >
+                            Send
+                          </Button>
                         </InputGroup.Append>
                       </InputGroup>
                     </Form>

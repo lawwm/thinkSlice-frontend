@@ -1,3 +1,4 @@
+import WebSocketInstance from "../../websocket";
 import * as actionTypes from "./actionTypes";
 
 const initialState = {
@@ -9,6 +10,7 @@ const initialState = {
   chatComponentLoading: false,
   activeChat: null,
   unreadChats: [],
+  chatInitialised: false,
 };
 
 const addMessage = (state = initialState, action) => {
@@ -67,7 +69,7 @@ const setMoreMessages = (state, action) => {
 export const chat = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.CHAT_OPEN:
-      return { ...state, isChatOpen: true };
+      return { ...state, isChatOpen: true, chatLoading: true };
 
     case actionTypes.CHAT_CLOSED:
       return { ...state, isChatOpen: false, activeChat: null };
@@ -128,6 +130,7 @@ export const chat = (state = initialState, action) => {
         reachedEnd: false,
         page: 0,
       };
+      WebSocketInstance.fetchMessages(newChatroom);
       return {
         ...state,
         chats: [startedChat].concat(state.chats),
@@ -141,7 +144,28 @@ export const chat = (state = initialState, action) => {
         reachedEnd: false,
         page: 0,
       };
-      return { ...state, chats: [incomingChat, ...state.chats] };
+      return {
+        ...state,
+        chats: [incomingChat, ...state.chats],
+        messagesLoaded: [action.chat.chatroom, ...state.messagesLoaded],
+      };
+
+    case actionTypes.HIDE_CHAT:
+      const updatedChats = state.chats;
+      updatedChats.splice(action.chatIndex, 1);
+      const updateLoadedMessages = state.messagesLoaded;
+      updateLoadedMessages.splice(action.loadedIndex, 1);
+      let newActiveChat = state.activeChat;
+      if (action.chatroom === state.activeChat) {
+        newActiveChat = null;
+        localStorage.removeItem("activeChat");
+      }
+      return {
+        ...state,
+        chats: updatedChats,
+        messagesLoaded: updateLoadedMessages,
+        activeChat: newActiveChat,
+      };
 
     case actionTypes.LOAD_CHATS_SUCCESS:
       let loadedChats = [];
@@ -164,7 +188,7 @@ export const chat = (state = initialState, action) => {
       };
 
     case actionTypes.LOADED_ALL_CHAT_MESSAGES:
-      return { ...state, chatLoading: false };
+      return { ...state, chatLoading: false, chatInitialised: true };
 
     case actionTypes.RESET_CHATS:
     case actionTypes.START_CHAT_FAIL:
