@@ -19,6 +19,18 @@ Traditional qualifiers such as logistics and qualifications are not sufficient t
 - pipenv
 
 &nbsp;
+## Orbital
+This project was produced under NUS Orbital (CP2106).
+
+**Level of Achievement**:  Apollo 11
+
+**Web Application**:  https://thinkslice.vercel.app/
+
+**Milestone 3**:  https://docs.google.com/document/d/12ZJZre344KpwpnLlnluU_pgUe5PbZxOR7vvVEONswkI/edit
+
+**Backend Github**:  https://github.com/lawwm/thinkSlice
+
+&nbsp;
 ## Installation Guide
 Install dependencies as follows.
 
