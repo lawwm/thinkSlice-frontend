@@ -96,8 +96,13 @@ const Profile = () => {
   const [startingChat, setStartingChat] = useState(false);
 
   useEffect(() => {
-    dispatch(getProfile(user_id));
-  }, [user_id, dispatch]);
+    //if profile is already loaded for current user, do not call API
+    if (profile === null) {
+      dispatch(getProfile(user_id));
+    } else if (user_id !== profile.basic.user.toString()) {
+      dispatch(getProfile(user_id));
+    }
+  }, [user_id, dispatch, profile]);
 
   useEffect(() => {
     if (startingChat && activeChat) {

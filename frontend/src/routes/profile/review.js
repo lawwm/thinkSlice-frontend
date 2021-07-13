@@ -62,7 +62,7 @@ const Review = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { user_id } = useParams();
-  const { profile, profileLoading, reviewsGiven, reviewsReceived, reviewLoading } = useSelector(
+  const { profile, profileLoading, reviewsGiven, reviewsReceived, reviewLoading, reviewUser } = useSelector(
     (state) => state.profile
   );
   const { isAuthenticated } = useSelector(
@@ -72,9 +72,22 @@ const Review = () => {
   const viewerId = localStorage.getItem("user");
 
   useEffect(() => {
-    dispatch(getProfile(user_id));
-    dispatch(getReviews(user_id));
-  }, [user_id, dispatch]);
+    //if profile is already loaded for current user, do not call API
+    if (profile === null) {
+      //if profile is not loaded
+      dispatch(getProfile(user_id));
+    } else if (user_id !== profile.basic.user.toString()) {
+      //if profile is changed to another user
+      dispatch(getProfile(user_id));
+    }
+  }, [user_id, dispatch, profile]);
+
+  useEffect(() => {
+    //if review have not loaded, or review loaded is not current user's
+    if (user_id !== reviewUser) {
+      dispatch(getReviews(user_id));
+    }
+  }, [user_id, dispatch, reviewUser])
 
   const [selectReview, setSelectReview] = useState("reviewsReceived");
 
