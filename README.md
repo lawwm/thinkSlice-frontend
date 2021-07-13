@@ -1,11 +1,17 @@
 # ThinkSlice
-
+![Proper banner](https://user-images.githubusercontent.com/41231584/125463162-bc2d16c6-be40-40f6-913d-b332e35f610f.png)
 ### Bringing students and educators together with the help of video! 
 Traditional qualifiers such as logistics and qualifications are not sufficient to represent teaching quality. Using the **thin-slicing effect**, students can find the right teachers for them by watching videos of teachers teaching their specialty.
 
-**For tutors:** Upload short educational videos to showcase your teaching ability!
+**For tutors:** 
+1. Upload short educational videos to showcase your teaching ability.
+2. Provide more information about yourself on your profile.
+3. Potential students contact you to setup a lesson.
 
-**For students:** Browse through a catalog of videos to find a teacher that fits your vibe!
+**For students:** 
+1. Browse through a catalog of videos to find a teacher that fits your vibe.
+2. Checkout their profile and reviews.
+3. Chat with your potential educator to setup a lesson.
 
 ## Prerequisites
 - Yarn
