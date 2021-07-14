@@ -5,7 +5,7 @@ const loginData = {
 
 const registerData = {
   username: 'testacc',
-  password: 'password',
+  password: 'Eclipseyour5un@',
   email: 'fakeacc@gmail.com'
 }
 
