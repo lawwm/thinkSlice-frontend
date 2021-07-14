@@ -14,7 +14,7 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
   const [urlFormat, setUrlFormat] = useState("/thumbnail.jpg?width=600&height=300&fit_mode=crop")
   const animateThumbnail = (shouldAnimate) => {
     shouldAnimate
-      ? setUrlFormat("/animated.gif?width=600&height=300")
+      ? setUrlFormat("/animated.gif?width=600&height=300&fps=2")
       : setUrlFormat("/thumbnail.jpg?width=600&height=300&fit_mode=crop")
   }
 
