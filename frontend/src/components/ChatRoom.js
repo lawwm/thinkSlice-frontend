@@ -35,7 +35,7 @@ const ChatRoom = ({ profilePic, username, chatroom, userId }) => {
           <div className="chatroom-center">
             <h5 id="recipient">{username}</h5>
             {hasUnread && <span className="dot-positioning">
-              <div className="chatroom-dot" />
+              <div className="chatroom-dot"/>
             </span>}
           </div>
         </Media.Body>

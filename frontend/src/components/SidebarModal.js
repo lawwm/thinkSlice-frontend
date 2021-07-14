@@ -1,57 +1,63 @@
 import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap"
-import { StarDisplay } from "./StarRating"
+import { Modal, Button, Form } from "react-bootstrap";
+import { StarDisplay } from "./StarRating";
 import { useDispatch } from "react-redux";
-import { changeAvailable, changeLocation, changeSubject, changeReview } from "../store/home/action"
-import "./components.css"
+import {
+  changeAvailable,
+  changeLocation,
+  changeSubject,
+  changeReview,
+} from "../store/home/action";
+import "./components.css";
 import { subjects } from "./CheckboxGroup";
 
-const locations = [
-  'Central',
-  'North',
-  'South',
-  'East',
-  'West'
-]
+const locations = ["Central", "North", "South", "East", "West"];
 
-const rating = [5, 4, 3, 2, 1]
+const rating = [5, 4, 3, 2, 1];
 
-export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocation, selectedAvailability, selectedReview }) => {
+export const SidebarModal = ({
+  show,
+  handleClose,
+  selectedSubject,
+  selectedLocation,
+  selectedAvailability,
+  selectedReview,
+}) => {
   const [filterForm, setFilterForm] = useState({
     available: selectedAvailability,
     subject: selectedSubject,
     location: selectedLocation,
-    review: selectedReview
-  })
+    review: selectedReview,
+  });
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const onSubmitModalFilter = () => {
-    dispatch(changeAvailable(filterForm.available))
-    dispatch(changeSubject(filterForm.subject))
-    dispatch(changeLocation(filterForm.location))
-    dispatch(changeReview(filterForm.review))
-    handleClose()
-  }
+    dispatch(changeAvailable(filterForm.available));
+    dispatch(changeSubject(filterForm.subject));
+    dispatch(changeLocation(filterForm.location));
+    dispatch(changeReview(filterForm.review));
+    handleClose();
+  };
 
   const clearAll = () => {
-    dispatch(changeAvailable(''))
-    dispatch(changeSubject(''))
-    dispatch(changeLocation(''))
-    dispatch(changeReview(''))
-    handleClose()
-  }
+    dispatch(changeAvailable(""));
+    dispatch(changeSubject(""));
+    dispatch(changeLocation(""));
+    dispatch(changeReview(""));
+    handleClose();
+  };
 
   return (
     <>
       <Modal size="md" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>
+            <div className="sidebar-header">Refine by:</div>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <div className="sidebar-header">Refine by:</div>
-            <hr />
             <div className="sidebar-category">Availability</div>
             <Form.Check
               type="radio"
@@ -59,17 +65,14 @@ export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocat
               value={"True"}
               id="modal-only-available"
               checked={filterForm.available === "True"}
-              onChange={
-                (e) => {
-                  setFilterForm({
-                    ...filterForm,
-                    available: e.target.value
-                  })
-                }
-              }
+              onChange={(e) => {
+                setFilterForm({
+                  ...filterForm,
+                  available: e.target.value,
+                });
+              }}
               inline
             />
-
 
             <Form.Check
               type="radio"
@@ -77,31 +80,27 @@ export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocat
               value={"False"}
               id="modal-only-unavailable"
               checked={filterForm.available === "False"}
-              onChange={
-                (e) => {
-                  setFilterForm({
-                    ...filterForm,
-                    available: e.target.value
-                  })
-                }
-              }
+              onChange={(e) => {
+                setFilterForm({
+                  ...filterForm,
+                  available: e.target.value,
+                });
+              }}
               inline
             />
 
             <Form.Check
               type="radio"
               label="Both"
-              value={''}
+              value={""}
               id="modal-both-available-unavailable"
-              checked={filterForm.available === ''}
-              onChange={
-                (e) => {
-                  setFilterForm({
-                    ...filterForm,
-                    available: e.target.value
-                  })
-                }
-              }
+              checked={filterForm.available === ""}
+              onChange={(e) => {
+                setFilterForm({
+                  ...filterForm,
+                  available: e.target.value,
+                });
+              }}
               inline
             />
 
@@ -111,17 +110,15 @@ export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocat
             <Form.Check
               type="radio"
               label="Any subject"
-              id={'modal-checkbox-any-subject'}
-              value={''}
-              checked={filterForm.subject === ''}
-              onChange={
-                (e) => {
-                  setFilterForm({
-                    ...filterForm,
-                    subject: e.target.value
-                  })
-                }
-              }
+              id={"modal-checkbox-any-subject"}
+              value={""}
+              checked={filterForm.subject === ""}
+              onChange={(e) => {
+                setFilterForm({
+                  ...filterForm,
+                  subject: e.target.value,
+                });
+              }}
               inline
             />
             {subjects.map((subject, index) => {
@@ -133,19 +130,16 @@ export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocat
                   id={`modal-checkbox-${subject}`}
                   value={subject}
                   checked={subject === filterForm.subject}
-                  onChange={
-                    (e) => {
-                      setFilterForm({
-                        ...filterForm,
-                        subject: e.target.value
-                      })
-                    }
-                  }
+                  onChange={(e) => {
+                    setFilterForm({
+                      ...filterForm,
+                      subject: e.target.value,
+                    });
+                  }}
                   inline
                 />
-              )
-            })
-            }
+              );
+            })}
 
             <hr />
             <div className="sidebar-category">Location</div>
@@ -153,17 +147,15 @@ export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocat
               <Form.Check
                 type="radio"
                 label="Any location"
-                value={''}
-                id='modal-any-location'
-                checked={filterForm.location === ''}
-                onChange={
-                  (e) => {
-                    setFilterForm({
-                      ...filterForm,
-                      location: e.target.value
-                    })
-                  }
-                }
+                value={""}
+                id="modal-any-location"
+                checked={filterForm.location === ""}
+                onChange={(e) => {
+                  setFilterForm({
+                    ...filterForm,
+                    location: e.target.value,
+                  });
+                }}
               />
             </div>
             {locations.map((location, index) => {
@@ -176,59 +168,57 @@ export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocat
                     id={`modal-checkbox-${location}`}
                     value={location}
                     checked={filterForm.location === location}
-                    onChange={
-                      (e) => {
-                        setFilterForm({
-                          ...filterForm,
-                          location: e.target.value
-                        })
-                      }
-                    }
-                  />
-                </div>
-              )
-            }
-            )}
-            <hr />
-            <div className="sidebar-category">Avg. Student Review</div>
-            {
-              rating.map((rate, index) => {
-                return (
-                  <div
-                    onClick={() => {
+                    onChange={(e) => {
                       setFilterForm({
                         ...filterForm,
-                        review: rate
-                      })
-                    }
-                    }
-                    className="sidebar-review"
-                    key={index}>
-                    <StarDisplay num={rate} size={18} selected={rate === filterForm.review} /> & up
-                  </div>
-                )
-              })
-            }
+                        location: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+              );
+            })}
+            <hr />
+            <div className="sidebar-category">Avg. Student Review</div>
+            {rating.map((rate, index) => {
+              return (
+                <div
+                  onClick={() => {
+                    setFilterForm({
+                      ...filterForm,
+                      review: rate,
+                    });
+                  }}
+                  className="sidebar-review"
+                  key={index}
+                >
+                  <StarDisplay
+                    num={rate}
+                    size={18}
+                    selected={rate === filterForm.review}
+                  />{" "}
+                  & up
+                </div>
+              );
+            })}
             <div className="sidebar-radio">
               <Form.Check
                 type="checkbox"
                 label="Select none"
-                value={''}
+                value={""}
                 id="modal-select-none-review"
-                checked={filterForm.review === ''}
-                onChange={
-                  () => {
-                    setFilterForm({
-                      ...filterForm,
-                      review: ''
-                    })
-                  }
-                }
+                checked={filterForm.review === ""}
+                onChange={() => {
+                  setFilterForm({
+                    ...filterForm,
+                    review: "",
+                  });
+                }}
               />
             </div>
-            <Button
-              className="sidebar-showmore"
-              onClick={() => clearAll()}>Clear</Button>
+            <Button className="sidebar-showmore" onClick={() => clearAll()}>
+              Clear
+            </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -236,7 +226,11 @@ export const SidebarModal = ({ show, handleClose, selectedSubject, selectedLocat
             <Button size="xs" variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button className="home-modal-filter-btn" variant="danger" onClick={() => onSubmitModalFilter()}>
+            <Button
+              className="home-modal-filter-btn"
+              variant="danger"
+              onClick={() => onSubmitModalFilter()}
+            >
               Save Changes
             </Button>
           </div>

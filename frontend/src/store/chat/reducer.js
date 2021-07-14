@@ -203,6 +203,7 @@ export const chat = (state = initialState, action) => {
         chatLoading: true,
         chatComponentLoading: false,
         activeChat: null,
+        chatInitialised: false,
       };
 
     default:

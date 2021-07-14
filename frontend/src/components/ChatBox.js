@@ -15,7 +15,7 @@ const ChatBox = () => {
   );
   let currentChat = chats.find((chat) => chat.chatroom === activeChat);
   if (!currentChat) {
-    currentChat = {page: 0, messages: [], reachedEnd: true};
+    currentChat = { page: 0, messages: [], reachedEnd: true };
   }
   const { page, messages, reachedEnd } = currentChat;
   const user = localStorage.getItem("user");
@@ -105,20 +105,18 @@ const ChatBox = () => {
   };
 
   return (
-    <>
-      <div className="chat-box">
-        {!chatComponentLoading && messages.length >= 20 && (
-          <div ref={loader} className="chat-end"></div>
-        )}
-        {chatComponentLoading && <LoadingSpinner />}
-        {activeChat && (
-          <ul className="conversation">
-            {activeChat && renderMessages(messages, parseInt(user))}
-            {page === 0 && !chatComponentLoading && <AlwaysScrollToBottom />}
-          </ul>
-        )}
-      </div>
-    </>
+    <div className="chat-box">
+      {!chatComponentLoading && messages.length >= 20 && (
+        <div ref={loader} className="chat-end"></div>
+      )}
+      {chatComponentLoading && <LoadingSpinner />}
+      {activeChat && (
+        <ul className="conversation">
+          {activeChat && renderMessages(messages, parseInt(user))}
+          {page === 0 && !chatComponentLoading && <AlwaysScrollToBottom />}
+        </ul>
+      )}
+    </div>
   );
 };
 
