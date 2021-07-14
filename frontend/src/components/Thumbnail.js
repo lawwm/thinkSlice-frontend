@@ -7,16 +7,27 @@ import { setAlert } from "../store/components/action";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { subjects } from "./CheckboxGroup";
+import greyload from '../images/Solid_grey.svg'
+
 const Thumbnail = ({ title, videoDescription, username, views, date, subject, playback_id, imageSrc, videoId, profileId, deleteButton = false }) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const [urlFormat, setUrlFormat] = useState("/thumbnail.jpg?width=600&height=300&fit_mode=crop")
+
+  //Set thumbnail image & gif
+  const thumbnailImage = "https://image.mux.com/" + playback_id + "/thumbnail.jpg?width=600&height=300&fit_mode=stretch";
+  const thumbnailGif = "https://image.mux.com/" + playback_id + "/animated.gif?width=600&height=300&fps=2";
+
+  const [urlImage, setUrlImage] = useState(greyload)
+
   const animateThumbnail = (shouldAnimate) => {
     shouldAnimate
-      ? setUrlFormat("/animated.gif?width=600&height=300&fps=2")
-      : setUrlFormat("/thumbnail.jpg?width=600&height=300&fit_mode=crop")
+      ? setUrlImage(thumbnailGif)
+      : setUrlImage(thumbnailImage)
   }
+
+  // Profile picture information
+  const [profileImage, setProfileImage] = useState(greyload)
 
   const { profile } = useSelector((state) => state.profile)
 
@@ -63,16 +74,23 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
   return (
     <>
       <div className="thumbnail-div" >
+        <link rel="preload" as="image" href={thumbnailImage} />
+        <link rel="prefetch" as="image" href={thumbnailGif} />
         <div className="thumbnail-image-div">
           <Image
-            src={"https://image.mux.com/" + playback_id + urlFormat}
+            src={urlImage}
             onClick={() => {
               dispatch(setVideoLoading())
               history.push('/watch/' + videoId)
+            }}
+            onMouseEnter={() => {
+              animateThumbnail(true)
             }
             }
-            onMouseEnter={() => animateThumbnail(true)}
-            onMouseLeave={() => animateThumbnail(false)}
+            onMouseLeave={() => {
+              animateThumbnail(false)
+            }
+            }
             alt="video thumbnail"
             fluid>
           </Image>
@@ -103,7 +121,8 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
           <div className="thumbnail-photo" onClick={() => history.push('/profile/' + profileId)}>
             <Image
               className="thumbnail-image"
-              src={imageSrc}
+              src={profileImage}
+              onLoad={() => setProfileImage(imageSrc)}
               alt="profile picture" fluid />
           </div>
 
@@ -202,6 +221,12 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
             </Button>
           </Modal.Footer>
         </Modal>
+        <img
+          style={{ display: "none" }}
+          alt="invisible img"
+          src={thumbnailImage}
+          onLoad={() => setUrlImage(thumbnailImage)}
+        />
       </div>
     </>
   );
