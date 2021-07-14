@@ -669,7 +669,7 @@ const Member = ({
                       }}
                     >
                       {chatComponentLoading ? (
-                        <Spinner size="sm" animation="border" variant="light" />
+                        <Spinner className="video-student-chat-spinner" size="sm" animation="border" variant="light" />
                       ) : (
                         <>
                           Chat&nbsp;

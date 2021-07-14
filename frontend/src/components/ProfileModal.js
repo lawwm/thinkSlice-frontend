@@ -604,6 +604,7 @@ const ProfileModal = ({ userId }) => {
           </Button>
           <Button
             variant="danger"
+            className="profile-modal-delete-account-btn"
             onClick={() => {
               dispatch(deleteProfile(user));
               dispatch(logout());

@@ -197,6 +197,7 @@ const Profile = () => {
                       {currentViewer && currentViewer !== user_id && (
                         <Button
                           variant="secondary"
+                          className="profile-button-chat"
                           onClick={() => {
                             setStartingChat(true);
                             const alreadyExists = chats.find(
@@ -212,6 +213,7 @@ const Profile = () => {
                         >
                           {chatComponentLoading ? (
                             <Spinner
+                              className="profile-spinner"
                               size="sm"
                               animation="border"
                               variant="light"
@@ -291,7 +293,11 @@ const Profile = () => {
               </div>
             </Container>
 
+            {/* Show profile details modal */}
+
             <ProfileModal userId={user_id} />
+
+            {/* Show liked videos modal */}
 
             <Modal
               show={likedModal}
@@ -303,6 +309,8 @@ const Profile = () => {
                 setLikedModal={(x) => setLikedModal(x)}
               />
             </Modal>
+
+            {/* Upload image modal */}
 
             <Modal
               show={pictureModal}

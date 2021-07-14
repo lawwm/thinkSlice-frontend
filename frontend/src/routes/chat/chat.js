@@ -175,6 +175,7 @@ const Chat = () => {
               {(!chatroomsCollapsed || chatroomsView) && (
                 <Col md={5} lg={4} xl={3}>
                   <Form.Control
+                    className="chatroom-group-search"
                     placeholder={"Search chats..."}
                     onChange={(e) => {
                       setChatFilter(e.target.value);
