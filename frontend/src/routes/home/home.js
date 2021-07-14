@@ -14,7 +14,7 @@ import { Sidebar } from "../../components/Sidebar"
 import { SidebarModal } from "../../components/SidebarModal.js";
 import { FaSearch } from "react-icons/fa";
 import { BsFillXCircleFill } from "react-icons/bs";
-
+import greyload from "../../images/Solid_grey.svg"
 
 const HomeSpinner = () => {
   return (
@@ -172,6 +172,7 @@ const Guest = () => {
 
   return (
     <>
+      <link rel="preload" as="image" href={greyload} />
       <NavBar />
       <Container fluid>
         <div className="home-div">

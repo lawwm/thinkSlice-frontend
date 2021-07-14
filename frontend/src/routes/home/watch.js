@@ -39,8 +39,10 @@ import { StarDisplay } from "../../components/StarRating";
 import videojs from "@mux/videojs-kit";
 import "@mux/videojs-kit/dist/index.css";
 import "../styles.css";
-
 import "../../fonts/css/videojs.css";
+import greyload from "../../images/Solid_grey.svg"
+
+//Comment imports
 import { CommentPost } from "../../components/Comment.js";
 import { setActive, startChat } from "../../store/chat/action.js";
 
@@ -818,6 +820,7 @@ const WatchPage = () => {
 
   return (
     <>
+      <link rel="preload" as="image" href={greyload} />
       <AuthNavBar
         member={
           <Member
