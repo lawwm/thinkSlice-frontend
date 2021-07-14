@@ -8,7 +8,7 @@
   padding-left: 10px;
   font-size: 36px;
   font-weight: 600;
-  font-family: 'Inter', 'Calibri' !important;
+  font-family: "Inter", "Calibri" !important;
   cursor: pointer;
 }
 
@@ -16,7 +16,7 @@
   color: black !important;
   font-size: 24px;
   font-weight: 600;
-  font-family: 'Inter', 'Calibri' !important;
+  font-family: "Inter", "Calibri" !important;
   margin-left: 40px;
 }
 
@@ -26,7 +26,7 @@ nav a:hover,
   font-size: 24px;
   margin-left: 40px;
   font-weight: 600;
-  font-family: 'Inter', 'Calibri' !important;
+  font-family: "Inter", "Calibri" !important;
   text-decoration: underline !important;
 }
 
@@ -68,7 +68,7 @@ nav a:hover,
   height: 33px;
   width: 73px;
   font-weight: 400;
-  font-family: 'Roboto', 'Arial';
+  font-family: "Roboto", "Arial";
   font-size: 14px;
   padding-top: 6px;
   color: rgba(255, 255, 255, 0.85);
@@ -84,7 +84,7 @@ nav a:hover,
   height: 33px;
   width: 140px;
   font-weight: 400;
-  font-family: 'Roboto', 'Arial';
+  font-family: "Roboto", "Arial";
   font-size: 14px;
   padding-top: 6px;
   color: rgba(255, 255, 255, 0.85);
@@ -145,7 +145,7 @@ nav a:hover,
 
 .thumbnail-title {
   font-weight: 500;
-  font-family: 'Roboto', 'Arial';
+  font-family: "Roboto", "Arial";
   font-size: 19px;
   margin-bottom: 2px;
 }
@@ -155,7 +155,7 @@ nav a:hover,
   padding: 0px 6px 0px 0px;
   color: #808088;
   font-weight: 400;
-  font-family: 'Roboto', 'Arial';
+  font-family: "Roboto", "Arial";
 }
 
 .thumbnail-line {
@@ -164,7 +164,7 @@ nav a:hover,
   padding: 0px 2px 0px 8px;
   color: #808088;
   font-weight: 400;
-  font-family: 'Roboto', 'Arial';
+  font-family: "Roboto", "Arial";
 }
 
 .btn-circle {
@@ -254,7 +254,7 @@ nav a:hover,
 .review-date {
   font-size: 18px;
   font-weight: 400;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
 }
 
 .review-div {
@@ -277,13 +277,13 @@ nav a:hover,
 .review-title {
   font-size: 24px;
   font-weight: 600;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
 }
 
 .review-text {
   font-size: 18px;
   font-weight: 400;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
 }
 
 .review-edit-delete-div {
@@ -433,7 +433,7 @@ button.alert-close {
   -o-transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
   display: block;
-  content: '';
+  content: "";
   width: 10px;
   height: 10px;
   border: 1px solid #bdbdbd;
@@ -492,7 +492,7 @@ button.alert-close {
 .comment-date {
   font-size: 20px;
   font-weight: 400;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   background-color: #fcfcfc;
 }
 
@@ -507,7 +507,7 @@ button.alert-close {
 
 .comment-name {
   font-weight: 600;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   font-size: 20px;
 }
 
@@ -538,13 +538,13 @@ button.alert-close {
 .comment-text {
   font-size: 16px;
   font-weight: 400;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   margin-bottom: 5px;
 }
 
 .comment-button {
   font-weight: 600;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   background-color: #fcfcfc;
   font-size: 16px;
   border: 0px;
@@ -554,7 +554,7 @@ button.alert-close {
 
 .delete-comment-button {
   font-weight: 600;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   background-color: #fcfcfc;
   font-size: 16px;
   border: 0px;
@@ -564,7 +564,7 @@ button.alert-close {
 
 .delete-comment-button:hover {
   font-weight: 600;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   background-color: #fcfcfc;
   font-size: 16px;
   border: 0px;
@@ -584,7 +584,7 @@ button.alert-close {
 
 .replies-button {
   font-weight: 600;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   background-color: #fcfcfc;
   color: #f40;
   font-size: 16px;
@@ -634,14 +634,14 @@ button.alert-close {
 .sidebar-header {
   font-size: 20px;
   font-weight: 600;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   color: rgba(41, 41, 41, 0.911);
 }
 
 .sidebar-category {
   font-size: 17px;
   font-weight: 500;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   margin-bottom: 8px;
   color: rgba(48, 48, 48, 0.911);
 }
@@ -649,7 +649,7 @@ button.alert-close {
 .sidebar-review {
   font-size: 16px;
   font-weight: 400;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   margin-bottom: 7px;
   cursor: pointer;
 }
@@ -729,7 +729,8 @@ button.alert-close {
 
 #recipient {
   display: inline-block;
-  margin: 7px;
+  margin: 7px 25px 7px 7px;
+  word-break: break-all;
 }
 
 .chatroom-div {
@@ -741,6 +742,16 @@ button.alert-close {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.chatroom-list {
+  overflow-y: scroll;
+  height: 75vh;
+}
+
+#no-chats {
+  font-size: 20px;
+  padding: 10px;
 }
 
 /* Small devices (landscape phones, 576px and up) */

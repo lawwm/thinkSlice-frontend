@@ -9,7 +9,7 @@ input[type='password'] {
   width: 500px;
 } */
 
-input[type='file'] {
+input[type="file"] {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -303,7 +303,7 @@ p {
 
 .review-username-title {
   font-size: 36px;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   font-weight: 500;
 }
 
@@ -473,7 +473,7 @@ p {
 
 .video-title {
   font-size: 35px;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 400;
 }
 
@@ -551,7 +551,7 @@ p {
   background-color: #fcfcfc;
   color: rgb(87, 87, 87);
   font-weight: 600;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
 }
 
 /* video comment  */
@@ -648,7 +648,7 @@ p {
 .browse-more-sentence {
   color: white;
   font-weight: 500;
-  font-family: 'Roboto', 'Arial';
+  font-family: "Roboto", "Arial";
   font-size: 28px;
   text-align: center;
 }
@@ -656,7 +656,7 @@ p {
 .browse-more-header {
   color: white;
   font-weight: 400;
-  font-family: 'Inter', 'Calibri';
+  font-family: "Inter", "Calibri";
   font-size: 13px;
   text-align: center;
   margin-bottom: 2px;
@@ -788,17 +788,18 @@ p {
 /* alert */
 
 /* chat */
-.chatroom-list {
-  overflow-y: scroll;
-  height: 75vh;
+.active-chat {
+  height: 100px;
+  border-radius: 6px 6px 0px 0px;
 }
 
-.chat-box {
-  overflow-y: scroll;
-  height: 75vh;
-  background-color: lightgrey;
-  padding: 20px;
-  border-radius: 0px 0px 0px 0px;
+.back-arrow {
+  font-size: 25px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0px 10px;
+  cursor: pointer;
 }
 
 .chatroom-group {
@@ -892,6 +893,30 @@ p {
   height: 10px;
 }
 
+.chat-photo {
+  border-radius: 50%;
+  height: 65px;
+  width: 65px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 15px 15px 40px;
+}
+
+#recipient-header {
+  font-size: 24px;
+  margin-left: 8px;
+}
+
+.chat-box {
+  overflow-y: scroll;
+  height: 65vh;
+  background-color: lightgrey;
+  padding: 20px;
+  border-radius: 0px;
+}
+
 @media (min-width: 768px) {
   .center-profile {
     float: left;
@@ -899,14 +924,6 @@ p {
 
   .center-profile-text {
     text-align: left;
-  }
-
-  .chat-box {
-    overflow-y: scroll;
-    height: 75vh;
-    background-color: lightgrey;
-    padding: 20px;
-    border-radius: 6px 6px 0px 0px;
   }
 
   .chatroom-group {
