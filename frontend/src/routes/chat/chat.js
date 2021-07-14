@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
@@ -11,6 +11,9 @@ import {
   Button,
   InputGroup,
   ListGroup,
+  Media,
+  Image,
+  Card,
 } from "react-bootstrap";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ChatRoom from "../../components/ChatRoom.js";
@@ -29,8 +32,15 @@ const Chat = () => {
     chatInitialised,
   } = useSelector((state) => state.chat);
   const [message, setMessage] = useState("");
+  const [chatFilter, setChatFilter] = useState("");
+  const [chatroomsCollapsed, collapseChatrooms] = useState(
+    window.innerWidth <= 768
+  );
+  const [chatroomsView, toggleChatrooms] = useState(false);
   const prevChats = useRef();
   prevChats.current = [];
+
+  const currentChat = chats.find((chat) => chat.chatroom === activeChat);
 
   useEffect(() => dispatch(chatActions.openChat()), [dispatch]);
 
@@ -80,7 +90,6 @@ const Chat = () => {
 
   const sendMessageHandler = (e) => {
     e.preventDefault();
-    const currentChat = chats.find((chat) => chat.chatroom === activeChat);
 
     let messageObject = {
       from: parseInt(user),
@@ -101,6 +110,16 @@ const Chat = () => {
     setMessage("");
   };
 
+  useLayoutEffect(() => {
+    window.addEventListener("resize", () => {
+      if (window.innerWidth <= 768) {
+        collapseChatrooms(true);
+      } else {
+        collapseChatrooms(false);
+      }
+    });
+  }, []);
+
   const renderChatRooms = (chats) => {
     return chats.map((chat) => {
       return (
@@ -116,6 +135,7 @@ const Chat = () => {
                 //console.log("Choose chat")
                 dispatch(chatActions.setActive(chat.chatroom));
               }
+              toggleChatrooms(false);
             }}
           >
             <ChatRoom
@@ -152,45 +172,98 @@ const Chat = () => {
         <Container fluid>
           <div className="container-padding">
             <Row>
-              <Col xs={12} sm={12} md={5} lg={4} xl={3}>
-                <Form.Control placeholder={"Search chats..."}></Form.Control>
-                <div className="chatroom-list">
-                  <ListGroup className="flex-column chatroom-group">
-                    {chats.length > 0 ? (
-                      renderChatRooms(chats)
-                    ) : (
-                      <p>You have not started any chats previously.</p>
+              {(!chatroomsCollapsed || chatroomsView) && (
+                <Col md={5} lg={4} xl={3}>
+                  <Form.Control
+                    placeholder={"Search chats..."}
+                    onChange={(e) => {
+                      setChatFilter(e.target.value);
+                    }}
+                  ></Form.Control>
+                  <div className="chatroom-list">
+                    <ListGroup className="flex-column chatroom-group">
+                      {chats.length > 0 ? (
+                        renderChatRooms(
+                          chats.filter((chat) =>
+                            chat.recipientName
+                              .toLowerCase()
+                              .includes(chatFilter.toLowerCase())
+                          )
+                        )
+                      ) : (
+                        <p id="no-chats">
+                          You have not started any chats previously.
+                        </p>
+                      )}
+                    </ListGroup>
+                  </div>
+                </Col>
+              )}
+              {(!chatroomsView || !chatroomsCollapsed) && (
+                <Col xs={12} sm={12} md={7} lg={8} xl={9}>
+                  <Card className="active-chat">
+                    <Media>
+                      {chatroomsCollapsed && (
+                        <div
+                          className="back-arrow"
+                          onClick={() => toggleChatrooms(true)}
+                        >
+                          ❮
+                        </div>
+                      )}
+                      {currentChat && (
+                        <>
+                          <div className="chat-photo mr-3">
+                            <Image
+                              src={
+                                "https://thinkslice-project.s3.amazonaws.com/" +
+                                currentChat.recipientPic
+                              }
+                              className="thumbnail-image"
+                              alt="profile picture"
+                              fluid
+                            />
+                          </div>
+                          <Media.Body>
+                            <div>
+                              <div className="chatroom-center">
+                                <h5 id="recipient-header">
+                                  {currentChat.recipientName}
+                                </h5>
+                              </div>
+                            </div>
+                          </Media.Body>
+                        </>
+                      )}
+                    </Media>
+                  </Card>
+                  <ChatBox />
+                  <div>
+                    {activeChat && (
+                      <Form onSubmit={(e) => sendMessageHandler(e)}>
+                        <InputGroup>
+                          <Form.Control
+                            onChange={(e) => messageChangeHandler(e)}
+                            value={message}
+                            required
+                            className="message-input chat-sendbox"
+                            placeholder="Write your message..."
+                          />
+                          <InputGroup.Append>
+                            <Button
+                              className="chat-sendbutton"
+                              type="submit"
+                              variant="outline-secondary"
+                            >
+                              Send
+                            </Button>
+                          </InputGroup.Append>
+                        </InputGroup>
+                      </Form>
                     )}
-                  </ListGroup>
-                </div>
-              </Col>
-              <Col xs={12} sm={12} md={7} lg={8} xl={9}>
-                <ChatBox />
-                <div>
-                  {activeChat && (
-                    <Form onSubmit={(e) => sendMessageHandler(e)}>
-                      <InputGroup>
-                        <Form.Control
-                          onChange={(e) => messageChangeHandler(e)}
-                          value={message}
-                          required
-                          className="message-input chat-sendbox"
-                          placeholder="Write your message..."
-                        />
-                        <InputGroup.Append>
-                          <Button
-                            className="chat-sendbutton"
-                            type="submit"
-                            variant="outline-secondary"
-                          >
-                            Send
-                          </Button>
-                        </InputGroup.Append>
-                      </InputGroup>
-                    </Form>
-                  )}
-                </div>
-              </Col>
+                  </div>
+                </Col>
+              )}
             </Row>
           </div>
           <div className="chat-empty-space"></div>
