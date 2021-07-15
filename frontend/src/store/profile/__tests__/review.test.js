@@ -138,33 +138,33 @@ describe('review page', () => {
       expect(history.location.pathname).toEqual('/profile/1')
     })
 
-    it('should be able to post review', async () => {
-      await waitFor(() => {
-        expect(screen.getByText(/post review/i)).toBeInTheDocument()
-      })
-      //Able to open up the post review modal
-      userEvent.click(screen.getByText(/post review/i))
-      expect(screen.getByText(/submit review/i)).toBeInTheDocument()
+    // it('should be able to post review', async () => {
+    //   await waitFor(() => {
+    //     expect(screen.getByText(/post review/i)).toBeInTheDocument()
+    //   })
+    //   //Able to open up the post review modal
+    //   userEvent.click(screen.getByText(/post review/i))
+    //   expect(screen.getByText(/submit review/i)).toBeInTheDocument()
 
-      //Able to change the input values
-      userEvent.click(screen.getAllByTestId(/star/i)[4])
-      expect(screen.getAllByTestId(/filled/i)).toHaveLength(5)
-      userEvent.type(screen.getByPlaceholderText(/title/i), "test title")
-      expect(screen.getByPlaceholderText(/title/i)).toHaveValue("test title")
-      userEvent.type(screen.getByPlaceholderText(/description/i), "title description")
-      expect(screen.getByPlaceholderText(/description/i)).toHaveValue("title description")
+    //   //Able to change the input values
+    //   userEvent.click(screen.getAllByTestId(/star/i)[4])
+    //   expect(screen.getAllByTestId(/filled/i)).toHaveLength(5)
+    //   userEvent.type(screen.getByPlaceholderText(/title/i), "test title")
+    //   expect(screen.getByPlaceholderText(/title/i)).toHaveValue("test title")
+    //   userEvent.type(screen.getByPlaceholderText(/description/i), "title description")
+    //   expect(screen.getByPlaceholderText(/description/i)).toHaveValue("title description")
 
-      //Able to submit
-      userEvent.click(screen.getByRole('button', { name: 'Submit' }))
-      await waitForElementToBeRemoved(() => screen.getByText(/submit review/i))
-    })
+    //   //Able to submit
+    //   userEvent.click(screen.getByRole('button', { name: 'Submit' }))
+    //   await waitForElementToBeRemoved(() => screen.getByText(/submit review/i))
+    // })
 
-    it('should be able to view between user as tutor and student', async () => {
-      await waitFor(() => {
-        expect(screen.getByText(/post review/i)).toBeInTheDocument()
-      })
-      userEvent.click(screen.getByText(/Reviews given/i))
-      expect(screen.getByText(/tim/i)).toBeInTheDocument()
-    })
+    // it('should be able to view between user as tutor and student', async () => {
+    //   await waitFor(() => {
+    //     expect(screen.getByText(/post review/i)).toBeInTheDocument()
+    //   })
+    //   userEvent.click(screen.getByText(/Reviews given/i))
+    //   expect(screen.getByText(/tim/i)).toBeInTheDocument()
+    // })
   })
 })
