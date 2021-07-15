@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router-dom";
 
 import LoadingSpinner from "../../components/LoadingSpinner.js";
-import NavBar from "../../components/NavBar"
-import { AuthNavBar } from "../../components/AuthNavBar"
 import { Container, Col, Row, Dropdown, Button, InputGroup, FormControl } from "react-bootstrap";
 import "../styles.css";
 
@@ -173,7 +171,6 @@ const Guest = () => {
   return (
     <>
       <link rel="preload" as="image" href={greyload} />
-      <NavBar />
       <Container fluid>
         <div className="home-div">
           <div className="container-padding">
@@ -273,9 +270,22 @@ const Guest = () => {
 }
 
 const Home = () => {
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+
   return (
     <>
-      <AuthNavBar member={<Member />} guest={<Guest />} />
+      {loading && <LoadingSpinner />}
+      {!loading &&
+        (isAuthenticated ? (
+          <>
+            <Member />
+          </>
+        ) : (
+          <>
+            <Guest />
+          </>
+        ))
+      }
     </>
   );
 };

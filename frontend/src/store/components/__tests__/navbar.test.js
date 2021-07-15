@@ -1,6 +1,5 @@
 import { render, screen } from '../../../util/test-utils'
 import NavBar from "../../../components/NavBar"
-import { AuthNavBar } from "../../../components/AuthNavBar"
 import userEvent from '@testing-library/user-event'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
@@ -128,80 +127,6 @@ describe('Navbar', () => {
       expect(screen.getByLabelText(/toggle navigation/i)).toHaveClass("navbar-toggler collapsed")
       userEvent.click(screen.getByLabelText(/toggle navigation/i))
       expect(screen.getByLabelText(/toggle navigation/i)).toHaveClass("navbar-toggler")
-    })
-  })
-})
-
-describe('Auth NavBar', () => {
-  describe('AuthNavBar UI component should work', () => {
-    it('loading spinner appears if not yet loaded', () => {
-      let history = createMemoryHistory()
-      render(
-        <Router history={history}>
-          <AuthNavBar />
-        </Router>
-        ,
-        {
-          initialState: {
-            auth: {
-              token: null,
-              isAuthenticated: true,
-              loading: true,
-              user: null,
-              username: null,
-              authLoading: false
-            }
-          }
-        }
-      )
-
-      expect(screen.queryByText(/thinkslice/i)).not.toBeInTheDocument()
-    })
-
-    it('should render if authenticated', () => {
-      let history = createMemoryHistory()
-      render(
-        <Router history={history}>
-          <AuthNavBar />
-        </Router>
-        ,
-        {
-          initialState: {
-            auth: {
-              token: null,
-              isAuthenticated: true,
-              loading: false,
-              user: null,
-              username: null,
-              authLoading: false
-            }
-          }
-        }
-      )
-      expect(screen.getByText(/thinkslice/i)).toBeInTheDocument()
-    })
-
-    it('should render if not authenticated', () => {
-      let history = createMemoryHistory()
-      render(
-        <Router history={history}>
-          <AuthNavBar />
-        </Router>
-        ,
-        {
-          initialState: {
-            auth: {
-              token: null,
-              isAuthenticated: false,
-              loading: false,
-              user: null,
-              username: null,
-              authLoading: false
-            }
-          }
-        }
-      )
-      expect(screen.getByText(/thinkslice/i)).toBeInTheDocument()
     })
   })
 })

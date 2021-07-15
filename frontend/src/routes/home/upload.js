@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
 import { Container, Col, Row, ProgressBar, Spinner, Form } from "react-bootstrap";
 
-import NavBar from "../../components/NavBar.js";
 import * as UpChunk from '@mux/upchunk'
 import axios from 'axios'
 import "../styles.css";
@@ -166,7 +165,6 @@ const Upload = () => {
             {loading && <LoadingSpinner />}
             {!loading && (
                 <>
-                    <NavBar />
                     {profileLoading && <LoadingSpinner />}
                     {!profileLoading && (
                         <Container>
