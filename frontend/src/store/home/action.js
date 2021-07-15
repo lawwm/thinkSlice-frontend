@@ -229,6 +229,9 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
 
 export const loadWatchVideos = (videoId) => async (dispatch) => {
   try {
+    dispatch({
+      type: VIDEO_LOADING
+    })
     const res = await axios.get(DOMAINS.VIDEO + "/" + videoId)
     let data = res.data
     data = {
