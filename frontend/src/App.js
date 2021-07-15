@@ -45,7 +45,7 @@ const App = () => {
       WebSocketInstance.connect();
     }
   }, []);
-  
+
   return (
     <Provider store={store} className="App">
       <Alert />

@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../store/auth/action";
 import LoadingSpinner from "../../components/LoadingSpinner";
-// import NavBar from "../../components/NavBar";
 import { Container, Col, Row, Spinner, Form } from "react-bootstrap";
 import "../styles.css";
 

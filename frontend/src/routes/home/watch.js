@@ -11,7 +11,6 @@ import {
   Button,
   Spinner,
 } from "react-bootstrap";
-// import NavBar from "../../components/NavBar.js";
 import { useParams } from "react-router-dom";
 import {
   loadWatchVideos,
@@ -25,7 +24,6 @@ import {
 import { setAlert } from "../../store/components/action";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
-import { AuthNavBar } from "../../components/AuthNavBar";
 import { truncate } from "lodash";
 import {
   FaAngleUp,
@@ -710,6 +708,8 @@ const Member = ({
 const WatchPage = () => {
   const { videoId } = useParams();
   const dispatch = useDispatch();
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+
   const {
     currentVideo,
     homeLoading,
@@ -764,26 +764,30 @@ const WatchPage = () => {
   return (
     <>
       <link rel="preload" as="image" href={greyload} />
-      <AuthNavBar
-        member={
-          <Member
-            currentVideo={currentVideo}
-            videoLoading={videoLoading}
-            homeLoading={homeLoading}
-            reachedEnd={reachedEnd}
-            videos={videos}
-          />
-        }
-        guest={
-          <Guest
-            currentVideo={currentVideo}
-            videoLoading={videoLoading}
-            homeLoading={homeLoading}
-            reachedEnd={reachedEnd}
-            videos={videos}
-          />
-        }
-      />
+      {loading && <LoadingSpinner />}
+      {!loading &&
+        (isAuthenticated ? (
+          <>
+            <Member
+              currentVideo={currentVideo}
+              videoLoading={videoLoading}
+              homeLoading={homeLoading}
+              reachedEnd={reachedEnd}
+              videos={videos}
+            />
+          </>
+        ) : (
+          <>
+            <Guest
+              currentVideo={currentVideo}
+              videoLoading={videoLoading}
+              homeLoading={homeLoading}
+              reachedEnd={reachedEnd}
+              videos={videos}
+            />
+          </>
+        ))
+      }
     </>
   );
 };
