@@ -129,7 +129,7 @@ PostgreSQL is the database for this project.
 SELECT * from public."userVideos_video"
 ```
 &nbsp;
-### Redis/Docker Installation
+### Local Redis/Docker Installation
 Redis is used for the chat application as well as for caching.
 - Starting a redis server
 ```
