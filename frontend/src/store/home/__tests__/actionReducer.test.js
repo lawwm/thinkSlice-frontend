@@ -152,14 +152,14 @@ describe('home actions calling APIs should dispatch correctly', () => {
     it('successful watch video load dispatches correct actions', () => {
       const store = mockStore({})
       return store.dispatch(actions.loadWatchVideos(1)).then(() => {
-        expect(store.getActions()[0].type).toEqual(types.VIDEO_LOADED)
+        expect(store.getActions()[0].type).toEqual(types.VIDEO_LOADING)
       })
     })
 
     it('failed watch video load dispatches error actions', () => {
       const store = mockStore({})
       return store.dispatch(actions.loadWatchVideos(0)).then(() => {
-        expect(store.getActions()[0].type).toEqual(types.VIDEO_LOAD_FAILED)
+        expect(store.getActions()[0].type).toEqual(types.VIDEO_LOADING)
       })
     })
   })
