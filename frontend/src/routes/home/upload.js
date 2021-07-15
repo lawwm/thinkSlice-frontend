@@ -57,10 +57,8 @@ const Upload = () => {
                 return res.data.url
             } catch (err) {
                 setProgressState(0)
-                console.log(err.message)
                 dispatch(setAlert('Error getting an upload URL', "danger"))
                 dispatch(endUpload())
-                // console.log('Error getting an upload URL', err)
             }
         };
 
@@ -75,16 +73,16 @@ const Upload = () => {
             setProgressState(0)
             dispatch(endUpload())
             dispatch(setAlert("Failed to upload video", "danger"))
-            console.error('💥 🙀', err.detail);
+            // console.error('💥 🙀', err.detail);
         });
 
         upload.on('progress', progress => {
             setProgressState(progress.detail)
-            console.log(`So far we've uploaded ${progress.detail}% of this file.`);
+            // console.log(`So far we've uploaded ${progress.detail}% of this file.`);
         });
 
         upload.on('success', async () => {
-            console.log("Wrap it up, we're done here. 👋");
+            // console.log("Wrap it up, we're done here. 👋");
             setProgressState(100)
 
             const config = {
@@ -94,18 +92,14 @@ const Upload = () => {
             };
             try {
                 const body = JSON.stringify(videoData)
-                console.log(body)
                 const res = await axios.post('/api/videos/assets/' + url_id, body, config)
-                console.log(res.data)
                 dispatch(endUpload())
                 dispatch(setAlert("Successfully uploaded video", "success"))
                 setProgressState(0)
                 dispatch(setVideoLoading())
                 history.push("/watch/" + res.data.id)
             } catch (err) {
-                console.log(err)
                 dispatch(endUpload())
-                console.log(err.message)
                 dispatch(setAlert("Failed to upload video", "danger"))
                 setProgressState(0)
             }
@@ -155,7 +149,7 @@ const Upload = () => {
             dispatch(setAlert("Only tutors are authorized to upload videos", "danger"))
         } else {
             dispatch(setAlert("Uploading video... do not leave page", "success"))
-            console.log("beginning uploading file")
+            // console.log("beginning uploading file")
             dispatch(startUpload())
             uploadFile(file)
         }

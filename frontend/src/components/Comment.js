@@ -38,7 +38,6 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // console.log(replyForm)
     dispatch(postReply(replyForm, commentId, () => setCreateReply(false)))
   };
 
@@ -51,7 +50,6 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
 
   const onSubmitEdit = (e) => {
     e.preventDefault();
-    // console.log(editForm)
     dispatch(editComments(editForm, commentId, () => setShowEdit(false)))
   };
 
@@ -248,7 +246,6 @@ export const ReplyPost = ({ commentId, replyId, commentText, date, username, use
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // console.log(replyForm)
     dispatch(postReply(replyForm, commentId, () => setCreateReply(false)))
   };
 

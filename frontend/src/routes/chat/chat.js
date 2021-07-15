@@ -48,11 +48,11 @@ const Chat = () => {
     const waitForSocketConnection = (callback) => {
       setTimeout(function () {
         if (WebSocketInstance.state() === 1) {
-          console.log("Connection is made");
+          // console.log("Connection is made");
           callback();
           return;
         } else {
-          console.log("wait for connection...");
+          // console.log("wait for connection...");
           waitForSocketConnection(callback);
         }
       }, 100);
@@ -132,7 +132,6 @@ const Chat = () => {
           <div
             onClick={() => {
               if (activeChat !== chat.chatroom) {
-                //console.log("Choose chat")
                 dispatch(chatActions.setActive(chat.chatroom));
               }
               toggleChatrooms(false);
@@ -140,7 +139,8 @@ const Chat = () => {
           >
             <ChatRoom
               profilePic={
-                "https://thinkslice-project.s3.amazonaws.com/" +
+                // "https://thinkslice-project.s3.amazonaws.com/" +
+                "https://d9ws6ej9ht96n.cloudfront.net/" +
                 chat.recipientPic
               }
               username={chat.recipientName}
@@ -150,7 +150,7 @@ const Chat = () => {
           </div>
           <div
             onClick={() => {
-              console.log("Close chat");
+              // console.log("Close chat");
               dispatch(chatActions.hideChat(chat));
             }}
             className={
@@ -217,7 +217,8 @@ const Chat = () => {
                           <div className="chat-photo mr-3">
                             <Image
                               src={
-                                "https://thinkslice-project.s3.amazonaws.com/" +
+                                // "https://thinkslice-project.s3.amazonaws.com/" +
+                                "https://d9ws6ej9ht96n.cloudfront.net/" +
                                 currentChat.recipientPic
                               }
                               className="thumbnail-image"

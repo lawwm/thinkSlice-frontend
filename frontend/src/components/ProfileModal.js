@@ -164,7 +164,6 @@ const ProfileModal = ({ userId }) => {
         )
       );
     } else {
-      // console.log(profileBasic, profileDetails)
       dispatch(toggleEditMode(false));
       dispatch(
         updateProfile(user, { basic: profileBasic, detailed: profileDetails })
