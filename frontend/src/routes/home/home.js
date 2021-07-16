@@ -189,7 +189,7 @@ const Guest = () => {
                     <Col xs={4}>
                       <Button
                         onClick={() => setShowModal(true)}
-                        className="sidebar-button">Refine by</Button>
+                        className="sidebar-button">Refine</Button>
                     </Col>
                     <Col xs={8}>
                       <div className="home-searchbar">

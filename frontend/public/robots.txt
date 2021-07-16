@@ -1,5 +1,8 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow: /
+Disallow: /login
+Disallow: /register
+Disallow: /chat
+Disallow: /watch
 Allow: /profile
 Allow: /profile/reviews
