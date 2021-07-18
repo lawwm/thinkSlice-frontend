@@ -49,7 +49,7 @@ export const register =
           type: actionTypes.AUTH_BUTTON_LOADED,
         });
         dispatch(setAlert("Passwords must match", "danger"));
-      } else if (!whitespace.test(password)) {
+      } else if (!whitespace.test(password) || !whitespace.test(username)) {
         dispatch({
           type: actionTypes.REGISTER_FAIL,
         });
