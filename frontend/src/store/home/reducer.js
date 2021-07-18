@@ -355,9 +355,16 @@ export const home = (state = initialState, action) => {
         replyLoadingId: state.replyLoadingId.filter(loadingId => loadingId !== payload.replyId)
       }
     case DELETE_REPLIES:
+      // Create new array of comments
       const newCommentArrayDelete = [...state.comments]
+      // Find index of comment where reply is deleted from
       const commentIndexDelete = state.comments.findIndex(comment => comment.id === payload.commentId)
+      // Remove the reply from the reply array within the comment
       newCommentArrayDelete[commentIndexDelete].replies = newCommentArrayDelete[commentIndexDelete].replies.filter(reply => reply.id !== payload.replyId)
+      // Check if there is any replies remaining in comment, if none then set hasReplies to false
+      if (newCommentArrayDelete[commentIndexDelete].replies.length === 0) {
+        newCommentArrayDelete[commentIndexDelete].has_replies = false
+      }
       return {
         ...state,
         currentVideo: {

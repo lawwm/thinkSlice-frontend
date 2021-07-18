@@ -18,7 +18,7 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
   const [showReply, setShowReply] = useState(false)
   const [createReply, setCreateReply] = useState(false)
   const [replyForm, setReplyForm] = useState({
-    "reply": `@${username}`
+    "reply": `@${username} `
   })
   const retrievedRepliesAPI = useRef(false)
   const openReplyAccordion = () => {
