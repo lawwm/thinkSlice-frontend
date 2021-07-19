@@ -2,11 +2,39 @@ body {
   background-color: #fcfcfc !important;
   font-weight: 400;
   font-family: 'Inter' !important;
-  margin-top: 114px !important;
+  margin-top: 64px !important;
 }
 
 h2 {
   font-size: 36px;
   font-weight: 600;
   font-family: 'Inter' !important;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  body {
+    margin-top: 74px !important;
+  }
+}
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  body {
+    margin-top: 84px !important;
+  }
+}
+
+/* // Large devices (desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  body {
+    margin-top: 88px !important;
+  }
+}
+
+/* // Extra large devices (large desktops, 1500px and up) */
+@media (min-width: 1500px) {
+  body {
+    margin-top: 100px !important;
+  }
 }

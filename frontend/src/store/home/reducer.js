@@ -3,6 +3,8 @@ import {
   HOMEPAGE_LOADED,
   HOMEPAGE_LOAD_FAIL,
   VIDEO_LOADED,
+  USER_ON_VIDEO_PAGE,
+  USER_LEFT_VIDEO_PAGE,
   HOME_UNFILTER_CURRENT,
   VIDEO_LOADING,
   UPLOAD_STARTED,
@@ -60,6 +62,7 @@ const initialState = {
   searchQuery: '',
   firstLoad: true,
   removedVideoIndex: -1,
+  isOnVideoPage: false,
   comments: [],
 }
 //set initial page to zero so initial loadhomevideo action before 
@@ -101,7 +104,9 @@ export const home = (state = initialState, action) => {
         searchQuery: '',
         videos: [],
         reachedEnd: false,
-        page: 1
+        page: 1,
+        firstLoad: true,
+        currentVideo: {}
       }
     case CLEAR_VIDEO_PAGE:
       return {
@@ -109,17 +114,34 @@ export const home = (state = initialState, action) => {
         videos: [],
       }
     case VIDEO_LOADED:
-      // Remove current video from video array when leaving current video
-      let newVideoArray = [...state.videos]
-      let anotherRemovedVideoIndex = -1
-      anotherRemovedVideoIndex = newVideoArray.findIndex(video => video.id === payload.id)
-      newVideoArray = newVideoArray.filter(video => video.id !== payload.id)
+      // Remove current video from video array when loading current video
+      if (state.isOnVideoPage) {
+        let newVideoArray = [...state.videos]
+        let anotherRemovedVideoIndex = -1
+        anotherRemovedVideoIndex = newVideoArray.findIndex(video => video.id === payload.id)
+        newVideoArray = newVideoArray.filter(video => video.id !== payload.id)
+        return {
+          ...state,
+          currentVideo: payload,
+          videos: newVideoArray,
+          videoLoading: false,
+          removedVideoIndex: anotherRemovedVideoIndex
+        }
+      } else {
+        return {
+          ...state,
+          videoLoading: true
+        }
+      }
+    case USER_ON_VIDEO_PAGE:
       return {
         ...state,
-        currentVideo: payload,
-        videos: newVideoArray,
-        videoLoading: false,
-        removedVideoIndex: anotherRemovedVideoIndex
+        isOnVideoPage: true
+      }
+    case USER_LEFT_VIDEO_PAGE:
+      return {
+        ...state,
+        isOnVideoPage: false
       }
     case HOME_UNFILTER_CURRENT:
       // Refill video array with current video when leaving current video
@@ -131,7 +153,8 @@ export const home = (state = initialState, action) => {
         ...state,
         currentVideo: {},
         videos: refilledVideoArray,
-        videoLoading: true
+        videoLoading: true,
+        removedVideoIndex: -1
       }
     case VIDEO_LOADING:
       return {
