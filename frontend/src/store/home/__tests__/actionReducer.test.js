@@ -460,6 +460,8 @@ const initialReducerState = {
   availability: '',
   review: '',
   searchQuery: '',
+  firstLoad: true,
+  removedVideoIndex: -1,
   comments: [],
 }
 
@@ -552,6 +554,7 @@ describe('home page reducers should work', () => {
         }
       }],
       homeLoading: false,
+      firstLoad: false
     })
   })
 
@@ -1377,7 +1380,7 @@ describe('home page reducers should work', () => {
         "date_comment": "2021-06-09",
         "date_comment_edited": "2021-06-10",
         "edited": true,
-        "has_replies": true,
+        "has_replies": false,
         "commented_video": 2,
         "user_commenting": 1,
         "parent_comment": null,
