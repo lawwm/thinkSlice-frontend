@@ -162,8 +162,10 @@ export const loadHomeVideos = (filtered = "recent", ascending = false, num = 1, 
     let filterBy
     if (filtered === "recent") {
       filterBy = "created_at"
-    } else {
+    } else if (filtered === "popular") {
       filterBy = "views"
+    } else if (filtered === "likes") {
+      filterBy = "likes"
     }
     let order = ascending ? "true" : "false"
 
