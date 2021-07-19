@@ -45,7 +45,7 @@ export const profile = (state = initialState, action) => {
         video_description: payload.video_description,
         subject: payload.subject
       }
-      console.log(videoArray)
+      // console.log(videoArray)
       return {
         ...state,
         profile: {

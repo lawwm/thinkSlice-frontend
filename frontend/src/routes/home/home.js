@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router-dom";
 
 import LoadingSpinner from "../../components/LoadingSpinner.js";
-import NavBar from "../../components/NavBar"
-import { AuthNavBar } from "../../components/AuthNavBar"
 import { Container, Col, Row, Dropdown, Button, InputGroup, FormControl } from "react-bootstrap";
 import "../styles.css";
 
@@ -14,7 +12,7 @@ import { Sidebar } from "../../components/Sidebar"
 import { SidebarModal } from "../../components/SidebarModal.js";
 import { FaSearch } from "react-icons/fa";
 import { BsFillXCircleFill } from "react-icons/bs";
-
+import greyload from "../../images/Solid_grey.svg"
 
 const HomeSpinner = () => {
   return (
@@ -172,7 +170,7 @@ const Guest = () => {
 
   return (
     <>
-      <NavBar />
+      <link rel="preload" as="image" href={greyload} />
       <Container fluid>
         <div className="home-div">
           <div className="container-padding">
@@ -191,7 +189,7 @@ const Guest = () => {
                     <Col xs={4}>
                       <Button
                         onClick={() => setShowModal(true)}
-                        className="sidebar-button">Refine by</Button>
+                        className="sidebar-button">Refine</Button>
                     </Col>
                     <Col xs={8}>
                       <div className="home-searchbar">
@@ -272,9 +270,22 @@ const Guest = () => {
 }
 
 const Home = () => {
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+
   return (
     <>
-      <AuthNavBar member={<Member />} guest={<Guest />} />
+      {loading && <LoadingSpinner />}
+      {!loading &&
+        (isAuthenticated ? (
+          <>
+            <Member />
+          </>
+        ) : (
+          <>
+            <Guest />
+          </>
+        ))
+      }
     </>
   );
 };

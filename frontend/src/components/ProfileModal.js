@@ -165,7 +165,6 @@ const ProfileModal = ({ userId }) => {
         )
       );
     } else {
-      // console.log(profileBasic, profileDetails)
       dispatch(toggleEditMode(false));
       dispatch(
         updateProfile(user, { basic: profileBasic, detailed: profileDetails })
@@ -623,6 +622,7 @@ const ProfileModal = ({ userId }) => {
           </Button>
           <Button
             variant="danger"
+            className="profile-modal-delete-account-btn"
             onClick={() => {
               dispatch(deleteProfile(user));
               dispatch(logout());

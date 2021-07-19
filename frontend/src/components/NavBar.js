@@ -18,7 +18,6 @@ const NavBar = () => {
 
   const { loading, isAuthenticated, user } = useSelector((state) => state.auth);
   const { unreadChats } = useSelector((state) => state.chat);
-  // const { profile } = useSelector((state) => state.profile);
 
   const [expanded, setExpanded] = useState(false);
 

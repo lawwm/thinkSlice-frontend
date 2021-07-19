@@ -184,12 +184,12 @@ const Review = () => {
                     >
                       Back to profile
                     </Button>
-                    <Button
+                    {profile.basic.is_tutor && profile.basic.user.toString() !== viewerId && <Button
                       size="lg"
                       variant="secondary"
                       onClick={handleShow}>
                       Post review
-                    </Button>
+                    </Button>}
                   </ButtonGroup>
                 </div>
               </Col>

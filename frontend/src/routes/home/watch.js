@@ -11,7 +11,6 @@ import {
   Button,
   Spinner,
 } from "react-bootstrap";
-// import NavBar from "../../components/NavBar.js";
 import { useParams } from "react-router-dom";
 import {
   loadWatchVideos,
@@ -25,7 +24,6 @@ import {
 import { setAlert } from "../../store/components/action";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner.js";
-import { AuthNavBar } from "../../components/AuthNavBar";
 import { truncate } from "lodash";
 import {
   FaAngleUp,
@@ -39,11 +37,14 @@ import { StarDisplay } from "../../components/StarRating";
 import videojs from "@mux/videojs-kit";
 import "@mux/videojs-kit/dist/index.css";
 import "../styles.css";
-
 import "../../fonts/css/videojs.css";
+import greyload from "../../images/Solid_grey.svg"
+
+//Comment imports
 import { CommentPost } from "../../components/Comment.js";
 import { setActive, startChat } from "../../store/chat/action.js";
 
+//Spinner component
 const HomeSpinner = () => {
   return (
     <>
@@ -54,6 +55,7 @@ const HomeSpinner = () => {
   );
 };
 
+//Comments component
 export const Comment = ({ totalComments, videoId }) => {
   const [showComment, setShowComment] = useState(false);
   const [showAddComment, setShowAddComment] = useState(false);
@@ -201,6 +203,7 @@ export const Comment = ({ totalComments, videoId }) => {
   );
 };
 
+//Description component
 export const Description = ({ description }) => {
   const [showMore, setShowMore] = useState(false);
   const wordLimit = 120;
@@ -260,6 +263,7 @@ export const Description = ({ description }) => {
   );
 };
 
+//Browse more videos sign component
 const BrowseMoreVideos = () => {
   return (
     <div className="browse-more-vid">
@@ -272,7 +276,35 @@ const BrowseMoreVideos = () => {
   );
 };
 
-const VideoGrid = ({ videos }) => {
+//Related videos component
+const VideoGrid = ({ videos, reachedEnd, homeLoading }) => {
+  const loader = useRef();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let options = {
+      threshold: 0.9,
+    };
+
+    const handleObserver = (entities) => {
+      const target = entities[0];
+      if (target.isIntersecting) {
+        if (!reachedEnd) {
+          dispatch(changePage());
+        }
+      }
+    };
+
+    const observer = new IntersectionObserver(handleObserver, options);
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [dispatch, reachedEnd, homeLoading]);
+
   return (
     <>
       {
@@ -307,12 +339,73 @@ const VideoGrid = ({ videos }) => {
               );
             })}
           </Row>
+          {homeLoading && (
+            <div className="home-footer">
+              <HomeSpinner />
+            </div>
+          )}
+
+          {!homeLoading && (
+            <div ref={loader} className="home-footer">
+              {reachedEnd && (
+                <div className="home-content-end">
+                  <hr className="home-footer-break" />
+                  <h5>You've reached the end of the page.</h5>
+                  <a href="#top">Back to top.</a>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       }
     </>
   );
 };
 
+//Video player component
+const VideoPlayer = ({ playback_id }) => {
+  const playerRef = useRef();
+  const videoRef = useRef();
+  useEffect(() => {
+    if (playerRef.current !== undefined) {
+      const player = videojs(playerRef.current, {
+        playbackRates: [0.5, 1, 1.5, 2],
+        userActions: {
+          doubleClick: true,
+        },
+      });
+
+      videoRef.current = player;
+
+      player.poster(
+        "https://image.mux.com/" + playback_id + "/thumbnail.jpg"
+      );
+      player.src(
+        "https://stream.mux.com/" + playback_id + ".m3u8"
+      );
+
+      player.aspectRatio("16:9");
+
+      return () => {
+        player.dispose();
+      };
+    }
+  }, [playback_id]);
+
+  return (
+    <video
+      id="my-player"
+      className="video-js vjs-theme-forest"
+      controls
+      preload="auto"
+      width="100%"
+      ref={playerRef}
+      fluid="true"
+    ></video>
+  )
+}
+
+//Likecount component
 const LikeCount = ({ currentVideo }) => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -387,6 +480,7 @@ const LikeCount = ({ currentVideo }) => {
   );
 };
 
+//Unauthenticated guest component
 const Guest = ({
   currentVideo,
   videoLoading,
@@ -394,64 +488,7 @@ const Guest = ({
   homeLoading,
   reachedEnd,
 }) => {
-  const playerRef = useRef();
   const history = useHistory();
-  const videoRef = useRef();
-  const dispatch = useDispatch();
-  const loader = useRef();
-
-  useEffect(() => {
-    if (playerRef.current !== undefined) {
-      const player = videojs(playerRef.current, {
-        playbackRates: [0.5, 1, 1.5, 2],
-        userActions: {
-          doubleClick: true,
-        },
-      });
-
-      videoRef.current = player;
-
-      player.ready(() => {
-        player.poster(
-          "https://image.mux.com/" + currentVideo.playback_id + "/thumbnail.jpg"
-        );
-        player.src(
-          "https://stream.mux.com/" + currentVideo.playback_id + ".m3u8"
-        );
-        player.load();
-      });
-
-      player.aspectRatio("16:9");
-
-      return () => {
-        player.dispose();
-      };
-    }
-  }, [currentVideo.playback_id]);
-
-  useEffect(() => {
-    let options = {
-      threshold: 0.5,
-    };
-
-    const handleObserver = (entities) => {
-      const target = entities[0];
-      if (target.isIntersecting) {
-        if (!reachedEnd) {
-          dispatch(changePage());
-        }
-      }
-    };
-
-    const observer = new IntersectionObserver(handleObserver, options);
-    if (loader.current) {
-      observer.observe(loader.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [dispatch, reachedEnd, homeLoading]);
 
   return (
     <>
@@ -459,16 +496,9 @@ const Guest = ({
       {!videoLoading && (
         <>
           <Container>
-            <video
-              id="my-player"
-              className="video-js vjs-theme-forest"
-              controls
-              preload="auto"
-              width="100%"
-              data-setup="{}"
-              ref={playerRef}
-              fluid="true"
-            ></video>
+            <VideoPlayer
+              playback_id={currentVideo.playback_id}
+            />
             <div className="video-header">
               <Row>
                 <Col xs={12} className="video-title">{currentVideo.video_title}</Col>
@@ -523,24 +553,12 @@ const Guest = ({
                 />
               </Row>
             </div>
-            <VideoGrid videos={videos} />
-            {homeLoading && (
-              <div className="home-footer">
-                <HomeSpinner />
-              </div>
-            )}
-
-            {!homeLoading && (
-              <div ref={loader} className="home-footer">
-                {reachedEnd && (
-                  <div className="home-content-end">
-                    <hr className="home-footer-break" />
-                    <h5>You've reached the end of the page.</h5>
-                    <a href="#top">Back to top.</a>
-                  </div>
-                )}
-              </div>
-            )}
+            <VideoGrid
+              videos={videos}
+              reachedEnd={reachedEnd}
+              homeLoading={homeLoading}
+              videoLoading={videoLoading}
+            />
           </Container>
         </>
       )}
@@ -548,6 +566,7 @@ const Guest = ({
   );
 };
 
+//Authenticated member component
 const Member = ({
   currentVideo,
   videoLoading,
@@ -555,69 +574,13 @@ const Member = ({
   homeLoading,
   reachedEnd,
 }) => {
-  const playerRef = useRef();
   const history = useHistory();
-  const videoRef = useRef();
   const dispatch = useDispatch();
-  const loader = useRef();
 
   const { activeChat, chatComponentLoading, chats } = useSelector(
     (state) => state.chat
   );
   const { user } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (playerRef.current !== undefined) {
-      const player = videojs(playerRef.current, {
-        playbackRates: [0.5, 1, 1.5, 2],
-        userActions: {
-          doubleClick: true,
-        },
-      });
-
-      videoRef.current = player;
-
-      player.ready(() => {
-        player.poster(
-          "https://image.mux.com/" + currentVideo.playback_id + "/thumbnail.jpg"
-        );
-        player.src(
-          "https://stream.mux.com/" + currentVideo.playback_id + ".m3u8"
-        );
-        player.load();
-      });
-
-      player.aspectRatio("16:9");
-
-      return () => {
-        player.dispose();
-      };
-    }
-  }, [currentVideo.playback_id]);
-
-  useEffect(() => {
-    let options = {
-      threshold: 0.5,
-    };
-
-    const handleObserver = (entities) => {
-      const target = entities[0];
-      if (target.isIntersecting) {
-        if (!reachedEnd) {
-          dispatch(changePage());
-        }
-      }
-    };
-
-    const observer = new IntersectionObserver(handleObserver, options);
-    if (loader.current) {
-      observer.observe(loader.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [dispatch, reachedEnd, homeLoading, videoLoading]);
 
   useEffect(() => {
     if (activeChat) {
@@ -631,17 +594,9 @@ const Member = ({
       {!videoLoading && (
         <>
           <Container>
-            <video
-              id="my-player"
-              className="video-js vjs-theme-forest"
-              controls
-              preload="auto"
-              width="100%"
-              data-setup="{}"
-              ref={playerRef}
-              fluid="true"
-            ></video>
-
+            <VideoPlayer
+              playback_id={currentVideo.playback_id}
+            />
             <div className="video-header">
               <Row>
                 <Col xs={12} className="video-title">
@@ -667,7 +622,7 @@ const Member = ({
                       }}
                     >
                       {chatComponentLoading ? (
-                        <Spinner size="sm" animation="border" variant="light" />
+                        <Spinner className="video-student-chat-spinner" size="sm" animation="border" variant="light" />
                       ) : (
                         <>
                           Chat&nbsp;
@@ -737,24 +692,12 @@ const Member = ({
                 />
               </Row>
             </div>
-            <VideoGrid videos={videos} />
-            {homeLoading && (
-              <div className="home-footer">
-                <HomeSpinner />
-              </div>
-            )}
-
-            {!homeLoading && (
-              <div ref={loader} className="home-footer">
-                {reachedEnd && (
-                  <div className="home-content-end">
-                    <hr className="home-footer-break" />
-                    <h5>You've reached the end of the page.</h5>
-                    <a href="#top">Back to top.</a>
-                  </div>
-                )}
-              </div>
-            )}
+            <VideoGrid
+              videos={videos}
+              reachedEnd={reachedEnd}
+              homeLoading={homeLoading}
+              videoLoading={videoLoading}
+            />
           </Container>
         </>
       )}
@@ -765,6 +708,8 @@ const Member = ({
 const WatchPage = () => {
   const { videoId } = useParams();
   const dispatch = useDispatch();
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+
   const {
     currentVideo,
     homeLoading,
@@ -818,26 +763,31 @@ const WatchPage = () => {
 
   return (
     <>
-      <AuthNavBar
-        member={
-          <Member
-            currentVideo={currentVideo}
-            videoLoading={videoLoading}
-            homeLoading={homeLoading}
-            reachedEnd={reachedEnd}
-            videos={videos}
-          />
-        }
-        guest={
-          <Guest
-            currentVideo={currentVideo}
-            videoLoading={videoLoading}
-            homeLoading={homeLoading}
-            reachedEnd={reachedEnd}
-            videos={videos}
-          />
-        }
-      />
+      <link rel="preload" as="image" href={greyload} />
+      {loading && <LoadingSpinner />}
+      {!loading &&
+        (isAuthenticated ? (
+          <>
+            <Member
+              currentVideo={currentVideo}
+              videoLoading={videoLoading}
+              homeLoading={homeLoading}
+              reachedEnd={reachedEnd}
+              videos={videos}
+            />
+          </>
+        ) : (
+          <>
+            <Guest
+              currentVideo={currentVideo}
+              videoLoading={videoLoading}
+              homeLoading={homeLoading}
+              reachedEnd={reachedEnd}
+              videos={videos}
+            />
+          </>
+        ))
+      }
     </>
   );
 };

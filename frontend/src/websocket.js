@@ -25,16 +25,16 @@ class WebSocketService {
     const component = this;
 
     this.socketRef.onopen = () => {
-      console.log("WebSocket open");
+      // console.log("WebSocket open");
     };
     this.socketRef.onmessage = (e) => {
       this.socketNewMessage(e.data);
     };
     this.socketRef.onerror = (e) => {
-      console.log(e.message);
+      // console.log(e.message);
     };
     this.socketRef.onclose = () => {
-      console.log("WebSocket closed. Reconnect will be attempted in 1 second.");
+      // console.log("WebSocket closed. Reconnect will be attempted in 1 second.");
       setTimeout(function () {
         component.connect();
       }, 1000);
@@ -99,7 +99,7 @@ class WebSocketService {
     try {
       this.socketRef.send(JSON.stringify({ ...data }));
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
     }
   }
 
