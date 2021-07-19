@@ -151,6 +151,7 @@ const ProfileModal = ({ userId }) => {
     location,
     subjects,
     duration_classes,
+    tuition_rates,
     qualifications,
   } = profileDetails;
 
@@ -347,7 +348,7 @@ const ProfileModal = ({ userId }) => {
                         value={duration_classes[0]}
                         onChange={(e) => onChangeDuration(e)}
                         min={0}
-                        max={12}
+                        max={8}
                         custom
                       />
                     </Form.Group>
@@ -363,8 +364,18 @@ const ProfileModal = ({ userId }) => {
                         value={duration_classes[1]}
                         onChange={(e) => onChangeDuration(e)}
                         min={0}
-                        max={12}
+                        max={8}
                         custom
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>Tuition rates ($ per session)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="tuition_rates"
+                        value={tuition_rates}
+                        className="modal-input"
+                        onChange={(e) => onChangeDetailed(e)}
                       />
                     </Form.Group>
                     <Form.Group>
@@ -549,6 +560,14 @@ const ProfileModal = ({ userId }) => {
                                 " - " +
                                 duration_classes[1] +
                                 " hrs"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Tuition rate</td>
+                          <td className="table-data">
+                            {tuition_rates
+                              ? "$" + tuition_rates + " per session"
+                              : "User has not listed their tuition rates"}
                           </td>
                         </tr>
                         <tr>

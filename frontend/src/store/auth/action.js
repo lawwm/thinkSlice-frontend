@@ -37,6 +37,7 @@ export const register =
     async (dispatch) => {
 
       // Check regex
+      let whitespace = new RegExp("^(?!.* )")
       let reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
 
       //Start checks
@@ -48,6 +49,14 @@ export const register =
           type: actionTypes.AUTH_BUTTON_LOADED,
         });
         dispatch(setAlert("Passwords must match", "danger"));
+      } else if (!whitespace.test(password) || !whitespace.test(username)) {
+        dispatch({
+          type: actionTypes.REGISTER_FAIL,
+        });
+        dispatch({
+          type: actionTypes.AUTH_BUTTON_LOADED,
+        });
+        dispatch(setAlert("No whitespace allowed", "danger", 10000));
       } else if (!reg.test(password)) {
 
         dispatch({

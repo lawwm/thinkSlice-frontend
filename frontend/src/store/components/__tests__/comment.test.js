@@ -149,7 +149,7 @@ describe('Comment Post', () => {
       //Type within reply text
       userEvent.click(screen.getByRole('button', { name: /reply comment show/i }))
       userEvent.type(screen.getByRole('textbox'), ' Hi dude')
-      expect(screen.getByRole('textbox')).toHaveValue('@John Hi dude')
+      expect(screen.getByRole('textbox')).toHaveValue('@John  Hi dude')
 
       //Submit reply and wait for spinner to disappear
       userEvent.click(screen.getByRole('button', { name: /reply comment submit/i }))

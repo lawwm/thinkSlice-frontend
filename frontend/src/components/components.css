@@ -332,6 +332,9 @@ nav a:hover,
 
 /* alert */
 .alert-container {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 10%;
   align-items: center;
   display: flex;
   justify-content: center;
@@ -341,7 +344,7 @@ nav a:hover,
 .alert-small-container {
   position: absolute;
   width: 60%;
-  top: 170px;
+  top: 0%;
   z-index: 1;
   z-index: 999999;
 }
