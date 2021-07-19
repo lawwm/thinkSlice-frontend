@@ -1,5 +1,5 @@
 .navbar {
-  padding: 25px 0px;
+  padding: 0px 0px;
   background-color: #fcfcfc;
 }
 
@@ -781,6 +781,11 @@ button.alert-close {
   .review-div {
     padding: 10px 30px 30px 30px;
   }
+
+  .navbar {
+    padding: 4px 0px;
+    background-color: #fcfcfc;
+  }
 }
 
 /* // Medium devices (tablets, 768px and up) */
@@ -798,9 +803,14 @@ button.alert-close {
   .sidebar-button {
     display: none;
   }
+
+  .navbar {
+    padding: 8px 0px;
+    background-color: #fcfcfc;
+  }
 }
 
-/* // Large devices (desktops, 992px and up) */
+/* // Large devices (desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .container-padding {
     padding-left: 40px;
@@ -810,9 +820,14 @@ button.alert-close {
     display: block;
     padding-left: 50px;
   }
+
+  .navbar {
+    padding: 12px 0px;
+    background-color: #fcfcfc;
+  }
 }
 
-/* // Extra large devices (large desktops, 1200px and up) */
+/* // Extra large devices (large desktops, 1500px and up) */
 @media (min-width: 1500px) {
   .container-padding {
     padding-left: 150px;
@@ -822,5 +837,10 @@ button.alert-close {
   .background-sidebar {
     display: block;
     padding-left: 100px;
+  }
+
+  .navbar {
+    padding: 16px 0px;
+    background-color: #fcfcfc;
   }
 }

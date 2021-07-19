@@ -5,6 +5,8 @@ import {
   HOME_LOADING,
   HOMEPAGE_LOAD_FAIL,
   VIDEO_LOADED,
+  USER_ON_VIDEO_PAGE,
+  USER_LEFT_VIDEO_PAGE,
   HOME_UNFILTER_CURRENT,
   VIDEO_LOADING,
   VIDEO_LOAD_FAILED,
@@ -235,6 +237,9 @@ export const loadWatchVideos = (videoId) => async (dispatch) => {
     dispatch({
       type: VIDEO_LOADING
     })
+    dispatch({
+      type: USER_ON_VIDEO_PAGE
+    })
     const res = await axios.get(DOMAINS.VIDEO + "/" + videoId)
     let data = res.data
     data = {
@@ -256,6 +261,9 @@ export const loadWatchVideos = (videoId) => async (dispatch) => {
 export const exitWatchVideos = () => async (dispatch) => {
   dispatch({
     type: HOME_UNFILTER_CURRENT
+  })
+  dispatch({
+    type: USER_LEFT_VIDEO_PAGE
   })
 }
 

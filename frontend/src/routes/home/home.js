@@ -180,8 +180,10 @@ const Guest = () => {
       } else {
         dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
       }
-    } else { // is first render but not first load, do nothing
+    } else if (!firstLoad && isFirstRender.current) { // is first render but not first load, do nothing
       isFirstRender.current = false
+    } else { //is not first render but is first load
+      dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
     }
 
   }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review, searchQuery, firstLoad])
