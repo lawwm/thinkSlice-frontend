@@ -3,6 +3,7 @@ import {
   HOMEPAGE_LOADED,
   HOMEPAGE_LOAD_FAIL,
   VIDEO_LOADED,
+  HOME_UNFILTER_CURRENT,
   VIDEO_LOADING,
   UPLOAD_STARTED,
   UPLOAD_ENDED,
@@ -57,6 +58,8 @@ const initialState = {
   availability: '',
   review: '',
   searchQuery: '',
+  firstLoad: true,
+  removedVideoIndex: -1,
   comments: [],
 }
 //set initial page to zero so initial loadhomevideo action before 
@@ -68,15 +71,21 @@ export const home = (state = initialState, action) => {
   switch (type) {
     case HOMEPAGE_LOADED:
       let payloadId = payload.map(video => video.id)
+      //Remove accidental repeating videos if any
       let newVideos = state.videos.filter(val => !payloadId.includes(val.id))
       newVideos = newVideos.concat(payload)
+      //Remove current video if any
+      let newRemovedVideoIndex = -1;
       if (!isEmpty(state.currentVideo)) {
+        newRemovedVideoIndex = newVideos.findIndex(video => video.id === state.currentVideo.id)
         newVideos = newVideos.filter(video => video.id !== state.currentVideo.id)
       }
       return {
         ...state,
         videos: newVideos,
-        homeLoading: false
+        homeLoading: false,
+        firstLoad: false,
+        removedVideoIndex: newRemovedVideoIndex
       }
     case SEARCH_VIDEO:
       return {
@@ -100,18 +109,29 @@ export const home = (state = initialState, action) => {
         videos: [],
       }
     case VIDEO_LOADED:
+      // Remove current video from video array when leaving current video
       let newVideoArray = [...state.videos]
-      if (!isEmpty(state.currentVideo)) {
-        // console.log(newVideoArray)
-        // console.log(payload)
-        newVideoArray = newVideoArray.filter(video => video.id !== payload.id)
-        newVideoArray.push(state.currentVideo)
-      }
+      let anotherRemovedVideoIndex = -1
+      anotherRemovedVideoIndex = newVideoArray.findIndex(video => video.id === payload.id)
+      newVideoArray = newVideoArray.filter(video => video.id !== payload.id)
       return {
         ...state,
         currentVideo: payload,
         videos: newVideoArray,
-        videoLoading: false
+        videoLoading: false,
+        removedVideoIndex: anotherRemovedVideoIndex
+      }
+    case HOME_UNFILTER_CURRENT:
+      // Refill video array with current video when leaving current video
+      let refilledVideoArray = [...state.videos]
+      if (!isEmpty(state.currentVideo)) {
+        refilledVideoArray.splice(state.removedVideoIndex, 0, state.currentVideo)
+      }
+      return {
+        ...state,
+        currentVideo: {},
+        videos: refilledVideoArray,
+        videoLoading: true
       }
     case VIDEO_LOADING:
       return {

@@ -114,15 +114,32 @@ const Member = () => {
 
 const Guest = () => {
   const dispatch = useDispatch();
-  const { filterBy, ascending, page, subject, location, availability, review, videos, homeLoading, reachedEnd, searchQuery } = useSelector((state) => state.home)
+  const { filterBy, ascending, page, subject, location, availability, review, videos, homeLoading, reachedEnd, searchQuery, firstLoad } = useSelector((state) => state.home)
 
   const loader = useRef(null);
   const [showModal, setShowModal] = useState(false)
   const [searchForm, setSearchForm] = useState("")
 
+  // Prevent home videos loading on rerender  
+  const isFirstLoad = useRef(firstLoad);
+  const isFirstRender = useRef(true)
   useEffect(() => {
-    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
-  }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review, searchQuery])
+    // is first time loading and component render, load the page
+    if (firstLoad && isFirstRender.current) {
+      isFirstRender.current = false
+      dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+
+    } else if (!firstLoad && !isFirstRender.current) { // is not first load nor render
+      if (isFirstLoad.current !== firstLoad) {//prevent loading when firstLoad dependency changes
+        isFirstLoad.current = firstLoad
+      } else {
+        dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+      }
+    } else { // is first render but not first load, do nothing
+      isFirstRender.current = false
+    }
+
+  }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review, searchQuery, firstLoad])
 
   useEffect(() => {
     let options = {

@@ -5,6 +5,7 @@ import {
   HOME_LOADING,
   HOMEPAGE_LOAD_FAIL,
   VIDEO_LOADED,
+  HOME_UNFILTER_CURRENT,
   VIDEO_LOADING,
   VIDEO_LOAD_FAILED,
   UPLOAD_STARTED,
@@ -248,6 +249,12 @@ export const loadWatchVideos = (videoId) => async (dispatch) => {
       type: VIDEO_LOAD_FAILED
     })
   }
+}
+
+export const exitWatchVideos = () => async (dispatch) => {
+  dispatch({
+    type: HOME_UNFILTER_CURRENT
+  })
 }
 
 export const setVideoLoading = () => async (dispatch) => {

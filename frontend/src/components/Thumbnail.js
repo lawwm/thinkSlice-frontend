@@ -94,10 +94,14 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
             alt="video thumbnail"
             fluid>
           </Image>
-          <div className="thumbnail-subject-info">
+          <div
+            onClick={() => history.push('/watch/' + videoId)}
+            className="thumbnail-subject-info">
             {subject}
           </div>
-          <div className="thumbnail-subject-duration">
+          <div
+            onClick={() => history.push('/watch/' + videoId)}
+            className="thumbnail-subject-duration">
             {date}
           </div>
           <div className="thumbnail-subject-profile-div">

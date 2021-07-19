@@ -14,6 +14,7 @@ import {
 import { useParams } from "react-router-dom";
 import {
   loadWatchVideos,
+  exitWatchVideos,
   loadHomeVideos,
   getComments,
   addComments,
@@ -724,38 +725,38 @@ const WatchPage = () => {
     location,
     review,
     searchQuery,
+    firstLoad
   } = useSelector((state) => state.home);
 
   useEffect(() => {
     dispatch(loadWatchVideos(videoId));
+
+    return () => {
+      dispatch(exitWatchVideos());
+    }
   }, [dispatch, videoId]);
 
+  // Prevent home videos loading on rerender  
+  const isFirstLoad = useRef(firstLoad);
+  const isFirstRender = useRef(true)
   useEffect(() => {
-    dispatch(
-      loadHomeVideos(
-        filterBy,
-        ascending,
-        page,
-        reachedEnd,
-        availability,
-        subject,
-        location,
-        review,
-        searchQuery
-      )
-    );
-  }, [
-    dispatch,
-    page,
-    ascending,
-    filterBy,
-    reachedEnd,
-    availability,
-    subject,
-    location,
-    review,
-    searchQuery,
-  ]);
+    // is first time loading and component render, load the page
+    if (firstLoad && isFirstRender.current) {
+      isFirstRender.current = false
+      dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+
+    } else if (!firstLoad && !isFirstRender.current) { // is not first load nor render
+      if (isFirstLoad.current !== firstLoad) {//prevent loading when firstLoad dependency changes
+        isFirstLoad.current = firstLoad
+      } else {
+        dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+      }
+    } else { // is first render but not first load, do nothing
+      isFirstRender.current = false
+    }
+
+  }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review, searchQuery, firstLoad])
+
 
   useEffect(() => {
     dispatch(getComments(videoId));
