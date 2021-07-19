@@ -10,6 +10,8 @@ import {
   Form,
   Button,
   Spinner,
+  InputGroup,
+  FormControl
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import {
@@ -21,6 +23,8 @@ import {
   changePage,
   addLike,
   removeLike,
+  searchVideos,
+  clearSearchVideos
 } from "../../store/home/action";
 import { setAlert } from "../../store/components/action";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,6 +36,7 @@ import {
   FaRegHeart,
   FaHeart,
   FaComment,
+  FaSearch
 } from "react-icons/fa";
 import Thumbnail from "../../components/Thumbnail";
 import { StarDisplay } from "../../components/StarRating";
@@ -281,6 +286,7 @@ const BrowseMoreVideos = () => {
 const VideoGrid = ({ videos, reachedEnd, homeLoading }) => {
   const loader = useRef();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     let options = {
@@ -306,11 +312,46 @@ const VideoGrid = ({ videos, reachedEnd, homeLoading }) => {
     };
   }, [dispatch, reachedEnd, homeLoading]);
 
+  // Redirect to homepage to search videos
+  const [searchForm, setSearchForm] = useState("")
+  const submitSearch = () => {
+    history.push("/")
+    dispatch(clearSearchVideos())
+    dispatch(searchVideos(searchForm))
+  }
+  const enterSubmitSearch = (keycode) => {
+    if (keycode === 13) {
+      history.push("/")
+      dispatch(clearSearchVideos())
+      dispatch(searchVideos(searchForm))
+    }
+  }
   return (
     <>
       {
         <div className="video-reco-div">
+          <div className="home-searchbar">
+
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Search for videos..."
+                aria-label="searchbar"
+                aria-describedby="searchbar-label"
+                value={searchForm}
+                onChange={
+                  e => setSearchForm(e.target.value)
+                }
+                onKeyPress={(e) => enterSubmitSearch(e.charCode)}
+              />
+              <InputGroup.Append>
+                <Button
+                  onClick={() => submitSearch()}
+                  variant="outline-secondary"><FaSearch /></Button>
+              </InputGroup.Append>
+            </InputGroup>
+          </div>
           <Row className="justify-content-md-left">
+
             {videos.length !== 0 && (
               <Col sm={12} md={6} xl={4} className="home-video-row">
                 <BrowseMoreVideos />
@@ -504,6 +545,7 @@ const Guest = ({
               <Row>
                 <Col xs={12} className="video-title">{currentVideo.video_title}</Col>
               </Row>
+              <LikeCount currentVideo={currentVideo} />
               <Row>
                 <Col md={4}>
                   {currentVideo.views + " views | " + currentVideo.subject}
@@ -538,7 +580,6 @@ const Guest = ({
                       )}
                       <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
                     </Row>
-                    <LikeCount currentVideo={currentVideo} />
                   </div>
                 </Media.Body>
               </Media>
@@ -602,38 +643,9 @@ const Member = ({
               <Row>
                 <Col xs={12} className="video-title">
                   {currentVideo.video_title}
-                  {!(currentVideo.creator_profile.user === parseInt(user)) && (
-                    <Button
-                      variant="secondary"
-                      className="video-student-chat"
-                      disabled={chatComponentLoading}
-                      onClick={() => {
-                        const alreadyExists = chats.find(
-                          (chat) =>
-                            chat.recipient ===
-                            currentVideo.creator_profile.user
-                        );
-                        if (alreadyExists) {
-                          dispatch(setActive(alreadyExists.chatroom));
-                        } else {
-                          dispatch(
-                            startChat(currentVideo.creator_profile.user)
-                          );
-                        }
-                      }}
-                    >
-                      {chatComponentLoading ? (
-                        <Spinner className="video-student-chat-spinner" size="sm" animation="border" variant="light" />
-                      ) : (
-                        <>
-                          Chat&nbsp;
-                          <FaComment />
-                        </>
-                      )}
-                    </Button>
-                  )}
                 </Col>
               </Row>
+              <LikeCount currentVideo={currentVideo} />
               <Row>
                 <Col md={4}>
                   {currentVideo.views + " views | " + currentVideo.subject}
@@ -673,11 +685,40 @@ const Member = ({
                         </Col>
                       )}
                       <Col className="video-student-reviews">
+                        {!(currentVideo.creator_profile.user === parseInt(user)) && (
+                          <Button
+                            variant="secondary"
+                            className="video-student-chat"
+                            disabled={chatComponentLoading}
+                            onClick={() => {
+                              const alreadyExists = chats.find(
+                                (chat) =>
+                                  chat.recipient ===
+                                  currentVideo.creator_profile.user
+                              );
+                              if (alreadyExists) {
+                                dispatch(setActive(alreadyExists.chatroom));
+                              } else {
+                                dispatch(
+                                  startChat(currentVideo.creator_profile.user)
+                                );
+                              }
+                            }}
+                          >
+                            {chatComponentLoading ? (
+                              <Spinner className="video-student-chat-spinner" size="sm" animation="border" variant="light" />
+                            ) : (
+                              <>
+                                Chat&nbsp;
+                                <FaComment />
+                              </>
+                            )}
+                          </Button>
+                        )}
                         {currentVideo.creator_profile.total_tutor_reviews +
                           " student reviews"}
                       </Col>
                     </Row>
-                    <LikeCount currentVideo={currentVideo} />
                   </div>
                 </Media.Body>
               </Media>

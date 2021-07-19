@@ -101,7 +101,9 @@ export const home = (state = initialState, action) => {
         searchQuery: '',
         videos: [],
         reachedEnd: false,
-        page: 1
+        page: 1,
+        firstLoad: true,
+        currentVideo: {}
       }
     case CLEAR_VIDEO_PAGE:
       return {
@@ -131,7 +133,8 @@ export const home = (state = initialState, action) => {
         ...state,
         currentVideo: {},
         videos: refilledVideoArray,
-        videoLoading: true
+        videoLoading: true,
+        removedVideoIndex: -1
       }
     case VIDEO_LOADING:
       return {

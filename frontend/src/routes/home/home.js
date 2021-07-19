@@ -118,24 +118,6 @@ export const FilterOptions = ({ filtered, ascending, setFilterOption, setOrderOp
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            {/* <Dropdown>
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Order
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu align="right">
-                <Dropdown.Item
-                  onClick={() => setOrderOption(true)}
-                  as="button"
-                >Ascending
-                </Dropdown.Item>
-                <Dropdown.Item
-                  onClick={() => setOrderOption(false)}
-                  as="button">
-                  Descending
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown> */}
           </div>
         </Col>
       </Row>

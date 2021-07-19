@@ -502,7 +502,7 @@ p {
   height: 36px;
   display: flex;
   align-items: center;
-  float: right;
+  float: left;
   cursor: pointer;
   background-color: #ff6229;
   border: #ff5315;
@@ -525,6 +525,7 @@ p {
   align-items: center;
   float: right;
   cursor: pointer;
+  margin-top: 15px;
 }
 
 .video-student-likes-unauth {
