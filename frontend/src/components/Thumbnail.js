@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Media, Image, Modal, Button, Spinner, Form } from "react-bootstrap";
+import { Row, Media, Image, Modal, Button, Spinner, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { setVideoLoading } from "../store/home/action";
 import { deleteVideo, editVideo } from "../store/profile/action"
@@ -126,14 +126,29 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
               alt="profile picture" fluid />
           </div>
 
-          <Media.Body onClick={() => history.push('/watch/' + videoId)}>
+          <Media.Body >
             <div className="thumbnail-body">
-              <Row>
+              <Row
+                onClick={() => history.push('/watch/' + videoId)}>
                 <h5 className="thumbnail-title">{title}</h5>
               </Row>
               <Row>
-                <div className="thumbnail-caption">{username} </div>
-                <div className="thumbnail-line">{views} views</div>
+                <OverlayTrigger
+                  placement={'top'}
+                  overlay={
+                    <Tooltip id={`tooltip-${'top'}`}>
+                      {username}
+                    </Tooltip>
+                  }>
+                  <div
+                    onClick={() => {
+                      history.push('/profile/' + profileId)
+                    }}
+                    className="thumbnail-caption">{username} </div>
+                </OverlayTrigger>
+                <div
+                  onClick={() => history.push('/watch/' + videoId)}
+                  className="thumbnail-line">{views} views</div>
               </Row>
             </div>
           </Media.Body>
