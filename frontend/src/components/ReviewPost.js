@@ -25,7 +25,6 @@ const ReviewPost = ({
   reviewPic,
   username,
   reviewTitle,
-  reviewSubject,
   reviewEssay,
   dateReview,
   editedDateReview,
@@ -124,7 +123,7 @@ const ReviewPost = ({
           </Card.Title>
           <div>
             {subjects.map((subject) => (
-              <Button className="review-subject" disabled>
+              <Button key={subject} className="review-subject" disabled>
                 {subject}
               </Button>
             ))}

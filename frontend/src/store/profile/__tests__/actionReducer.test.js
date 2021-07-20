@@ -326,6 +326,7 @@ describe('profile actions calling API should dispatch correctly', () => {
       const store = mockStore({})
       return store.dispatch(actions.createReviews({
         review_title: "hello",
+        review_subject: ["Math"],
         review_essay: "hello",
         star_rating: 3,
         tutorId: 1
@@ -340,6 +341,7 @@ describe('profile actions calling API should dispatch correctly', () => {
       const store = mockStore({})
       return store.dispatch(actions.createReviews({
         review_title: "hello",
+        review_subject: ["Math"],
         review_essay: "hello",
         star_rating: 3,
         tutorId: 0
@@ -354,13 +356,14 @@ describe('profile actions calling API should dispatch correctly', () => {
       const store = mockStore({})
       return store.dispatch(actions.createReviews({
         review_title: "",
+        review_subject: [],
         review_essay: "",
         star_rating: 0,
         tutorId: 1
       }, closeModal, clearForm)).then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_REVIEW_LOADING)
         expect(store.getActions()[1].type).toEqual(componentTypes.SET_ALERT)
-        expect(store.getActions()[1].payload.msg).toEqual("Fields are empty!")
+        expect(store.getActions()[1].payload.msg).toEqual("Please give a star rating.")
         expect(store.getActions()[2].type).toEqual(types.STOP_REVIEW_LOADING)
       })
 
@@ -373,6 +376,7 @@ describe('profile actions calling API should dispatch correctly', () => {
       const store = mockStore({})
       return store.dispatch(actions.editReviews({
         review_title: "hello",
+        review_subject: ["Math"],
         review_essay: "hello",
         star_rating: 3,
         reviewId: 1
@@ -400,13 +404,14 @@ describe('profile actions calling API should dispatch correctly', () => {
       const store = mockStore({})
       return store.dispatch(actions.editReviews({
         review_title: "",
+        review_subject: [],
         review_essay: "",
         star_rating: 0,
         reviewId: 0
       }, closeModal)).then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_REVIEW_POST_LOADING)
         expect(store.getActions()[1].type).toEqual(componentTypes.SET_ALERT)
-        expect(store.getActions()[1].payload.msg).toEqual("Fields are empty!")
+        expect(store.getActions()[1].payload.msg).toEqual("Please give a star rating.")
         expect(store.getActions()[2].type).toEqual(types.STOP_REVIEW_POST_LOADING)
       })
     })
