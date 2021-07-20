@@ -29,8 +29,18 @@ export const FilterOptions = ({ filtered, ascending, setFilterOption, setOrderOp
     <>
       <Row>
         <Col md={6}>
-          <div className="home-filter-description">{"Filter: " + filtered + " in "
-            + (!ascending ? "descending order" : "ascending order")}
+          <div className="home-filter-description">{"Filter: " +
+            (filtered === "recent"
+              ? (ascending
+                ? "Oldest first"
+                : "Newest first")
+              : filtered === "popular"
+                ? (ascending
+                  ? "View count from low to high"
+                  : "View count from high to low")
+                : (ascending
+                  ? "Like count from least to most"
+                  : "Like count from most to least"))}
           </div>
         </Col>
         <Col md={6}>
@@ -42,34 +52,69 @@ export const FilterOptions = ({ filtered, ascending, setFilterOption, setOrderOp
 
               <Dropdown.Menu align="right">
                 <Dropdown.Item
-                  onClick={() => setFilterOption("popular")}
+                  onClick={() => {
+                    setFilterOption("recent")
+                    setOrderOption(false)
+                  }
+                  }
+                  disabled={(filtered === "recent" && ascending === false)}
                   as="button"
                 >
-                  Popular
+                  Newest first
                 </Dropdown.Item>
                 <Dropdown.Item
-                  onClick={() => setFilterOption("recent")}
+                  onClick={() => {
+                    setFilterOption("recent")
+                    setOrderOption(true)
+                  }
+                  }
                   as="button"
+                  disabled={(filtered === "recent" && ascending === true)}
                 >
-                  Recent
+                  Oldest first
                 </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-            <Dropdown>
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Order
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu align="right">
                 <Dropdown.Item
-                  onClick={() => setOrderOption(true)}
+                  onClick={() => {
+                    setFilterOption("popular")
+                    setOrderOption(false)
+                  }
+                  } as="button"
+                  disabled={(filtered === "popular" && ascending === false)}
+                >
+                  View count: High to low
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    setFilterOption("popular")
+                    setOrderOption(true)
+                  }
+                  }
                   as="button"
-                >Ascending
+                  disabled={(filtered === "popular" && ascending === true)}
+                >
+                  View count: Low to high
                 </Dropdown.Item>
                 <Dropdown.Item
-                  onClick={() => setOrderOption(false)}
-                  as="button">
-                  Descending
+                  onClick={() => {
+                    setFilterOption("likes")
+                    setOrderOption(false)
+                  }
+                  }
+                  as="button"
+                  disabled={(filtered === "likes" && ascending === false)}
+                >
+                  Likes: Most to least
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    setFilterOption("likes")
+                    setOrderOption(true)
+                  }
+                  }
+                  as="button"
+                  disabled={(filtered === "likes" && ascending === true)}
+                >
+                  Likes: Least to most
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -114,15 +159,34 @@ const Member = () => {
 
 const Guest = () => {
   const dispatch = useDispatch();
-  const { filterBy, ascending, page, subject, location, availability, review, videos, homeLoading, reachedEnd, searchQuery } = useSelector((state) => state.home)
+  const { filterBy, ascending, page, subject, location, availability, review, videos, homeLoading, reachedEnd, searchQuery, firstLoad } = useSelector((state) => state.home)
 
   const loader = useRef(null);
   const [showModal, setShowModal] = useState(false)
   const [searchForm, setSearchForm] = useState("")
 
+  // Prevent home videos loading on rerender  
+  const isFirstLoad = useRef(firstLoad);
+  const isFirstRender = useRef(true)
   useEffect(() => {
-    dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
-  }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review, searchQuery])
+    // is first time loading and component render, load the page
+    if (firstLoad && isFirstRender.current) {
+      isFirstRender.current = false
+      dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+
+    } else if (!firstLoad && !isFirstRender.current) { // is not first load nor render
+      if (isFirstLoad.current !== firstLoad) {//prevent loading when firstLoad dependency changes
+        isFirstLoad.current = firstLoad
+      } else {
+        dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+      }
+    } else if (!firstLoad && isFirstRender.current) { // is first render but not first load, do nothing
+      isFirstRender.current = false
+    } else { //is not first render but is first load
+      dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+    }
+
+  }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review, searchQuery, firstLoad])
 
   useEffect(() => {
     let options = {

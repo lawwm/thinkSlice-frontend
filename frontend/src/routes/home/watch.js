@@ -10,16 +10,21 @@ import {
   Form,
   Button,
   Spinner,
+  InputGroup,
+  FormControl
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import {
   loadWatchVideos,
+  exitWatchVideos,
   loadHomeVideos,
   getComments,
   addComments,
   changePage,
   addLike,
   removeLike,
+  searchVideos,
+  clearSearchVideos
 } from "../../store/home/action";
 import { setAlert } from "../../store/components/action";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +36,7 @@ import {
   FaRegHeart,
   FaHeart,
   FaComment,
+  FaSearch
 } from "react-icons/fa";
 import Thumbnail from "../../components/Thumbnail";
 import { StarDisplay } from "../../components/StarRating";
@@ -264,22 +270,23 @@ export const Description = ({ description }) => {
 };
 
 //Browse more videos sign component
-const BrowseMoreVideos = () => {
-  return (
-    <div className="browse-more-vid">
-      <div className="browse-more-sentence">
-        <div className="browse-more-header">{"RELATED VIDEOS"}</div>
-        <div className="browse-label">BROWSE MORE</div>
-      </div>
-      <div className="browse-more-sentence"></div>
-    </div>
-  );
-};
+// const BrowseMoreVideos = () => {
+//   return (
+//     <div className="browse-more-vid">
+//       <div className="browse-more-sentence">
+//         <div className="browse-more-header">{"RELATED VIDEOS"}</div>
+//         <div className="browse-label">BROWSE MORE</div>
+//       </div>
+//       <div className="browse-more-sentence"></div>
+//     </div>
+//   );
+// };
 
 //Related videos component
 const VideoGrid = ({ videos, reachedEnd, homeLoading }) => {
   const loader = useRef();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     let options = {
@@ -305,24 +312,60 @@ const VideoGrid = ({ videos, reachedEnd, homeLoading }) => {
     };
   }, [dispatch, reachedEnd, homeLoading]);
 
+  // Redirect to homepage to search videos
+  const [searchForm, setSearchForm] = useState("")
+  const submitSearch = () => {
+    history.push("/")
+    dispatch(clearSearchVideos())
+    dispatch(searchVideos(searchForm))
+  }
+  const enterSubmitSearch = (keycode) => {
+    if (keycode === 13) {
+      history.push("/")
+      dispatch(clearSearchVideos())
+      dispatch(searchVideos(searchForm))
+    }
+  }
   return (
     <>
       {
-        <div className="video-reco-div">
+        <div >
+          <div className="home-searchbar">
+
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Search for videos..."
+                aria-label="searchbar"
+                aria-describedby="searchbar-label"
+                value={searchForm}
+                onChange={
+                  e => setSearchForm(e.target.value)
+                }
+                onKeyPress={(e) => enterSubmitSearch(e.charCode)}
+              />
+              <InputGroup.Append>
+                <Button
+                  onClick={() => submitSearch()}
+                  variant="outline-secondary"><FaSearch /></Button>
+              </InputGroup.Append>
+            </InputGroup>
+          </div>
           <Row className="justify-content-md-left">
-            {videos.length !== 0 && (
-              <Col sm={12} md={6} xl={4} className="home-video-row">
+            {/* {videos.length === 0 && (
+              <Col xs={12} sm={6} md={12} className="watch-video-row">
                 <BrowseMoreVideos />
               </Col>
-            )}
+            )} */}
             {videos.map((videoRow) => {
               return (
                 <Col
                   key={videoRow.id}
-                  sm={12}
+                  xs={12}
+                  sm={6}
                   md={6}
-                  xl={4}
-                  className="home-video-row"
+                  lg={12}
+
+                  className="watch-video-row"
                 >
                   <Thumbnail
                     title={videoRow.video_title}
@@ -425,7 +468,7 @@ const LikeCount = ({ currentVideo }) => {
             <>
               {hasUserLiked ? (
                 <Col
-                  md={2}
+                  md={3}
                   onClick={() =>
                     dispatch(
                       removeLike(
@@ -445,7 +488,7 @@ const LikeCount = ({ currentVideo }) => {
                 </Col>
               ) : (
                 <Col
-                  md={2}
+                  md={3}
                   onClick={() =>
                     dispatch(
                       addLike(
@@ -496,69 +539,75 @@ const Guest = ({
       {!videoLoading && (
         <>
           <Container>
-            <VideoPlayer
-              playback_id={currentVideo.playback_id}
-            />
-            <div className="video-header">
-              <Row>
-                <Col xs={12} className="video-title">{currentVideo.video_title}</Col>
-              </Row>
-              <Row>
-                <Col md={4}>
-                  {currentVideo.views + " views | " + currentVideo.subject}
-                </Col>
-                <Col md={{ span: 4, offset: 4 }} className="video-date">
-                  {"Upload date: " + currentVideo.created_at}
-                </Col>
-              </Row>
-            </div>
-            <hr />
-            <div>
-              <Media>
-                <img
-                  alt="Creator"
-                  className="video-profile-picture"
-                  onClick={() => history.push('/profile/' + currentVideo.creator_profile.user)}
-                  src={currentVideo.creator_profile.profile_pic}
+            <Row>
+              <Col sm={12} md={12} lg={8}>
+                <VideoPlayer
+                  playback_id={currentVideo.playback_id}
                 />
-                <Media.Body >
-                  <div className="video-name-reviews">
-                    <Row>
-                      <Col>{currentVideo.creator_profile.username}</Col>
-                    </Row>
-                    <Row>
-                      {currentVideo.creator_profile.aggregate_star !== null && (
-                        <Col>
-                          <StarDisplay
-                            num={parseInt(currentVideo.creator_profile.aggregate_star)}
-                            size={18}
-                          />
-                        </Col>
-                      )}
-                      <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
-                    </Row>
-                    <LikeCount currentVideo={currentVideo} />
-                  </div>
-                </Media.Body>
-              </Media>
-              <Row>
-                <Col>
-                  <Description description={currentVideo.video_description} />
-                </Col>
-              </Row>
-              <Row>
-                <Comment
-                  totalComments={currentVideo.num_of_comments}
-                  videoId={currentVideo.id}
+                <div className="video-header">
+                  <Row>
+                    <Col xs={12} className="video-title">{currentVideo.video_title}</Col>
+                  </Row>
+                  <LikeCount currentVideo={currentVideo} />
+                  <Row>
+                    <Col md={6}>
+                      {currentVideo.views + " views | " + currentVideo.subject}
+                    </Col>
+                    <Col md={6} className="video-date">
+                      {"Upload date: " + currentVideo.created_at}
+                    </Col>
+                  </Row>
+                </div>
+                <hr />
+                <div>
+                  <Media>
+                    <img
+                      alt="Creator"
+                      className="video-profile-picture"
+                      onClick={() => history.push('/profile/' + currentVideo.creator_profile.user)}
+                      src={currentVideo.creator_profile.profile_pic}
+                    />
+                    <Media.Body >
+                      <div className="video-name-reviews">
+                        <Row>
+                          <Col>{currentVideo.creator_profile.username}</Col>
+                        </Row>
+                        <Row>
+                          {currentVideo.creator_profile.aggregate_star !== null && (
+                            <Col>
+                              <StarDisplay
+                                num={parseInt(currentVideo.creator_profile.aggregate_star)}
+                                size={18}
+                              />
+                            </Col>
+                          )}
+                          <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
+                        </Row>
+                      </div>
+                    </Media.Body>
+                  </Media>
+                  <Row>
+                    <Col>
+                      <Description description={currentVideo.video_description} />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Comment
+                      totalComments={currentVideo.num_of_comments}
+                      videoId={currentVideo.id}
+                    />
+                  </Row>
+                </div>
+              </Col>
+              <Col sm={12} md={12} lg={4}>
+                <VideoGrid
+                  videos={videos}
+                  reachedEnd={reachedEnd}
+                  homeLoading={homeLoading}
+                  videoLoading={videoLoading}
                 />
-              </Row>
-            </div>
-            <VideoGrid
-              videos={videos}
-              reachedEnd={reachedEnd}
-              homeLoading={homeLoading}
-              videoLoading={videoLoading}
-            />
+              </Col>
+            </Row>
           </Container>
         </>
       )}
@@ -594,110 +643,116 @@ const Member = ({
       {!videoLoading && (
         <>
           <Container>
-            <VideoPlayer
-              playback_id={currentVideo.playback_id}
-            />
-            <div className="video-header">
-              <Row>
-                <Col xs={12} className="video-title">
-                  {currentVideo.video_title}
-                  {!(currentVideo.creator_profile.user === parseInt(user)) && (
-                    <Button
-                      variant="secondary"
-                      className="video-student-chat"
-                      disabled={chatComponentLoading}
-                      onClick={() => {
-                        const alreadyExists = chats.find(
-                          (chat) =>
-                            chat.recipient ===
-                            currentVideo.creator_profile.user
-                        );
-                        if (alreadyExists) {
-                          dispatch(setActive(alreadyExists.chatroom));
-                        } else {
-                          dispatch(
-                            startChat(currentVideo.creator_profile.user)
-                          );
-                        }
-                      }}
-                    >
-                      {chatComponentLoading ? (
-                        <Spinner className="video-student-chat-spinner" size="sm" animation="border" variant="light" />
-                      ) : (
-                        <>
-                          Chat&nbsp;
-                          <FaComment />
-                        </>
-                      )}
-                    </Button>
-                  )}
-                </Col>
-              </Row>
-              <Row>
-                <Col md={4}>
-                  {currentVideo.views + " views | " + currentVideo.subject}
-                </Col>
-                <Col md={{ span: 4, offset: 4 }} className="video-date">
-                  {"Upload date: " + currentVideo.created_at}
-                </Col>
-              </Row>
-            </div>
-            <hr />
-            <div>
-              <Media>
-                <img
-                  alt="Creator"
-                  className="video-profile-picture"
-                  onClick={() =>
-                    history.push(
-                      "/profile/" + currentVideo.creator_profile.user
-                    )
-                  }
-                  src={currentVideo.creator_profile.profile_pic}
+            <Row>
+              <Col sm={12} md={12} lg={8}>
+                <VideoPlayer
+                  playback_id={currentVideo.playback_id}
                 />
-                <Media.Body>
-                  <div className="video-name-reviews">
-                    <Row>
-                      <Col>{currentVideo.creator_profile.username}</Col>
-                    </Row>
-                    <Row>
-                      {currentVideo.creator_profile.aggregate_star !== null && (
-                        <Col>
-                          <StarDisplay
-                            num={parseInt(
-                              currentVideo.creator_profile.aggregate_star
+                <div className="video-header">
+                  <Row>
+                    <Col xs={12} className="video-title">
+                      {currentVideo.video_title}
+                    </Col>
+                  </Row>
+                  <LikeCount currentVideo={currentVideo} />
+                  <Row>
+                    <Col sm={6}>
+                      {currentVideo.views + " views | " + currentVideo.subject}
+                    </Col>
+                    <Col sm={6} className="video-date">
+                      {"Upload date: " + currentVideo.created_at}
+                    </Col>
+                  </Row>
+                </div>
+                <hr />
+                <div>
+                  <Media>
+                    <img
+                      alt="Creator"
+                      className="video-profile-picture"
+                      onClick={() =>
+                        history.push(
+                          "/profile/" + currentVideo.creator_profile.user
+                        )
+                      }
+                      src={currentVideo.creator_profile.profile_pic}
+                    />
+                    <Media.Body>
+                      <div className="video-name-reviews">
+                        <Row>
+                          <Col>{currentVideo.creator_profile.username}</Col>
+                        </Row>
+                        <Row>
+                          {currentVideo.creator_profile.aggregate_star !== null && (
+                            <Col>
+                              <StarDisplay
+                                num={parseInt(
+                                  currentVideo.creator_profile.aggregate_star
+                                )}
+                                size={18}
+                              />
+                            </Col>
+                          )}
+                          <Col className="video-student-reviews">
+                            {!(currentVideo.creator_profile.user === parseInt(user)) && (
+                              <Button
+                                variant="secondary"
+                                className="video-student-chat"
+                                disabled={chatComponentLoading}
+                                onClick={() => {
+                                  const alreadyExists = chats.find(
+                                    (chat) =>
+                                      chat.recipient ===
+                                      currentVideo.creator_profile.user
+                                  );
+                                  if (alreadyExists) {
+                                    dispatch(setActive(alreadyExists.chatroom));
+                                  } else {
+                                    dispatch(
+                                      startChat(currentVideo.creator_profile.user)
+                                    );
+                                  }
+                                }}
+                              >
+                                {chatComponentLoading ? (
+                                  <Spinner className="video-student-chat-spinner" size="sm" animation="border" variant="light" />
+                                ) : (
+                                  <>
+                                    Chat&nbsp;
+                                    <FaComment />
+                                  </>
+                                )}
+                              </Button>
                             )}
-                            size={18}
-                          />
-                        </Col>
-                      )}
-                      <Col className="video-student-reviews">
-                        {currentVideo.creator_profile.total_tutor_reviews +
-                          " student reviews"}
-                      </Col>
-                    </Row>
-                    <LikeCount currentVideo={currentVideo} />
-                  </div>
-                </Media.Body>
-              </Media>
-              <Row>
-                <Col>
-                  <Description description={currentVideo.video_description} />
-                </Col>
-              </Row>
-              <Row>
-                <Comment
-                  totalComments={currentVideo.num_of_comments}
-                  videoId={currentVideo.id}
+                            {currentVideo.creator_profile.total_tutor_reviews +
+                              " student reviews"}
+                          </Col>
+                        </Row>
+                      </div>
+                    </Media.Body>
+                  </Media>
+                  <Row>
+                    <Col>
+                      <Description description={currentVideo.video_description} />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Comment
+                      totalComments={currentVideo.num_of_comments}
+                      videoId={currentVideo.id}
+                    />
+                  </Row>
+                </div>
+              </Col>
+              <Col sm={12} md={12} lg={4}>
+                <VideoGrid
+                  videos={videos}
+                  reachedEnd={reachedEnd}
+                  homeLoading={homeLoading}
+                  videoLoading={videoLoading}
                 />
-              </Row>
-            </div>
-            <VideoGrid
-              videos={videos}
-              reachedEnd={reachedEnd}
-              homeLoading={homeLoading}
-              videoLoading={videoLoading}
-            />
+              </Col>
+            </Row>
           </Container>
         </>
       )}
@@ -724,38 +779,38 @@ const WatchPage = () => {
     location,
     review,
     searchQuery,
+    firstLoad
   } = useSelector((state) => state.home);
 
   useEffect(() => {
     dispatch(loadWatchVideos(videoId));
+
+    return () => {
+      dispatch(exitWatchVideos());
+    }
   }, [dispatch, videoId]);
 
+  // Prevent home videos loading on rerender  
+  const isFirstLoad = useRef(firstLoad);
+  const isFirstRender = useRef(true)
   useEffect(() => {
-    dispatch(
-      loadHomeVideos(
-        filterBy,
-        ascending,
-        page,
-        reachedEnd,
-        availability,
-        subject,
-        location,
-        review,
-        searchQuery
-      )
-    );
-  }, [
-    dispatch,
-    page,
-    ascending,
-    filterBy,
-    reachedEnd,
-    availability,
-    subject,
-    location,
-    review,
-    searchQuery,
-  ]);
+    // is first time loading and component render, load the page
+    if (firstLoad && isFirstRender.current) {
+      isFirstRender.current = false
+      dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+
+    } else if (!firstLoad && !isFirstRender.current) { // is not first load nor render
+      if (isFirstLoad.current !== firstLoad) {//prevent loading when firstLoad dependency changes
+        isFirstLoad.current = firstLoad
+      } else {
+        dispatch(loadHomeVideos(filterBy, ascending, page, reachedEnd, availability, subject, location, review, searchQuery))
+      }
+    } else { // is first render but not first load, do nothing
+      isFirstRender.current = false
+    }
+
+  }, [dispatch, page, ascending, filterBy, reachedEnd, availability, subject, location, review, searchQuery, firstLoad])
+
 
   useEffect(() => {
     dispatch(getComments(videoId));

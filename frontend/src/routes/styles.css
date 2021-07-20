@@ -455,14 +455,14 @@ p {
 
 /* Video Page */
 .video-header {
-  margin-top: 25px;
-  font-size: 20px;
+  margin-top: 15px;
+  font-size: 14px;
   font-weight: regular;
   padding: 0px 5px;
 }
 
 .video-title {
-  font-size: 35px;
+  font-size: 20px;
   font-family: 'Inter';
   font-weight: 400;
 }
@@ -502,7 +502,7 @@ p {
   height: 36px;
   display: flex;
   align-items: center;
-  float: right;
+  float: left;
   cursor: pointer;
   background-color: #ff6229;
   border: #ff5315;
@@ -525,6 +525,7 @@ p {
   align-items: center;
   float: right;
   cursor: pointer;
+  margin-top: 15px;
 }
 
 .video-student-likes-unauth {
@@ -733,7 +734,11 @@ p {
 }
 
 .home-video-row {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
+}
+
+.watch-video-row {
+  margin-bottom: 15px;
 }
 
 .home-content-end {
@@ -917,6 +922,12 @@ p {
   border-radius: 0px;
 }
 
+@media (min-width: 365px) {
+  .review-word-span {
+    white-space: nowrap;
+  }
+}
+
 @media (min-width: 768px) {
   .center-profile {
     float: left;
@@ -925,10 +936,22 @@ p {
   .center-profile-text {
     text-align: left;
   }
+
+  .video-title {
+    font-size: 25px;
+  }
+
+  .video-header {
+    font-size: 16px;
+  }
 }
 
-@media (min-width: 365px) {
-  .review-word-span {
-    white-space: nowrap;
+@media (min-width: 1200px) {
+  .video-title {
+    font-size: 35px;
+  }
+
+  .video-header {
+    font-size: 20px;
   }
 }
