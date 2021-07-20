@@ -127,8 +127,31 @@ const Upload = () => {
     };
 
     const onUploadChange = (videoFile) => {
-        setFileName(videoFile.name)
-        setFile(videoFile)
+        //Prevent changing video file if user just closes the window
+        if (videoFile !== undefined && videoFile !== null) {
+            setFileName(videoFile.name)
+            setFile(videoFile)
+            validateFileDuration(videoFile)
+        }
+    }
+
+    // Get the video duration
+    function validateFileDuration(file) {
+        // Create video element and src, check duration when src is loaded
+        var video = document.createElement('video');
+        video.preload = 'metadata';
+        video.onloadedmetadata = function () {
+            window.URL.revokeObjectURL(video.src);
+            setVideoData({
+                ...videoData,
+                duration: video.duration
+            })
+            if (video.duration > 60) {
+                dispatch(setAlert("Your video file exceeds 60 seconds", "danger"))
+                return;
+            }
+        }
+        video.src = URL.createObjectURL(file);
     }
 
     const onSubmit = (e) => {
@@ -141,7 +164,7 @@ const Upload = () => {
         if (videoData.title === '' || videoData.subject === '' || videoData.description === '') {
             //console.log("Your fields are not validated")
             dispatch(setAlert("There are empty fields remaining", "danger"))
-        } else if (file === null || videoData.duration === null) {
+        } else if (file === null || file === undefined || videoData.duration === null) {
             dispatch(setAlert("You have not uploaded any files", "danger"))
         } else if (videoData.duration > 60) {
             dispatch(setAlert("Your video file exceeds 60 seconds", "danger"))
@@ -248,27 +271,6 @@ const Upload = () => {
                                         </Col>
                                     </Row>
                                 </form>
-                                {file && (
-                                    <video
-                                        controls={true}
-                                        width="250"
-                                        className="upload-video-helper"
-                                        onLoadedMetadata={e => {
-                                            // setMetadata({
-                                            //     videoHeight: e.target.videoHeight,
-                                            //     videoWidth: e.target.videoWidth,
-                                            //     duration: e.target.duration
-                                            // });
-                                            setVideoData({
-                                                ...videoData,
-                                                duration: e.target.duration
-                                            })
-                                        }}
-                                    >
-                                        <source src={URL.createObjectURL(file)}
-                                            type="video/mp4" />
-                                    </video>
-                                )}
                             </div>
                         </Container>)}
                 </>
