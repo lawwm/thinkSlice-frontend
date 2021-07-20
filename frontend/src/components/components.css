@@ -148,8 +148,18 @@ nav a:hover,
 .thumbnail-title {
   font-weight: 500;
   font-family: 'Roboto', 'Arial';
-  font-size: 19px;
+  font-size: 16px;
   margin-bottom: 2px;
+}
+
+.module {
+  overflow: hidden;
+}
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .thumbnail-caption {

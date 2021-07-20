@@ -134,7 +134,11 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
             <div className="thumbnail-body">
               <Row
                 onClick={() => history.push('/watch/' + videoId)}>
-                <h5 className="thumbnail-title">{title}</h5>
+                {/* <h5 className="thumbnail-title">{truncate(title, {
+                  length: wordLimit,
+                  omission: "..."
+                })}</h5> */}
+                <h5 className="thumbnail-title module line-clamp">{title}</h5>
               </Row>
               <Row>
                 <OverlayTrigger

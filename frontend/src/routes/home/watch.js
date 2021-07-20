@@ -540,7 +540,7 @@ const Guest = ({
         <>
           <Container>
             <Row>
-              <Col sm={12} md={12} lg={8}>
+              <Col sm={12} md={12} lg={8} xl={9}>
                 <VideoPlayer
                   playback_id={currentVideo.playback_id}
                 />
@@ -599,7 +599,7 @@ const Guest = ({
                   </Row>
                 </div>
               </Col>
-              <Col sm={12} md={12} lg={4}>
+              <Col sm={12} md={12} lg={4} xl={3}>
                 <VideoGrid
                   videos={videos}
                   reachedEnd={reachedEnd}
@@ -644,7 +644,7 @@ const Member = ({
         <>
           <Container>
             <Row>
-              <Col sm={12} md={12} lg={8}>
+              <Col sm={12} md={12} lg={8} xl={9}>
                 <VideoPlayer
                   playback_id={currentVideo.playback_id}
                 />
@@ -744,7 +744,7 @@ const Member = ({
                   </Row>
                 </div>
               </Col>
-              <Col sm={12} md={12} lg={4}>
+              <Col sm={12} md={12} lg={4} xl={3}>
                 <VideoGrid
                   videos={videos}
                   reachedEnd={reachedEnd}

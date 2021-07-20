@@ -62,6 +62,12 @@ export const getProfile = (userId) => async (dispatch) => {
   }
 };
 
+export const uploadProfileVideo = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.PROFILE_UPLOAD_VIDEO
+  })
+}
+
 export const editVideo = (videoId, videoData, closeModalFunction, stopLoading) => async (dispatch) => {
   try {
     if (videoId === undefined || videoId === "" || videoData === undefined) {
