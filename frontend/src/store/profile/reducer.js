@@ -36,6 +36,12 @@ export const profile = (state = initialState, action) => {
       return {
         ...state, profileComponentLoading: false
       }
+    case actionTypes.PROFILE_UPLOAD_VIDEO:
+      return {
+        ...state,
+        profile: null,
+        profileLoading: true
+      }
     case actionTypes.PROFILE_EDIT_VIDEO:
       const videoArray = [...state.profile.basic.video]
       const indexVideo = videoArray.findIndex(video => video.id === payload.id);

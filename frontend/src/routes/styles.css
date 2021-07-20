@@ -683,7 +683,7 @@ p {
 /* home */
 
 .home-div {
-  margin-top: 36px;
+  margin-top: 6px;
 }
 
 .dropdown-div {
@@ -944,6 +944,10 @@ p {
   .video-header {
     font-size: 16px;
   }
+
+  .home-div {
+    margin-top: 12px;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -953,5 +957,9 @@ p {
 
   .video-header {
     font-size: 20px;
+  }
+
+  .home-div {
+    margin-top: 18px;
   }
 }

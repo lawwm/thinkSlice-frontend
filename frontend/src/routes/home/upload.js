@@ -9,7 +9,7 @@ import axios from 'axios'
 import "../styles.css";
 import { setAlert } from "../../store/components/action"
 import { startUpload, endUpload, setVideoLoading } from "../../store/home/action.js";
-import { getProfile } from "../../store/profile/action"
+import { getProfile, uploadProfileVideo } from "../../store/profile/action"
 
 const subjects = [
     "Arts",
@@ -92,12 +92,14 @@ const Upload = () => {
             };
             try {
                 const body = JSON.stringify(videoData)
-                const res = await axios.post('/api/videos/assets/' + url_id, body, config)
+                await axios.post('/api/videos/assets/' + url_id, body, config)
                 dispatch(endUpload())
                 dispatch(setAlert("Successfully uploaded video", "success"))
                 setProgressState(0)
                 dispatch(setVideoLoading())
-                history.push("/watch/" + res.data.id)
+                dispatch(uploadProfileVideo())
+                history.push("/profile/" + profile.basic.user)
+                // history.push("/watch/" + res.data.id)
             } catch (err) {
                 dispatch(endUpload())
                 dispatch(setAlert("Failed to upload video", "danger"))
