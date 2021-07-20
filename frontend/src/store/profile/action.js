@@ -275,15 +275,25 @@ export const getReviews = (userId) => async (dispatch) => {
   }
 }
 
-export const createReviews = ({ review_title, review_essay, star_rating, tutorId }, closeModalFunction, clearFormData) => async (dispatch) => {
+export const createReviews = ({ review_title, review_subject, review_essay, star_rating, tutorId }, closeModalFunction, clearFormData) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.SET_REVIEW_LOADING,
     })
-    if (review_title === "" || review_essay === "" || star_rating === 0) {
-      throw new CustomError("Fields are empty!")
+    if (star_rating === 0) {
+      throw new CustomError("Please give a star rating.")
     }
-    const body = JSON.stringify({ review_title, review_essay, star_rating })
+    if (review_title === "") {
+      throw new CustomError("Please give a title to your review.")
+    }
+    if (review_subject.length === 0) {
+      throw new CustomError("Please state which subject(s) you studied under this tutor.")
+    }
+    if (review_essay === "") {
+      throw new CustomError("Please give a description to your review.")
+    }
+    const body = JSON.stringify({ review_title, review_subject, review_essay, star_rating })
+    console.log(body)
 
     const res = await axios.post(DOMAINS.REVIEWS + ENDPOINTS.CREATE_REVIEW + '/' + tutorId,
       body,
@@ -303,15 +313,24 @@ export const createReviews = ({ review_title, review_essay, star_rating, tutorId
   }
 }
 
-export const editReviews = ({ review_title, review_essay, star_rating, reviewId }, closeModalFunction) => async (dispatch) => {
+export const editReviews = ({ review_title, review_subject, review_essay, star_rating, reviewId }, closeModalFunction) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.SET_REVIEW_POST_LOADING,
     })
-    if (review_title === "" || review_essay === "" || star_rating === 0) {
-      throw new Error("Fields are empty!")
+    if (star_rating === 0) {
+      throw new CustomError("Please give a star rating.")
     }
-    const body = JSON.stringify({ review_title, review_essay, star_rating })
+    if (review_title === "") {
+      throw new CustomError("Please give a title to your review.")
+    }
+    if (review_subject.length === 0) {
+      throw new CustomError("Please state which subject(s) you studied under this tutor.")
+    }
+    if (review_essay === "") {
+      throw new CustomError("Please give a description to your review.")
+    }
+    const body = JSON.stringify({ review_title, review_subject, review_essay, star_rating })
     const res = await axios.patch(DOMAINS.REVIEWS + ENDPOINTS.EDIT_DELETE_REVIEW + '/' + reviewId,
       body,
       config)

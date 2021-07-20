@@ -7,8 +7,9 @@ import { setAlert } from "../store/components/action";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { subjects } from "./CheckboxGroup";
+import { truncate } from "lodash";
 import greyload from '../images/Solid_grey.svg'
-
+const wordLimit = 18
 const Thumbnail = ({ title, videoDescription, username, views, date, subject, playback_id, imageSrc, videoId, profileId, deleteButton = false }) => {
 
   const dispatch = useDispatch();
@@ -102,7 +103,10 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
           <div
             onClick={() => history.push('/watch/' + videoId)}
             className="thumbnail-subject-duration">
-            {date}
+            {truncate(date, {
+              length: wordLimit,
+              omission: "..."
+            })}
           </div>
           <div className="thumbnail-subject-profile-div">
             {deleteButton &&

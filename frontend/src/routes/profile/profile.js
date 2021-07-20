@@ -23,6 +23,7 @@ import {
 } from "react-bootstrap";
 import "../styles.css";
 import { setActive, startChat } from "../../store/chat/action.js";
+import { StarDisplay } from "../../components/StarRating.js";
 
 const ShowVideoModal = ({ userId, setLikedModal }) => {
   const dispatch = useDispatch();
@@ -151,6 +152,14 @@ const Profile = () => {
                       )}
                     </div>
                     <p>{profile.basic.user_bio}</p>
+                    {profile.basic.is_tutor && (
+                      <p>
+                        <StarDisplay num={profile.detailed.aggregate_star} />
+                        <span className="add-margin-left">
+                          ({profile.detailed.total_tutor_reviews} reviews)
+                        </span>
+                      </p>
+                    )}
                   </Col>
                   <Col xs={12} md={3}>
                     <div
@@ -230,44 +239,45 @@ const Profile = () => {
                 <hr></hr>
                 <br />
 
-                {profile.basic.video.length !== 0 && (<>
-
-                  <Row>
-                    <Container>
-                      <h2>Videos</h2>
-                      <Row className="justify-content-md-left">
-                        {profile.basic.video.map((videoRow) => {
-                          return (
-                            <Col
-                              key={videoRow.id}
-                              xs={12}
-                              md={6}
-                              xl={4}
-                              className="home-video-row"
-                            >
-                              <Thumbnail
-                                title={videoRow.video_title}
-                                username={profile.basic.username}
-                                videoDescription={videoRow.video_description}
-                                views={videoRow.views}
-                                subject={videoRow.subject}
-                                date={videoRow.created_at}
-                                playback_id={videoRow.playback_id}
-                                imageSrc={profile.basic.profile_pic}
-                                videoId={videoRow.id}
-                                profileId={videoRow.creator_profile.user}
-                                deleteButton={currentViewer === user_id}
-                              />
-                            </Col>
-                          );
-                        })}
-                      </Row>
-                    </Container>
-                  </Row>
-                  <br />
-                  <hr></hr>
-                  <br />
-                </>)}
+                {profile.basic.video.length !== 0 && (
+                  <>
+                    <Row>
+                      <Container>
+                        <h2>Videos</h2>
+                        <Row className="justify-content-md-left">
+                          {profile.basic.video.map((videoRow) => {
+                            return (
+                              <Col
+                                key={videoRow.id}
+                                xs={12}
+                                md={6}
+                                xl={4}
+                                className="home-video-row"
+                              >
+                                <Thumbnail
+                                  title={videoRow.video_title}
+                                  username={profile.basic.username}
+                                  videoDescription={videoRow.video_description}
+                                  views={videoRow.views}
+                                  subject={videoRow.subject}
+                                  date={videoRow.created_at}
+                                  playback_id={videoRow.playback_id}
+                                  imageSrc={profile.basic.profile_pic}
+                                  videoId={videoRow.id}
+                                  profileId={profile.basic.user}
+                                  deleteButton={currentViewer === user_id}
+                                />
+                              </Col>
+                            );
+                          })}
+                        </Row>
+                      </Container>
+                    </Row>
+                    <br />
+                    <hr></hr>
+                    <br />
+                  </>
+                )}
                 <Row>
                   <Container>
                     <h2>Liked videos</h2>

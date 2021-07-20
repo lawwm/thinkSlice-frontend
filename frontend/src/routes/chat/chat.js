@@ -19,8 +19,10 @@ import LoadingSpinner from "../../components/LoadingSpinner.js";
 import ChatRoom from "../../components/ChatRoom.js";
 import ChatBox from "../../components/ChatBox.js";
 import "../styles.css";
+import { useHistory } from "react-router-dom";
 
 const Chat = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const {
@@ -140,8 +142,7 @@ const Chat = () => {
             <ChatRoom
               profilePic={
                 // "https://thinkslice-project.s3.amazonaws.com/" +
-                "https://d9ws6ej9ht96n.cloudfront.net/" +
-                chat.recipientPic
+                "https://d9ws6ej9ht96n.cloudfront.net/" + chat.recipientPic
               }
               username={chat.recipientName}
               chatroom={chat.chatroom}
@@ -153,9 +154,7 @@ const Chat = () => {
               // console.log("Close chat");
               dispatch(chatActions.hideChat(chat));
             }}
-            className={
-              activeChat === chat.chatroom ? "hide-chat-selected" : "hide-chat"
-            }
+            className="hide-chat"
           >
             ✖
           </div>
@@ -224,12 +223,24 @@ const Chat = () => {
                               className="thumbnail-image"
                               alt="profile picture"
                               fluid
+                              onClick={() =>
+                                history.push(
+                                  "/profile/" + currentChat.recipient
+                                )
+                              }
                             />
                           </div>
                           <Media.Body>
                             <div>
                               <div className="chatroom-center">
-                                <h5 id="recipient-header">
+                                <h5
+                                  id="recipient-header"
+                                  onClick={() =>
+                                    history.push(
+                                      "/profile/" + currentChat.recipient
+                                    )
+                                  }
+                                >
                                   {currentChat.recipientName}
                                 </h5>
                               </div>

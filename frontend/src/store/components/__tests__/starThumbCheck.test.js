@@ -144,7 +144,7 @@ describe('checkbox group', () => {
               name="subjects"
               value={subjectList}
             >
-              <CheckboxGroup subjectList={subjectList} />
+              <CheckboxGroup checkedSubjects={subjectList}/>
             </Form>
           </Form.Group>
         </Router>

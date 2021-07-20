@@ -36,6 +36,7 @@ nav a:hover,
 
 .add-margin-left {
   margin-left: 10px;
+  font-size: 20px !important;
 }
 
 /* thumbnail */
@@ -55,6 +56,7 @@ nav a:hover,
   object-fit: cover;
   height: 100%;
   width: 100%;
+  cursor: pointer;
 }
 
 .thumbnail-image-div {
@@ -326,6 +328,12 @@ nav a:hover,
   height: 44px;
 }
 
+.review-subject:disabled {
+  background-color: #414141;
+  border: none;
+  margin-right: 5px;
+}
+
 /* rating */
 .star-display {
   margin-bottom: 7px;
@@ -532,6 +540,7 @@ button.alert-close {
   font-weight: 600;
   font-family: 'Inter', 'Calibri';
   font-size: 20px;
+  cursor: pointer;
 }
 
 .comment-pic {
@@ -550,6 +559,7 @@ button.alert-close {
   justify-content: center;
   align-items: center;
   margin: 10px 0px 10px 5px;
+  cursor: pointer;
 }
 
 .comment-date {

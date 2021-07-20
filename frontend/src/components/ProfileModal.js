@@ -13,7 +13,6 @@ import {
 import update from "immutability-helper";
 
 import { Modal, Button, Form, Nav, Table } from "react-bootstrap";
-import { StarDisplay } from "./StarRating.js";
 import { CheckboxGroup } from "./CheckboxGroup.js";
 import whatsapp from "../images/Whatsapp.png";
 import telegram from "../images/Telegram.png";
@@ -146,8 +145,6 @@ const ProfileModal = ({ userId }) => {
   const {
     tutor_whatsapp,
     tutor_telegram,
-    aggregate_star,
-    total_tutor_reviews,
     location,
     subjects,
     duration_classes,
@@ -163,6 +160,10 @@ const ProfileModal = ({ userId }) => {
           "The min lesson duration cannot be greater than the max lesson duration",
           "danger"
         )
+      );
+    } else if (duration_classes[0] === 0 && duration_classes[1] > 0) {
+      dispatch(
+        setAlert("Please set at least 1 hour for the min duration", "danger")
       );
     } else {
       dispatch(toggleEditMode(false));
@@ -267,16 +268,25 @@ const ProfileModal = ({ userId }) => {
                         as="select"
                         name="is_tutor"
                         className="modal-input"
-                        value={setTutorDropdownDefault(profileBasic.is_student, profileBasic.is_tutor)}
+                        value={setTutorDropdownDefault(
+                          profileBasic.is_student,
+                          profileBasic.is_tutor
+                        )}
                         onChange={(e) => {
                           onChangeBasic(e);
                           setShowTutorOptions(e.target.value % 2 !== 0);
                         }}
                       >
-                        <option value="0">Just viewing</option>
-                        <option value="1">Tutor</option>
-                        <option value="2">Student</option>
-                        <option value="3">Both</option>
+                        <option value="0">
+                          Just viewing (Limited features)
+                        </option>
+                        <option value="1">
+                          Tutor (Enables you to upload videos)
+                        </option>
+                        <option value="2">
+                          Student (Enables you to give tutor reviews)
+                        </option>
+                        <option value="3">Both (Enables all features)</option>
                       </Form.Control>
                     </Form.Group>
 
@@ -287,7 +297,9 @@ const ProfileModal = ({ userId }) => {
                         aria-label="Available"
                         name="is_available"
                         className="modal-input"
-                        value={profileBasic.available ? "available" : "unavailable"}
+                        value={
+                          profileBasic.available ? "available" : "unavailable"
+                        }
                         onChange={(e) => {
                           onChangeBasic(e);
                         }}
@@ -333,13 +345,18 @@ const ProfileModal = ({ userId }) => {
                         onChangeDetailed(e);
                       }}
                     >
-                      <CheckboxGroup subjectList={subjects} />
+                      <CheckboxGroup
+                        checkedSubjects={subjects}
+                      />
                     </Form.Group>
                     <br />
                     <Form.Group>
                       <div>
-                        <Form.Label>{"Min Lesson duration (in hours):"}</Form.Label>&nbsp;
-                        <Form.Label >{duration_classes[0]}</Form.Label>
+                        <Form.Label>
+                          {"Min Lesson duration (in hours):"}
+                        </Form.Label>
+                        &nbsp;
+                        <Form.Label>{duration_classes[0]}</Form.Label>
                       </div>
 
                       <Form.Control
@@ -354,7 +371,10 @@ const ProfileModal = ({ userId }) => {
                     </Form.Group>
                     <Form.Group>
                       <div>
-                        <Form.Label>{"Max Lesson duration (in hours):"}</Form.Label>&nbsp;
+                        <Form.Label>
+                          {"Max Lesson duration (in hours):"}
+                        </Form.Label>
+                        &nbsp;
                         <Form.Label>{duration_classes[1]}</Form.Label>
                       </div>
 
@@ -406,15 +426,16 @@ const ProfileModal = ({ userId }) => {
                       Page 2
                     </Nav.Link>
                   </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link
-                      className="tabs profile-modal-page"
-                      eventKey="3"
-                      disabled={!showTutorOptions}
-                    >
-                      Page 3
-                    </Nav.Link>
-                  </Nav.Item>
+                  {showTutorOptions && (
+                    <Nav.Item>
+                      <Nav.Link
+                        className="tabs profile-modal-page"
+                        eventKey="3"
+                      >
+                        Page 3
+                      </Nav.Link>
+                    </Nav.Item>
+                  )}
                 </Nav>
               </Modal.Body>
               <Modal.Footer>
@@ -510,29 +531,14 @@ const ProfileModal = ({ userId }) => {
                                 ? "User is looking for students/teachers"
                                 : "User is not looking for students/teachers"
                               : is_tutor
-                                ? available
-                                  ? "User is looking for students"
-                                  : "User is not looking for students"
-                                : is_student
-                                  ? available
-                                    ? "User is looking for a teacher"
-                                    : "User is not looking for a teacher"
-                                  : "User is neither a tutor or student"}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Rating</td>
-                          <td className="table-data">
-                            {aggregate_star === null ? (
-                              "User does not have any ratings yet"
-                            ) : (
-                              <>
-                                <StarDisplay num={parseInt(aggregate_star)} />
-                                <span className="add-margin-left">
-                                  ({total_tutor_reviews} reviews)
-                                </span>
-                              </>
-                            )}
+                              ? available
+                                ? "User is looking for students"
+                                : "User is not looking for students"
+                              : is_student
+                              ? available
+                                ? "User is looking for a teacher"
+                                : "User is not looking for a teacher"
+                              : "User is neither a tutor or student"}
                           </td>
                         </tr>
                         <tr>
@@ -555,8 +561,8 @@ const ProfileModal = ({ userId }) => {
                             {duration_classes[0] === 0
                               ? "User has not provided the duration of their lessons"
                               : duration_classes[0] === duration_classes[1]
-                                ? duration_classes[0] + " hrs"
-                                : duration_classes[0] +
+                              ? duration_classes[0] + " hrs"
+                              : duration_classes[0] +
                                 " - " +
                                 duration_classes[1] +
                                 " hrs"}
