@@ -179,7 +179,25 @@ export const home = (state = initialState, action) => {
     case UPLOAD_ENDED:
       return {
         ...state,
-        isUploading: false
+        videos: [],
+        homeLoading: true,
+        videoLoading: true,
+        commentLoading: true,
+        currentVideo: {},
+        isUploading: false,
+        reachedEnd: false,
+        filterBy: "recent",
+        ascending: false,
+        page: 1,
+        subject: '',
+        location: '',
+        availability: '',
+        review: '',
+        searchQuery: '',
+        firstLoad: true,
+        removedVideoIndex: -1,
+        isOnVideoPage: false,
+        comments: [],
       }
     case REACHED_END:
       return {

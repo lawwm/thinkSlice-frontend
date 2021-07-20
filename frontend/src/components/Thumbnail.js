@@ -160,7 +160,14 @@ const Thumbnail = ({ title, videoDescription, username, views, date, subject, pl
                 </OverlayTrigger>
                 <div
                   onClick={() => history.push('/watch/' + videoId)}
-                  className="thumbnail-line">{views} views</div>
+                  className="thumbnail-line">
+                  {views >= 1000
+                    ? views >= 1000000
+                      ? Math.round(views / 1000000) + "M"
+                      : Math.round(views / 1000) + "K"
+                    : views
+                  }
+                  &nbsp;views</div>
               </Row>
             </div>
           </Media.Body>
