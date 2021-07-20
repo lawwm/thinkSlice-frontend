@@ -17,7 +17,7 @@ import {
   Modal,
   Form,
   Spinner,
-  ButtonGroup
+  ButtonGroup,
 } from "react-bootstrap";
 
 import {
@@ -27,8 +27,16 @@ import {
 } from "../../store/profile/action";
 
 import { StarChoice, StarDisplay } from "../../components/StarRating";
+import { CheckboxGroup } from "../../components/CheckboxGroup";
 
-const MapReviews = ({ reviews, viewerId, profileId, asTutor, profilePic, profileName }) => {
+const MapReviews = ({
+  reviews,
+  viewerId,
+  profileId,
+  asTutor,
+  profilePic,
+  profileName,
+}) => {
   return (
     <>
       {reviews.map((review, index) => {
@@ -39,6 +47,7 @@ const MapReviews = ({ reviews, viewerId, profileId, asTutor, profilePic, profile
               reviewPic={review.creator_details.profile_pic}
               username={review.creator_details.username}
               reviewTitle={review.review_title}
+              subjects={review.subject_taken}
               reviewEssay={review.review_essay}
               dateReview={review.date_review}
               editedDateReview={review.date_review_edited}
@@ -62,12 +71,15 @@ const Review = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { user_id } = useParams();
-  const { profile, profileLoading, reviewsGiven, reviewsReceived, reviewLoading, reviewUser } = useSelector(
-    (state) => state.profile
-  );
-  const { isAuthenticated } = useSelector(
-    (state) => state.auth
-  );
+  const {
+    profile,
+    profileLoading,
+    reviewsGiven,
+    reviewsReceived,
+    reviewLoading,
+    reviewUser,
+  } = useSelector((state) => state.profile);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const viewerId = localStorage.getItem("user");
 
@@ -87,15 +99,17 @@ const Review = () => {
     if (user_id !== reviewUser) {
       dispatch(getReviews(user_id));
     }
-  }, [user_id, dispatch, reviewUser])
+  }, [user_id, dispatch, reviewUser]);
 
   const [selectReview, setSelectReview] = useState("reviewsReceived");
 
   useEffect(() => {
     if (profile) {
-      setSelectReview(profile.basic.is_tutor ? "reviewsReceived" : "reviewsGiven")
+      setSelectReview(
+        profile.basic.is_tutor ? "reviewsReceived" : "reviewsGiven"
+      );
     }
-  }, [profile])
+  }, [profile]);
 
   const handleSelect = (eventKey) => {
     setSelectReview(eventKey);
@@ -107,9 +121,11 @@ const Review = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => {
     if (!isAuthenticated) {
-      dispatch(setAlert("You have to be a registered user to post a review", "danger"))
+      dispatch(
+        setAlert("You have to be a registered user to post a review", "danger")
+      );
     } else {
-      setShow(true)
+      setShow(true);
     }
   };
 
@@ -168,15 +184,17 @@ const Review = () => {
                     {profile.basic.username + "'s reviews"}
                   </div>
                   <div className="review-header-div">
-                    {
-                      profile.detailed.aggregate_star !== null &&
+                    {profile.detailed.aggregate_star !== null && (
                       <StarDisplay
                         num={profile.detailed.aggregate_star}
                         size={35}
                       />
-                    }
+                    )}
                   </div>
-                  <ButtonGroup className="review-header-div" aria-label="Basic example">
+                  <ButtonGroup
+                    className="review-header-div"
+                    aria-label="Basic example"
+                  >
                     <Button
                       size="lg"
                       variant="secondary"
@@ -184,12 +202,16 @@ const Review = () => {
                     >
                       Back to profile
                     </Button>
-                    {profile.basic.is_tutor && profile.basic.user.toString() !== viewerId && <Button
-                      size="lg"
-                      variant="secondary"
-                      onClick={handleShow}>
-                      Post review
-                    </Button>}
+                    {profile.basic.is_tutor &&
+                      profile.basic.user.toString() !== viewerId && (
+                        <Button
+                          size="lg"
+                          variant="secondary"
+                          onClick={handleShow}
+                        >
+                          Post review
+                        </Button>
+                      )}
                   </ButtonGroup>
                 </div>
               </Col>
@@ -200,7 +222,8 @@ const Review = () => {
                     src={profile.basic.profile_pic}
                     alt="profile_pic"
                     onClick={() => history.push("/profile/" + user_id)}
-                    fluid="true" />
+                    fluid="true"
+                  />
                 </div>
               </Col>
             </Row>
@@ -208,70 +231,81 @@ const Review = () => {
             <Nav
               justify
               variant="tabs"
-              defaultActiveKey={profile.basic.is_tutor ? "reviewsReceived" : "reviewsGiven"}
+              defaultActiveKey={
+                profile.basic.is_tutor ? "reviewsReceived" : "reviewsGiven"
+              }
               onSelect={handleSelect}
             >
-              {profile.basic.is_tutor &&
-                (<Nav.Item>
+              {profile.basic.is_tutor && (
+                <Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsReceived">
                     <span className="review-word-span">Reviews received</span>
                   </Nav.Link>
-                </Nav.Item>)}
-              {profile.basic.is_student &&
-                (<Nav.Item>
+                </Nav.Item>
+              )}
+              {profile.basic.is_student && (
+                <Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsGiven">
                     <span className="review-word-span">Reviews given</span>
                   </Nav.Link>
-                </Nav.Item>)}
+                </Nav.Item>
+              )}
             </Nav>
             {reviewLoading && (
               <div className="review-loading-div">
                 <LoadingSpinner />
               </div>
             )}
-            {
-              !reviewLoading && !profile.basic.is_tutor && !profile.basic.is_student &&
-              (<>
-                <div className="no-review-message">
-                  User is not a student or a tutor.
-                </div>
-              </>)
-            }
-            {!reviewLoading && selectReview === "reviewsReceived" && profile.basic.is_tutor &&
-              (<>
-                {reviewsReceived.length === 0
-                  ? <div className="no-review-message">
-                    User has not received any reviews as a tutor.
+            {!reviewLoading &&
+              !profile.basic.is_tutor &&
+              !profile.basic.is_student && (
+                <>
+                  <div className="no-review-message">
+                    User is not a student or a tutor.
                   </div>
-                  : <MapReviews
-                    reviews={reviewsReceived}
-                    viewerId={viewerId}
-                    profileId={profile.basic.user}
-                    asTutor={true}
-                    profilePic={profile.basic.profile_pic}
-                    profileName={profile.basic.username}
-                  />}
-              </>)
-            }
-            {!reviewLoading && selectReview === "reviewsGiven" && profile.basic.is_student &&
-              (<>
-                {reviewsGiven.length === 0
-                  ? <div className="no-review-message">
-                    User has not given any reviews as a student.
-                  </div>
-                  : <MapReviews
-                    reviews={reviewsGiven}
-                    viewerId={viewerId}
-                    profileId={profile.basic.user}
-                    asTutor={false}
-                    profilePic={profile.basic.profile_pic}
-                    profileName={profile.basic.username}
-                  />}
-              </>)
-            }
-            <div className="review-empty-space">
-
-            </div>
+                </>
+              )}
+            {!reviewLoading &&
+              selectReview === "reviewsReceived" &&
+              profile.basic.is_tutor && (
+                <>
+                  {reviewsReceived.length === 0 ? (
+                    <div className="no-review-message">
+                      User has not received any reviews as a tutor.
+                    </div>
+                  ) : (
+                    <MapReviews
+                      reviews={reviewsReceived}
+                      viewerId={viewerId}
+                      profileId={profile.basic.user}
+                      asTutor={true}
+                      profilePic={profile.basic.profile_pic}
+                      profileName={profile.basic.username}
+                    />
+                  )}
+                </>
+              )}
+            {!reviewLoading &&
+              selectReview === "reviewsGiven" &&
+              profile.basic.is_student && (
+                <>
+                  {reviewsGiven.length === 0 ? (
+                    <div className="no-review-message">
+                      User has not given any reviews as a student.
+                    </div>
+                  ) : (
+                    <MapReviews
+                      reviews={reviewsGiven}
+                      viewerId={viewerId}
+                      profileId={profile.basic.user}
+                      asTutor={false}
+                      profilePic={profile.basic.profile_pic}
+                      profileName={profile.basic.username}
+                    />
+                  )}
+                </>
+              )}
+            <div className="review-empty-space"></div>
             {/* Post Modal set up below */}
             <Modal backdrop="static" size="xl" show={show} onHide={handleClose}>
               <Form onSubmit={(e) => onSubmit(e)}>
@@ -294,6 +328,18 @@ const Review = () => {
                         value={formData.review_title}
                         onChange={(e) => onChange(e)}
                       />
+                      <Form.Group
+                        name="review_subject"
+                        value={formData.review_subject}
+                        onChange={(e) => {
+                          onChange(e);
+                        }}
+                      >
+                        <CheckboxGroup
+                          checkedSubjects={[]}
+                          subjectList={profile.detailed.subjects}
+                        />
+                      </Form.Group>
                       <Form.Control
                         className="create-review-textarea"
                         rows={8}
@@ -331,8 +377,7 @@ const Review = () => {
             </Modal>
           </div>
         </Container>
-      )
-      }
+      )}
     </>
   );
 };

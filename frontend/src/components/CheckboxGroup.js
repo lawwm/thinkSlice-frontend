@@ -10,21 +10,29 @@ export const subjects = [
   "Computing",
   "Cooking",
   "Crafting",
+  "Economics",
   "Engineering",
+  "Environment",
+  "Geography",
   "Health",
-  "Humanities",
+  "History",
   "Language",
+  "Law",
+  "Literature",
   "Math",
+  "Medicine",
   "Music",
+  "Other Humanities",
   "Physics",
   "Sports",
   "Visual Arts",
 ];
 
-export const CheckboxGroup = ({ subjectList }) => {
+export const CheckboxGroup = ({ checkedSubjects, subjectList }) => {
+  let listToMap = subjectList || subjects;
   return (
     <>
-      {subjects.map((subject, index) => {
+      {listToMap.map((subject, index) => {
         return (
           <Form.Check
             key={index}
@@ -33,16 +41,16 @@ export const CheckboxGroup = ({ subjectList }) => {
             id={`checkbox-${subject}`}
             value={subject}
             checked={
-              subjectList === null ? false : subjectList.includes(subject)
+              checkedSubjects === null ? false : checkedSubjects.includes(subject)
             }
             inline
             onChange={(e) => {
-              const index = subjectList.indexOf(subject);
+              const index = checkedSubjects.indexOf(subject);
               var result;
               if (index < 0) {
-                result = subjectList.push(subject);
+                result = checkedSubjects.push(subject);
               } else {
-                result = subjectList.splice(index, 1);
+                result = checkedSubjects.splice(index, 1);
               }
               return result;
             }}

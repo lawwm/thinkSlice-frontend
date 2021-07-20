@@ -7,8 +7,9 @@ import { StarDisplay, StarChoice } from "../components/StarRating";
 import "./components.css";
 import { FaRegEdit, FaTrashAlt } from "react-icons/fa";
 import { deleteReviews, editReviews } from "../store/profile/action"
+import { CheckboxGroup } from "./CheckboxGroup";
 
-const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, dateReview, editedDateReview, starRating, edited, viewerId, profileId, reviewerId, asTutor, profilePic, profileName }) => {
+const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewSubject, reviewEssay, dateReview, editedDateReview, starRating, subjects, edited, viewerId, profileId, reviewerId, asTutor, profilePic, profileName }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -27,7 +28,8 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
   const [formData, setFormData] = useState({
     "review_title": reviewTitle,
     "review_essay": reviewEssay,
-    "star_rating": starRating
+    "star_rating": starRating,
+    "review_subject": reviewSubject
   })
 
   const onChange = (e) => {
@@ -163,6 +165,15 @@ const ReviewPost = ({ reviewId, reviewPic, username, reviewTitle, reviewEssay, d
                     value={formData.review_title}
                     onChange={(e) => onChange(e)}
                   />
+                  <Form.Group
+                      name="review_subject"
+                      value={formData.review_subject}
+                      onChange={(e) => {
+                        onChange(e);
+                      }}
+                    >
+                      <CheckboxGroup checkedSubjects={subjects} subjectList={subjects}/>
+                    </Form.Group>
                   <Form.Control
                     className="create-review-textarea"
                     rows={8}

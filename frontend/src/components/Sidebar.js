@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Form, Button } from "react-bootstrap"
-import { StarDisplay } from "./StarRating"
-import { changeAvailable, changeLocation, changeSubject, changeReview } from "../store/home/action"
-import "./components.css"
+import { Form, Button } from "react-bootstrap";
+import { StarDisplay } from "./StarRating";
+import {
+  changeAvailable,
+  changeLocation,
+  changeSubject,
+  changeReview,
+} from "../store/home/action";
+import "./components.css";
 
 const moreSubjects = [
   "Arts",
@@ -13,11 +18,19 @@ const moreSubjects = [
   "Computing",
   "Cooking",
   "Crafting",
+  "Economics",
+  "Engineering",
+  "Environment",
+  "Geography",
   "Health",
-  "Humanities",
+  "History",
   "Language",
+  "Law",
+  "Literature",
   "Math",
+  "Medicine",
   "Music",
+  "Other Humanities",
   "Physics",
   "Sports",
   "Visual Arts",
@@ -30,28 +43,27 @@ const subjects = [
   "Chemistry",
   "Computing",
   "Cooking",
-]
+];
 
-const locations = [
-  'Central',
-  'North',
-  'South',
-  'East',
-  'West'
-]
+const locations = ["Central", "North", "South", "East", "West"];
 
-const rating = [5, 4, 3, 2, 1]
+const rating = [5, 4, 3, 2, 1];
 
-export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailability, selectedReview }) => {
+export const Sidebar = ({
+  selectedSubject,
+  selectedLocation,
+  selectedAvailability,
+  selectedReview,
+}) => {
   const dispatch = useDispatch();
-  const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(false);
 
   const clearAll = () => {
-    dispatch(changeAvailable(''))
-    dispatch(changeSubject(''))
-    dispatch(changeLocation(''))
-    dispatch(changeReview(''))
-  }
+    dispatch(changeAvailable(""));
+    dispatch(changeSubject(""));
+    dispatch(changeLocation(""));
+    dispatch(changeReview(""));
+  };
 
   return (
     <>
@@ -67,11 +79,9 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               value={"True"}
               id="only-available"
               checked={selectedAvailability === "True"}
-              onChange={
-                (e) => {
-                  dispatch(changeAvailable(e.target.value))
-                }
-              }
+              onChange={(e) => {
+                dispatch(changeAvailable(e.target.value));
+              }}
             />
           </div>
           <div className="sidebar-radio">
@@ -81,25 +91,21 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
               value={"False"}
               id="only-unavailable"
               checked={selectedAvailability === "False"}
-              onChange={
-                (e) => {
-                  dispatch(changeAvailable(e.target.value))
-                }
-              }
+              onChange={(e) => {
+                dispatch(changeAvailable(e.target.value));
+              }}
             />
           </div>
           <div className="sidebar-radio">
             <Form.Check
               type="radio"
               label="Both"
-              value={''}
+              value={""}
               id="both-available-unavailable"
-              checked={selectedAvailability === ''}
-              onChange={
-                (e) => {
-                  dispatch(changeAvailable(e.target.value))
-                }
-              }
+              checked={selectedAvailability === ""}
+              onChange={(e) => {
+                dispatch(changeAvailable(e.target.value));
+              }}
             />
           </div>
           <hr />
@@ -108,19 +114,16 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
             <Form.Check
               type="radio"
               label="Any subject"
-              id={'checkbox-any-subject'}
-              value={''}
-              checked={selectedSubject === ''}
-              onChange={
-                (e) => {
-                  dispatch(changeSubject(e.target.value))
-                }
-              }
+              id={"checkbox-any-subject"}
+              value={""}
+              checked={selectedSubject === ""}
+              onChange={(e) => {
+                dispatch(changeSubject(e.target.value));
+              }}
             />
           </div>
           {!showMore
-            ? (
-              subjects.map((subject, index) => {
+            ? subjects.map((subject, index) => {
                 return (
                   <div className="sidebar-radio" key={index}>
                     <Form.Check
@@ -129,20 +132,14 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                       id={`checkbox-${subject}`}
                       value={subject}
                       checked={subject === selectedSubject}
-                      onChange={
-                        (e) => {
-                          dispatch(changeSubject(e.target.value))
-                        }
-                      }
+                      onChange={(e) => {
+                        dispatch(changeSubject(e.target.value));
+                      }}
                     />
                   </div>
-
-                )
+                );
               })
-            )
-
-            : (
-              moreSubjects.map((subject, index) => {
+            : moreSubjects.map((subject, index) => {
                 return (
                   <div className="sidebar-radio" key={index}>
                     <Form.Check
@@ -152,39 +149,40 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                       id={`checkbox-${subject}`}
                       value={subject}
                       checked={subject === selectedSubject}
-                      onChange={
-                        (e) => {
-                          dispatch(changeSubject(e.target.value))
-                        }
-                      }
+                      onChange={(e) => {
+                        dispatch(changeSubject(e.target.value));
+                      }}
                     />
                   </div>
-                )
-              }
-              )
-            )}
-          {!showMore
-            ? <Button
+                );
+              })}
+          {!showMore ? (
+            <Button
               className="sidebar-showmore"
-              onClick={() => setShowMore(true)}>Show more</Button>
-            : <Button
+              onClick={() => setShowMore(true)}
+            >
+              Show more
+            </Button>
+          ) : (
+            <Button
               className="sidebar-showmore"
-              onClick={() => setShowMore(false)}>Hide</Button>
-          }
+              onClick={() => setShowMore(false)}
+            >
+              Hide
+            </Button>
+          )}
           <hr />
           <div className="sidebar-category">Location</div>
           <div className="sidebar-radio">
             <Form.Check
               type="radio"
               label="Any location"
-              value={''}
-              id='any-location'
-              checked={selectedLocation === ''}
-              onChange={
-                (e) => {
-                  dispatch(changeLocation(e.target.value))
-                }
-              }
+              value={""}
+              id="any-location"
+              checked={selectedLocation === ""}
+              onChange={(e) => {
+                dispatch(changeLocation(e.target.value));
+              }}
             />
           </div>
           {locations.map((location, index) => {
@@ -197,51 +195,49 @@ export const Sidebar = ({ selectedSubject, selectedLocation, selectedAvailabilit
                   id={`checkbox-${location}`}
                   value={location}
                   checked={selectedLocation === location}
-                  onChange={
-                    (e) => {
-                      dispatch(changeLocation(e.target.value))
-                    }
-                  }
+                  onChange={(e) => {
+                    dispatch(changeLocation(e.target.value));
+                  }}
                 />
               </div>
-            )
-          }
-          )}
+            );
+          })}
           <hr />
           <div className="sidebar-category">Avg. Student Review</div>
-          {
-            rating.map((rate, index) => {
-              return (
-                <div
-                  onClick={() => {
-                    dispatch(changeReview(rate))
-                  }
-                  }
-                  className="sidebar-review"
-                  key={index}>
-                  <StarDisplay num={rate} size={18} selected={rate === selectedReview} /> & up
-                </div>
-              )
-            })
-          }
+          {rating.map((rate, index) => {
+            return (
+              <div
+                onClick={() => {
+                  dispatch(changeReview(rate));
+                }}
+                className="sidebar-review"
+                key={index}
+              >
+                <StarDisplay
+                  num={rate}
+                  size={18}
+                  selected={rate === selectedReview}
+                />{" "}
+                & up
+              </div>
+            );
+          })}
           <div className="sidebar-radio">
             <Form.Check
               type="checkbox"
               label="Select none"
-              value={''}
+              value={""}
               id="select-none-review"
-              checked={selectedReview === ''}
-              onChange={
-                (e) => {
-                  dispatch(changeReview(e.target.value))
-                }
-              }
+              checked={selectedReview === ""}
+              onChange={(e) => {
+                dispatch(changeReview(e.target.value));
+              }}
             />
           </div>
           <hr />
-          <Button
-            className="sidebar-showmore"
-            onClick={() => clearAll()}>Clear</Button>
+          <Button className="sidebar-showmore" onClick={() => clearAll()}>
+            Clear
+          </Button>
         </Form>
       </div>
     </>
