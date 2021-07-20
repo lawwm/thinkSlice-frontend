@@ -264,7 +264,7 @@ const Profile = () => {
                                   playback_id={videoRow.playback_id}
                                   imageSrc={profile.basic.profile_pic}
                                   videoId={videoRow.id}
-                                  profileId={videoRow.creator_profile.user}
+                                  profileId={profile.basic.user}
                                   deleteButton={currentViewer === user_id}
                                 />
                               </Col>

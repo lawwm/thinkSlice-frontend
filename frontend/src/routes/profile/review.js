@@ -47,7 +47,7 @@ const MapReviews = ({
               reviewPic={review.creator_details.profile_pic}
               username={review.creator_details.username}
               reviewTitle={review.review_title}
-              subjects={review.subject_taken}
+              subjects={review.review_subject}
               reviewEssay={review.review_essay}
               dateReview={review.date_review}
               editedDateReview={review.date_review_edited}
@@ -131,6 +131,7 @@ const Review = () => {
 
   const [formData, setFormData] = useState({
     review_title: "",
+    review_subject: [],
     review_essay: "",
     star_rating: 0,
   });
@@ -152,9 +153,11 @@ const Review = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     //create review
-    const { review_title, review_essay, star_rating } = formData;
+    const { review_title, review_subject, review_essay, star_rating } =
+      formData;
     const submitData = {
       review_title: review_title,
+      review_subject: review_subject,
       review_essay: review_essay,
       star_rating: star_rating,
       tutorId: user_id,
@@ -164,6 +167,7 @@ const Review = () => {
       createReviews(submitData, handleClose, () =>
         setFormData({
           review_title: "",
+          review_subject: [],
           review_essay: "",
           star_rating: 0,
         })
@@ -207,6 +211,7 @@ const Review = () => {
                         <Button
                           size="lg"
                           variant="secondary"
+                          className="post-review-btn"
                           onClick={handleShow}
                         >
                           Post review
@@ -328,6 +333,7 @@ const Review = () => {
                         value={formData.review_title}
                         onChange={(e) => onChange(e)}
                       />
+                      <Form.Label className="review-form-header">Subjects studied</Form.Label>
                       <Form.Group
                         name="review_subject"
                         value={formData.review_subject}
@@ -336,7 +342,7 @@ const Review = () => {
                         }}
                       >
                         <CheckboxGroup
-                          checkedSubjects={[]}
+                          checkedSubjects={formData.review_subject}
                           subjectList={profile.detailed.subjects}
                         />
                       </Form.Group>

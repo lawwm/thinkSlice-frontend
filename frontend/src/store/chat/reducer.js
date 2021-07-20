@@ -1,5 +1,7 @@
 import WebSocketInstance from "../../websocket";
 import * as actionTypes from "./actionTypes";
+import Ding from "../../chatNotificationSound/Ding.mp3";
+import { Howl } from "howler";
 
 const initialState = {
   isChatOpen: false,
@@ -12,6 +14,8 @@ const initialState = {
   unreadChats: [],
   chatInitialised: false,
 };
+
+const sound = new Howl({ src: [Ding] });
 
 const addMessage = (state = initialState, action) => {
   const chatToAdd = state.chats.find(
@@ -87,6 +91,10 @@ export const chat = (state = initialState, action) => {
       return setMoreMessages(state, action);
 
     case actionTypes.NEW_MESSAGE:
+      if (!sound.playing()) {
+        sound.play();
+      }
+
       if (!state.unreadChats.find((chat) => chat === action.chatroom)) {
         return {
           ...state,

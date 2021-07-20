@@ -29,7 +29,7 @@ export const subjects = [
 ];
 
 export const CheckboxGroup = ({ checkedSubjects, subjectList }) => {
-  let listToMap = subjectList || subjects;
+  const listToMap = subjectList || subjects;
   return (
     <>
       {listToMap.map((subject, index) => {
@@ -40,9 +40,7 @@ export const CheckboxGroup = ({ checkedSubjects, subjectList }) => {
             label={subject}
             id={`checkbox-${subject}`}
             value={subject}
-            checked={
-              checkedSubjects === null ? false : checkedSubjects.includes(subject)
-            }
+            checked={checkedSubjects.includes(subject)}
             inline
             onChange={(e) => {
               const index = checkedSubjects.indexOf(subject);
@@ -51,6 +49,7 @@ export const CheckboxGroup = ({ checkedSubjects, subjectList }) => {
                 result = checkedSubjects.push(subject);
               } else {
                 result = checkedSubjects.splice(index, 1);
+                console.log(checkedSubjects);
               }
               return result;
             }}

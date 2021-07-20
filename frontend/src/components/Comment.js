@@ -76,7 +76,7 @@ export const CommentPost = ({ commentId, commentText, date, username, userId, pr
           </div>
           <Media.Body className="align-self-center">
             <div className="comment-title">
-              <div className="comment-name">{username}</div>
+              <div className="comment-name" onClick={() => history.push("/profile/" + userId)}>{username}</div>
               <div className="comment-date">{edited ? dateEdited + " (edited)" : date}</div>
               <div className="comment-delete-div">
                 {showDelete &&
@@ -285,7 +285,7 @@ export const ReplyPost = ({ commentId, replyId, commentText, date, username, use
             </div>
             <Media.Body className="align-self-center">
               <div className="comment-title">
-                <div className="comment-name">{username}</div>
+                <div className="comment-name" onClick={() => history.push("/profile/" + userId)}>{username}</div>
                 <div className="comment-date">{edited ? dateEdited + " (edited)" : date}</div>
                 <div className="comment-delete-div">
                   {showDelete &&
