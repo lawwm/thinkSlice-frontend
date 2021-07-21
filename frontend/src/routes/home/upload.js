@@ -217,7 +217,7 @@ const Upload = () => {
           {profileLoading && <LoadingSpinner />}
           {!profileLoading && (
             <Container>
-              <div className="upload-div">
+              <div className="home-div">
                 <h2>Create a video.</h2>
                 <form
                   id="uploadbanner"

@@ -551,7 +551,11 @@ const Guest = ({
                   <LikeCount currentVideo={currentVideo} />
                   <Row>
                     <Col md={6}>
-                      {currentVideo.views + " views | " + currentVideo.subject}
+                      {(currentVideo.views >= 1000
+                        ? currentVideo.views >= 1000000
+                          ? Math.round(currentVideo.views / 1000000) + "M"
+                          : Math.round(currentVideo.views / 1000) + "K"
+                        : currentVideo.views) + " views | " + currentVideo.subject}
                     </Col>
                     <Col md={6} className="video-date">
                       {"Upload date: " + currentVideo.created_at}
@@ -657,7 +661,11 @@ const Member = ({
                   <LikeCount currentVideo={currentVideo} />
                   <Row>
                     <Col sm={6}>
-                      {currentVideo.views + " views | " + currentVideo.subject}
+                      {(currentVideo.views >= 1000
+                        ? currentVideo.views >= 1000000
+                          ? Math.round(currentVideo.views / 1000000) + "M"
+                          : Math.round(currentVideo.views / 1000) + "K"
+                        : currentVideo.views) + " views | " + currentVideo.subject}
                     </Col>
                     <Col sm={6} className="video-date">
                       {"Upload date: " + currentVideo.created_at}

@@ -1,4 +1,5 @@
 import { isEmpty } from "lodash"
+import { parse, formatDistance } from 'date-fns'
 import {
   HOMEPAGE_LOADED,
   HOMEPAGE_LOAD_FAIL,
@@ -67,6 +68,15 @@ const initialState = {
 }
 //set initial page to zero so initial loadhomevideo action before 
 //bottom div is observed is negated 
+
+const convertPPPtoTimeElapsed = (date) => {
+  let convertedDate = (parse(date, 'PPP', new Date()))
+  return formatDistance(
+    convertedDate,
+    new Date(),
+    { addSuffix: true },
+  )
+}
 
 export const home = (state = initialState, action) => {
   const { type, payload } = action;
@@ -146,8 +156,13 @@ export const home = (state = initialState, action) => {
     case HOME_UNFILTER_CURRENT:
       // Refill video array with current video when leaving current video
       let refilledVideoArray = [...state.videos]
+      const convertDate = convertPPPtoTimeElapsed(state.currentVideo.created_at)
+      const newCurrentVideo = {
+        ...state.currentVideo,
+        created_at: convertDate
+      }
       if (!isEmpty(state.currentVideo)) {
-        refilledVideoArray.splice(state.removedVideoIndex, 0, state.currentVideo)
+        refilledVideoArray.splice(state.removedVideoIndex, 0, newCurrentVideo)
       }
       return {
         ...state,

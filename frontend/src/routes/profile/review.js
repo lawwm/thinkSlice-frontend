@@ -180,7 +180,7 @@ const Review = () => {
       {profileLoading && <LoadingSpinner />}
       {!profileLoading && (
         <Container fluid="md">
-          <div className="review-div">
+          <div className="home-div">
             <Row className="review-header-div">
               <Col className="center-profile-text" xs={12} sm={8}>
                 <div>

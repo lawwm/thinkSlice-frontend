@@ -51,7 +51,7 @@ const Login = () => {
             <Row>
               <Col xs={12} md={7} xl={6}>
                 <form onSubmit={(e) => onSubmit(e)}>
-                  <div className="login-form-div">
+                  <div className="auth-form-div">
                     <h2>Log in to start learning.</h2>
                     <Form.Group>
                       <Form.Control
