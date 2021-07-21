@@ -50,7 +50,7 @@ const Register = () => {
             <Row>
               <Col xs={12} md={8} xl={6}>
                 <form onSubmit={(e) => onSubmit(e)}>
-                  <div className="register-form-div">
+                  <div className="auth-form-div">
                     <h2>Register here.</h2>
                     <Form.Group>
                       <Form.Control

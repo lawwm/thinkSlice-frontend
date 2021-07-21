@@ -135,7 +135,7 @@ const Profile = () => {
         (profile !== null ? (
           <>
             <Container>
-              <div className="profile-div">
+              <div className="home-div">
                 <Row>
                   <Col xs={{ span: 12, offset: 0 }} md={{ span: 8, offset: 1 }}>
                     <div className="username-tag-div">
