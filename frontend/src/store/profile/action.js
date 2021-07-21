@@ -155,6 +155,7 @@ export const changePicture = (imageFile, closeModalFunction) => async (dispatch)
       payload: res.data.profile_pic,
     });
     dispatch(setAlert("Image changed successfully", "success"));
+    dispatch(setAlert("Profile picture will take a while to change for videos", "info", 5000))
     dispatch(profileComponentLoaded())
     closeModalFunction()
   } catch (err) {
