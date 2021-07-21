@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/auth/action";
@@ -20,6 +20,17 @@ const NavBar = () => {
   const { unreadChats } = useSelector((state) => state.chat);
 
   const [expanded, setExpanded] = useState(false);
+  const [smallViewPort, setSmallViewPort] = useState(window.innerWidth <= 768);
+
+  useLayoutEffect(() => {
+    window.addEventListener("resize", () => {
+      if (window.innerWidth <= 768) {
+        setSmallViewPort(true);
+      } else {
+        setSmallViewPort(false);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     // add when mounted
@@ -58,7 +69,9 @@ const NavBar = () => {
                   className="mr-auto"
                 >
                   ThinkSlice
-                  <h6 className="nav-motto">Discover. Connect. Learn.</h6>
+                  {!smallViewPort && (
+                    <h6 className="nav-motto">Discover. Connect. Learn.</h6>
+                  )}
                 </Navbar.Brand>
 
                 <Navbar.Toggle
@@ -138,7 +151,9 @@ const NavBar = () => {
                   className="mr-auto"
                 >
                   ThinkSlice
-                  <h6 className="nav-motto">Discover. Connect. Learn.</h6>
+                  {!smallViewPort && (
+                    <h6 className="nav-motto">Discover. Connect. Learn.</h6>
+                  )}
                 </Navbar.Brand>
                 <Navbar.Toggle
                   onClick={() =>

@@ -79,7 +79,7 @@ const Review = () => {
     reviewLoading,
     reviewUser,
   } = useSelector((state) => state.profile);
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const viewerId = localStorage.getItem("user");
 
@@ -162,6 +162,7 @@ const Review = () => {
       star_rating: star_rating,
       tutorId: user_id,
     };
+
     dispatch(
       createReviews(submitData, handleClose, () =>
         setFormData({
@@ -240,13 +241,15 @@ const Review = () => {
               }
               onSelect={handleSelect}
             >
-              {(profile.basic.is_tutor && (
+              {profile.basic.is_tutor && (
                 <Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsReceived">
                     <span className="review-word-span">Reviews received</span>
                   </Nav.Link>
                 </Nav.Item>
-              )) || (
+              )}
+              {((profile.basic.user === user && profile.basic.is_student) ||
+                (!profile.basic.is_tutor && profile.basic.is_student)) && (
                 <Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsGiven">
                     <span className="review-word-span">Reviews given</span>
