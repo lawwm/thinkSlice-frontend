@@ -829,6 +829,13 @@ p {
   cursor: pointer;
 }
 
+.forward-arrow {
+  font-size: 25px;
+  position: relative;
+  cursor: pointer;
+}
+
+
 .chatroom-group-search {
   border-radius: 6px 6px 0px 0px;
 }
@@ -918,7 +925,7 @@ p {
   cursor: pointer;
 }
 
-.chat-box {
+.chatbox {
   overflow-y: scroll;
   height: 65vh;
   background-color: lightgrey;

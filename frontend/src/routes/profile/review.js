@@ -240,14 +240,13 @@ const Review = () => {
               }
               onSelect={handleSelect}
             >
-              {profile.basic.is_tutor && (
+              {(profile.basic.is_tutor && (
                 <Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsReceived">
                     <span className="review-word-span">Reviews received</span>
                   </Nav.Link>
                 </Nav.Item>
-              )}
-              {profile.basic.is_student && (
+              )) || (
                 <Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsGiven">
                     <span className="review-word-span">Reviews given</span>
@@ -332,7 +331,9 @@ const Review = () => {
                         value={formData.review_title}
                         onChange={(e) => onChange(e)}
                       />
-                      <Form.Label className="review-form-header">Subjects studied</Form.Label>
+                      <Form.Label className="review-form-header">
+                        Subjects studied
+                      </Form.Label>
                       <Form.Group
                         name="review_subject"
                         value={formData.review_subject}
