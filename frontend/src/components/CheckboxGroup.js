@@ -1,32 +1,7 @@
 import React from "react";
 
 import { Form } from "react-bootstrap";
-
-export const subjects = [
-  "Arts",
-  "Biology",
-  "Business",
-  "Chemistry",
-  "Computing",
-  "Cooking",
-  "Crafting",
-  "Economics",
-  "Engineering",
-  "Environment",
-  "Geography",
-  "Health",
-  "History",
-  "Language",
-  "Law",
-  "Literature",
-  "Math",
-  "Medicine",
-  "Music",
-  "Other Humanities",
-  "Physics",
-  "Sports",
-  "Visual Arts",
-];
+import { subjects } from "../routes/home/upload";
 
 export const CheckboxGroup = ({ checkedSubjects, subjectList }) => {
   const listToMap = subjectList || subjects;
