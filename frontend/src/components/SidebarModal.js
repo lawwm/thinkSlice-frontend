@@ -9,7 +9,7 @@ import {
   changeReview,
 } from "../store/home/action";
 import "./components.css";
-import { subjects } from "./CheckboxGroup";
+import { subjects } from "../routes/home/upload"
 
 const locations = ["Central", "North", "South", "East", "West"];
 

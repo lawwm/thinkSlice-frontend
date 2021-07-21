@@ -8,35 +8,10 @@ import {
   changeSubject,
   changeReview,
 } from "../store/home/action";
+import { subjects } from "../routes/home/upload";
 import "./components.css";
 
-const moreSubjects = [
-  "Arts",
-  "Biology",
-  "Business",
-  "Chemistry",
-  "Computing",
-  "Cooking",
-  "Crafting",
-  "Economics",
-  "Engineering",
-  "Environment",
-  "Geography",
-  "Health",
-  "History",
-  "Language",
-  "Law",
-  "Literature",
-  "Math",
-  "Medicine",
-  "Music",
-  "Other Humanities",
-  "Physics",
-  "Sports",
-  "Visual Arts",
-];
-
-const subjects = [
+const lessSubjects = [
   "Arts",
   "Biology",
   "Business",
@@ -123,39 +98,39 @@ export const Sidebar = ({
             />
           </div>
           {!showMore
-            ? subjects.map((subject, index) => {
-                return (
-                  <div className="sidebar-radio" key={index}>
-                    <Form.Check
-                      type="radio"
-                      label={subject}
-                      id={`checkbox-${subject}`}
-                      value={subject}
-                      checked={subject === selectedSubject}
-                      onChange={(e) => {
-                        dispatch(changeSubject(e.target.value));
-                      }}
-                    />
-                  </div>
-                );
-              })
-            : moreSubjects.map((subject, index) => {
-                return (
-                  <div className="sidebar-radio" key={index}>
-                    <Form.Check
-                      key={index}
-                      type="radio"
-                      label={subject}
-                      id={`checkbox-${subject}`}
-                      value={subject}
-                      checked={subject === selectedSubject}
-                      onChange={(e) => {
-                        dispatch(changeSubject(e.target.value));
-                      }}
-                    />
-                  </div>
-                );
-              })}
+            ? lessSubjects.map((subject, index) => {
+              return (
+                <div className="sidebar-radio" key={index}>
+                  <Form.Check
+                    type="radio"
+                    label={subject}
+                    id={`checkbox-${subject}`}
+                    value={subject}
+                    checked={subject === selectedSubject}
+                    onChange={(e) => {
+                      dispatch(changeSubject(e.target.value));
+                    }}
+                  />
+                </div>
+              );
+            })
+            : subjects.map((subject, index) => {
+              return (
+                <div className="sidebar-radio" key={index}>
+                  <Form.Check
+                    key={index}
+                    type="radio"
+                    label={subject}
+                    id={`checkbox-${subject}`}
+                    value={subject}
+                    checked={subject === selectedSubject}
+                    onChange={(e) => {
+                      dispatch(changeSubject(e.target.value));
+                    }}
+                  />
+                </div>
+              );
+            })}
           {!showMore ? (
             <Button
               className="sidebar-showmore"
