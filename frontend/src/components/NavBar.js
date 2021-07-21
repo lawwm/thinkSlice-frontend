@@ -153,6 +153,15 @@ const NavBar = () => {
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
+                      to="/"
+                      onClick={() => setExpanded(false)}
+                      exact={true}
+                    >
+                      Home
+                    </NavLink>
+                    <NavLink
+                      className="nav-default"
+                      activeClassName="nav-active"
                       to="/about"
                       onClick={() => setExpanded(false)}
                       exact={true}
