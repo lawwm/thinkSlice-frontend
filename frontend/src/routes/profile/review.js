@@ -162,7 +162,6 @@ const Review = () => {
       star_rating: star_rating,
       tutorId: user_id,
     };
-
     dispatch(
       createReviews(submitData, handleClose, () =>
         setFormData({

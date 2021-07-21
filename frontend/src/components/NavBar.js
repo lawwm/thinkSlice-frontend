@@ -58,7 +58,9 @@ const NavBar = () => {
                   className="mr-auto"
                 >
                   ThinkSlice
+                  <h6 className="nav-motto">Discover. Connect. Learn.</h6>
                 </Navbar.Brand>
+
                 <Navbar.Toggle
                   onClick={() =>
                     setExpanded(
@@ -69,6 +71,15 @@ const NavBar = () => {
                 />
                 <Navbar.Collapse aria-label="trial" id="responsive-navbar-nav">
                   <Nav className="ml-auto">
+                    <NavLink
+                      className="nav-default"
+                      activeClassName="nav-active"
+                      to="/about"
+                      onClick={() => setExpanded(false)}
+                      exact={true}
+                    >
+                      About
+                    </NavLink>
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
@@ -127,6 +138,7 @@ const NavBar = () => {
                   className="mr-auto"
                 >
                   ThinkSlice
+                  <h6 className="nav-motto">Discover. Connect. Learn.</h6>
                 </Navbar.Brand>
                 <Navbar.Toggle
                   onClick={() =>
@@ -141,11 +153,11 @@ const NavBar = () => {
                     <NavLink
                       className="nav-default"
                       activeClassName="nav-active"
-                      to="/"
+                      to="/about"
                       onClick={() => setExpanded(false)}
                       exact={true}
                     >
-                      Home
+                      About
                     </NavLink>
                     <NavLink
                       className="nav-default"

@@ -1,5 +1,5 @@
 .navbar {
-  padding: 0px 0px;
+  padding: 0px;
   background-color: #fcfcfc;
 }
 
@@ -10,6 +10,10 @@
   font-weight: 600;
   font-family: 'Inter', 'Calibri' !important;
   cursor: pointer;
+}
+
+.nav-motto {
+  color: black !important;
 }
 
 .nav-default {
