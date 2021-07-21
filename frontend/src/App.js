@@ -51,6 +51,7 @@ const App = () => {
       <Alert />
       <BrowserRouter>
         <NavBar />
+        <div className="nav-spacing"></div>
         <Routes />
       </BrowserRouter>
     </Provider>
