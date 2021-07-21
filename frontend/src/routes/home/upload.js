@@ -22,7 +22,7 @@ import {
 } from "../../store/home/action.js";
 import { getProfile, uploadProfileVideo } from "../../store/profile/action";
 
-const subjects = [
+export const subjects = [
   "Arts",
   "Biology",
   "Business",
@@ -42,10 +42,10 @@ const subjects = [
   "Math",
   "Medicine",
   "Music",
-  "Other Humanities",
   "Physics",
   "Sports",
   "Visual Arts",
+  "Other",
 ];
 
 const Upload = () => {

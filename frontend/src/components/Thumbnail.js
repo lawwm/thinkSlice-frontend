@@ -6,7 +6,7 @@ import { deleteVideo, editVideo } from "../store/profile/action"
 import { setAlert } from "../store/components/action";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { subjects } from "./CheckboxGroup";
+import { subjects } from "../routes/home/upload"
 import { truncate } from "lodash";
 import greyload from '../images/Solid_grey.svg'
 const wordLimit = 18

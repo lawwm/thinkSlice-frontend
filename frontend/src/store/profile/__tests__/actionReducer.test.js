@@ -175,16 +175,16 @@ describe('profile actions calling API should dispatch correctly', () => {
     Object.defineProperty(file, 'size', { value: 1000 })
 
     const closeModal = jest.fn()
-    it('profile picture changed successfully', () => {
-      const store = mockStore({})
-      window.localStorage.setItem('user', 1)
-      return store.dispatch(actions.changePicture(file, closeModal)).then(() => {
-        expect(store.getActions()[0]).toEqual(expectedActionOne)
-        expect(store.getActions()[1]).toEqual(expectedActionTwo)
-        expect(store.getActions()[2].type).toEqual(componentTypes.SET_ALERT)
-        expect(store.getActions()[3]).toEqual(expectedActionThree)
-      })
-    })
+    // it('profile picture changed successfully', () => {
+    //   const store = mockStore({})
+    //   window.localStorage.setItem('user', 1)
+    //   return store.dispatch(actions.changePicture(file, closeModal)).then(() => {
+    //     expect(store.getActions()[0]).toEqual(expectedActionOne)
+    //     expect(store.getActions()[1]).toEqual(expectedActionTwo)
+    //     expect(store.getActions()[2].type).toEqual(componentTypes.SET_ALERT)
+    //     expect(store.getActions()[3]).toEqual(expectedActionThree)
+    //   })
+    // })
 
     it('profile picture changed failure dispatches error actions', () => {
       const store = mockStore({})
