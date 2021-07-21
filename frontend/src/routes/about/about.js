@@ -72,7 +72,7 @@ const About = () => {
                 <h4 className="about-header">Connect</h4>
                 <p className="about-page">
                   If you come across a tutor who you think is a good match, you
-                  can easily establish contact with themby checking out their
+                  can easily establish contact with them by checking out their
                   profile and starting a chat.
                 </p>
                 <br />
