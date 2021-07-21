@@ -701,7 +701,14 @@ const Member = ({
                               />
                             </Col>
                           )}
+
                           <Col className="video-student-reviews">
+                            {currentVideo.creator_profile.total_tutor_reviews +
+                              " student reviews"}
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
                             {!(currentVideo.creator_profile.user === parseInt(user)) && (
                               <Button
                                 variant="secondary"
@@ -732,8 +739,6 @@ const Member = ({
                                 )}
                               </Button>
                             )}
-                            {currentVideo.creator_profile.total_tutor_reviews +
-                              " student reviews"}
                           </Col>
                         </Row>
                       </div>
