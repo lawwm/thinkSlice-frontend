@@ -28,7 +28,7 @@ const About = () => {
                 <h3>The thin-slicing effect</h3>
                 <p className="about-page">
                   Thin-slicing is the ability for individuals to make quick but
-                  accurate inferences about the state, characteristics or state
+                  accurate inferences about the details, characteristics or state
                   of an individual with minimal amounts of information. Research
                   has found that judgements based on thin-slicing can be as
                   accurate, or even more accurate than judgements made using

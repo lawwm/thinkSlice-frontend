@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { DOMAINS, ENDPOINTS } from "../endpoints";
+import WebSocketInstance from "../../websocket";
 
 export const openChat = () => async (dispatch) => {
   dispatch({
@@ -47,6 +48,15 @@ export const addMessage = (message) => async (dispatch, getState) => {
       type: actionTypes.NEW_CHAT_SESSION,
       message: message.message,
       chat: message.chat,
+    });
+  } else if (openedBefore.hidden) {
+    //Reopen a chat that was previously closed.
+    const chatIndex = chats.indexOf(openedBefore);
+    dispatch({
+      type: actionTypes.CLOSED_CHAT_REOPENED,
+      messages: message.messages,
+      chatIndex: chatIndex,
+      chatroom: message.chatroom,
     });
   } else {
     // Add new message to relevant chat.
@@ -139,13 +149,40 @@ export const loadChats = (userId) => async (dispatch) => {
 
 export const hideChat = (chat) => async (dispatch, getState) => {
   axios.patch(DOMAINS.CHAT + ENDPOINTS.ACCESS_CHAT + "/" + chat.id);
-  const { chats, messagesLoaded } = getState().chat;
+  const { chats, messagesLoaded, unreadChats } = getState().chat;
   const chatIndex = chats.indexOf(chat);
   const loadedIndex = messagesLoaded.indexOf(chat.chatroom);
+  const unreadIndex = unreadChats.indexOf(chat.chatroom);
   dispatch({
     type: actionTypes.HIDE_CHAT,
     chatIndex: chatIndex,
     loadedIndex: loadedIndex,
+    unreadIndex: unreadIndex,
     chatroom: chat.chatroom,
   });
+};
+
+export const chatLoaded = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.CHAT_LOADED,
+  });
+};
+
+export const fetchingMessages = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.FETCHING_MESSAGES,
+  });
+};
+
+export const reopenClosedChat = (chat) => async (dispatch, getState) => {
+  axios.patch(DOMAINS.CHAT + ENDPOINTS.ACCESS_CHAT + "/" + chat.id);
+  const { chats, chatInitialised } = getState().chat;
+  const chatIndex = chats.indexOf(chat);
+  dispatch({
+    type: actionTypes.REOPENING_CLOSED_CHAT,
+    chatIndex: chatIndex,
+  });
+  if (chatInitialised) {
+    WebSocketInstance.fetchMessages(chat.chatroom);
+  }
 };

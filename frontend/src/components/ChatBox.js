@@ -111,7 +111,7 @@ const ChatBox = () => {
       {!chatComponentLoading && messages.length >= 20 && (
         <div ref={loader} className="chat-end"></div>
       )}
-      {chatComponentLoading && <LoadingSpinner />}
+      {chatComponentLoading && messages.length === 0 && <LoadingSpinner />}
       {activeChat && (
         <ul className="conversation">
           {activeChat && renderMessages(messages, parseInt(user))}
@@ -119,7 +119,7 @@ const ChatBox = () => {
         </ul>
       )}
       {chats.length === 0 && (
-        <div className="no-chats-chatbox">
+        <div className="no-chats-chatbox"> 
           <p className="no-chats-text">
             It seems you have not started any chats with any other users yet.
           </p>
