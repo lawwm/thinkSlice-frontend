@@ -196,7 +196,11 @@ export const Comment = ({ totalComments, videoId }) => {
                   onClick={() => setShowComment(true)}
                   className="video-description-btn"
                 >
-                  {"Show " + totalComments + " comments"}
+                  {
+                    totalComments === 1
+                      ? "Show " + totalComments + " comment"
+                      : "Show " + totalComments + " comments"
+                  }
                   <FaAngleDown />
                 </button>
                 <hr />
@@ -585,7 +589,19 @@ const Guest = ({
                               />
                             </Col>
                           )}
-                          <Col className="video-student-reviews">{currentVideo.creator_profile.total_tutor_reviews + " student reviews"}</Col>
+                          {currentVideo.creator_profile.aggregate_star === null && (
+                            <Col>
+                              <StarDisplay
+                                num={0}
+                                size={18}
+                              />
+                            </Col>
+                          )}
+                          <Col className="video-student-reviews">
+                            {currentVideo.creator_profile.total_tutor_reviews === 1
+                              ? currentVideo.creator_profile.total_tutor_reviews + " student review"
+                              : currentVideo.creator_profile.total_tutor_reviews + " student reviews"}
+                          </Col>
                         </Row>
                       </div>
                     </Media.Body>
@@ -701,10 +717,18 @@ const Member = ({
                               />
                             </Col>
                           )}
-
+                          {currentVideo.creator_profile.aggregate_star === null && (
+                            <Col>
+                              <StarDisplay
+                                num={0}
+                                size={18}
+                              />
+                            </Col>
+                          )}
                           <Col className="video-student-reviews">
-                            {currentVideo.creator_profile.total_tutor_reviews +
-                              " student reviews"}
+                            {currentVideo.creator_profile.total_tutor_reviews === 1
+                              ? currentVideo.creator_profile.total_tutor_reviews + " student review"
+                              : currentVideo.creator_profile.total_tutor_reviews + " student reviews"}
                           </Col>
                         </Row>
                         <Row>
