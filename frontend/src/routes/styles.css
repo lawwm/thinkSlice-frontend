@@ -450,7 +450,7 @@ p {
 }
 
 .upload-break {
-  margin: 75px 0px 25px;
+  margin: 60px 0px 25px;
   opacity: 1;
   color: white;
 }
@@ -472,6 +472,10 @@ p {
 
 .upload-video-helper {
   display: none;
+}
+
+.small-text {
+  padding-top: 15px;
 }
 
 /* Video Page */
@@ -827,6 +831,13 @@ p {
   cursor: pointer;
 }
 
+.forward-arrow {
+  font-size: 25px;
+  position: relative;
+  cursor: pointer;
+}
+
+
 .chatroom-group-search {
   border-radius: 6px 6px 0px 0px;
 }
@@ -916,12 +927,27 @@ p {
   cursor: pointer;
 }
 
-.chat-box {
+.chatbox {
   overflow-y: scroll;
   height: 65vh;
   background-color: lightgrey;
   padding: 20px;
   border-radius: 0px;
+}
+
+/* About page */
+.about-page {
+  font-size: 18px !important;
+  padding: 10px 0px;
+}
+
+.space-below {
+  margin-bottom: 200px;
+}
+
+.about-header {
+  color: #ff4400;
+  font-weight: bold;
 }
 
 @media (min-width: 365px) {

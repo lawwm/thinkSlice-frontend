@@ -289,7 +289,9 @@ const Upload = () => {
                       />
                     </div>
                     <div className="upload-filename">{fileName}</div>
+                    
                   </div>
+                  <div className="small-text">* Only tutors are allowed to upload videos</div>
                   <hr className="upload-break" />
                   <Row>
                     <Col md={8}>

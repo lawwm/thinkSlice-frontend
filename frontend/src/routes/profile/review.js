@@ -79,7 +79,7 @@ const Review = () => {
     reviewLoading,
     reviewUser,
   } = useSelector((state) => state.profile);
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const viewerId = localStorage.getItem("user");
 
@@ -248,7 +248,8 @@ const Review = () => {
                   </Nav.Link>
                 </Nav.Item>
               )}
-              {profile.basic.is_student && (
+              {((profile.basic.user === user && profile.basic.is_student) ||
+                (!profile.basic.is_tutor && profile.basic.is_student)) && (
                 <Nav.Item>
                   <Nav.Link className="tabs" eventKey="reviewsGiven">
                     <span className="review-word-span">Reviews given</span>
@@ -333,7 +334,9 @@ const Review = () => {
                         value={formData.review_title}
                         onChange={(e) => onChange(e)}
                       />
-                      <Form.Label className="review-form-header">Subjects studied</Form.Label>
+                      <Form.Label className="review-form-header">
+                        Subjects studied
+                      </Form.Label>
                       <Form.Group
                         name="review_subject"
                         value={formData.review_subject}

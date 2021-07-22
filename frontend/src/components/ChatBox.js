@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { loadMoreMessages } from "../store/chat/action.js";
 import WebSocketInstance from "../websocket.js";
 
@@ -9,6 +10,7 @@ import LoadingSpinner from "./LoadingSpinner.js";
 const ChatBox = () => {
   const loader = useRef();
   const lastMessage = useRef();
+  const history = useHistory();
   const dispatch = useDispatch();
   const { chatComponentLoading, activeChat, chats } = useSelector(
     (state) => state.chat
@@ -105,7 +107,7 @@ const ChatBox = () => {
   };
 
   return (
-    <div className="chat-box">
+    <div className="chatbox">
       {!chatComponentLoading && messages.length >= 20 && (
         <div ref={loader} className="chat-end"></div>
       )}
@@ -115,6 +117,20 @@ const ChatBox = () => {
           {activeChat && renderMessages(messages, parseInt(user))}
           {page === 0 && !chatComponentLoading && <AlwaysScrollToBottom />}
         </ul>
+      )}
+      {chats.length === 0 && (
+        <div className="no-chats-chatbox">
+          <p className="no-chats-text">
+            It seems you have not started any chats with any other users yet.
+          </p>
+          <p className="no-chats-text">
+            Start searching for your ideal tutor on the{" "}
+            <span className="chat-redirect" onClick={() => history.push("/")}>
+              Home
+            </span>{" "}
+            page!
+          </p>
+        </div>
       )}
     </div>
   );

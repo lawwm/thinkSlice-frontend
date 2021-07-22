@@ -191,9 +191,19 @@ const Chat = () => {
                           )
                         )
                       ) : (
-                        <p id="no-chats">
-                          You have not started any chats previously.
-                        </p>
+                        <>
+                          <p className="no-chats">
+                            You have not started any chats previously.&nbsp;
+                            {chatroomsCollapsed && (
+                              <span
+                                className="forward-arrow"
+                                onClick={() => toggleChatrooms(false)}
+                              >
+                                ❯
+                              </span>
+                            )}
+                          </p>
+                        </>
                       )}
                     </ListGroup>
                   </div>
