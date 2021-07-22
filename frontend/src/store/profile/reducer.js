@@ -11,7 +11,8 @@ const initialState = {
   reviewUser: null,
   reviewsGiven: [],
   reviewsReceived: [],
-  profileLikes: []
+  profileLikes: [],
+  reviewsOpen: false,
 };
 
 export const profile = (state = initialState, action) => {
@@ -134,6 +135,13 @@ export const profile = (state = initialState, action) => {
         reviewsReceived: [payload].concat(state.reviewsReceived),
         reviewLoading: false
       }
+
+    case actionTypes.VIEW_REVIEWS:
+      return { ...state, reviewsOpen: true }
+
+    case actionTypes.CLOSE_REVIEWS:
+      return { ...state, reviewsOpen: false }
+
     case actionTypes.EDIT_REVIEW:
       const { id, updatedData } = payload
 

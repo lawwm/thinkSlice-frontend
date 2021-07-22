@@ -6,6 +6,7 @@ import {
   getProfile,
   toggleDetailedView,
   changePicture,
+  openReviews,
 } from "../../store/profile/action.js";
 import { profileLikedVideos } from "../../store/profile/action.js";
 import NotFound from "../errorpages/notFound";
@@ -28,6 +29,7 @@ import {
   startChat,
 } from "../../store/chat/action.js";
 import { StarDisplay } from "../../components/StarRating.js";
+import ReviewModal from "../../components/ReviewModal.js";
 
 const ShowVideoModal = ({ userId, setLikedModal }) => {
   const dispatch = useDispatch();
@@ -202,7 +204,7 @@ const Profile = () => {
                       <Button
                         variant="secondary"
                         onClick={() =>
-                          history.push("/profile/reviews/" + user_id)
+                          dispatch(openReviews())
                         }
                       >
                         Reviews
@@ -313,6 +315,10 @@ const Profile = () => {
             {/* Show profile details modal */}
 
             <ProfileModal userId={user_id} />
+
+            {/* Show reviews modal */}
+
+            <ReviewModal isOpen={profile.reviewsOpen}/>
 
             {/* Show liked videos modal */}
 
