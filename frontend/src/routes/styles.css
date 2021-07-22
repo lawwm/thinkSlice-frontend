@@ -276,6 +276,11 @@ p {
 }
 
 /* review page */
+.reviews-list {
+  max-height: 50vh;
+  overflow-y: scroll;
+}
+
 .review-div {
   margin-top: 36px;
 }

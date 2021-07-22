@@ -314,6 +314,18 @@ export const createReviews = ({ review_title, review_subject, review_essay, star
   }
 }
 
+export const openReviews = () => async(dispatch) => {
+  dispatch({
+    type: actionTypes.VIEW_REVIEWS,
+  })
+}
+
+export const closeReviews = () => async(dispatch) => {
+  dispatch({
+    type: actionTypes.CLOSE_REVIEWS,
+  })
+}
+
 export const editReviews = ({ review_title, review_subject, review_essay, star_rating, reviewId }, closeModalFunction) => async (dispatch) => {
   try {
     dispatch({
