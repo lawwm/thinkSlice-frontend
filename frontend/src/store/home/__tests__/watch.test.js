@@ -303,20 +303,20 @@ describe('Watch page', () => {
 
       it('can close and hide comments', () => {
         //Can show comments when clicking on show
-        expect(screen.getByText(/show 1 comments/i)).toBeInTheDocument()
-        userEvent.click(screen.getByText(/show 1 comments/i))
+        expect(screen.getByText(/show 1 comment/i)).toBeInTheDocument()
+        userEvent.click(screen.getByText(/show 1 comment/i))
         expect(screen.getByText(/comment on this video?/i)).toBeInTheDocument()
 
         //Can hide comments when clicking on hide
         userEvent.click(screen.getByText(/hide comments/i))
-        expect(screen.getByText(/show 1 comments/i)).toBeInTheDocument()
+        expect(screen.getByText(/show 1 comment/i)).toBeInTheDocument()
         expect(screen.queryByText(/comment on this video?/i)).not.toBeInTheDocument()
       })
 
       it('can submit comment', async () => {
         //Open up comments
-        expect(screen.getByText(/show 1 comments/i)).toBeInTheDocument()
-        userEvent.click(screen.getByText(/show 1 comments/i))
+        expect(screen.getByText(/show 1 comment/i)).toBeInTheDocument()
+        userEvent.click(screen.getByText(/show 1 comment/i))
         expect(screen.getByText(/comment on this video?/i)).toBeInTheDocument()
 
         //Write within comment input
