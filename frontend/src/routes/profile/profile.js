@@ -22,7 +22,11 @@ import {
   ButtonGroup,
 } from "react-bootstrap";
 import "../styles.css";
-import { setActive, startChat } from "../../store/chat/action.js";
+import {
+  reopenClosedChat,
+  setActive,
+  startChat,
+} from "../../store/chat/action.js";
 import { StarDisplay } from "../../components/StarRating.js";
 
 const ShowVideoModal = ({ userId, setLikedModal }) => {
@@ -214,6 +218,9 @@ const Profile = () => {
                             );
                             if (alreadyExists) {
                               dispatch(setActive(alreadyExists.chatroom));
+                              if (alreadyExists.hidden) {
+                                dispatch(reopenClosedChat(alreadyExists));
+                              }
                             } else {
                               dispatch(startChat(user_id));
                             }

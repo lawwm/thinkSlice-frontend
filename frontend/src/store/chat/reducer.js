@@ -7,6 +7,7 @@ const initialState = {
   isChatOpen: false,
   chats: [],
   chatsLoaded: false,
+  fetchedBefore: false,
   messagesLoaded: [],
   chatLoading: true,
   chatComponentLoading: false,
@@ -23,7 +24,7 @@ const addMessage = (state = initialState, action) => {
   );
   const chatIndex = state.chats.indexOf(chatToAdd);
   const updateChats = state.chats;
-  updateChats[chatIndex].messages = [...chatToAdd.messages, action.message];
+  state.chats[chatIndex].messages = [...chatToAdd.messages, action.message];
   if (state.chats.length > 1) {
     updateChats.unshift(updateChats.splice(chatIndex, 1)[0]);
   }
@@ -73,7 +74,12 @@ const setMoreMessages = (state, action) => {
 export const chat = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.CHAT_OPEN:
-      return { ...state, isChatOpen: true, chatLoading: true };
+      return {
+        ...state,
+        isChatOpen: true,
+        chatLoading: true,
+        chatComponentLoading: false,
+      };
 
     case actionTypes.CHAT_CLOSED:
       return { ...state, isChatOpen: false, activeChat: null };
@@ -108,21 +114,22 @@ export const chat = (state = initialState, action) => {
       const chatroom = action.chatroom;
       localStorage.setItem("activeChat", chatroom);
       const wasUnread = state.unreadChats.indexOf(chatroom);
+      const updatedChat = state.chats.find(
+        (chat) => chat.chatroom === action.chatroom
+      );
+      const chatIndex = state.chats.indexOf(updatedChat);
+      state.chats[chatIndex].last_message_count = updatedChat.new_message_count;
 
       if (wasUnread > -1) {
-        const updateUnread = state.unreadChats;
-        updateUnread.splice(wasUnread, 1);
+        state.unreadChats.splice(wasUnread, 1);
         return {
           ...state,
           activeChat: chatroom,
-          unreadChats: updateUnread,
-          chatComponentLoading: false,
         };
       } else {
         return {
           ...state,
           activeChat: chatroom,
-          chatComponentLoading: false,
         };
       }
 
@@ -155,14 +162,12 @@ export const chat = (state = initialState, action) => {
       return {
         ...state,
         chats: [incomingChat, ...state.chats],
-        messagesLoaded: [action.chat.chatroom, ...state.messagesLoaded],
       };
 
     case actionTypes.HIDE_CHAT:
-      const updatedChats = state.chats;
-      updatedChats.splice(action.chatIndex, 1);
-      const updateLoadedMessages = state.messagesLoaded;
-      updateLoadedMessages.splice(action.loadedIndex, 1);
+      state.chats[action.chatIndex].hidden = true;
+      state.messagesLoaded.splice(action.loadedIndex, 1);
+      state.unreadChats.splice(action.unreadIndex, 1);
       let newActiveChat = state.activeChat;
       if (action.chatroom === state.activeChat) {
         newActiveChat = null;
@@ -170,10 +175,18 @@ export const chat = (state = initialState, action) => {
       }
       return {
         ...state,
-        chats: updatedChats,
-        messagesLoaded: updateLoadedMessages,
         activeChat: newActiveChat,
       };
+
+    case actionTypes.REOPENING_CLOSED_CHAT:
+      state.chats[action.chatIndex].hidden = false;
+      return { ...state, chatComponentLoading: true };
+
+    case actionTypes.CLOSED_CHAT_REOPENED:
+      state.chats[action.chatIndex].hidden = false;
+      state.chats[action.chatIndex].messages = action.messages.reverse();
+      state.messagesLoaded = state.messagesLoaded.concat(action.chatroom);
+      return { ...state, chatComponentLoading: false };
 
     case actionTypes.LOAD_CHATS_SUCCESS:
       let loadedChats = [];
@@ -184,7 +197,7 @@ export const chat = (state = initialState, action) => {
           { ...chat, messages: [], reachedEnd: false, page: 0 },
         ];
 
-        if (chat.last_message_count < chat.new_message_count) {
+        if (!chat.hidden && chat.last_message_count < chat.new_message_count) {
           hasUnread = [...hasUnread, chat.chatroom];
         }
       }
@@ -195,8 +208,14 @@ export const chat = (state = initialState, action) => {
         unreadChats: hasUnread,
       };
 
+    case actionTypes.FETCHING_MESSAGES:
+      return { ...state, fetchedBefore: true };
+
     case actionTypes.LOADED_ALL_CHAT_MESSAGES:
-      return { ...state, chatLoading: false, chatInitialised: true };
+      return { ...state, chatInitialised: true, chatComponentLoading: false };
+
+    case actionTypes.CHAT_LOADED:
+      return { ...state, chatLoading: false };
 
     case actionTypes.RESET_CHATS:
     case actionTypes.START_CHAT_FAIL:

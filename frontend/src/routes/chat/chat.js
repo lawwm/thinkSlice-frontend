@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import WebSocketInstance from "../../websocket.js";
 import * as chatActions from "../../store/chat/action.js";
@@ -30,6 +30,7 @@ const Chat = () => {
     chats,
     chatsLoaded,
     chatLoading,
+    fetchedBefore,
     messagesLoaded,
     chatInitialised,
   } = useSelector((state) => state.chat);
@@ -39,12 +40,19 @@ const Chat = () => {
     window.innerWidth <= 768
   );
   const [chatroomsView, toggleChatrooms] = useState(false);
-  const prevChats = useRef();
-  prevChats.current = [];
+  const [visibleChats, setVisibleChats] = useState([]);
+  const [visibleFiltered, filteredVisible] = useState(false);
 
   const currentChat = chats.find((chat) => chat.chatroom === activeChat);
 
   useEffect(() => dispatch(chatActions.openChat()), [dispatch]);
+
+  useEffect(() => {
+    if (chatsLoaded) {
+      setVisibleChats(chats.filter((chat) => !chat.hidden));
+      filteredVisible(true);
+    }
+  }, [chats, chatsLoaded]);
 
   useEffect(() => {
     const waitForSocketConnection = (callback) => {
@@ -60,21 +68,27 @@ const Chat = () => {
       }, 100);
     };
 
-    if (!chatInitialised && prevChats.current.length < chats.length) {
+    if (visibleFiltered && !fetchedBefore) {
       waitForSocketConnection(() => {
-        chats.forEach((chat) => {
+        visibleChats.forEach((chat) => {
           WebSocketInstance.fetchMessages(chat.chatroom);
         });
+        dispatch(chatActions.fetchingMessages());
       });
-      prevChats.current = chats;
     }
-  }, [chats, chatInitialised]);
+  }, [dispatch, visibleFiltered, visibleChats, fetchedBefore]);
 
   useEffect(() => {
-    if (chatsLoaded && messagesLoaded.length === chats.length) {
+    if (visibleFiltered && messagesLoaded.length === visibleChats.length) {
       dispatch(chatActions.loadedAllChatMessages());
     }
-  }, [dispatch, chatsLoaded, messagesLoaded, chats]);
+  }, [dispatch, visibleFiltered, visibleChats, messagesLoaded]);
+
+  useEffect(() => {
+    if (chatInitialised) {
+      dispatch(chatActions.chatLoaded());
+    }
+  }, [dispatch, chatInitialised]);
 
   useEffect(() => {
     const activeChat = localStorage.getItem("activeChat");
@@ -133,6 +147,10 @@ const Chat = () => {
         >
           <div
             onClick={() => {
+              if (chat.hidden) {
+                dispatch(chatActions.reopenClosedChat(chat));
+                setVisibleChats(visibleChats.concat(chat));
+              }
               if (activeChat !== chat.chatroom) {
                 dispatch(chatActions.setActive(chat.chatroom));
               }
@@ -153,6 +171,7 @@ const Chat = () => {
             onClick={() => {
               // console.log("Close chat");
               dispatch(chatActions.hideChat(chat));
+              visibleChats.splice(visibleChats.indexOf(chat), 1)
             }}
             className="hide-chat"
           >
@@ -184,11 +203,13 @@ const Chat = () => {
                     <ListGroup className="flex-column chatroom-group">
                       {chats.length > 0 ? (
                         renderChatRooms(
-                          chats.filter((chat) =>
-                            chat.recipientName
-                              .toLowerCase()
-                              .includes(chatFilter.toLowerCase())
-                          )
+                          chatFilter === ""
+                            ? chats.filter((chat) => !chat.hidden)
+                            : chats.filter((chat) =>
+                                chat.recipientName
+                                  .toLowerCase()
+                                  .includes(chatFilter.toLowerCase())
+                              )
                         )
                       ) : (
                         <>
