@@ -484,6 +484,8 @@ p {
 
 .video-title {
   font-size: 20px;
+  line-height: normal;
+  margin-bottom: 12px;
   font-family: 'Inter';
   font-weight: 400;
 }
@@ -938,7 +940,9 @@ p {
   }
 
   .video-title {
-    font-size: 25px;
+    font-size: 23px;
+    line-height: normal;
+    margin-bottom: 18px;
   }
 
   .video-header {
@@ -958,11 +962,13 @@ p {
 
 @media (min-width: 1200px) {
   .video-title {
-    font-size: 35px;
+    font-size: 25px;
+    line-height: normal;
+    margin-bottom: 24px;
   }
 
   .video-header {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .home-div {
