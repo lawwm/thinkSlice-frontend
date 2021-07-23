@@ -28,6 +28,8 @@ This project was produced under NUS Orbital (CP2106).
 
 **Milestone 3**:  https://docs.google.com/document/d/12ZJZre344KpwpnLlnluU_pgUe5PbZxOR7vvVEONswkI/edit
 
+**User Guide**: https://github.com/lawwm/thinkSlice-frontend/blob/main/UserGuide.md
+
 **Backend Github**:  https://github.com/lawwm/thinkSlice
 
 &nbsp;
