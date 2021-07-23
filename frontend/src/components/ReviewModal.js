@@ -191,7 +191,7 @@ const ReviewModal = () => {
             <Container fluid="md">
               <div className="home-div">
                 <Row className="review-header-div">
-                  <Col className="center-profile-text" xs={12} sm={8}>
+                  <Col className="center-profile-text" sm={12} md={6} lg={8}>
                     <div>
                       <div className="review-username-title">
                         {profile.basic.username + "'s reviews"}
@@ -229,7 +229,7 @@ const ReviewModal = () => {
                       </ButtonGroup>
                     </div>
                   </Col>
-                  <Col xs={12} sm={4}>
+                  <Col sm={12} md={4}>
                     <div className="circle center-profile">
                       <Image
                         className="profile-pic"

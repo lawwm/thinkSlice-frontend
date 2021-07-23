@@ -231,6 +231,7 @@ export const chat = (state = initialState, action) => {
         chatComponentLoading: false,
         activeChat: null,
         chatInitialised: false,
+        fetchedBefore: false,
       };
 
     default:
