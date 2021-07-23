@@ -162,7 +162,11 @@ const Profile = () => {
                       <p>
                         <StarDisplay num={profile.detailed.aggregate_star} />
                         <span className="add-margin-left">
-                          ({profile.detailed.total_tutor_reviews} reviews)
+                          ({profile.detailed.total_tutor_reviews}{" "}
+                          {profile.detailed.total_tutor_reviews === 1
+                            ? "review"
+                            : "reviews"}
+                          )
                         </span>
                       </p>
                     )}
@@ -203,9 +207,7 @@ const Profile = () => {
                       </Button>
                       <Button
                         variant="secondary"
-                        onClick={() =>
-                          dispatch(openReviews())
-                        }
+                        onClick={() => dispatch(openReviews())}
                       >
                         Reviews
                       </Button>
@@ -318,7 +320,7 @@ const Profile = () => {
 
             {/* Show reviews modal */}
 
-            <ReviewModal isOpen={profile.reviewsOpen}/>
+            <ReviewModal isOpen={profile.reviewsOpen} />
 
             {/* Show liked videos modal */}
 
