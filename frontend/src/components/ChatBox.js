@@ -7,7 +7,7 @@ import WebSocketInstance from "../websocket.js";
 import AlwaysScrollToBottom from "./AlwaysScrollToBottom.js";
 import LoadingSpinner from "./LoadingSpinner.js";
 
-const ChatBox = () => {
+const ChatBox = ({ visibleChats }) => {
   const loader = useRef();
   const lastMessage = useRef();
   const history = useHistory();
@@ -111,14 +111,14 @@ const ChatBox = () => {
       {!chatComponentLoading && messages.length >= 20 && (
         <div ref={loader} className="chat-end"></div>
       )}
-      {chatComponentLoading && messages.length === 0 && <LoadingSpinner />}
+      {chatComponentLoading && <LoadingSpinner />}
       {activeChat && (
         <ul className="conversation">
           {activeChat && renderMessages(messages, parseInt(user))}
           {page === 0 && !chatComponentLoading && <AlwaysScrollToBottom />}
         </ul>
       )}
-      {chats.length === 0 && (
+      {visibleChats.length === 0 && (
         <div className="no-chats-chatbox"> 
           <p className="no-chats-text">
             It seems you have not started any chats with any other users yet.

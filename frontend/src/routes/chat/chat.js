@@ -154,6 +154,7 @@ const Chat = () => {
               if (activeChat !== chat.chatroom) {
                 dispatch(chatActions.setActive(chat.chatroom));
               }
+              setChatFilter("");
               toggleChatrooms(false);
             }}
           >
@@ -167,16 +168,18 @@ const Chat = () => {
               userId={chat.recipient}
             />
           </div>
-          <div
-            onClick={() => {
-              // console.log("Close chat");
-              dispatch(chatActions.hideChat(chat));
-              visibleChats.splice(visibleChats.indexOf(chat), 1)
-            }}
-            className="hide-chat"
-          >
-            ✖
-          </div>
+          {!chat.hidden && (
+            <div
+              onClick={() => {
+                // console.log("Close chat");
+                dispatch(chatActions.hideChat(chat));
+                visibleChats.splice(visibleChats.indexOf(chat), 1);
+              }}
+              className="hide-chat"
+            >
+              ✖
+            </div>
+          )}
         </ListGroup.Item>
       );
     });
@@ -195,13 +198,14 @@ const Chat = () => {
                   <Form.Control
                     className="chatroom-group-search"
                     placeholder={"Search chats..."}
+                    value={chatFilter}
                     onChange={(e) => {
                       setChatFilter(e.target.value);
                     }}
                   ></Form.Control>
                   <div className="chatroom-list">
                     <ListGroup className="flex-column chatroom-group">
-                      {chats.length > 0 ? (
+                      {chats.length > 0 && visibleChats.length > 0 ? (
                         renderChatRooms(
                           chatFilter === ""
                             ? chats.filter((chat) => !chat.hidden)
@@ -213,17 +217,37 @@ const Chat = () => {
                         )
                       ) : (
                         <>
-                          <p className="no-chats">
-                            You have not started any chats previously.&nbsp;
-                            {chatroomsCollapsed && (
-                              <span
-                                className="forward-arrow"
-                                onClick={() => toggleChatrooms(false)}
-                              >
-                                ❯
-                              </span>
-                            )}
-                          </p>
+                          {chats.length > 0 && visibleChats.length === 0 ? (
+                            <>
+                              {visibleChats.length === 0 &&
+                                chatFilter === "" && (
+                                  <p className="no-chats">
+                                    You may use the search bar to reopen chats
+                                    that were closed.
+                                  </p>
+                                )}
+                              {chatFilter !== "" &&
+                                renderChatRooms(
+                                  chats.filter((chat) =>
+                                    chat.recipientName
+                                      .toLowerCase()
+                                      .includes(chatFilter.toLowerCase())
+                                  )
+                                )}
+                            </>
+                          ) : (
+                            <p className="no-chats">
+                              You have not started any chats previously.
+                            </p>
+                          )}
+                          {chatroomsCollapsed && (
+                            <span
+                              className="forward-arrow"
+                              onClick={() => toggleChatrooms(false)}
+                            >
+                              ❯
+                            </span>
+                          )}
                         </>
                       )}
                     </ListGroup>
@@ -281,7 +305,9 @@ const Chat = () => {
                       )}
                     </Media>
                   </Card>
-                  <ChatBox />
+                  <ChatBox
+                    visibleChats={visibleChats}
+                  />
                   <div>
                     {activeChat && (
                       <Form onSubmit={(e) => sendMessageHandler(e)}>
