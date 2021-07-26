@@ -47,7 +47,7 @@ class WebSocketService {
       return;
     }
 
-    console.log(parsedData);
+    // console.log(parsedData);
 
     const command = parsedData.command;
     if (command === "messages") {

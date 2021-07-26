@@ -88,6 +88,7 @@ export const register =
             payload: res.data,
           });
           dispatch(setAlert("Welcome to ThinkSlice", "success"));
+          dispatch(loadChats(localStorage.getItem('user')));
         } catch (err) {
           dispatch({
             type: actionTypes.REGISTER_FAIL,
